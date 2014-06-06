@@ -1,3 +1,0 @@
-#!/bin/sh
-
-rm -f /opt/bin/emacs /opt/bin/emacs-${EMACS_VERSION}

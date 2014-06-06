@@ -3,6 +3,12 @@
 # mono
 #
 ###########################################################
+
+# You must replace "mono" and "MONO" with the lower case name and
+# upper case name of your new package.  Some places below will say
+# "Do not change this" - that does not include this global change,
+# which must always be done to ensure we have unique names.
+
 #
 # MONO_VERSION, MONO_SITE and MONO_SOURCE define
 # the upstream location of the source code for the package.
@@ -14,22 +20,22 @@
 # You should change all these variables to suit your package.
 # Please make sure that you add a description, and that you
 # list all your packages' dependencies, seperated by commas.
-#
+# 
 # If you list yourself as MAINTAINER, please give a valid email
 # address, and indicate your irc nick if it cannot be easily deduced
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-MONO_SITE=http://ftp.novell.com/pub/mono/sources/mono
-MONO_VERSION=2.4
+MONO_SITE=http://download.mono-project.com/sources/mono
+MONO_VERSION=3.0.6
 MONO_SOURCE=mono-$(MONO_VERSION).tar.bz2
 MONO_DIR=mono-$(MONO_VERSION)
 MONO_UNZIP=bzcat
 MONO_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
-MONO_DESCRIPTION=An open source implementation of the Common Language Infrastructure.
-MONO_SECTION=lang
+MONO_DESCRIPTION=Describe mono here.
+MONO_SECTION=extras
 MONO_PRIORITY=optional
-MONO_DEPENDS=glib
+MONO_DEPENDS=
 MONO_SUGGESTS=
 MONO_CONFLICTS=
 
@@ -46,24 +52,14 @@ MONO_IPK_VERSION=1
 # MONO_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-MONO_PATCHES=$(MONO_SOURCE_DIR)/ULLONG_MAX.patch
+#MONO_PATCHES=$(MONO_SOURCE_DIR)/configure.patch
 
 #
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-MONO_CPPFLAGS=$(strip \
-$(if $(filter nslu2, $(OPTWARE_TARGET)), -DARM_FPU_FPA, \
-$(if $(filter slugosbe slugosle, $(OPTWARE_TARGET)), -DARM_FPU_FPA, \
-$(if $(filter arm armeb, $(TARGET_ARCH)), -DARM_FPU_VFP, ) \
-)))
+MONO_CPPFLAGS=
 MONO_LDFLAGS=
-
-ifneq ($(HOSTCC), $(TARGET_CC))
-MONO_CONFIG_ENVS=mono_cv_uscore=no mono_cv_sizeof_sunpath=1024
-MONO_CONFIG_ARGS=--disable-mcs-build --with-tls=pthread --with-sigaltstack=no
-#		--with-crosspkgdir=$(STAGING_LIB_DIR)/pkgconfig
-endif
 
 #
 # MONO_BUILD_DIR is the directory in which the build is done.
@@ -75,7 +71,6 @@ endif
 # You should not change any of these variables.
 #
 MONO_BUILD_DIR=$(BUILD_DIR)/mono
-MONO_HOST_BUILD_DIR=$(HOST_BUILD_DIR)/mono
 MONO_SOURCE_DIR=$(SOURCE_DIR)/mono
 MONO_IPK_DIR=$(BUILD_DIR)/mono-$(MONO_VERSION)-ipk
 MONO_IPK=$(BUILD_DIR)/mono_$(MONO_VERSION)-$(MONO_IPK_VERSION)_$(TARGET_ARCH).ipk
@@ -97,24 +92,6 @@ $(DL_DIR)/$(MONO_SOURCE):
 #
 mono-source: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES)
 
-$(MONO_HOST_BUILD_DIR)/.built: $(DL_DIR)/$(MONO_SOURCE) # make/mono.mk
-#	$(MAKE) glib-stage
-	rm -rf $(HOST_BUILD_DIR)/$(MONO_DIR) $(@D)
-	$(MONO_UNZIP) $(DL_DIR)/$(MONO_SOURCE) | tar -C $(HOST_BUILD_DIR) -xvf -
-	if test "$(HOST_BUILD_DIR)/$(MONO_DIR)" != "$(@D)" ; \
-		then mv $(HOST_BUILD_DIR)/$(MONO_DIR) $(@D) ; \
-	fi
-	(cd $(@D); \
-		./configure \
-		--prefix=/opt \
-		--disable-nls \
-		--disable-static \
-	)
-	$(MAKE) -C $(@D)
-	touch $@
-
-mono-hostbuild: $(MONO_HOST_BUILD_DIR)/.built
-
 #
 # This target unpacks the source code in the build directory.
 # If the source archive is not .tar.gz or .tar.bz2, then you will need
@@ -133,43 +110,24 @@ mono-hostbuild: $(MONO_HOST_BUILD_DIR)/.built
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
-ifeq ($(HOSTCC), $(TARGET_CC))
 $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mono.mk
-else
-$(MONO_BUILD_DIR)/.configured: $(MONO_HOST_BUILD_DIR)/.built $(MONO_PATCHES) # make/mono.mk
-endif
-	$(MAKE) glib-stage
 	rm -rf $(BUILD_DIR)/$(MONO_DIR) $(@D)
 	$(MONO_UNZIP) $(DL_DIR)/$(MONO_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	if test -n "$(MONO_PATCHES)" ; \
-		then cat $(MONO_PATCHES) | \
-		patch -l -d $(BUILD_DIR)/$(MONO_DIR) -p0 ; \
-	fi
 	if test "$(BUILD_DIR)/$(MONO_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(MONO_DIR) $(@D) ; \
 	fi
-ifneq (, $(filter nslu2, $(OPTWARE_TARGET)))
-	sed -i.orig -e 's/st_mtim.tv_sec/st_mtime/' $(@D)/mono/profiler/mono-profiler-logging.c
-endif
-	sed -i -e '/SUBDIRS =/s/ docs$$//' $(@D)/Makefile.in
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(MONO_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(MONO_LDFLAGS)" \
-		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
-		$(MONO_CONFIG_ENVS) \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
-		$(MONO_CONFIG_ARGS) \
 		--disable-nls \
 		--disable-static \
 	)
-ifneq (, $(filter ds101g, $(OPTWARE_TARGET)))
-	sed -i -e '/HAVE_SCHED_SETAFFINITY/s|.*|/* #undef HAVE_REMAP_FILE_PAGES */|' $(@D)/config.h
-endif
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
@@ -231,13 +189,7 @@ $(MONO_IPK_DIR)/CONTROL/control:
 #
 $(MONO_IPK): $(MONO_BUILD_DIR)/.built
 	rm -rf $(MONO_IPK_DIR) $(BUILD_DIR)/mono_*_$(TARGET_ARCH).ipk
-ifneq ($(HOSTCC), $(TARGET_CC))
-	$(MAKE) -C $(MONO_HOST_BUILD_DIR) install DESTDIR=$(MONO_IPK_DIR) install-strip
-endif
-	$(MAKE) -C $(MONO_BUILD_DIR) DESTDIR=$(MONO_IPK_DIR) transform='' install-strip
-ifneq ($(HOSTCC), $(TARGET_CC))
-	rm -f $(MONO_IPK_DIR)/opt/bin/jay
-endif
+	$(MAKE) -C $(MONO_BUILD_DIR) DESTDIR=$(MONO_IPK_DIR) install-strip
 	cd $(MONO_IPK_DIR)/opt/lib/mono && \
 	tar --remove-files -cvzf long-symlinks.tar.gz \
 		`find . -type l -ls | awk '{ if (length($$13) > 100) { print $$11}}'`

@@ -1,5 +1,0 @@
-#!/bin/sh
-
-if ! test -e /usr/bin/env; then
-    ln -sf /opt/bin/env /usr/bin/env
-fi

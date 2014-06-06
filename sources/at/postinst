@@ -1,6 +1,0 @@
-#!/bin/sh
-
-chown nobody.nobody /opt/var/spool/cron/atjobs
-chown nobody.nobody /opt/var/spool/cron/atspool
-
-/opt/etc/init.d/S20at

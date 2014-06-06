@@ -1,5 +1,0 @@
-#!/bin/sh
-
-/opt/etc/init.d/S01denyhosts
-
-

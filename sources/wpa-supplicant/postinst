@@ -1,6 +1,0 @@
-#!/bin/sh
-
-echo ; echo
-echo "To complete the installation, you must edit /opt/etc/wpa-supplicant.conf."
-echo
-

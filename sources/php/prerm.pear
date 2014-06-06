@@ -1,3 +1,0 @@
-#!/bin/sh
-
-rm -rf /opt/share/pear /opt/etc/pear.conf /opt/bin/pear /opt/bin/peardev

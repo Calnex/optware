@@ -1,3 +1,0 @@
-#!/bin/sh
-
-rm -f /lib/modules/ufsd.o /initrd/lib/modules/ufsd.o

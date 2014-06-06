@@ -1,3 +1,0 @@
-#!/bin/sh
-
-update-alternatives --remove su /opt/bin/adduser-su

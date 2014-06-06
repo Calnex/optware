@@ -12,17 +12,20 @@
 # GLIB_UNZIP is the command used to unzip the source.
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
-GLIB_SITE=http://ftp.gnome.org/pub/gnome/sources/glib/2.20
-GLIB_VERSION=2.20.4
-GLIB_SOURCE=glib-$(GLIB_VERSION).tar.bz2
+GLIB_MAJOR_VERSION=2.40
+GLIB_MINOR_VERSION=0
+GLIB_VERSION=$(GLIB_MAJOR_VERSION).$(GLIB_MINOR_VERSION)
+GLIB_SITE=http://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB_MAJOR_VERSION)
+GLIB_VERSION=2.40.0
+GLIB_SOURCE=glib-$(GLIB_VERSION).tar.xz
 GLIB_DIR=glib-$(GLIB_VERSION)
-GLIB_UNZIP=bzcat
+GLIB_UNZIP=xzcat
 GLIB_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 GLIB_DESCRIPTION=The GLib library of C routines.
 GLIB_SECTION=lib
 GLIB_PRIORITY=optional
 ifeq (libiconv, $(filter libiconv, $(PACKAGES)))
-GLIB_DEPENDS=libiconv
+GLIB_DEPENDS=libiconv, libffi
 else
 GLIB_DEPENDS=
 endif
@@ -136,8 +139,9 @@ glib-host-stage: $(GLIB_HOST_BUILD_DIR)/.staged
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(GLIB_BUILD_DIR)/.configured: $(DL_DIR)/$(GLIB_SOURCE) $(GLIB_PATCHES) make/glib.mk
+	$(MAKE) libffi-stage
 ifeq (libiconv, $(filter libiconv, $(PACKAGES)))
-	$(MAKE) libiconv-stage
+	$(MAKE) libiconv-stage 
 endif
 ifeq ($(GETTEXT_NLS), enable)
 	$(MAKE) gettext-stage
@@ -159,8 +163,9 @@ endif
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GLIB_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(GLIB_LDFLAGS)" \
-        ac_cv_func_posix_getgrgid_r=yes \
-        $(if $(filter $(HOSTCC), $(TARGET_CC)),,PATH=$$PATH:$(HOST_STAGING_PREFIX)/bin) \
+		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
+		LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
+		LD_LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -198,7 +203,7 @@ glib: $(GLIB_BUILD_DIR)/.built
 $(GLIB_BUILD_DIR)/.staged: $(GLIB_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) install-strip prefix=$(STAGING_DIR)/opt
-	install $(@D)/glibconfig.h $(STAGING_INCLUDE_DIR)/glib-2.0/
+	install $(@D)/glib/glibconfig.h $(STAGING_INCLUDE_DIR)/glib-2.0/
 	rm -rf $(STAGING_DIR)/opt/lib/libgio-2.0.la
 	rm -rf $(STAGING_DIR)/opt/lib/libglib-2.0.la
 	rm -rf $(STAGING_DIR)/opt/lib/libgmodule-2.0.la

@@ -1,7 +1,0 @@
-#!/bin/sh
-
-echo
-echo Please edit /opt/etc/fetchmailrc
-echo and start /opt/etc/init.d/S52fetchmail
-echo
-

@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 TSHARK_SITE=http://www.wireshark.org/download/src
-TSHARK_VERSION ?= 1.6.8
+TSHARK_VERSION ?= 1.11.3
 TSHARK_SOURCE=wireshark-$(TSHARK_VERSION).tar.bz2
 TSHARK_DIR=wireshark-$(TSHARK_VERSION)
 TSHARK_UNZIP=bzcat
@@ -35,7 +35,7 @@ TSHARK_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 TSHARK_DESCRIPTION=Terminal based wireshark to dump and analyze network traffic
 TSHARK_SECTION=net
 TSHARK_PRIORITY=optional
-TSHARK_DEPENDS=c-ares, glib, libpcap, pcre, zlib, gnutls, geoip
+TSHARK_DEPENDS=c-ares, glib, libpcap, pcre, zlib, geoip
 TSHARK_SUGGESTS=
 TSHARK_CONFLICTS=
 
@@ -51,11 +51,7 @@ TSHARK_IPK_VERSION ?= 1
 #
 # TSHARK_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
-#
-TSHARK_PATCHES=$(TSHARK_SOURCE_DIR)/configure.in_1.4.6.patch
-ifneq (1.2.12, $(TSHARK_VERSION))
-TSHARK_PATCHES += $(TSHARK_SOURCE_DIR)/packet-ntlmssp_1.4.6-old-gcc.patch
-endif
+TSHARK_PATCHES=$(TSHARK_SOURCE_DIR)/configure.ac.patch
 
 #
 # If the compilation of the package requires additional
@@ -63,9 +59,6 @@ endif
 #
 TSHARK_CPPFLAGS=-I$(STAGING_INCLUDE_DIR)/glib-2.0 -I$(STAGING_LIB_DIR)/glib-2.0/include
 TSHARK_LDFLAGS=-lglib-2.0 -lgmodule-2.0
-ifeq ($(LIBC_STYLE), uclibc)
-TSHARK_LDFLAGS+=-lm
-endif
 
 #
 # TSHARK_BUILD_DIR is the directory in which the build is done.
@@ -115,7 +108,7 @@ tshark-source: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES)
 # shown below to make various patches to it.
 #
 $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) make/tshark.mk
-	$(MAKE) c-ares-stage geoip-stage glib-stage gnutls-stage libpcap-stage pcre-stage zlib-stage
+	$(MAKE) c-ares-stage geoip-stage glib-stage libpcap-stage pcre-stage zlib-stage
 	rm -rf $(BUILD_DIR)/$(TSHARK_DIR) $(@D)
 	$(TSHARK_UNZIP) $(DL_DIR)/$(TSHARK_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(TSHARK_PATCHES)" ; \
@@ -131,6 +124,8 @@ $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) ma
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(TSHARK_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(TSHARK_LDFLAGS)" \
+		LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
+		LD_LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
 		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
 		ac_wireshark_inttypes_h_defines_formats=yes \
 		./configure \
@@ -139,9 +134,10 @@ $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) ma
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
 		--disable-wireshark \
-		--with-glib-prefix=$(STAGING_PREFIX) \
-		--disable-gtk2 \
-		--disable-nls \
+		--enable-extra-gcc-checks \
+		--with-gtk2=no \
+		--with-gtk3=no \
+		--with-gnutls=no \
 		--disable-static \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool

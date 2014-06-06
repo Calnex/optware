@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-
-/opt/lib/sa/sadc -F -L -
-

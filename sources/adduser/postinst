@@ -1,3 +1,0 @@
-#!/bin/sh
-
-update-alternatives --install /opt/bin/su su /opt/bin/adduser-su 30

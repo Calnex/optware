@@ -26,16 +26,16 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-GNUTLS_SITE=http://ftp.gnu.org/pub/gnu/gnutls
-GNUTLS_VERSION=2.6.5
-GNUTLS_SOURCE=gnutls-$(GNUTLS_VERSION).tar.bz2
+GNUTLS_SITE=ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2
+GNUTLS_VERSION=3.2.15
+GNUTLS_SOURCE=gnutls-$(GNUTLS_VERSION).tar.xz
 GNUTLS_DIR=gnutls-$(GNUTLS_VERSION)
-GNUTLS_UNZIP=bzcat
+GNUTLS_UNZIP=xzcat
 GNUTLS_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 GNUTLS_DESCRIPTION=GNU Transport Layer Security Library.
 GNUTLS_SECTION=libs
 GNUTLS_PRIORITY=optional
-GNUTLS_DEPENDS=libtasn1, libgcrypt, libgpg-error, zlib
+GNUTLS_DEPENDS=libtasn1, libgcrypt, libgpg-error, nettle, zlib
 GNUTLS_SUGGESTS=
 GNUTLS_CONFLICTS=
 
@@ -46,7 +46,7 @@ GNUTLS_IPK_VERSION=1
 
 #
 # GNUTLS_CONFFILES should be a list of user-editable files
-GNUTLS_CONFFILES=#/opt/etc/gnutls.conf /opt/etc/init.d/SXXgnutls
+#GNUTLS_CONFFILES=/opt/etc/gnutls.conf /opt/etc/init.d/SXXgnutls
 
 #
 # GNUTLS_PATCHES should list any patches, in the the order in
@@ -111,7 +111,7 @@ gnutls-source: $(DL_DIR)/$(GNUTLS_SOURCE) $(GNUTLS_PATCHES)
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(GNUTLS_BUILD_DIR)/.configured: $(DL_DIR)/$(GNUTLS_SOURCE) $(GNUTLS_PATCHES) make/gnutls.mk
-	$(MAKE) libgcrypt-stage libtasn1-stage
+	$(MAKE) libgcrypt-stage libtasn1-stage nettle-stage
 	rm -rf $(BUILD_DIR)/$(GNUTLS_DIR) $(GNUTLS_BUILD_DIR)
 	$(GNUTLS_UNZIP) $(DL_DIR)/$(GNUTLS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(GNUTLS_PATCHES)"; \
@@ -127,8 +127,7 @@ $(GNUTLS_BUILD_DIR)/.configured: $(DL_DIR)/$(GNUTLS_SOURCE) $(GNUTLS_PATCHES) ma
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
-		--with-libgcrypt-prefix=$(STAGING_DIR)/opt \
-		--with-libtasn1-prefix=$(STAGING_DIR)/opt \
+		--with-sysroot=$(STAGING_DIR)/opt \
 		--disable-nls \
 		--disable-static \
 	)
@@ -224,12 +223,7 @@ $(GNUTLS_IPK) $(GNUTLS-DEV_IPK): $(GNUTLS_BUILD_DIR)/.built
 	install -d $(GNUTLS-DEV_IPK_DIR)/opt/bin $(GNUTLS-DEV_IPK_DIR)/opt/lib
 	mv $(GNUTLS_IPK_DIR)/opt/bin/libgnutls*-config $(GNUTLS-DEV_IPK_DIR)/opt/bin/
 	mv $(GNUTLS_IPK_DIR)/opt/lib/pkgconfig $(GNUTLS-DEV_IPK_DIR)/opt/lib/
-#	install -m 644 $(GNUTLS_SOURCE_DIR)/gnutls.conf $(GNUTLS_IPK_DIR)/opt/etc/gnutls.conf
-#	install -d $(GNUTLS_IPK_DIR)/opt/etc/init.d
-#	install -m 755 $(GNUTLS_SOURCE_DIR)/rc.gnutls $(GNUTLS_IPK_DIR)/opt/etc/init.d/SXXgnutls
 	$(MAKE) $(GNUTLS_IPK_DIR)/CONTROL/control
-#	install -m 755 $(GNUTLS_SOURCE_DIR)/postinst $(GNUTLS_IPK_DIR)/CONTROL/postinst
-#	install -m 755 $(GNUTLS_SOURCE_DIR)/prerm $(GNUTLS_IPK_DIR)/CONTROL/prerm
 	echo $(GNUTLS_CONFFILES) | sed -e 's/ /\n/g' > $(GNUTLS_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GNUTLS_IPK_DIR)
 	$(MAKE) $(GNUTLS-DEV_IPK_DIR)/CONTROL/control

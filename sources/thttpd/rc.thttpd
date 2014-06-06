@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if [ -n "`pidof thttpd`" ]; then 
-    killall thttpd 2>/dev/null
-fi
-
-/opt/sbin/thttpd -C /opt/etc/thttpd.conf

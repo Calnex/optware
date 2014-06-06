@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if [ -n "`/opt/bin/pidof stunnel`" ] ;then
-	/opt/bin/killall stunnel 2>/dev/null
-fi
-
-/opt/sbin/stunnel
