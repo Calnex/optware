@@ -195,9 +195,6 @@ $(LIBFFI_IPK): $(LIBFFI_BUILD_DIR)/.built
 	rm -rf $(LIBFFI_IPK_DIR) $(BUILD_DIR)/libffi_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(LIBFFI_BUILD_DIR) DESTDIR=$(LIBFFI_IPK_DIR) install-strip
 	$(MAKE) $(LIBFFI_IPK_DIR)/CONTROL/control
-		sed -i -e '/^[ 	]*update-alternatives /s|update-alternatives|$(UPD-ALT_PREFIX)/bin/&|' \
-			$(LIBFFI_IPK_DIR)/CONTROL/postinst $(LIBFFI_IPK_DIR)/CONTROL/prerm; \
-	fi
 	echo $(LIBFFI_CONFFILES) | sed -e 's/ /\n/g' > $(LIBFFI_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBFFI_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBFFI_IPK_DIR)

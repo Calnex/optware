@@ -35,21 +35,19 @@ PACKAGES_THAT_NEED_TO_BE_FIXED =
 # libao - has runtime trouble?
 COMMON_CROSS_PACKAGES = c-ares \
 			geoip \
-			glib \ 
-#			gnutls \
+			gettext \
+			glib \
 			ipkg-opt \
 			ipkg-utils \
 			ipkg-web \
 			libffi \
 			libgcrypt \
-			libgmp \
 			libgpg-error \
 			libidn \
 			libpcap \
 			libstdc++ \
 			libtasn1 \
 			mono \
-#			nettle \
 			openssl \
 			optware-bootstrap\
 			pcre \
@@ -57,6 +55,9 @@ COMMON_CROSS_PACKAGES = c-ares \
 			wget \
 			wget-ssl \
 			zlib \
+#			gnutls \
+#			libgmp \
+#			nettle \
 
 ##############
 

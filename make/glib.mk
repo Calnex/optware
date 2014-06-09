@@ -139,12 +139,9 @@ glib-host-stage: $(GLIB_HOST_BUILD_DIR)/.staged
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(GLIB_BUILD_DIR)/.configured: $(DL_DIR)/$(GLIB_SOURCE) $(GLIB_PATCHES) make/glib.mk
-	$(MAKE) libffi-stage
+	$(MAKE) libffi-stage gettext-stage
 ifeq (libiconv, $(filter libiconv, $(PACKAGES)))
 	$(MAKE) libiconv-stage 
-endif
-ifeq ($(GETTEXT_NLS), enable)
-	$(MAKE) gettext-stage
 endif
 ifneq ($(HOSTCC), $(TARGET_CC))
 	$(MAKE) glib-host-stage
