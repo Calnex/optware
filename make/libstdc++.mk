@@ -115,6 +115,7 @@ ifdef LIBSTDC++_USED
 endif
 	$(MAKE) $(LIBSTDC++_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBSTDC++_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBSTDC++_IPK_DIR)
 
 libstdc++-ipk: $(LIBSTDC++_IPK)
 

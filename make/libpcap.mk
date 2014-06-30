@@ -222,9 +222,10 @@ $(LIBPCAP_IPK) $(LIBPCAP-DEV_IPK): $(LIBPCAP_BUILD_DIR)/.built
 	mv $(LIBPCAP_IPK_DIR)/opt/bin $(LIBPCAP-DEV_IPK_DIR)/opt/
 	mv $(LIBPCAP_IPK_DIR)/opt/include $(LIBPCAP-DEV_IPK_DIR)/opt/
 	mv $(LIBPCAP_IPK_DIR)/opt/share $(LIBPCAP-DEV_IPK_DIR)/opt/
-#	echo $(LIBPCAP_CONFFILES) | sed -e 's/ /\n/g' > $(LIBPCAP_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBPCAP_IPK_DIR)
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBPCAP-DEV_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBPCAP_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBPCAP-DEV_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

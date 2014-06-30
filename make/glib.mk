@@ -25,13 +25,9 @@ GLIB_DESCRIPTION=The GLib library of C routines.
 GLIB_SECTION=lib
 GLIB_PRIORITY=optional
 ifeq (libiconv, $(filter libiconv, $(PACKAGES)))
-GLIB_DEPENDS=libiconv, libffi
+GLIB_DEPENDS=libiconv, libffi, gettext
 else
 GLIB_DEPENDS=
-endif
-ifeq ($(GETTEXT_NLS), enable)
-# assume standalone libiconv
-GLIB_DEPENDS+=, gettext
 endif
 GLIB_SUGGESTS=
 GLIB_CONFLICTS=
@@ -148,10 +144,10 @@ ifneq ($(HOSTCC), $(TARGET_CC))
 endif
 	rm -rf $(BUILD_DIR)/$(GLIB_DIR) $(@D)
 	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-#	if test -n "$(GLIB_PATCHES)" ; \
-#		then cat $(GLIB_PATCHES) | \
-#		patch -d $(BUILD_DIR)/$(GLIB_DIR) -p1 ; \
-#	fi
+	if test -n "$(GLIB_PATCHES)" ; \
+		then cat $(GLIB_PATCHES) | \
+		patch -d $(BUILD_DIR)/$(GLIB_DIR) -p1 ; \
+	fi
 	mv $(BUILD_DIR)/$(GLIB_DIR) $(@D)
 	cp $(SOURCE_DIR)/glib/glib.cache $(@D)/arm.cache
 #	sed -i -e '/^ALL_LINGUAS=/s/"[^"]\+"$$/$(GLIB_LOCALES)/;' $(@D)/configure
@@ -163,6 +159,7 @@ endif
 		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
 		LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
 		LD_LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
+		PATH="$(STAGING_DIR)/opt/bin:$(PATH)" \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -255,6 +252,7 @@ $(GLIB_IPK): $(GLIB_BUILD_DIR)/.built
 	rm -rf $(GLIB_IPK_DIR)/opt/man
 	$(MAKE) $(GLIB_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GLIB_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(GLIB_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

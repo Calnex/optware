@@ -238,10 +238,9 @@ $(WGET_IPK): $(WGET_BUILD_DIR)/.built
 	install -d $(WGET_IPK_DIR)/opt/etc/
 	install -m 755 $(WGET_BUILD_DIR)/doc/sample.wgetrc $(WGET_IPK_DIR)/opt/etc/wgetrc
 	$(MAKE) $(WGET_IPK_DIR)/CONTROL/control
-#	install -m 644 $(WGET_SOURCE_DIR)/postinst $(WGET_IPK_DIR)/CONTROL/postinst
-#	install -m 644 $(WGET_SOURCE_DIR)/prerm $(WGET_IPK_DIR)/CONTROL/prerm
 	echo $(WGET_CONFFILES) | sed -e 's/ /\n/g' > $(WGET_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(WGET_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(WGET_IPK_DIR)
 
 $(WGET_BUILD_DIR)/.ipk: $(WGET_IPK)
 	touch $@
@@ -255,10 +254,9 @@ $(WGET-SSL_IPK): $(WGET-SSL_BUILD_DIR)/.built
 	install -d $(WGET-SSL_IPK_DIR)/opt/etc/
 	install -m 755 $(WGET-SSL_BUILD_DIR)/doc/sample.wgetrc $(WGET-SSL_IPK_DIR)/opt/etc/wgetrc
 	$(MAKE) $(WGET-SSL_IPK_DIR)/CONTROL/control
-#	install -m 644 $(WGET-SSL_SOURCE_DIR)/postinst $(WGET-SSL_IPK_DIR)/CONTROL/postinst
-#	install -m 644 $(WGET-SSL_SOURCE_DIR)/prerm $(WGET-SSL_IPK_DIR)/CONTROL/prerm
 	echo $(WGET_CONFFILES) | sed -e 's/ /\n/g' > $(WGET-SSL_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(WGET-SSL_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(WGET-SSL_IPK_DIR)
 
 $(WGET-SSL_BUILD_DIR)/.ipk: $(WGET-SSL_IPK)
 	touch $@

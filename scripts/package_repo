@@ -1,0 +1,4 @@
+#!/bin/sh
+mv packages optware-packages
+tar -zcvf optware-packages.tar.gz optware-packages
+mv optware-packages packages

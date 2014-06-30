@@ -85,6 +85,7 @@ $(IPKG_WEB_IPK): $(IPKG_WEB_SOURCE_DIR)/package.cgi
 	install -m 755 $(IPKG_WEB_SOURCE_DIR)/sluginfo.cgi $(IPKG_WEB_IPK_DIR)/home/httpd/html/Management/sluginfo.cgi
 	$(MAKE) $(IPKG_WEB_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(IPKG_WEB_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(IPKG_WEB_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

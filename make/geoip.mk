@@ -194,6 +194,7 @@ $(GEOIP_IPK): $(GEOIP_BUILD_DIR)/.built
 	$(MAKE) $(GEOIP_IPK_DIR)/CONTROL/control
 	echo $(GEOIP_CONFFILES) | sed -e 's/ /\n/g' > $(GEOIP_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GEOIP_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(GEOIP_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

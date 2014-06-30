@@ -217,6 +217,7 @@ endif
 	$(MAKE) $(IPKG-OPT_IPK_DIR)/CONTROL/control
 	echo $(IPKG-OPT_CONFFILES) | sed -e 's/ /\n/g' > $(IPKG-OPT_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(IPKG-OPT_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(IPKG-OPT_IPK_DIR)
 
 $(IPKG-OPT_BUILD_DIR)/.ipk: $(IPKG-OPT_IPK)
 	rm -f $@

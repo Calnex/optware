@@ -1,0 +1,4 @@
+#!/bin/sh
+rm -rf a.out downloads packages toolchain staging lib builds tmp
+mkdir downloads
+cp ../ipkg-opt-0.99.163.tar.gz ./downloads/

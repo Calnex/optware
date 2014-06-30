@@ -189,15 +189,10 @@ $(LIBGPG-ERROR_IPK_DIR)/CONTROL/control:
 $(LIBGPG-ERROR_IPK): $(LIBGPG-ERROR_BUILD_DIR)/.built
 	rm -rf $(LIBGPG-ERROR_IPK_DIR) $(BUILD_DIR)/libgpg-error_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(LIBGPG-ERROR_BUILD_DIR) DESTDIR=$(LIBGPG-ERROR_IPK_DIR) install-strip
-	#install -d $(LIBGPG-ERROR_IPK_DIR)/opt/etc/
-	#install -m 644 $(LIBGPG-ERROR_SOURCE_DIR)/libgpg-error.conf $(LIBGPG-ERROR_IPK_DIR)/opt/etc/libgpg-error.conf
-	#install -d $(LIBGPG-ERROR_IPK_DIR)/opt/etc/init.d
-	#install -m 755 $(LIBGPG-ERROR_SOURCE_DIR)/rc.libgpg-error $(LIBGPG-ERROR_IPK_DIR)/opt/etc/init.d/SXXlibgpg-error
 	$(MAKE) $(LIBGPG-ERROR_IPK_DIR)/CONTROL/control
-	#install -m 755 $(LIBGPG-ERROR_SOURCE_DIR)/postinst $(LIBGPG-ERROR_IPK_DIR)/CONTROL/postinst
-	#install -m 755 $(LIBGPG-ERROR_SOURCE_DIR)/prerm $(LIBGPG-ERROR_IPK_DIR)/CONTROL/prerm
 	echo $(LIBGPG-ERROR_CONFFILES) | sed -e 's/ /\n/g' > $(LIBGPG-ERROR_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBGPG-ERROR_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBGPG-ERROR_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

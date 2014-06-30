@@ -153,6 +153,7 @@ $(ZLIB_IPK): $(ZLIB_BUILD_DIR)/.built
 	cd $(ZLIB_IPK_DIR)/opt/lib && ln -fs libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB) libz.$(SHLIB_EXT)
 	$(MAKE) $(ZLIB_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ZLIB_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(ZLIB_IPK_DIR)
 
 zlib-ipk: $(ZLIB_IPK)
 

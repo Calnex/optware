@@ -208,16 +208,9 @@ $(GETTEXT_IPK): $(GETTEXT_BUILD_DIR)/.built
 	rm -rf $(GETTEXT_IPK_DIR) $(BUILD_DIR)/gettext_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(GETTEXT_BUILD_DIR) DESTDIR=$(GETTEXT_IPK_DIR) install
 	$(STRIP_COMMAND) $(GETTEXT_IPK_DIR)/opt/lib/*.so*
-#	install -d $(GETTEXT_IPK_DIR)/opt/etc/
-#	install -m 755 $(GETTEXT_SOURCE_DIR)/gettext.conf $(GETTEXT_IPK_DIR)/opt/etc/gettext.conf
-#	install -d $(GETTEXT_IPK_DIR)/opt/etc/init.d
-#	install -m 755 $(GETTEXT_SOURCE_DIR)/rc.gettext $(GETTEXT_IPK_DIR)/opt/etc/init.d/SXXgettext
 	$(MAKE) $(GETTEXT_IPK_DIR)/CONTROL/control
-#	install -m 644 $(GETTEXT_SOURCE_DIR)/postinst $(GETTEXT_IPK_DIR)/CONTROL/postinst
-#	install -m 644 $(GETTEXT_SOURCE_DIR)/prerm $(GETTEXT_IPK_DIR)/CONTROL/prerm
-#	echo $(GETTEXT_CONFFILES) | sed -e 's/ /\n/g' > $(GETTEXT_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GETTEXT_IPK_DIR)
-
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(GETTEXT_IPK_DIR)
 #
 # This is called from the top level makefile to create the IPK file.
 #

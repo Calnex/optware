@@ -2,7 +2,7 @@ TARGET_ARCH=x86_64
 TARGET_OS=linux
 LIBC_STYLE=glibc
 
-LIBSTDC++_VERSION=6.0.19
+LIBSTDC++_VERSION=6.0.20
 LIBNSL_VERSION=2.6.18
 
 GNU_TARGET_NAME = x86_64-linux
@@ -47,14 +47,10 @@ toolchain: $(TARGET_CROSS_TOP)/.unpacked
 
 $(TARGET_CROSS_TOP)/.unpacked: 
 	mkdir -p $(TARGET_LIBDIR)
-	ln -fs `find /lib/` $(TARGET_LIBDIR)
+	ln -fs `find /lib/*` $(TARGET_LIBDIR)
 	ln -fs `find /lib64/*` $(TARGET_LIBDIR)
 	ln -fs `find /usr/lib/*` $(TARGET_USRLIBDIR)
 	ln -fs `find /usr/lib64/*` $(TARGET_USRLIBDIR)
-#	ln -fs /lib/* $(TARGET_LIBDIR)
-#	ln -fs /lib64/* $(TARGET_LIBDIR)
-#	ln -fs /usr/lib/* $(TARGET_USRLIBDIR)
-#	ln -fs /usr/lib64/* $(TARGET_USRLIBDIR)
 	touch $@
 
 endif

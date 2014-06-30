@@ -150,6 +150,8 @@ $(OPENSSL_IPK) $(OPENSSL_DEV_IPK): $(OPENSSL_BUILD_DIR)/.built
 	sed -i '/^Libs:/s|-lcrypto .* -ldl|-lcrypto -ldl|' $(OPENSSL_DEV_IPK_DIR)/opt/lib/pkgconfig/openssl.pc
 	$(MAKE) $(OPENSSL_DEV_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(OPENSSL_DEV_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPENSSL_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPENSSL_DEV_IPK_DIR)
 
 $(OPENSSL_BUILD_DIR)/.ipk: $(OPENSSL_IPK) $(OPENSSL_DEV_IPK)
 	touch $@
