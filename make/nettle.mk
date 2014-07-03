@@ -129,7 +129,6 @@ $(NETTLE_BUILD_DIR)/.configured: $(DL_DIR)/$(NETTLE_SOURCE) $(NETTLE_PATCHES) ma
 		--exec_prefix=/opt \
 		--includedir=/opt/include \
 		--disable-nls \
-		--disable-static \
 	)
 	touch $@
 

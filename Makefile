@@ -37,17 +37,20 @@ COMMON_CROSS_PACKAGES = c-ares \
 			geoip \
 			gettext \
 			glib \
+			gnutls \
 			ipkg-opt \
 			ipkg-utils \
 			ipkg-web \
 			libffi \
 			libgcrypt \
+			libgmp \
 			libgpg-error \
 			libidn \
 			libpcap \
 			libstdc++ \
 			libtasn1 \
 			mono \
+			nettle \
 			openssl \
 			optware-bootstrap\
 			pcre \
@@ -55,9 +58,6 @@ COMMON_CROSS_PACKAGES = c-ares \
 			wget \
 			wget-ssl \
 			zlib \
-#			gnutls \
-#			libgmp \
-#			nettle \
 
 ##############
 
@@ -213,9 +213,10 @@ GCC=
 CXX=
 RANLIB=
 STRIP=
+PKG_CONFIG=pkg-config
 
 # Preload the correct library paths.
-PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig"
+PKG_CONFIG_PATH=$(STAGING_LIB_DIR)/pkgconfig
 LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)"
 LD_LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)"
 

@@ -218,7 +218,8 @@ $(LIBGMP_IPK_DIR)/CONTROL/control:
 $(LIBGMP_IPK): $(LIBGMP_BUILD_DIR)/.built
 	rm -rf $(LIBGMP_IPK_DIR) $(BUILD_DIR)/libgmp_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(LIBGMP_BUILD_DIR) DESTDIR=$(LIBGMP_IPK_DIR) install-strip
-	$(STRIP_COMMAND) $(LIBGMP_IPK_DIR)/opt/lib/libgmp.so.[0-9].[0-9].[0-9]
+	# I'd have prefered to use [0-9]+ here, but it wouldn't work! :(
+	$(STRIP_COMMAND) $(LIBGMP_IPK_DIR)/opt/lib/libgmp.so.[0-9]*.[0-9]*.[0-9]*
 #	install -d $(LIBGMP_IPK_DIR)/opt/etc/
 #	install -m 644 $(LIBGMP_SOURCE_DIR)/libgmp.conf $(LIBGMP_IPK_DIR)/opt/etc/libgmp.conf
 #	install -d $(LIBGMP_IPK_DIR)/opt/etc/init.d
@@ -228,6 +229,7 @@ $(LIBGMP_IPK): $(LIBGMP_BUILD_DIR)/.built
 #	install -m 755 $(LIBGMP_SOURCE_DIR)/prerm $(LIBGMP_IPK_DIR)/CONTROL/prerm
 	echo $(LIBGMP_CONFFILES) | sed -e 's/ /\n/g' > $(LIBGMP_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBGMP_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBGMP_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

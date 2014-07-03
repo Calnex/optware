@@ -26,7 +26,7 @@ WGET_SECTION=net
 WGET_PRIORITY=optional
 WGET_DEPENDS=
 WGET_CONFLICTS=wget-ssl
-WGET-SSL_DEPENDS=libidn, openssl
+WGET-SSL_DEPENDS=libidn, openssl, gnutls
 WGET-SSL_CONFLICTS=wget
 
 #
@@ -136,7 +136,7 @@ endif
 	touch $@
 
 $(WGET-SSL_BUILD_DIR)/.configured: $(DL_DIR)/$(WGET_SOURCE) $(WGET_PATCHES) make/wget.mk
-	$(MAKE) libidn-stage openssl-stage
+	$(MAKE) libidn-stage openssl-stage gnutls-stage
 	rm -rf $(BUILD_DIR)/$(WGET_DIR) $(@D)
 	$(WGET_UNZIP) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 #	cat $(WGET_PATCHES) | patch -d $(BUILD_DIR)/$(WGET_DIR) -p1

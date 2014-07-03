@@ -35,7 +35,7 @@ MONO_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 MONO_DESCRIPTION=Describe mono here.
 MONO_SECTION=extras
 MONO_PRIORITY=optional
-MONO_DEPENDS=
+MONO_DEPENDS=gettext
 MONO_SUGGESTS=
 MONO_CONFLICTS=
 
@@ -111,6 +111,7 @@ mono-source: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES)
 # shown below to make various patches to it.
 #
 $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mono.mk
+	$(MAKE) gettext-stage
 	rm -rf $(BUILD_DIR)/$(MONO_DIR) $(@D)
 	$(MONO_UNZIP) $(DL_DIR)/$(MONO_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test "$(BUILD_DIR)/$(MONO_DIR)" != "$(@D)" ; \
@@ -120,6 +121,7 @@ $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mon
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(MONO_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(MONO_LDFLAGS)" \
+		PATH="$(STAGING_DIR)/opt/bin:$(PATH)" \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \

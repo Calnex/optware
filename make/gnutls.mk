@@ -118,6 +118,7 @@ $(GNUTLS_BUILD_DIR)/.configured: $(DL_DIR)/$(GNUTLS_SOURCE) $(GNUTLS_PATCHES) ma
 		then cat $(GNUTLS_PATCHES) | patch -d $(BUILD_DIR)/$(GNUTLS_DIR) -p1; \
 	fi
 	mv $(BUILD_DIR)/$(GNUTLS_DIR) $(@D)
+#	(cd $(@D); autoreconf -vif)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GNUTLS_CPPFLAGS)" \
@@ -157,7 +158,7 @@ $(GNUTLS_BUILD_DIR)/.staged: $(GNUTLS_BUILD_DIR)/.built
 	rm -f $(STAGING_PREFIX)/bin/*gnutls*
 	$(MAKE) -C $(@D) install \
 		DESTDIR=$(STAGING_DIR) program_transform_name=""
-	sed -i -e 's|echo $$includes $$.*_cflags|echo "-I$(STAGING_INCLUDE_DIR)"|' $(STAGING_PREFIX)/bin/*gnutls-config
+#	sed -i -e 's|echo $$includes $$.*_cflags|echo "-I$(STAGING_INCLUDE_DIR)"|' $(STAGING_PREFIX)/bin/*gnutls-config
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/gnutls*.pc
 	rm -f $(STAGING_LIB_DIR)/libgnutls*.la
 	touch $@
@@ -219,15 +220,17 @@ $(GNUTLS_IPK) $(GNUTLS-DEV_IPK): $(GNUTLS_BUILD_DIR)/.built
 	install -d $(GNUTLS-DEV_IPK_DIR)/opt/share/man
 	mv $(GNUTLS_IPK_DIR)/opt/share/man/man3 $(GNUTLS-DEV_IPK_DIR)/opt/share/man/
 	mv $(GNUTLS_IPK_DIR)/opt/share/info $(GNUTLS-DEV_IPK_DIR)/opt/share/
-	mv $(GNUTLS_IPK_DIR)/opt/share/aclocal $(GNUTLS-DEV_IPK_DIR)/opt/share/
+#	mv $(GNUTLS_IPK_DIR)/opt/share/aclocal $(GNUTLS-DEV_IPK_DIR)/opt/share/
 	install -d $(GNUTLS-DEV_IPK_DIR)/opt/bin $(GNUTLS-DEV_IPK_DIR)/opt/lib
-	mv $(GNUTLS_IPK_DIR)/opt/bin/libgnutls*-config $(GNUTLS-DEV_IPK_DIR)/opt/bin/
+#	mv $(GNUTLS_IPK_DIR)/opt/bin/libgnutls*-config $(GNUTLS-DEV_IPK_DIR)/opt/bin/
 	mv $(GNUTLS_IPK_DIR)/opt/lib/pkgconfig $(GNUTLS-DEV_IPK_DIR)/opt/lib/
 	$(MAKE) $(GNUTLS_IPK_DIR)/CONTROL/control
 	echo $(GNUTLS_CONFFILES) | sed -e 's/ /\n/g' > $(GNUTLS_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GNUTLS_IPK_DIR)
 	$(MAKE) $(GNUTLS-DEV_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GNUTLS-DEV_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(GNUTLS_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(GNUTLS-DEV_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.
