@@ -54,7 +54,10 @@ COMMON_CROSS_PACKAGES = c-ares \
 			openssl \
 			optware-bootstrap\
 			pcre \
-			tshark \
+			springbank \
+			tshark-1.11.3 \
+			tshark-1.10.3 \
+			tshark-1.4.9 \
 			wget \
 			wget-ssl \
 			zlib \
