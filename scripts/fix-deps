@@ -1,3 +1,3 @@
 #!/bin/bash
 
-apt-get install -y build-essential zlibg-dev pkg-config autoconf automake autogen autopoint libtool flex bison
+apt-get install -y build-essential zlib1g-dev pkg-config autoconf automake autogen autopoint libtool flex bison

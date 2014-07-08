@@ -2,7 +2,8 @@ TARGET_ARCH=x86_64
 TARGET_OS=linux
 LIBC_STYLE=glibc
 
-LIBSTDC++_VERSION=6.0.20
+#Ugly and fragile hack to cope with floating between machines.
+LIBSTDC++_VERSION=$(shell find /usr/lib* -type f | grep stdc++ 2>&1 | grep .so. | sed -e 's/.*libstdc++\.so\.//g' | uniq)
 LIBNSL_VERSION=2.6.18
 
 GNU_TARGET_NAME = x86_64-linux

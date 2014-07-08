@@ -130,7 +130,7 @@ $(TSHARK_1.11.3_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_1.11.3_SOURCE) $(TSHA
 		LDFLAGS="$(STAGING_LDFLAGS) $(TSHARK_1.11.3_LDFLAGS)" \
 		LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
 		LD_LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
-		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
+		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
 		ac_wireshark_inttypes_h_defines_formats=yes \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
