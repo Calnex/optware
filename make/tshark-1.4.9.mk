@@ -51,7 +51,8 @@ TSHARK_1.4.9_IPK_VERSION ?= 1
 #
 # TSHARK_1.4.9_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
-TSHARK_1.4.9_PATCHES=$(TSHARK_1.4.9_SOURCE_DIR)/doc/Makefile.am.patch
+#TSHARK_1.4.9_PATCHES=$(TSHARK_1.4.9_SOURCE_DIR)/doc/Makefile.am.patch
+TSHARK_1.4.9_PATCHES=
 
 #
 # If the compilation of the package requires additional
@@ -122,6 +123,11 @@ $(TSHARK_1.4.9_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_1.4.9_SOURCE) $(TSHARK
 	sed -i 's/^have_inet_pton=no], \[AC_MSG_RESULT(cross compiling, assume it is broken);$$/have_inet_pton=no], \[AC_MSG_RESULT(cross compiling, assume it is ok);/' $(@D)/configure.in
 	sed -i 's/^have_inet_pton=no])],$$/have_inet_pton=yes])],/' $(@D)/configure.in
 	sed -i -e '/^INCLUDES/s|-I$$(includedir)|-I$(STAGING_INCLUDE_DIR)|' $(@D)/plugins/*/Makefile.am
+	#Disable documentation as it fails the build :(
+	sed -i -e '/doc\/Makefile/d' $(@D)/configure.in 
+	sed -i -e 's/ doc\b//g' $(@D)/Makefile.am 
+	sed -i -e 's/ doc\b//g' $(@D)/Makefile.in 
+#	rm -rf $(@D)/doc
 	autoreconf -vif $(@D)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
