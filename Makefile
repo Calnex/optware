@@ -50,10 +50,13 @@ COMMON_CROSS_PACKAGES = c-ares \
 			libstdc++ \
 			libtasn1 \
 			mono \
+			ncurses \
 			nettle \
 			openssl \
 			optware-bootstrap\
 			pcre \
+			postgresql \
+			readline \
 			springbank \
 			tshark-1.11.3 \
 			tshark-1.10.3 \
