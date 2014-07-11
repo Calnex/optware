@@ -33,7 +33,8 @@ PACKAGES_READY_FOR_TESTING =
 PACKAGES_THAT_NEED_TO_BE_FIXED = 
 
 # libao - has runtime trouble?
-COMMON_CROSS_PACKAGES = c-ares \
+COMMON_CROSS_PACKAGES = bzip2 \
+			c-ares \
 			geoip \
 			gettext \
 			glib \
@@ -41,6 +42,7 @@ COMMON_CROSS_PACKAGES = c-ares \
 			ipkg-opt \
 			ipkg-utils \
 			ipkg-web \
+			libdb \
 			libffi \
 			libgcrypt \
 			libgmp \
@@ -51,16 +53,19 @@ COMMON_CROSS_PACKAGES = c-ares \
 			libtasn1 \
 			mono \
 			ncurses \
+			ncursesw \
 			nettle \
 			openssl \
 			optware-bootstrap\
 			pcre \
 			postgresql \
+			python3 \
 			readline \
 			springbank \
-			tshark-1.11.3 \
-			tshark-1.10.3 \
+			sqlite \
 			tshark-1.4.9 \
+			tshark-1.10.3 \
+			tshark-1.11.3 \
 			wget \
 			wget-ssl \
 			zlib \
