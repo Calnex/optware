@@ -53,7 +53,7 @@ echo "Installing wget..."
 if [ ! -e /opt/etc/ipkg/cross-feed.conf ]
 then
 	echo "Creating /opt/etc/ipkg/cross-feed.conf..."
-	echo "src/gz cross http://ipkg.calnexsol.com/feeds/optware/Springbank/cross/unstable" 	> /opt/etc/ipkg/cross-feed.conf
+	echo "src/gz cross http://packages.calnexsol.com/feeds/optware/Springbank/cross/unstable" 	> /opt/etc/ipkg/cross-feed.conf
 	echo "src/gz cross /tmp/optware-repo" 							>>/opt/etc/ipkg/cross-feed.conf
 fi
 
