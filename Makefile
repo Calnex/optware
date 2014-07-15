@@ -68,6 +68,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			tshark-1.11.3 \
 			wget \
 			wget-ssl \
+			xsp \
 			zlib \
 
 ##############
