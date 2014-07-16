@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Replaced during packaging based on value in target-specific.mk
-REAL_OPT_DIR=/home/@optware
+REAL_OPT_DIR=/home/.optware
 
 if [ -e "$REAL_OPT_DIR" ] ; then
     echo "Backup your configuration settings, then type:"
@@ -53,8 +53,8 @@ echo "Installing wget..."
 if [ ! -e /opt/etc/ipkg/cross-feed.conf ]
 then
 	echo "Creating /opt/etc/ipkg/cross-feed.conf..."
-	echo "src/gz cross http://packages.calnexsol.com/feeds/optware/Springbank/cross/unstable" 	> /opt/etc/ipkg/cross-feed.conf
-	echo "src/gz cross /tmp/optware-repo" 							>>/opt/etc/ipkg/cross-feed.conf
+	echo "src/gz cross http://packages.calnexsol.com"	> /opt/etc/ipkg/cross-feed.conf
+	echo "src/gz cross /tmp/optware-repo"			>>/opt/etc/ipkg/cross-feed.conf
 fi
 
 chmod -R 0777 /opt

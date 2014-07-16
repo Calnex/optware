@@ -126,6 +126,7 @@ $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mon
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
+		--program-prefix="" \
 		--prefix=/opt \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
@@ -198,7 +199,7 @@ $(MONO_IPK): $(MONO_BUILD_DIR)/.built
 	install -m755 $(MONO_SOURCE_DIR)/prerm $(MONO_IPK_DIR)/CONTROL/prerm
 	echo $(MONO_CONFFILES) | sed -e 's/ /\n/g' > $(MONO_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(MONO_IPK_DIR)
-	$(WHAT_TO_DO_WITH_IPK_DIR) $(MONO_IPK_DIR)
+#	$(WHAT_TO_DO_WITH_IPK_DIR) $(MONO_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

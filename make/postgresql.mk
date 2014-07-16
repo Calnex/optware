@@ -35,7 +35,7 @@ POSTGRESQL_MAINTAINER=Brian Zhou <bzhou@users.sf.net>
 POSTGRESQL_DESCRIPTION=PostgreSQL is a highly-scalable, SQL compliant, open source object-relational database management system
 POSTGRESQL_SECTION=misc
 POSTGRESQL_PRIORITY=optional
-POSTGRESQL_DEPENDS=readline, coreutils
+POSTGRESQL_DEPENDS=readline
 
 #
 # POSTGRESQL_IPK_VERSION should be incremented when the ipk changes.
