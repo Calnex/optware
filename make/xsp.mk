@@ -72,7 +72,7 @@ XSP_LDFLAGS=
 # You should not change any of these variables.
 #
 XSP_GIT_TAG=HEAD
-XSP_TREEISH=$(ENDOR_GIT_TAG)
+XSP_TREEISH=$(XSP_GIT_TAG)
 XSP_BUILD_DIR=$(BUILD_DIR)/xsp
 XSP_SOURCE_DIR=$(SOURCE_DIR)/xsp
 XSP_IPK_DIR=$(BUILD_DIR)/xsp-$(XSP_VERSION)-ipk
@@ -90,7 +90,7 @@ $(DL_DIR)/$(XSP_SOURCE):
 		git clone --bare $(XSP_REPOSITORY) xsp && \
 		cd xsp && \
 		(git archive --format=tar --prefix=$(XSP_DIR)/ $(XSP_TREEISH) | gzip > $@) && \
-		rm -rf endor ; \
+		rm -rf xsp ; \
 	)
 
 #
