@@ -35,7 +35,7 @@ XSP_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 XSP_DESCRIPTION=Describe xsp here.
 XSP_SECTION=net
 XSP_PRIORITY=optional
-XSP_DEPENDS=
+XSP_DEPENDS= mono
 XSP_SUGGESTS=
 XSP_CONFLICTS=
 
@@ -138,6 +138,7 @@ $(XSP_BUILD_DIR)/.configured: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES) make/xsp.mk
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
+		--program-prefix="" \
 		--prefix=/opt \
 		--disable-nls \
 		--disable-static \
