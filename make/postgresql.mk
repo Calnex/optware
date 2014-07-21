@@ -117,7 +117,7 @@ $(POSTGRESQL_BUILD_DIR)/.configured: $(DL_DIR)/$(POSTGRESQL_SOURCE) $(POSTGRESQL
 	$(POSTGRESQL_UNZIP) $(DL_DIR)/$(POSTGRESQL_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(POSTGRESQL_PATCHES)" ; then \
 		cat $(POSTGRESQL_PATCHES) | patch -d $(BUILD_DIR)/$(POSTGRESQL_DIR) -p1 ; \
-        fi
+	fi
 	mv $(BUILD_DIR)/$(POSTGRESQL_DIR) $(@D)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
