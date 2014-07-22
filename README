@@ -1,8 +1,8 @@
-To install this system, Use Debian (jessie), and run this script.
+To install this system, Use Debian (jessie), and run this script
 
 scripts/fix-deps
 
-To clean an existing build tree back to basic
+To clean an existing build tree 
 
 scripts/clean-all
 
@@ -10,7 +10,7 @@ To build all packages
 
 make packages
 
-To build a specific packages
+To build a specific package
 
 make <package name>-ipk
 
