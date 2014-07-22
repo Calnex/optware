@@ -35,6 +35,7 @@ PACKAGES_THAT_NEED_TO_BE_FIXED =
 # libao - has runtime trouble?
 COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
+			endor \
 			geoip \
 			gettext \
 			glib \
