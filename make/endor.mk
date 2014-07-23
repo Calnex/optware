@@ -84,10 +84,10 @@ ENDOR_IPK=$(BUILD_DIR)/endor_$(ENDOR_VERSION)-$(ENDOR_IPK_VERSION)_$(TARGET_ARCH
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(ENDOR_SOURCE):
-	(cd $(BUILD_DIR)/Server/Software ; \
+	(cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone --bare $(ENDOR_REPOSITORY) endor && \
-		cd endor && \
+		git clone $(ENDOR_REPOSITORY) endor && \
+		cd endor/Server/Software && \
 		(git archive \
 			--format=tar \
 			--prefix=$(ENDOR_DIR)/ \
@@ -132,13 +132,13 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) make/
 		then mv $(BUILD_DIR)/$(ENDOR_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-		mdtool generate-makefiles Endor.sln -d:release \
+		mdtool generate-makefiles Endor.sln -d:release && \
+		./autogen.sh \
 	)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(ENDOR_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(ENDOR_LDFLAGS)" \
-		./autogen.sh \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
