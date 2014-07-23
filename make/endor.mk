@@ -33,7 +33,7 @@ ENDOR_DIR=endor-$(ENDOR_VERSION)
 ENDOR_UNZIP=zcat
 ENDOR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_DESCRIPTION=Describe endor here.
-ENDOR_SECTION=
+ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
 ENDOR_DEPENDS=
 ENDOR_SUGGESTS=
@@ -133,13 +133,10 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) make/
 	fi
 	(cd $(@D); \
 		mdtool generate-makefiles Endor.sln -d:release && \
-		./autogen.sh \
-	)
-	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(ENDOR_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(ENDOR_LDFLAGS)" \
-		./configure \
+		./autogen.sh \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
@@ -207,6 +204,7 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
+	find $(ENDOR_BUILD_DIR) -name *.exe -print0 | xargs -I{} -0 cp -v {} $(ENDOR_IPK_DIR)/opt/lib/endor/
 #	install -d $(ENDOR_IPK_DIR)/opt/etc/
 #	install -m 644 $(ENDOR_SOURCE_DIR)/endor.conf $(ENDOR_IPK_DIR)/opt/etc/endor.conf
 #	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
