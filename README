@@ -14,7 +14,7 @@ To build a specific package
 
 make <package name>-ipk
 
-To rebuilt the package repository
+To rebuild the package repository
 
 make index
 
