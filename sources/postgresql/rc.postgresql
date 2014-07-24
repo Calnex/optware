@@ -35,12 +35,12 @@ fi
 case "$rc" in
     start)
 	echo -n "Starting PostgreSQL: "
-	$DAEMON -D '$PGDATA' & >>$PGLOG 2>&1
+	$DAEMON -D $PGDATA & >>$PGLOG 2>&1
 	echo ok
         ;;
     stop)
 	echo -n "Stopping PostgreSQL: "
-	$PGCTL stop -D '$PGDATA' -s -m fast
+	$PGCTL stop -D $PGDATA -s -m fast
 	echo ok
         ;;
     restart)
