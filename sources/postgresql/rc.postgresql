@@ -8,7 +8,7 @@ PGDATA="$prefix/var/pgsql/data"
 PG_DUMP_DIR="$prefix/var/pgsql/8.2/dump"
 
 # Who to run the postmaster as, usually "postgres".  (NOT "root")
-PGUSER=postgres
+PGUSER=calnex
 
 # Where to keep a log file
 PGLOG="$PGDATA/serverlog"
