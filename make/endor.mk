@@ -35,7 +35,7 @@ ENDOR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_DESCRIPTION=Describe endor here.
 ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
-ENDOR_DEPENDS=
+ENDOR_DEPENDS=postgresql, python3, mono, xsp
 ENDOR_SUGGESTS=
 ENDOR_CONFLICTS=
 
