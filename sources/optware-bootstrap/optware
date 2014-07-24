@@ -14,7 +14,7 @@ case "$1" in
                 mount -o bind ${REAL_OPT_DIR} /opt
             fi	
         fi
-	[ -x /opt/etc/rc.optware ] && /opt/etc/rc.optware
+	[ -x /opt/etc/rc.optware ] && su calnex -c /opt/etc/rc.optware
     ;;
     reconfig)
 	true
