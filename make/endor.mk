@@ -206,7 +206,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
 	find $(ENDOR_BUILD_DIR) -name *.exe -print0 | xargs -I{} -0 cp -v {} $(ENDOR_IPK_DIR)/opt/lib/endor/
 	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
-	install -m 755 $(ENDOR_SOURCE_DIR)/instumentcontoller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instumentcontoller-supervisor
+	install -m 755 $(ENDOR_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-webapp $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-instrumentcontroller $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-instrumentcontroller
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-virtualinstrument
