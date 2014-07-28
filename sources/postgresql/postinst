@@ -6,7 +6,6 @@ pgver="$pghome/8.2"
 pgdumpground="$pgver/dump"
 
 mkdir -p $pghome
-mkdir -p $pgdata
 mkdir -p $pgdumpground
 
 # initdb if not done before
@@ -15,6 +14,7 @@ if [ -d $pgdata ]; then
     echo The $pgdata directory already exists
 else
     echo "Initialize database ... "
+#    mkdir -p $pgdata
     "/opt/bin/initdb -D $pgdata"
     [ -f $pgdata/PG_VERSION ] && echo "... database initialization done"
     dbinited=1
