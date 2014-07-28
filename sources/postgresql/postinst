@@ -14,8 +14,7 @@ if [ -d $pgdata ]; then
     echo The $pgdata directory already exists
 else
     echo "Initialize database ... "
-#    mkdir -p $pgdata
-    "/opt/bin/initdb -D $pgdata"
+    /opt/bin/initdb -D "$pgdata"
     [ -f $pgdata/PG_VERSION ] && echo "... database initialization done"
     dbinited=1
 fi
