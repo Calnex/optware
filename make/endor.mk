@@ -205,11 +205,13 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
 	find $(ENDOR_BUILD_DIR) -name *.exe -print0 | xargs -I{} -0 cp -v {} $(ENDOR_IPK_DIR)/opt/lib/endor/
+	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
+	install -m 755 $(ENDOR_SOURCE_DIR)/instumentcontoller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instumentcontoller-supervisor
+	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-webapp $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-webapp
+	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-instrumentcontroller $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-instrumentcontroller
+	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-virtualinstrument
 #	install -d $(ENDOR_IPK_DIR)/opt/etc/
 #	install -m 644 $(ENDOR_SOURCE_DIR)/endor.conf $(ENDOR_IPK_DIR)/opt/etc/endor.conf
-#	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
-#	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor $(ENDOR_IPK_DIR)/opt/etc/init.d/SXXendor
-#	sed -i -e '/^#!/aOPTWARE_TARGET=${OPTWARE_TARGET}' $(ENDOR_IPK_DIR)/opt/etc/init.d/SXXendor
 	$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
 #	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
 #	sed -i -e '/^#!/aOPTWARE_TARGET=${OPTWARE_TARGET}' $(ENDOR_IPK_DIR)/CONTROL/postinst
@@ -221,7 +223,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	fi
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_IPK_DIR)
-#	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

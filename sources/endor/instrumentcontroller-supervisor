@@ -1,0 +1,9 @@
+#! /bin/sh
+
+exitStatus=1
+
+while [ $exitStatus -ne 0 ]
+do
+	/opt/bin/instrumentcontroller
+	exitStatus=$?
+done
