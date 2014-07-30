@@ -2,25 +2,13 @@ To install this system, Use Debian (jessie), and run this script
 
 scripts/fix-deps
 
-To clean an existing build tree 
+To build mono, cd into the top level and execute:
+'make mono-ipk'
 
-scripts/clean-all
-
-To build all packages
-
-make packages
-
-To build a specific package
-
-make <package name>-ipk
-
-To rebuild the package repository
-
-make index
-
-Package repository is created in the packages folder after a make packages
-or make index has been run, simply copy the repository to its hosting
-space to deploy.
+To build tshark, cd into the top level and execute:
+'make tshark-1.11.3-ipk' for version 1.11.3
+'make tshark-1.10.3-ipk' for version 1.10.3
+'make tshark-1.4.9-ipk' for version 1.4.9
 
 For detailed instructions on how to build packages using this build system, see:
 

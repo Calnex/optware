@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 MONO_SITE=http://download.mono-project.com/sources/mono
-MONO_VERSION=3.0.6
+MONO_VERSION=3.2.8
 MONO_SOURCE=mono-$(MONO_VERSION).tar.bz2
 MONO_DIR=mono-$(MONO_VERSION)
 MONO_UNZIP=bzcat
