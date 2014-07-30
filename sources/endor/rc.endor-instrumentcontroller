@@ -20,7 +20,7 @@ case "$rc" in
         ;;
     stop)
         echo -n "Stopping Endor Instrument Controller: "
-        pkill -2 instrumentcontroller
+        pkill -2 InstrumentController.exe
         echo ok
         ;;
     restart)
