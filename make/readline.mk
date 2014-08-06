@@ -202,6 +202,7 @@ $(READLINE_IPK): $(READLINE_BUILD_DIR)/.built
 	)
 	$(MAKE) $(READLINE_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(READLINE_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(READLINE_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

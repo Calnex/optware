@@ -19,7 +19,7 @@ case "$rc" in
 	#xps4 --root /opt/lib/endor/ --address `/sbin/ifconfig eth0 | grep 'inet addr' | cut -d: -f2 | awk '{print $1}'` --port 80 --nonstop &
 
 	## iptables re-routed connection
-	xsp4 --root /opt/lib/endor/ --port 8000 --nonstop &
+	cd /opt/lib/endor && xsp4 --port 8000 --nonstop &
         echo ok
         ;;
     stop)

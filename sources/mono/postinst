@@ -1,4 +1,7 @@
 #!/bin/sh
 
 cd /opt/lib/mono
+ls
+tar -xzf long-filepaths.tar.gz
+ls
 tar -xzf long-symlinks.tar.gz

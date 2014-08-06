@@ -193,13 +193,16 @@ $(MONO_IPK): $(MONO_BUILD_DIR)/.built
 	$(MAKE) -C $(MONO_BUILD_DIR) DESTDIR=$(MONO_IPK_DIR) install-strip
 	cd $(MONO_IPK_DIR)/opt/lib/mono && \
 	tar --remove-files -cvzf long-symlinks.tar.gz \
-		`find . -type l -ls | awk '{ if (length($$13) > 100) { print $$11}}'`
+		`find . -type l -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
+	cd $(MONO_IPK_DIR)/opt/lib/mono && \
+	tar --remove-files -cvzf long-filepaths.tar.gz \
+		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	$(MAKE) $(MONO_IPK_DIR)/CONTROL/control
 	install -m755 $(MONO_SOURCE_DIR)/postinst $(MONO_IPK_DIR)/CONTROL/postinst
 	install -m755 $(MONO_SOURCE_DIR)/prerm $(MONO_IPK_DIR)/CONTROL/prerm
 	echo $(MONO_CONFFILES) | sed -e 's/ /\n/g' > $(MONO_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(MONO_IPK_DIR)
-#	$(WHAT_TO_DO_WITH_IPK_DIR) $(MONO_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(MONO_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

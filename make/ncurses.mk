@@ -176,8 +176,10 @@ endif
 	ln -sf ncurses/curses.h $(NCURSES-DEV_IPK_DIR)/opt/include/
 	# building ipk's
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(NCURSES_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(NCURSES_IPK_DIR)
 	$(MAKE) $(NCURSES-DEV_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(NCURSES-DEV_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(NCURSES-DEV_IPK_DIR)
 
 ncurses-ipk: $(NCURSES_IPK) $(NCURSES-DEV_IPK)
 

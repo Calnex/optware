@@ -118,6 +118,7 @@ $(BZIP2_IPK): $(BZIP2_BUILD_DIR)/.built
 			$(BZIP2_IPK_DIR)/CONTROL/postinst $(BZIP2_IPK_DIR)/CONTROL/prerm; \
 	fi
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(BZIP2_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(BZIP2_IPK_DIR)
 
 bzip2-ipk: bzip2-stage $(BZIP2_IPK)
 

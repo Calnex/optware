@@ -135,6 +135,7 @@ $(XSP_BUILD_DIR)/.configured: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES) make/xsp.mk
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(XSP_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(XSP_LDFLAGS)" \
+		PATH="/opt/bin:/opt/sbin:$(PATH)" \
 		./autogen.sh \
 		./configure \
 		--build=$(GNU_HOST_NAME) \

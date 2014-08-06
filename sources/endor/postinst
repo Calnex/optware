@@ -1,3 +1,5 @@
 #!/bin/sh
 
+/opt/lib/ipkg/info/postgresql.postinst
+/opt/etc/init.d/S98postgresql start
 python3 /opt/lib/endor/schema/Baseline/RebuildDb.py --superuser calnex --path /opt/lib/endor/schema/Baseline

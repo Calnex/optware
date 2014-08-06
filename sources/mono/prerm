@@ -2,3 +2,4 @@
 
 cd /opt/lib/mono
 rm -f `tar -tzf long-symlinks.tar.gz`
+rm -f `tar -tzf long-filepaths.tar.gz`

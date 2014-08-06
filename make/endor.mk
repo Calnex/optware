@@ -70,7 +70,7 @@ ENDOR_LDFLAGS=
 #
 # You should not change any of these variables.
 #
-ENDOR_GIT_TAG=HEAD
+ENDOR_GIT_TAG=41bc62f
 ENDOR_TREEISH=$(ENDOR_GIT_TAG)
 ENDOR_BUILD_DIR=$(BUILD_DIR)/endor
 ENDOR_SOURCE_DIR=$(SOURCE_DIR)/endor
@@ -210,6 +210,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-webapp $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-instrumentcontroller $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-instrumentcontroller
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-virtualinstrument
+	install -m 755 $(ENDOR_IPK_DIR)/opt/lib/endor/WebApp.dll $(ENDOR_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
 	cp -r $(ENDOR_BUILD_DIR)/Endor/Data/Schema $(ENDOR_IPK_DIR)/opt/lib/endor/schema
 #	install -m 644 $(ENDOR_SOURCE_DIR)/endor.conf $(ENDOR_IPK_DIR)/opt/etc/endor.conf
 	$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
@@ -223,7 +224,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	fi
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_IPK_DIR)
-#	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.

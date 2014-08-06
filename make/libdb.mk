@@ -191,6 +191,7 @@ $(LIBDB_IPK): $(LIBDB_BUILD_DIR)/build_unix/.libs/libdb-$(LIBDB_LIB_VERSION).a
 	rm -f $(LIBDB_IPK_DIR)/opt/lib/*.{la,a}
 	$(MAKE) $(LIBDB_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBDB_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBDB_IPK_DIR)
 #
 #
 # This is called from the top level makefile to create the IPK file.

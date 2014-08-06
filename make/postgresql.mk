@@ -222,6 +222,7 @@ endif
 	install -m 755 $(POSTGRESQL_SOURCE_DIR)/prerm $(POSTGRESQL_IPK_DIR)/CONTROL/prerm
 	echo $(POSTGRESQL_CONFFILES) | sed -e 's/ /\n/g' > $(POSTGRESQL_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(POSTGRESQL_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(POSTGRESQL_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.
