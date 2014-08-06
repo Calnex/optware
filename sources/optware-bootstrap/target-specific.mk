@@ -2,7 +2,7 @@ OPTWARE-BOOTSTRAP_TARGETS=\
 	Springbank \
 
 OPTWARE-BOOTSTRAP_REAL_OPT_DIR=$(strip \
-	$(if $(filter Sprintbank, $(OPTWARE_TARGET)), /home/.optware))
+	$(if $(filter Springbank, $(OPTWARE_TARGET)), /home/.optware))
 
 OPTWARE-BOOTSTRAP_RC=$(strip \
 	$(if $(filter Springbank, $(OPTWARE_TARGET)), /etc/rc.optware))
