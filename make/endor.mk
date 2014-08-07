@@ -70,7 +70,7 @@ ENDOR_LDFLAGS=
 #
 # You should not change any of these variables.
 #
-ENDOR_GIT_TAG=41bc62f
+ENDOR_GIT_TAG?=HEAD
 ENDOR_TREEISH=$(ENDOR_GIT_TAG)
 ENDOR_BUILD_DIR=$(BUILD_DIR)/endor
 ENDOR_SOURCE_DIR=$(SOURCE_DIR)/endor
