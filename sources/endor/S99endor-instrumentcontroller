@@ -1,0 +1,36 @@
+#! /bin/sh
+
+
+#########
+if [ -z "$1" ] ; then
+    case `echo "$0" | /bin/sed 's:^.*/\(.*\):\1:g'` in
+        S??*) rc="start" ;;
+        K??*) rc="stop" ;;
+        *) rc="usage" ;;
+    esac
+else
+    rc="$1"
+fi
+
+case "$rc" in
+    start)
+        echo -n "Starting Endor Instrument Controller: "
+	/opt/bin/instrumentcontroller-supervisor &
+        echo ok
+        ;;
+    stop)
+        echo -n "Stopping Endor Instrument Controller: "
+        pkill -2 -f 'mono /opt/lib/endor/InstrumentController.exe'
+        echo ok
+        ;;
+    restart)
+        "$0" stop
+        sleep 1
+        "$0" start
+        ;;
+    *)
+        echo "Usage: $0 (start|stop|restart|usage)"
+        ;;
+esac
+
+
