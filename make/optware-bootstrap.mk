@@ -142,7 +142,7 @@ endif
 	echo 'echo "Extracting archive... please wait"' >>$@
 	echo 'dd if=$$0 bs=NNN skip=1 | tar xzv' >>$@
 	echo "cd bootstrap && sh bootstrap.sh && cd .. && rm -r bootstrap" >>$@
-	echo 'exec /bin/sh --login' >>$@
+	echo 'exec /bin/sh -l' >>$@
 	sed -i -e "s/NNN/`wc -c $@ | awk '{print $$1}'`/" $@
 	tar -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -czf - bootstrap >>$@
 	chmod 755 $@

@@ -24,7 +24,7 @@ case "$rc" in
         ;;
     stop)
         echo -n "Stopping Endor Webapp: "
-        pkill xsp4
+        pkill -f '/opt/bin/mono /opt/lib/mono/4.5/xsp4.exe'
         echo ok
         ;;
     restart)
