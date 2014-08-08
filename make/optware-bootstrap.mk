@@ -155,7 +155,7 @@ endif
 	sed -i -e "s/NNN/`wc -c $@ | awk '{print $$1}'`/" $@
 	tar -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -czf - bootstrap >>$@
 	chmod 755 $@
-#	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPTWARE-BOOTSTRAP_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 
 optware-bootstrap-ipk: $(OPTWARE-BOOTSTRAP_XSH)
 optware-bootstrap-xsh: $(OPTWARE-BOOTSTRAP_XSH)
