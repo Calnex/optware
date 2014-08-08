@@ -1,7 +1,7 @@
 # Rules for USBmount -*- conf -*-
 
-KERNEL=="sd*", DRIVERS=="sbp2",		ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add && /bin/optwareUSB add"
-KERNEL=="sd*", SUBSYSTEMS=="usb",	ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add && /bin/optwareUSB add"
-KERNEL=="ub*", SUBSYSTEMS=="usb",	ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add && /bin/optwareUSB add"
-KERNEL=="sd*",				ACTION=="remove",	RUN+="/usr/share/usbmount/usbmount remove && /bin/optwareUSB remove"
-KERNEL=="ub*",				ACTION=="remove",	RUN+="/usr/share/usbmount/usbmount remove && /bin/optwareUSB remove"
+KERNEL=="sd*", DRIVERS=="sbp2",		ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add" RUN+="/bin/optwareUSB add"
+KERNEL=="sd*", SUBSYSTEMS=="usb",	ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add" RUN+="/bin/optwareUSB add"
+KERNEL=="ub*", SUBSYSTEMS=="usb",	ACTION=="add",	RUN+="/usr/share/usbmount/usbmount add" RUN+="/bin/optwareUSB add"
+KERNEL=="sd*",				ACTION=="remove",	RUN+="/usr/share/usbmount/usbmount remove" RUN+="/bin/optwareUSB remove"
+KERNEL=="ub*",				ACTION=="remove",	RUN+="/usr/share/usbmount/usbmount remove" RUN+="/bin/optwareUSB remove"
