@@ -54,7 +54,6 @@ if [ ! -e /opt/etc/ipkg/cross-feed.conf ]
 then
 	echo "Creating /opt/etc/ipkg/cross-feed.conf..."
 	echo "src/gz cross http://packages.calnexsol.com"	> /opt/etc/ipkg/cross-feed.conf
-	echo "src/gz cross /tmp/optware-repo"			>>/opt/etc/ipkg/cross-feed.conf
 fi
 
 chmod -R 0777 /opt

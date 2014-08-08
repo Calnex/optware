@@ -114,6 +114,15 @@ ifneq ($(OPTWARE-BOOTSTRAP_REAL_OPT_DIR),)
 endif
 	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/postinst \
 		$(OPTWARE-BOOTSTRAP_IPK_DIR)/CONTROL/
+	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/etc/usbmount/
+	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/usbmount.conf \
+		$(OPTWARE-BOOTSTRAP_IPK_DIR)/etc/usbmount/
+	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/lib/udev/rules.d
+	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/usbmount.rules \
+		$(OPTWARE-BOOTSTRAP_IPK_DIR)/lib/udev/rules.d/
+	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin
+	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/optwareUSB \
+		$(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 	# build optware-bootstrap.xsh next
 	rm -rf $(BUILD_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)-bootstrap_*_$(TARGET_ARCH).xsh
