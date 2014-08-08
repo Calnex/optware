@@ -14,8 +14,7 @@ case "$1" in
                 mount -o bind ${REAL_OPT_DIR} /opt
             fi	
         fi
-	mkdir -p /tmp/optware-repo
-	touch /tmp/optware-repo/Packages.gz
+	echo "src/gz cross http://packages.calnexsol.com"       > /opt/etc/ipkg/cross-feed.conf	
 	[ -x /opt/etc/rc.optware ] && su calnex -c /opt/etc/rc.optware
     ;;
     reconfig)

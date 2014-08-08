@@ -121,7 +121,7 @@ endif
 	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/usbmount.rules \
 		$(OPTWARE-BOOTSTRAP_IPK_DIR)/lib/udev/rules.d/
 	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin
-	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/optwareUSB \
+	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/optwareUSB \
 		$(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 	# build optware-bootstrap.xsh next
@@ -155,7 +155,7 @@ endif
 	sed -i -e "s/NNN/`wc -c $@ | awk '{print $$1}'`/" $@
 	tar -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -czf - bootstrap >>$@
 	chmod 755 $@
-	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPTWARE-BOOTSTRAP_IPK_DIR)
+#	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 
 optware-bootstrap-ipk: $(OPTWARE-BOOTSTRAP_XSH)
 optware-bootstrap-xsh: $(OPTWARE-BOOTSTRAP_XSH)
