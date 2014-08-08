@@ -3,8 +3,8 @@
 #########
 if [ -z "$1" ] ; then
     case `echo "$0" | /bin/sed 's:^.*/\(.*\):\1:g'` in
-        S??*) rc="start" ;;
-        K??*) rc="stop" ;;
+        S??*) rc="add" ;;
+        K??*) rc="remove" ;;
         *) rc="usage" ;;
     esac
 else
@@ -14,15 +14,15 @@ fi
 case "$rc" in
     add)
         REPO=`find /media -type f -name Packages.gz | sed 's/Packages.gz/\*/g'`
-        su calnex -c mkdir -p /tmp/optware-repo
-        su calnex -c cp $REPO /tmp/optware-repo/
-        su calnex -c echo "src/gz local file:////tmp/optware-repo"		> /opt/etc/ipkg/cross-feed.conf
+        su calnex -c "mkdir -p /tmp/optware-repo"
+        su calnex -c "cp $REPO /tmp/optware-repo/"
+        su calnex -c "echo 'src/gz local file:////tmp/optware-repo'		> /opt/etc/ipkg/cross-feed.conf"
         ;;
     remove)
-        su calnex -c rm -rf /tmp/optware-repo
-	su calnex -c echo "src/gz cross http://packages.calnexsol.com"       > /opt/etc/ipkg/cross-feed.conf
+        su calnex -c "rm -rf /tmp/optware-repo"
+	su calnex -c "echo 'src/gz cross http://packages.calnexsol.com'       > /opt/etc/ipkg/cross-feed.conf"
         ;;
     *)
-        echo "Usage: $0 (install|remove)"
+        echo "Usage: $0 (add|remove)"
         ;;
 esac
