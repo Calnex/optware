@@ -1,0 +1,6 @@
+#!/bin/sh
+
+/opt/etc/init.d/S99endor-virtualinstrument stop
+/opt/etc/init.d/S99endor-instrumentcontroller stop
+/opt/etc/init.d/S99endor-webapp stop
+sleep 1

@@ -1,5 +1,6 @@
 #!/bin/sh
 mv downloads/ipkg-opt-0.99.163.tar.gz ../
+sudo rm -rf builds/debian-root
 rm -rf a.out downloads packages toolchain staging lib builds tmp
 mkdir downloads
 mv ../ipkg-opt-0.99.163.tar.gz ./downloads/

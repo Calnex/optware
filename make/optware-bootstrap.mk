@@ -59,8 +59,6 @@ $(OPTWARE-BOOTSTRAP_BUILD_DIR)/.built: $(OPTWARE-BOOTSTRAP_BUILD_DIR)/.configure
 
 optware-bootstrap: $(OPTWARE-BOOTSTRAP_BUILD_DIR)/.built
 
-optware-bootstrap-stage:
-
 $(OPTWARE-BOOTSTRAP_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
@@ -148,9 +146,9 @@ endif
 	#	NNN is the number of bytes to skip, adjust if not 3 digits
 	echo "#!/bin/sh" >$@
 	echo 'echo "Optware Bootstrap for $(OPTWARE-BOOTSTRAP_TARGET)."' >>$@
-	echo 'echo "Extracting archive... please wait"' >>$@
+	echo 'echo "Extracting archive to $PWD... please wait"' >>$@
 	echo 'dd if=$$0 bs=NNN skip=1 | tar xzv' >>$@
-	echo "cd bootstrap && sh bootstrap.sh && cd .. && rm -r bootstrap" >>$@
+	echo "cd bootstrap && sh bootstrap.sh && cd ..&& rm -r bootstrap && exit 0" >>$@
 #	echo 'exec /bin/sh -l' >>$@ # No logon shell after install
 	sed -i -e "s/NNN/`wc -c $@ | awk '{print $$1}'`/" $@
 	tar -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -czf - bootstrap >>$@
@@ -159,6 +157,9 @@ endif
 
 optware-bootstrap-ipk: $(OPTWARE-BOOTSTRAP_XSH)
 optware-bootstrap-xsh: $(OPTWARE-BOOTSTRAP_XSH)
+
+optware-bootstrap-stage: optware-bootstrap-ipk
+	cp $(BUILD_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)-bootstrap_*_$(TARGET_ARCH).xsh $(STAGING_DIR)/bin/
 
 optware-bootstrap-clean:
 	rm -rf $(OPTWARE-BOOTSTRAP_BUILD_DIR)/*
