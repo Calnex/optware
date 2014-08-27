@@ -1,5 +1,10 @@
 #! /bin/sh
 
+syslog_pipe=/tmp/$$.log.tmp
+trap "rm -f $syslog_pipe" EXIT
+mknod $syslog_pipe p
+
+logger <$syslog_pipe -t $0 &
 
 #########
 if [ -z "$1" ] ; then
@@ -15,7 +20,7 @@ fi
 case "$rc" in
     start)
         echo -n "Starting Endor Virtual Instrument: "
-	/opt/bin/virtualinstrument &
+	/opt/bin/virtualinstrument 1>$syslog_pipe 2>&1 &
         echo ok
         ;;
     stop)
