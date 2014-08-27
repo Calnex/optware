@@ -1,0 +1,15 @@
+#!/bin/sh
+
+rm -rf builds/$1*
+if [[ -n "$2" ]]; then
+	if [[ "$2" = "clean" ]]; then
+		rm -f downloads/$1*
+	fi
+fi
+make $1-ipk && \
+make index && \
+rm -f /vaw/www/optware/* && \
+cp packages/* /vaw/www/optware/
+
+
+
