@@ -25,7 +25,6 @@ case "$rc" in
         ;;
     stop)
         echo -n "Stopping Endor Instrument Controller: "
-	pkill -9 -f '/bin/sh /opt/bin/instrumentcontroller-supervisor'
         pkill -2 -f 'mono /opt/lib/endor/InstrumentController.exe'
         echo ok
         ;;
