@@ -1,17 +1,17 @@
 #! /bin/sh
 
-syslog_pipe=/tmp/$$.log.tmp
-trap "rm -f $syslog_pipe" EXIT
-mknod $syslog_pipe p
+#syslog_pipe=/tmp/$$.log.tmp
+#trap "rm -f $syslog_pipe" EXIT
+#mknod $syslog_pipe p
 
-logger <$syslog_pipe -t $0 &
+#logger <$syslog_pipe -t $0 &
 
-exec 1>$syslog_pipe 2>&1
+#exec 1>$syslog_pipe 2>&1
 
 exitStatus=1
 
 while [ $exitStatus -ne 0 ]
 do
-	/opt/bin/instrumentcontroller -r 1 
+	/opt/bin/instrumentcontroller -r 1 1>/dev/null 2>&1
 	exitStatus=$?
 done

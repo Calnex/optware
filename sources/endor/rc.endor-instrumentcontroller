@@ -1,10 +1,10 @@
 #! /bin/sh
 
-syslog_pipe=/tmp/$$.log.tmp
-trap "rm -f $syslog_pipe" EXIT
-mknod $syslog_pipe p
+#syslog_pipe=/tmp/$$.log.tmp
+#trap "rm -f $syslog_pipe" EXIT
+#mknod $syslog_pipe p
 
-logger <$syslog_pipe -t $0 &
+#logger <$syslog_pipe -t $0 &
 
 #########
 if [ -z "$1" ] ; then
@@ -20,7 +20,7 @@ fi
 case "$rc" in
     start)
         echo -n "Starting Endor Instrument Controller: "
-	/opt/bin/instrumentcontroller-supervisor 1>$syslog_pipe 2>&1 &
+	/opt/bin/instrumentcontroller-supervisor 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
         echo ok
         ;;
     stop)

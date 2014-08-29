@@ -109,12 +109,14 @@ $(debian-root_BUILD_DIR)/.configured: $(debian-root_PATCHES) make/debian-root.mk
 		sudo lb config							\
 		--architectures		amd64 					\
 		--binary-images		iso-hybrid				\
+		--distribution		wheezy					\
 		--memtest		memtest86+				\
 		--bootappend-live	"boot=live config username=calnex"	\
 		--debootstrap-options	"--variant=minbase"			\
 		;								\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; \
 		sudo cp $(STAGING_DIR)/bin/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
+		sed -i -e 's/LB_BACKPORTS="false"/LB_BACKPORTS="true"/g' $(@D)/config/chroot ; \
 	)
 	touch $@
 

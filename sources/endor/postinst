@@ -4,6 +4,7 @@
 echo "waiting for DB daemon to start"
 sleep 3
 python3 /opt/lib/endor/schema/Baseline/RebuildDb.py --superuser calnex --path /opt/lib/endor/schema/Baseline
+/opt/etc/init.d/S98postgresql start
 /opt/etc/init.d/S99endor-virtualinstrument start
 /opt/etc/init.d/S99endor-instrumentcontroller start
 /opt/etc/init.d/S99endor-webapp start
