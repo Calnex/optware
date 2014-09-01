@@ -211,17 +211,13 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-instrumentcontroller $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-instrumentcontroller
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-virtualinstrument
 	install -m 755 $(ENDOR_IPK_DIR)/opt/lib/endor/WebApp.dll $(ENDOR_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
+	install -d $(ENDOR_IPK_DIR)/opt/share/endor
+	install -m $(ENDOR_BUILD_DIR)/Endor/Instrument/VirtualInstrument/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
 	cp -r $(ENDOR_BUILD_DIR)/Endor/Data/Schema $(ENDOR_IPK_DIR)/opt/lib/endor/schema
 #	install -m 644 $(ENDOR_SOURCE_DIR)/endor.conf $(ENDOR_IPK_DIR)/opt/etc/endor.conf
 	$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
-#	sed -i -e '/^#!/aOPTWARE_TARGET=${OPTWARE_TARGET}' $(ENDOR_IPK_DIR)/CONTROL/postinst
-#	install -m 755 $(ENDOR_SOURCE_DIR)/prerm $(ENDOR_IPK_DIR)/CONTROL/prerm
-#	sed -i -e '/^#!/aOPTWARE_TARGET=${OPTWARE_TARGET}' $(ENDOR_IPK_DIR)/CONTROL/prerm
-#	if test -n "$(UPD-ALT_PREFIX)"; then \
-		sed -i -e '/^[ 	]*update-alternatives /s|update-alternatives|$(UPD-ALT_PREFIX)/bin/&|' \
-			$(ENDOR_IPK_DIR)/CONTROL/postinst $(ENDOR_IPK_DIR)/CONTROL/prerm; \
-	fi
+	install -m 755 $(ENDOR_SOURCE_DIR)/prerm $(ENDOR_IPK_DIR)/CONTROL/prerm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
