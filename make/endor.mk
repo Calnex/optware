@@ -205,6 +205,9 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
+	cd $(MONO_IPK_DIR)/opt/lib/endor && \
+	tar --remove-files -cvzf long-filepaths.tar.gz \
+		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-webapp $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-webapp

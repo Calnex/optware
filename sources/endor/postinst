@@ -1,5 +1,8 @@
 #!/bin/sh
 
+cd /opt/lib/endor
+tar -xzf long-filepaths.tar.gz
+
 /opt/lib/ipkg/info/postgresql.postinst
 echo "waiting for DB daemon to start"
 sleep 3

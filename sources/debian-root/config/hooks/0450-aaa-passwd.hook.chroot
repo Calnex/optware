@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+echo "setting root password"
+# Set root password
+echo 'root:$5$Hikksh95jH2sPpr$hScRAk6ZdfAsAjmrhqVGJSGF.86J6XYoXJgb1.L3Lu1' | /usr/sbin/chpasswd -e
+
+echo "creating calnex user"
+# Create calnex user and setup passwords.
+useradd -m calnex -s /bin/bash -k /etc/skel -p '$1$jvsLnaDW$h1O4euTqEsB13IZswdKXq/'
+
+echo "creating samba user"
+(echo c4ln3X; echo c4ln3X) | smbpasswd -s -a calnex
+
+echo "configuring voodoo"
+mv /usr/bin/sudo /usr/bin/voodoo
+
