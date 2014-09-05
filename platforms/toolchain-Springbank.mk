@@ -18,61 +18,54 @@ BINUTILS_IPK_VERSION := 1
 
 ifeq (yes, $(TARGET_CC_PROBE))
 
-HOSTCC = $(TARGET_CC)
-GNU_HOST_NAME = $(GNU_TARGET_NAME)
-TARGET_CROSS = /opt/bin/
-TARGET_LIBDIR = /opt/lib
-TARGET_INCDIR = /opt/include
-TARGET_LDFLAGS = -L/opt/lib
-TARGET_CUSTOM_FLAGS= -O2 -pipe
-TARGET_CFLAGS= -I/opt/include $(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) $(TARGET_CUSTOM_FLAGS)
+HOSTCC			= $(TARGET_CC)
+GNU_HOST_NAME		= $(GNU_TARGET_NAME)
+TARGET_CROSS		= /opt/bin/
+TARGET_LIBDIR		= /opt/lib
+TARGET_INCDIR		= /opt/include
+TARGET_LDFLAGS		= -L/opt/lib
+TARGET_CUSTOM_FLAGS	= -O2 -pipe -I$(TARGET_CHROOT)/usr/include
+TARGET_CFLAGS		= -I/opt/include \
+			  $(TARGET_OPTIMIZATION) \
+			  $(TARGET_DEBUGGING) \
+			  $(TARGET_CUSTOM_FLAGS)
 
 toolchain:
 
 else
 
 HOSTCC = gcc
-GNU_HOST_NAME = $(HOST_MACHINE)-linux
-TARGET_DISTRO = wheezy
-#TARGET_TEMP = $(TARGET_CROSS_TOP)/temp
-TARGET_TEMP = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)
-TARGET_CROSS_TOP = $(BASE_DIR)/toolchain
-TARGET_CROSS = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/usr/bin/
-TARGET_LIBDIR = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/lib
-TARGET_USRLIBDIR = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/lib
-TARGET_INCDIR = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/include
-TARGET_LDFLAGS =
-TARGET_CUSTOM_FLAGS= -O2 -pipe
-TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) $(TARGET_CUSTOM_FLAGS)
+GNU_HOST_NAME		= $(HOST_MACHINE)-linux
+TARGET_DISTRO		?= wheezy
+TARGET_CROSS_TOP	= $(BASE_DIR)/toolchain
+TARGET_CHROOT		= $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)
+TARGET_CROSS		= $(TARGET_CHROOT)/usr/bin/
+TARGET_LIBDIR		= $(TARGET_CHROOT)/lib
+TARGET_LIBDIR_ARCH	= $(TARGET_LIBDIR)/$(GNU_TARGET_NAME)
+TARGET_LIB64DIR		= $(TARGET_CHROOT)/lib64
+TARGET_USRLIBDIR	= $(TARGET_CHROOT)/usr/lib
+TARGET_USRLIBDIR_ARCH	= $(TARGET_USRLIBDIR)/$(GNU_TARGET_NAME)-gnu
+TARGET_USR_LCLLIBDIR	= $(TARGET_CHROOT)/usr/local/lib
+TARGET_INCDIR		= $(TARGET_CHROOT)/include
+TARGET_GCC_LIBDIR	= $(TARGET_USRLIBDIR)/$(GNU_TARGET_NAME)
+TARGET_LDFLAGS		+= -L$(TARGET_USR_LCLLIBDIR) \
+			   -L$(TARGET_LIBDIR_ARCH) \
+			   -L$(TARGET_USRLIBDIR_ARCH) \
+			   -L$(TARGET_USRLIBDIR)
+TARGET_LD_LIBRARY_PATH	= "$(TARGET_USR_LCLLIBDIR):$(TARGET_LIBDIR_ARCH):$(TARGET_USRLIBDIR_ARCH):$(TARGET_USRLIBDIR)"
+TARGET_CONFIGURE_OPTS+=LD_LIBRARY_PATH=$(TARGET_LD_LIBRARY_PATH)
+TARGET_BUILD_OPTS+=LD_LIBRARY_PATH=$(TARGET_LD_LIBRARY_PATH)
 
 NATIVE_GCC_VERSION=4.8.2
 
 toolchain: $(TARGET_CROSS_TOP)/.unpacked
 
 $(TARGET_CROSS_TOP)/.unpacked: 
-	mkdir -p $(TARGET_TEMP) && \
-	sudo debootstrap $(TARGET_DISTRO) $(TARGET_TEMP) && \
-	sudo chroot $(TARGET_TEMP) apt-get -y install build-essential; exit
+	mkdir -p $(TARGET_CHROOT) && \
+	sudo debootstrap --include=build-essential,libtool,zlib1g-dev \
+	$(TARGET_DISTRO) $(TARGET_CHROOT) http://ftp.uk.debian.org/debian && \
 	USER=`whoami` && \
-	sudo chown -R $(USER):$(USER) $(TARGET_CROSS_TOP)/temp
-	mkdir -p $(TARGET_LIBDIR)
-	#find $(TARGET_TEMP)/lib 	-type l -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_LIBDIR) '{}' +
-	#find $(TARGET_TEMP)/lib 	-type f -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_LIBDIR) '{}' +
-	#find $(TARGET_TEMP)/lib64 	-type l -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_LIBDIR) '{}' +
-	#find $(TARGET_TEMP)/lib64 	-type f -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_LIBDIR) '{}' +
-	#find $(TARGET_TEMP)/usr/lib 	-type l -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_USRLIBDIR) '{}' +
-	#find $(TARGET_TEMP)/usr/lib 	-type f -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_USRLIBDIR) '{}' +
-	#find $(TARGET_TEMP)/usr/lib64 	-type l -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_USRLIBDIR) '{}' +
-	#find $(TARGET_TEMP)/usr/lib64 	-type f -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_USRLIBDIR) '{}' +
-	#rm -rf $(TARGET_TEMP)
+	sudo chown -R $(USER):$(USER) $(TARGET_CHROOT)
 	touch $@
 
 endif

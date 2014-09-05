@@ -55,8 +55,8 @@ $(NCURSES_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(NCURSES_SOURCE) m
 		--without-cxx-binding	\
 		--without-ada		\
 	)
-	$(MAKE) -C $(@D)/include
-	$(MAKE) -C $(@D)/progs tic
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)/include
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)/progs tic
 	touch $@
 
 ncurses-host: $(NCURSES_HOST_BUILD_DIR)/.built
@@ -98,14 +98,14 @@ ncurses-unpack: $(NCURSES_DIR)/.configured
 
 $(NCURSES_DIR)/.built: $(NCURSES_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(NCURSES_DIR)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSES_DIR)
 	touch $@
 
 ncurses: $(NCURSES_DIR)/.built
 
 $(NCURSES_DIR)/.staged: $(NCURSES_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(NCURSES_DIR) DESTDIR=$(STAGING_DIR) install.includes install.libs
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSES_DIR) DESTDIR=$(STAGING_DIR) install.includes install.libs
 	sed -i -e '/^prefix=/s|=.*|=$(STAGING_PREFIX)|' $(STAGING_PREFIX)/bin/ncurses[0-9]*-config
 	ln -sf ncurses/ncurses.h $(STAGING_INCLUDE_DIR)
 	ln -sf ncurses/curses.h $(STAGING_INCLUDE_DIR)
@@ -145,13 +145,13 @@ $(NCURSES_IPK) $(NCURSES-DEV_IPK): $(NCURSES_DIR)/.built
 	rm -rf $(NCURSES_IPK_DIR) $(BUILD_DIR)/ncurses_*_$(TARGET_ARCH).ipk
 	rm -rf $(NCURSES-DEV_IPK_DIR) $(BUILD_DIR)/ncurses-dev_*_$(TARGET_ARCH).ipk
 	$(if $(filter $(HOSTCC), $(TARGET_CC)),,PATH=$(NCURSES_HOST_BUILD_DIR)/progs:$$PATH) \
-		$(MAKE) -C $(NCURSES_DIR) DESTDIR=$(NCURSES_IPK_DIR) \
+		$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSES_DIR) DESTDIR=$(NCURSES_IPK_DIR) \
 		install.libs install.progs install.data
 	rm -rf $(NCURSES_IPK_DIR)/opt/include
 	rm -f $(NCURSES_IPK_DIR)/opt/lib/*.a
-	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/bin/clear \
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/bin/clear \
 		$(NCURSES_IPK_DIR)/opt/bin/infocmp $(NCURSES_IPK_DIR)/opt/bin/t*
-	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/lib/*$(SO).5$(DYLIB)
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/lib/*$(SO).5$(DYLIB)
 ifeq (darwin, $(TARGET_OS))
 	for dylib in $(NCURSES_IPK_DIR)/opt/lib/*$(SO).5$(DYLIB); do \
 	$(TARGET_CROSS)install_name_tool -change $$dylib /opt/lib/`basename $$dylib` $$dylib; \
@@ -171,7 +171,7 @@ endif
 	fi
 	# ncurses-dev
 	install -d $(NCURSES-DEV_IPK_DIR)/opt/include/ncurses
-	$(MAKE) -C $(NCURSES_DIR) DESTDIR=$(NCURSES-DEV_IPK_DIR) install.includes
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSES_DIR) DESTDIR=$(NCURSES-DEV_IPK_DIR) install.includes
 	ln -sf ncurses/ncurses.h $(NCURSES-DEV_IPK_DIR)/opt/include/
 	ln -sf ncurses/curses.h $(NCURSES-DEV_IPK_DIR)/opt/include/
 	# building ipk's
@@ -184,8 +184,8 @@ endif
 ncurses-ipk: $(NCURSES_IPK) $(NCURSES-DEV_IPK)
 
 ncurses-clean:
-	-$(MAKE) -C $(NCURSES_DIR) clean
-	-$(MAKE) -C $(NCURSES_HOST_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSES_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSES_HOST_BUILD_DIR) clean
 
 ncurses-dirclean:
 	rm -rf $(NCURSES_DIR) \

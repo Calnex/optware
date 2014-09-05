@@ -140,7 +140,6 @@ $(IPKG-OPT_BUILD_DIR)/.configured: $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
 	)
 	touch $@
 
-#		PATH="$(PATH):$(TOOL_BUILD_DIR)/$(GNU_TARGET_NAME)/$(CROSS_CONFIGURATION)/bin/" \
 
 ipkg-opt-unpack: $(IPKG-OPT_BUILD_DIR)/.configured
 
@@ -149,10 +148,9 @@ ipkg-opt-unpack: $(IPKG-OPT_BUILD_DIR)/.configured
 #
 $(IPKG-OPT_BUILD_DIR)/.built: $(IPKG-OPT_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) \
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
-
-#	PATH="$(PATH):$(TOOL_BUILD_DIR)/$(GNU_TARGET_NAME)/$(CROSS_CONFIGURATION)/bin/" 
 
 #
 # This is the build convenience target.
@@ -193,8 +191,7 @@ $(IPKG-OPT_IPK_DIR)/CONTROL/control:
 
 $(IPKG-OPT_IPK): $(IPKG-OPT_BUILD_DIR)/.built
 	rm -rf $(IPKG-OPT_IPK_DIR) $(BUILD_DIR)/ipkg-opt_*_$(TARGET_ARCH).ipk
-	PATH="$(PATH):$(TOOL_BUILD_DIR)/$(GNU_TARGET_NAME)/$(CROSS_CONFIGURATION)/bin/" \
-		$(MAKE) -C $(IPKG-OPT_BUILD_DIR) DESTDIR=$(IPKG-OPT_IPK_DIR) install-strip
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(IPKG-OPT_BUILD_DIR) DESTDIR=$(IPKG-OPT_IPK_DIR) install-strip
 	install -d $(IPKG-OPT_IPK_DIR)/opt/etc/
 ifneq (, $(filter ddwrt ds101 ds101g fsg3 gumstix1151 mss nas100d nslu2 oleg slugosbe slugosle ts72xx wl500g, $(OPTWARE_TARGET)))
 	echo "#Uncomment the following line for native packages feed (if any)" \
@@ -233,7 +230,7 @@ ipkg-opt-ipk: $(IPKG-OPT_BUILD_DIR)/.ipk
 #
 ipkg-opt-clean:
 	rm -f $(IPKG-OPT_BUILD_DIR)/.built
-	-$(MAKE) -C $(IPKG-OPT_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(IPKG-OPT_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

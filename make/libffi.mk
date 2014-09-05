@@ -142,7 +142,7 @@ libffi-unpack: $(LIBFFI_BUILD_DIR)/.configured
 #
 $(LIBFFI_BUILD_DIR)/.built: $(LIBFFI_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -155,7 +155,7 @@ libffi: $(LIBFFI_BUILD_DIR)/.built
 #
 $(LIBFFI_BUILD_DIR)/.staged: $(LIBFFI_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 libffi-stage: $(LIBFFI_BUILD_DIR)/.staged
@@ -193,7 +193,7 @@ $(LIBFFI_IPK_DIR)/CONTROL/control:
 #
 $(LIBFFI_IPK): $(LIBFFI_BUILD_DIR)/.built
 	rm -rf $(LIBFFI_IPK_DIR) $(BUILD_DIR)/libffi_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(LIBFFI_BUILD_DIR) DESTDIR=$(LIBFFI_IPK_DIR) install-strip
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBFFI_BUILD_DIR) DESTDIR=$(LIBFFI_IPK_DIR) install-strip
 	$(MAKE) $(LIBFFI_IPK_DIR)/CONTROL/control
 	echo $(LIBFFI_CONFFILES) | sed -e 's/ /\n/g' > $(LIBFFI_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBFFI_IPK_DIR)
@@ -209,7 +209,7 @@ libffi-ipk: $(LIBFFI_IPK)
 #
 libffi-clean:
 	rm -f $(LIBFFI_BUILD_DIR)/.built
-	-$(MAKE) -C $(LIBFFI_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBFFI_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

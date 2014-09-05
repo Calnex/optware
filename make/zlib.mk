@@ -53,12 +53,12 @@ $(ZLIB_HOST_BUILD_DIR)/.staged: host/.configured $(DL_DIR)/$(ZLIB_SOURCE) make/z
 	rm -rf $(HOST_BUILD_DIR)/$(ZLIB_DIR) $(@D)
 	$(ZLIB_UNZIP) $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(HOST_BUILD_DIR) -xvf -
 	mv $(HOST_BUILD_DIR)/$(ZLIB_DIR) $(@D)
-	(cd $(@D); \
+	(cd $(@D); \	
 		prefix=/opt \
 		./configure \
 		--shared \
 	)
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	install -d $(HOST_STAGING_INCLUDE_DIR)
 	install -m 644 $(@D)/zlib.h $(HOST_STAGING_INCLUDE_DIR)
 	install -m 644 $(@D)/zconf.h $(HOST_STAGING_INCLUDE_DIR)
@@ -87,7 +87,7 @@ zlib-unpack: $(ZLIB_BUILD_DIR)/.configured
 
 $(ZLIB_BUILD_DIR)/.built: $(ZLIB_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) RANLIB="$(TARGET_RANLIB)" AR="$(TARGET_AR) rc" \
+	$(TARGET_BUILD_OPTS) $(MAKE) RANLIB="$(TARGET_RANLIB)" AR="$(TARGET_AR) rc" \
 		SHAREDLIB="libz.$(SHLIB_EXT)" \
 		SHAREDLIBV="libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB)" \
 		SHAREDLIBM="libz$(SO).1$(DYLIB)" \
@@ -148,7 +148,7 @@ $(ZLIB_IPK): $(ZLIB_BUILD_DIR)/.built
 	install -m 644 $(ZLIB_BUILD_DIR)/zconf.h $(ZLIB_IPK_DIR)/opt/include
 	install -d $(ZLIB_IPK_DIR)/opt/lib
 	install -m 644 $(ZLIB_BUILD_DIR)/libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB) $(ZLIB_IPK_DIR)/opt/lib
-	$(STRIP_COMMAND) $(ZLIB_IPK_DIR)/opt/lib/libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB)
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(ZLIB_IPK_DIR)/opt/lib/libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB)
 	cd $(ZLIB_IPK_DIR)/opt/lib && ln -fs libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB) libz$(SO).1$(DYLIB)
 	cd $(ZLIB_IPK_DIR)/opt/lib && ln -fs libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB) libz.$(SHLIB_EXT)
 	$(MAKE) $(ZLIB_IPK_DIR)/CONTROL/control
@@ -160,7 +160,7 @@ zlib-ipk: $(ZLIB_IPK)
 zlib-clean: zlib-unstage
 	rm -f $(ZLIB_BUILD_DIR)/.built
 	rm -f $(ZLIB_HOST_BUILD_DIR)/.staged
-	-$(MAKE) -C $(ZLIB_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(ZLIB_BUILD_DIR) clean
 
 zlib-dirclean: zlib-unstage
 	rm -rf $(BUILD_DIR)/$(ZLIB_DIR) $(ZLIB_BUILD_DIR) $(ZLIB_IPK_DIR) $(ZLIB_IPK)

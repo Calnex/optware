@@ -103,7 +103,7 @@ debian: $(DEBIAN_IPK)
 #
 $(DEBIAN_BUILD_DIR)/.staged: $(DEBIAN_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 debian-stage: $(DEBIAN_BUILD_DIR)/.staged
@@ -141,7 +141,7 @@ $(DEBIAN_IPK_DIR)/CONTROL/control:
 #
 $(DEBIAN_IPK):
 	rm -rf $(DEBIAN_IPK_DIR) $(BUILD_DIR)/debian_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(DEBIAN_BUILD_DIR) DESTDIR=$(DEBIAN_IPK_DIR) install-strip
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(DEBIAN_BUILD_DIR) DESTDIR=$(DEBIAN_IPK_DIR) install-strip
 	$(MAKE) $(DEBIAN_IPK_DIR)/CONTROL/control
 	install -m 755 $(DEBIAN_SOURCE_DIR)/postinst $(DEBIAN_IPK_DIR)/CONTROL/postinst
 	sed -i -e '/^#!/aOPTWARE_TARGET=${OPTWARE_TARGET}' $(DEBIAN_IPK_DIR)/CONTROL/postinst
@@ -165,7 +165,7 @@ debian-ipk: $(DEBIAN_IPK)
 #
 debian-clean:
 	rm -f $(DEBIAN_BUILD_DIR)/.built
-	-$(MAKE) -C $(DEBIAN_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(DEBIAN_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

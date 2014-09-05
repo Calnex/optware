@@ -127,15 +127,15 @@ $(LIBGMP_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBGMP_SOURCE) $(LIBGMP_PATCHES) ma
 		then mv $(BUILD_DIR)/$(LIBGMP_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
+		$(TARGET_BUILD_OPTS) \
 		$(TARGET_CONFIGURE_OPTS) \
-		CPPFLAGS="$(STAGING_CPPFLAGS) $(LIBGMP_CPPFLAGS)" \
-		LDFLAGS="$(STAGING_LDFLAGS) $(LIBGMP_LDFLAGS)" \
+		CPPFLAGS="$(STAGING_CPPFLAGS) $(WGET_CPPFLAGS)" \
+		LDFLAGS="$(STAGING_LDFLAGS) $(WGET_LDFLAGS)" \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
-		--disable-nls \
 		--disable-static \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
@@ -148,7 +148,7 @@ libgmp-unpack: $(LIBGMP_BUILD_DIR)/.configured
 #
 $(LIBGMP_BUILD_DIR)/.built: $(LIBGMP_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -161,7 +161,7 @@ libgmp: $(LIBGMP_BUILD_DIR)/.built
 #
 $(LIBGMP_BUILD_DIR)/.staged: $(LIBGMP_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 libgmp-stage: $(LIBGMP_BUILD_DIR)/.staged
@@ -176,7 +176,6 @@ $(LIBGMP_HOST_BUILD_DIR)/.staged: host/.configured $(DL_DIR)/$(LIBGMP_SOURCE) ma
 	    CPPFLAGS="$(LIBGMP_M32)" \
 	    ./configure \
 		--prefix=/opt $(LIBGMP_HOST32) \
-		--disable-nls \
 		--disable-shared; \
 	    $(MAKE) DESTDIR=$(HOST_STAGING_DIR) install; \
 	)
@@ -217,9 +216,9 @@ $(LIBGMP_IPK_DIR)/CONTROL/control:
 #
 $(LIBGMP_IPK): $(LIBGMP_BUILD_DIR)/.built
 	rm -rf $(LIBGMP_IPK_DIR) $(BUILD_DIR)/libgmp_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(LIBGMP_BUILD_DIR) DESTDIR=$(LIBGMP_IPK_DIR) install-strip
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBGMP_BUILD_DIR) DESTDIR=$(LIBGMP_IPK_DIR) install-strip
 	# I'd have prefered to use [0-9]+ here, but it wouldn't work! :(
-	$(STRIP_COMMAND) $(LIBGMP_IPK_DIR)/opt/lib/libgmp.so.[0-9]*.[0-9]*.[0-9]*
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(LIBGMP_IPK_DIR)/opt/lib/libgmp.so.[0-9]*.[0-9]*.[0-9]*
 #	install -d $(LIBGMP_IPK_DIR)/opt/etc/
 #	install -m 644 $(LIBGMP_SOURCE_DIR)/libgmp.conf $(LIBGMP_IPK_DIR)/opt/etc/libgmp.conf
 #	install -d $(LIBGMP_IPK_DIR)/opt/etc/init.d
@@ -241,7 +240,7 @@ libgmp-ipk: $(LIBGMP_IPK)
 #
 libgmp-clean:
 	rm -f $(LIBGMP_BUILD_DIR)/.built
-	-$(MAKE) -C $(LIBGMP_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBGMP_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created
