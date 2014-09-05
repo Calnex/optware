@@ -158,7 +158,7 @@ xsp-unpack: $(XSP_BUILD_DIR)/.configured
 #
 $(XSP_BUILD_DIR)/.built: $(XSP_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -171,7 +171,7 @@ xsp: $(XSP_BUILD_DIR)/.built
 #
 $(XSP_BUILD_DIR)/.staged: $(XSP_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 xsp-stage: $(XSP_BUILD_DIR)/.staged
@@ -209,7 +209,7 @@ $(XSP_IPK_DIR)/CONTROL/control:
 #
 $(XSP_IPK): $(XSP_BUILD_DIR)/.built
 	rm -rf $(XSP_IPK_DIR) $(BUILD_DIR)/xsp_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(XSP_BUILD_DIR) DESTDIR=$(XSP_IPK_DIR) install-strip
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(XSP_BUILD_DIR) DESTDIR=$(XSP_IPK_DIR) install-strip
 	$(MAKE) $(XSP_IPK_DIR)/CONTROL/control
 	echo $(XSP_CONFFILES) | sed -e 's/ /\n/g' > $(XSP_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(XSP_IPK_DIR)
@@ -225,7 +225,7 @@ xsp-ipk: $(XSP_IPK)
 #
 xsp-clean:
 	rm -f $(XSP_BUILD_DIR)/.built
-	-$(MAKE) -C $(XSP_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(XSP_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

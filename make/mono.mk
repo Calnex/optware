@@ -139,7 +139,7 @@ mono-unpack: $(MONO_BUILD_DIR)/.configured
 #
 $(MONO_BUILD_DIR)/.built: $(MONO_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -152,7 +152,7 @@ mono: $(MONO_BUILD_DIR)/.built
 #
 $(MONO_BUILD_DIR)/.staged: $(MONO_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 mono-stage: $(MONO_BUILD_DIR)/.staged
@@ -190,7 +190,7 @@ $(MONO_IPK_DIR)/CONTROL/control:
 #
 $(MONO_IPK): $(MONO_BUILD_DIR)/.built
 	rm -rf $(MONO_IPK_DIR) $(BUILD_DIR)/mono_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(MONO_BUILD_DIR) DESTDIR=$(MONO_IPK_DIR) install-strip
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(MONO_BUILD_DIR) DESTDIR=$(MONO_IPK_DIR) install-strip
 	cd $(MONO_IPK_DIR)/opt/lib/mono && \
 	tar --remove-files -cvzf long-symlinks.tar.gz \
 		`find . -type l -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
@@ -214,7 +214,7 @@ mono-ipk: $(MONO_IPK)
 #
 mono-clean:
 	rm -f $(MONO_BUILD_DIR)/.built
-	-$(MAKE) -C $(MONO_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(MONO_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

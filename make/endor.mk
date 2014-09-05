@@ -71,6 +71,7 @@ ENDOR_LDFLAGS=
 # You should not change any of these variables.
 #
 ENDOR_GIT_TAG?=HEAD
+ENDOR_GIT_OPTIONS?=--depth 1
 ENDOR_TREEISH=$(ENDOR_GIT_TAG)
 ENDOR_BUILD_DIR=$(BUILD_DIR)/endor
 ENDOR_SOURCE_DIR=$(SOURCE_DIR)/endor
@@ -86,7 +87,7 @@ ENDOR_IPK=$(BUILD_DIR)/endor_$(ENDOR_VERSION)-$(ENDOR_IPK_VERSION)_$(TARGET_ARCH
 $(DL_DIR)/$(ENDOR_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone $(ENDOR_REPOSITORY) endor && \
+		git clone $(ENDOR_REPOSITORY) endor $(ENDOR_GIT_OPTIONS) && \
 		cd endor/Server/Software && \
 		(git archive \
 			--format=tar \
@@ -153,7 +154,7 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 #
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -166,7 +167,7 @@ endor: $(ENDOR_BUILD_DIR)/.built
 #
 $(ENDOR_BUILD_DIR)/.staged: $(ENDOR_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 endor-stage: $(ENDOR_BUILD_DIR)/.staged
@@ -204,7 +205,7 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 #
 $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
 	cd $(ENDOR_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
@@ -235,7 +236,7 @@ endor-ipk: $(ENDOR_IPK)
 #
 endor-clean:
 	rm -f $(ENDOR_BUILD_DIR)/.built
-	-$(MAKE) -C $(ENDOR_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(ENDOR_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

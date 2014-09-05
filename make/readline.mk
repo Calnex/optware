@@ -143,7 +143,7 @@ readline-unpack: $(READLINE_BUILD_DIR)/.configured
 #
 $(READLINE_BUILD_DIR)/.built: $(READLINE_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -157,7 +157,7 @@ readline: $(READLINE_BUILD_DIR)/.built
 $(READLINE_BUILD_DIR)/.staged: $(READLINE_BUILD_DIR)/.built
 	rm -f $@
 	rm -f $(STAGING_LIB_DIR)/libreadline*
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 readline-stage: $(READLINE_BUILD_DIR)/.staged
@@ -193,11 +193,11 @@ $(READLINE_IPK_DIR)/CONTROL/control:
 #
 $(READLINE_IPK): $(READLINE_BUILD_DIR)/.built
 	rm -rf $(READLINE_IPK_DIR) $(BUILD_DIR)/readline_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(READLINE_BUILD_DIR) DESTDIR=$(READLINE_IPK_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(READLINE_BUILD_DIR) DESTDIR=$(READLINE_IPK_DIR) install
 	rm -f $(READLINE_IPK_DIR)/opt/share/info/dir*
 	(cd $(READLINE_IPK_DIR)/opt/lib/ ; \
 		find . -name '*.$(SHLIB_EXT)' -exec chmod +w {} \; ; \
-		find . -name '*.$(SHLIB_EXT)' -exec $(STRIP_COMMAND) {} \; ; \
+		find . -name '*.$(SHLIB_EXT)' -exec $(TARGET_BUILD_OPTS) $(STRIP_COMMAND) {} \; ; \
 		find . -name '*.$(SHLIB_EXT)' -exec chmod -w {} \; ; \
 	)
 	$(MAKE) $(READLINE_IPK_DIR)/CONTROL/control
@@ -214,7 +214,7 @@ readline-ipk: $(READLINE_IPK)
 #
 readline-clean:
 	rm -f $(READLINE_BUILD_DIR)/.built
-	-$(MAKE) -C $(READLINE_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(READLINE_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

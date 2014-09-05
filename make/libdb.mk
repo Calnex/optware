@@ -135,7 +135,7 @@ libdb-unpack: $(LIBDB_BUILD_DIR)/.configured
 # directly to the main binary which is built.
 #
 $(LIBDB_BUILD_DIR)/build_unix/.libs/libdb-$(LIBDB_LIB_VERSION).a: $(LIBDB_BUILD_DIR)/.configured
-	$(MAKE) -C $(LIBDB_BUILD_DIR)/build_unix
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBDB_BUILD_DIR)/build_unix
 
 #
 # You should change the dependency to refer directly to the main binary
@@ -149,7 +149,7 @@ libdb: $(LIBDB_BUILD_DIR)/build_unix/.libs/libdb-$(LIBDB_LIB_VERSION).a
 #
 $(LIBDB_BUILD_DIR)/.staged: $(LIBDB_BUILD_DIR)/build_unix/.libs/libdb-$(LIBDB_LIB_VERSION).a
 	rm -f $@
-	$(MAKE) -C $(LIBDB_BUILD_DIR)/build_unix DESTDIR=$(STAGING_DIR) install_setup install_include install_lib
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBDB_BUILD_DIR)/build_unix DESTDIR=$(STAGING_DIR) install_setup install_include install_lib
 	rm -f $(STAGING_LIB_DIR)/libdb-$(LIBDB_LIB_VERSION).la
 	touch $@
 
@@ -186,8 +186,8 @@ $(LIBDB_IPK_DIR)/CONTROL/control:
 #
 $(LIBDB_IPK): $(LIBDB_BUILD_DIR)/build_unix/.libs/libdb-$(LIBDB_LIB_VERSION).a
 	rm -rf $(LIBDB_IPK_DIR) $(LIBDB_IPK)
-	$(MAKE) -C $(LIBDB_BUILD_DIR)/build_unix DESTDIR=$(LIBDB_IPK_DIR) install_setup install_include install_lib
-	-$(STRIP_COMMAND) $(LIBDB_IPK_DIR)/opt/lib/*.so
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBDB_BUILD_DIR)/build_unix DESTDIR=$(LIBDB_IPK_DIR) install_setup install_include install_lib
+	-$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(LIBDB_IPK_DIR)/opt/lib/*.so
 	rm -f $(LIBDB_IPK_DIR)/opt/lib/*.{la,a}
 	$(MAKE) $(LIBDB_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBDB_IPK_DIR)
@@ -202,7 +202,7 @@ libdb-ipk: $(LIBDB_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 libdb-clean:
-	-$(MAKE) -C $(LIBDB_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBDB_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created
