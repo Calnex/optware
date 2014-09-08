@@ -150,7 +150,7 @@ endif
 	echo 'echo "Optware Bootstrap for $(OPTWARE-BOOTSTRAP_TARGET)."' >>$@
 	echo 'echo "Extracting archive to $PWD... please wait"' >>$@
 	echo 'dd if=$$0 bs=NNN skip=1 | tar xzv' >>$@
-	echo "cd bootstrap && sh bootstrap.sh && cd ..&& rm -r bootstrap && exit 0" >>$@
+	echo "cd bootstrap && sh bootstrap.sh && cd ..&& rm -r bootstrap; exit 0" >>$@
 #	echo 'exec /bin/sh -l' >>$@ # No logon shell after install
 	sed -i -e "s/NNN/`wc -c $@ | awk '{print $$1}'`/" $@
 	tar -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -czf - bootstrap >>$@
