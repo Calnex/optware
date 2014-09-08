@@ -150,7 +150,7 @@ pcre-unpack: $(PCRE_BUILD_DIR)/.configured
 #
 $(PCRE_BUILD_DIR)/.built: $(PCRE_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D) LIBTOOL_TAG=$(PCRE_LIBTOOL_TAG)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) LIBTOOL_TAG=$(PCRE_LIBTOOL_TAG)
 	touch $@
 #
 # This is the build convenience target.
@@ -162,7 +162,7 @@ pcre: $(PCRE_BUILD_DIR)/.built
 #
 $(PCRE_BUILD_DIR)/.staged: $(PCRE_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	rm -f $(STAGING_LIB_DIR)/libpcre.la
 	rm -f $(STAGING_LIB_DIR)/libpcreposix.la
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' \
@@ -219,11 +219,11 @@ $(PCRE-DEV_IPK_DIR)/CONTROL/control:
 $(PCRE_IPK) $(PCRE-DEV_IPK): $(PCRE_BUILD_DIR)/.built
 	rm -rf $(PCRE_IPK_DIR) $(BUILD_DIR)/pcre_*_$(TARGET_ARCH).ipk
 	rm -rf $(PCRE-DEV_IPK_DIR) $(BUILD_DIR)/pcre-dev_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(PCRE_BUILD_DIR) DESTDIR=$(PCRE_IPK_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(PCRE_BUILD_DIR) DESTDIR=$(PCRE_IPK_DIR) install
 	find $(PCRE_IPK_DIR) -type d -exec chmod go+rx {} \;
-	$(STRIP_COMMAND) $(PCRE_IPK_DIR)/opt/bin/pcregrep
-	$(STRIP_COMMAND) $(PCRE_IPK_DIR)/opt/bin/pcretest
-	$(STRIP_COMMAND) $(PCRE_IPK_DIR)/opt/lib/*.so
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(PCRE_IPK_DIR)/opt/bin/pcregrep
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(PCRE_IPK_DIR)/opt/bin/pcretest
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(PCRE_IPK_DIR)/opt/lib/*.so
 	rm -f $(PCRE_IPK_DIR)/opt/lib/*.la
 	install -d $(PCRE-DEV_IPK_DIR)/opt/bin
 	mv $(PCRE_IPK_DIR)/opt/bin/pcre-config $(PCRE-DEV_IPK_DIR)/opt/bin/
@@ -249,7 +249,7 @@ pcre-ipk: $(PCRE_IPK) $(PCRE-DEV_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 pcre-clean:
-	-$(MAKE) -C $(PCRE_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(PCRE_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

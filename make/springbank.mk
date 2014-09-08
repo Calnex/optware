@@ -89,7 +89,7 @@ springbank-ipk:
 #
 springbank-clean:
 	rm -f $(SPRINGBANK_BUILD_DIR)/.built
-	-$(MAKE) -C $(SPRINGBANK_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(SPRINGBANK_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

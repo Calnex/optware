@@ -138,7 +138,7 @@ sqlite-unpack: $(SQLITE_BUILD_DIR)/.configured
 #
 $(SQLITE_BUILD_DIR)/.built: $(SQLITE_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -151,7 +151,7 @@ sqlite: $(SQLITE_BUILD_DIR)/.built
 #
 $(SQLITE_BUILD_DIR)/.staged: $(SQLITE_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/sqlite3.pc
 	touch $@
 
@@ -189,8 +189,8 @@ $(SQLITE_IPK_DIR)/CONTROL/control:
 #
 $(SQLITE_IPK): $(SQLITE_BUILD_DIR)/.built
 	rm -rf $(SQLITE_IPK_DIR) $(BUILD_DIR)/sqlite_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(SQLITE_BUILD_DIR) DESTDIR=$(SQLITE_IPK_DIR) install
-	$(STRIP_COMMAND) $(SQLITE_IPK_DIR)/opt/bin/sqlite3 $(SQLITE_IPK_DIR)/opt/lib/*.so
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(SQLITE_BUILD_DIR) DESTDIR=$(SQLITE_IPK_DIR) install
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(SQLITE_IPK_DIR)/opt/bin/sqlite3 $(SQLITE_IPK_DIR)/opt/lib/*.so
 	rm -f $(SQLITE_IPK_DIR)/opt/lib/libsqlite3.a
 	$(MAKE) $(SQLITE_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(SQLITE_IPK_DIR)
@@ -206,7 +206,7 @@ sqlite-ipk: $(SQLITE_IPK)
 #
 sqlite-clean:
 	rm -f $(SQLITE_BUILD_DIR)/.built
-	-$(MAKE) -C $(SQLITE_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(SQLITE_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

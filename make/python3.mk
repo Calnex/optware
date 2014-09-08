@@ -185,7 +185,7 @@ python3-unpack: $(PYTHON3_BUILD_DIR)/.configured
 #
 $(PYTHON3_BUILD_DIR)/.built: $(PYTHON3_BUILD_DIR)/.configured
 	rm -f $@
-	GNU_TARGET_NAME=$(GNU_TARGET_NAME) $(MAKE) -C $(@D)
+	GNU_TARGET_NAME=$(GNU_TARGET_NAME) $(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -198,14 +198,14 @@ python3: $(PYTHON3_BUILD_DIR)/.built
 #
 $(PYTHON3_BUILD_DIR)/.staged: $(PYTHON3_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 python3-stage: $(PYTHON3_BUILD_DIR)/.staged
 
 $(HOST_STAGING_PREFIX)/bin/python3.0: host/.configured make/python3.mk
 	$(MAKE) $(PYTHON3_BUILD_DIR)/.built
-	$(MAKE) -C $(PYTHON3_BUILD_DIR)/buildpython3 DESTDIR=$(HOST_STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(PYTHON3_BUILD_DIR)/buildpython3 DESTDIR=$(HOST_STAGING_DIR) install
 	rm -f $(@D)/bin/python
 
 python3-host-stage: $(HOST_STAGING_PREFIX)/bin/python3.0
@@ -241,11 +241,11 @@ $(PYTHON3_IPK_DIR)/CONTROL/control:
 #
 $(PYTHON3_IPK): $(PYTHON3_BUILD_DIR)/.built
 	rm -rf $(PYTHON3_IPK_DIR) $(BUILD_DIR)/python3*_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(PYTHON3_BUILD_DIR) DESTDIR=$(PYTHON3_IPK_DIR) install
-	$(STRIP_COMMAND) $(PYTHON3_IPK_DIR)/opt/bin/python$(PYTHON3_VERSION_MAJOR)
-	$(STRIP_COMMAND) $(PYTHON3_IPK_DIR)/opt/lib/python$(PYTHON3_VERSION_MAJOR)/lib-dynload/*.so
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(PYTHON3_BUILD_DIR) DESTDIR=$(PYTHON3_IPK_DIR) install
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(PYTHON3_IPK_DIR)/opt/bin/python$(PYTHON3_VERSION_MAJOR)
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(PYTHON3_IPK_DIR)/opt/lib/python$(PYTHON3_VERSION_MAJOR)/lib-dynload/*.so
 	for f in $(PYTHON3_IPK_DIR)/opt/lib/libpython$(PYTHON3_VERSION_MAJOR)*.so.1.0 $(PYTHON3_IPK_DIR)/opt/lib/libpython3.so; \
-		do chmod 755 $$f; $(STRIP_COMMAND) $$f; chmod 555 $$f; done
+		do chmod 755 $$f; $(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $$f; chmod 555 $$f; done
 	for f in bin/2to3 ; \
 	    do mv $(PYTHON3_IPK_DIR)/opt/$$f $(PYTHON3_IPK_DIR)/opt/`echo $$f | sed -e 's/\(\.\|$$\)/-3.1\1/'`; done
 	install -d $(PYTHON3_IPK_DIR)/opt/local/bin
@@ -265,7 +265,7 @@ python3-ipk: $(PYTHON3_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 python3-clean:
-	-$(MAKE) -C $(PYTHON3_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(PYTHON3_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

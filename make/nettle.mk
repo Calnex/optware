@@ -139,7 +139,7 @@ nettle-unpack: $(NETTLE_BUILD_DIR)/.configured
 #
 $(NETTLE_BUILD_DIR)/.built: $(NETTLE_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -152,7 +152,7 @@ nettle: $(NETTLE_BUILD_DIR)/.built
 #
 $(NETTLE_BUILD_DIR)/.staged: $(NETTLE_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 nettle-stage: $(NETTLE_BUILD_DIR)/.staged
@@ -190,7 +190,7 @@ $(NETTLE_IPK_DIR)/CONTROL/control:
 #
 $(NETTLE_IPK): $(NETTLE_BUILD_DIR)/.built
 	rm -rf $(NETTLE_IPK_DIR) $(BUILD_DIR)/nettle_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(NETTLE_BUILD_DIR) DESTDIR=$(NETTLE_IPK_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NETTLE_BUILD_DIR) DESTDIR=$(NETTLE_IPK_DIR) install
 	$(MAKE) $(NETTLE_IPK_DIR)/CONTROL/control
 		sed -i -e '/^[ 	]*update-alternatives /s|update-alternatives|$(UPD-ALT_PREFIX)/bin/&|' \
 	echo $(NETTLE_CONFFILES) | sed -e 's/ /\n/g' > $(NETTLE_IPK_DIR)/CONTROL/conffiles
@@ -207,7 +207,7 @@ nettle-ipk: $(NETTLE_IPK)
 #
 nettle-clean:
 	rm -f $(NETTLE_BUILD_DIR)/.built
-	-$(MAKE) -C $(NETTLE_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(NETTLE_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

@@ -54,7 +54,7 @@ openssl-unpack: $(OPENSSL_BUILD_DIR)/.configured
 $(OPENSSL_BUILD_DIR)/.built: $(OPENSSL_BUILD_DIR)/.configured
 	rm -f $@
 	$(MAKE) zlib-stage
-	$(MAKE) -C $(@D) \
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) \
 		MANDIR=/opt/man \
 		EX_LIBS="$(STAGING_LDFLAGS) -ldl" \
 		DIRS="crypto ssl apps"
@@ -127,14 +127,14 @@ $(OPENSSL_IPK) $(OPENSSL_DEV_IPK): $(OPENSSL_BUILD_DIR)/.built
 	rm -rf $(OPENSSL_IPK_DIR) $(BUILD_DIR)/openssl_*_$(TARGET_ARCH).ipk
 	install -d $(OPENSSL_IPK_DIR)/opt/bin
 	install -m 755 $(OPENSSL_BUILD_DIR)/apps/openssl $(OPENSSL_IPK_DIR)/opt/bin/openssl
-	$(STRIP_COMMAND) $(OPENSSL_IPK_DIR)/opt/bin/openssl
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(OPENSSL_IPK_DIR)/opt/bin/openssl
 	install -d $(OPENSSL_IPK_DIR)/opt/share/openssl
 	install -m 755 $(OPENSSL_BUILD_DIR)/apps/openssl.cnf $(OPENSSL_IPK_DIR)/opt/share/openssl/openssl.cnf
 	install -d $(OPENSSL_IPK_DIR)/opt/lib
 	install -m 644 $(OPENSSL_BUILD_DIR)/libcrypto.so.$(OPENSSL_LIB_VERSION) $(OPENSSL_IPK_DIR)/opt/lib
 	install -m 644 $(OPENSSL_BUILD_DIR)/libssl.so.$(OPENSSL_LIB_VERSION) $(OPENSSL_IPK_DIR)/opt/lib
-	$(STRIP_COMMAND) $(OPENSSL_IPK_DIR)/opt/lib/libcrypto.so*
-	$(STRIP_COMMAND) $(OPENSSL_IPK_DIR)/opt/lib/libssl.so*
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(OPENSSL_IPK_DIR)/opt/lib/libcrypto.so*
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(OPENSSL_IPK_DIR)/opt/lib/libssl.so*
 	cd $(OPENSSL_IPK_DIR)/opt/lib && ln -fs libcrypto.so.$(OPENSSL_LIB_VERSION) libcrypto.so.0
 	cd $(OPENSSL_IPK_DIR)/opt/lib && ln -fs libcrypto.so.$(OPENSSL_LIB_VERSION) libcrypto.so
 	cd $(OPENSSL_IPK_DIR)/opt/lib && ln -fs libssl.so.$(OPENSSL_LIB_VERSION) libssl.so.0
@@ -159,7 +159,7 @@ $(OPENSSL_BUILD_DIR)/.ipk: $(OPENSSL_IPK) $(OPENSSL_DEV_IPK)
 openssl-ipk: $(OPENSSL_BUILD_DIR)/.ipk
 
 openssl-clean:
-	-$(MAKE) -C $(OPENSSL_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(OPENSSL_BUILD_DIR) clean
 
 openssl-dirclean:
 	rm -rf $(BUILD_DIR)/$(OPENSSL_DIR) $(OPENSSL_BUILD_DIR) $(OPENSSL_IPK_DIR)

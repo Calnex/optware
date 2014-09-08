@@ -51,7 +51,7 @@ ifneq ($(HOSTCC), $(TARGET_CC))
 		--disable-widec		\
 		--enable-safe-sprintf	\
 	);
-	$(MAKE) -C $(@D)/ncurses make_hash make_keys
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)/ncurses make_hash make_keys
 endif
 	# configure again, this time for real
 	(cd $(@D); \
@@ -79,14 +79,14 @@ ncursesw-unpack: $(NCURSESW_DIR)/.configured
 
 $(NCURSESW_DIR)/.built: $(NCURSESW_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(NCURSESW_DIR)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSESW_DIR)
 	touch $@
 
 ncursesw: $(NCURSESW_DIR)/.built
 
 $(NCURSESW_DIR)/.staged: $(NCURSESW_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(STAGING_DIR) install.includes install.libs
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(STAGING_DIR) install.includes install.libs
 	sed -i -e '/^prefix=/s|=.*|=$(STAGING_PREFIX)|' $(STAGING_PREFIX)/bin/ncursesw[0-9]*-config
 	touch $@
 
@@ -123,15 +123,15 @@ $(NCURSESW-DEV_IPK_DIR)/CONTROL/control:
 $(NCURSESW_IPK) $(NCURSESW-DEV_IPK): $(NCURSESW_DIR)/.built
 	rm -rf $(NCURSESW_IPK_DIR) $(BUILD_DIR)/ncursesw_*_$(TARGET_ARCH).ipk
 	rm -rf $(NCURSESW-DEV_IPK_DIR) $(BUILD_DIR)/ncursesw-dev_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(NCURSESW_IPK_DIR) install.libs
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(NCURSESW_IPK_DIR) install.libs
 	rm -rf $(NCURSESW_IPK_DIR)/opt/include
 	rm -f $(NCURSESW_IPK_DIR)/opt/lib/*.a
-#	$(STRIP_COMMAND) $(NCURSESW_IPK_DIR)/opt/bin/*
-	$(STRIP_COMMAND) $(NCURSESW_IPK_DIR)/opt/lib/*.so
+#	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(NCURSESW_IPK_DIR)/opt/bin/*
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(NCURSESW_IPK_DIR)/opt/lib/*.so
 	$(MAKE) $(NCURSESW_IPK_DIR)/CONTROL/control
 	# ncursesw-dev
 	install -d $(NCURSESW-DEV_IPK_DIR)/opt/include/ncursesw
-	$(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(NCURSESW-DEV_IPK_DIR) install.includes
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(NCURSESW-DEV_IPK_DIR) install.includes
 	# building ipk's
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(NCURSESW_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(NCURSESW_IPK_DIR)
@@ -142,7 +142,7 @@ $(NCURSESW_IPK) $(NCURSESW-DEV_IPK): $(NCURSESW_DIR)/.built
 ncursesw-ipk: $(NCURSESW_IPK) $(NCURSESW-DEV_IPK)
 
 ncursesw-clean:
-	-$(MAKE) -C $(NCURSESW_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSESW_DIR) clean
 
 ncursesw-dirclean:
 	rm -rf $(NCURSESW_DIR) \

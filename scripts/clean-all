@@ -5,3 +5,5 @@ sudo rm -rf builds/debian-root toolchain
 rm -rf a.out downloads packages staging lib builds tmp host
 mkdir downloads
 mv ../ipkg-opt-0.99.163.tar.gz ./downloads/
+USER=`whoami`
+sudo chown -R $USER ./

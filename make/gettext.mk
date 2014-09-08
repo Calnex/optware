@@ -93,7 +93,7 @@ $(GETTEXT_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(GETTEXT_SOURCE) m
 		./configure \
 		--prefix=$(HOST_STAGING_PREFIX)	\
 	)
-	$(MAKE) -C $(@D)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 gettext-host: $(GETTEXT_HOST_BUILD_DIR)/.built
@@ -101,7 +101,7 @@ gettext-host: $(GETTEXT_HOST_BUILD_DIR)/.built
 
 $(GETTEXT_HOST_BUILD_DIR)/.staged: $(GETTEXT_HOST_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
 	touch $@
 
 gettext-host-stage: $(GETTEXT_HOST_BUILD_DIR)/.staged
@@ -123,10 +123,8 @@ gettext-host-stage: $(GETTEXT_HOST_BUILD_DIR)/.staged
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(GETTEXT_BUILD_DIR)/.configured: $(DL_DIR)/$(GETTEXT_SOURCE) $(GETTEXT_PATCHES)
-#	$(MAKE) <bar>-stage <baz>-stage
 	rm -rf $(BUILD_DIR)/$(GETTEXT_DIR) $(GETTEXT_BUILD_DIR)
 	$(GETTEXT_UNZIP) $(DL_DIR)/$(GETTEXT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-#	cat $(GETTEXT_PATCHES) | patch -d $(BUILD_DIR)/$(GETTEXT_DIR) -p1
 	mv $(BUILD_DIR)/$(GETTEXT_DIR) $(GETTEXT_BUILD_DIR)
 	(cd $(GETTEXT_BUILD_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -151,7 +149,7 @@ gettext-unpack: $(GETTEXT_BUILD_DIR)/.configured
 #
 $(GETTEXT_BUILD_DIR)/.built: $(GETTEXT_BUILD_DIR)/.configured
 	rm -f $(GETTEXT_BUILD_DIR)/.built
-	$(MAKE) -C $(GETTEXT_BUILD_DIR)
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(GETTEXT_BUILD_DIR)
 	touch $(GETTEXT_BUILD_DIR)/.built
 
 #
@@ -164,7 +162,7 @@ gettext: $(GETTEXT_BUILD_DIR)/.built
 #
 $(GETTEXT_BUILD_DIR)/.staged: $(GETTEXT_BUILD_DIR)/.built
 	rm -f $(GETTEXT_BUILD_DIR)/.staged
-	$(MAKE) -C $(GETTEXT_BUILD_DIR) DESTDIR=$(STAGING_DIR) install
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(GETTEXT_BUILD_DIR) DESTDIR=$(STAGING_DIR) install
 	rm -f $(STAGING_LIB_DIR)/libgettext*.la \
 	      $(STAGING_LIB_DIR)/libintl.la \
 	      $(STAGING_LIB_DIR)/libasprintf.la
@@ -206,8 +204,8 @@ $(GETTEXT_IPK_DIR)/CONTROL/control:
 #
 $(GETTEXT_IPK): $(GETTEXT_BUILD_DIR)/.built
 	rm -rf $(GETTEXT_IPK_DIR) $(BUILD_DIR)/gettext_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(GETTEXT_BUILD_DIR) DESTDIR=$(GETTEXT_IPK_DIR) install
-	$(STRIP_COMMAND) $(GETTEXT_IPK_DIR)/opt/lib/*.so*
+	$(TARGET_BUILD_OPTS) $(MAKE) -C $(GETTEXT_BUILD_DIR) DESTDIR=$(GETTEXT_IPK_DIR) install
+	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(GETTEXT_IPK_DIR)/opt/lib/*.so*
 	$(MAKE) $(GETTEXT_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GETTEXT_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(GETTEXT_IPK_DIR)
@@ -221,7 +219,7 @@ gettext-ipk: $(GETTEXT_IPK)
 #
 gettext-clean:
 	rm -f $(GETTEXT_BUILD_DIR)/.built
-	-$(MAKE) -C $(GETTEXT_BUILD_DIR) clean
+	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(GETTEXT_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created
