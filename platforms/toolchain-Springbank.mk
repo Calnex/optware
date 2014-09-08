@@ -32,47 +32,47 @@ toolchain:
 else
 
 HOSTCC = gcc
-GNU_HOST_NAME = $(HOST_MACHINE)-linux
-TARGET_DISTRO = wheezy
-#TARGET_TEMP = $(TARGET_CROSS_TOP)/temp
-TARGET_TEMP = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)
-TARGET_CROSS_TOP = $(BASE_DIR)/toolchain
-TARGET_CROSS = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/usr/bin/
-TARGET_LIBDIR = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/lib
-TARGET_USRLIBDIR = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/lib
-TARGET_INCDIR = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/include
-TARGET_LDFLAGS =
-TARGET_CUSTOM_FLAGS= -O2 -pipe
-TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) $(TARGET_CUSTOM_FLAGS)
+GNU_HOST_NAME		= $(HOST_MACHINE)-linux
+TARGET_DISTRO		?= wheezy
+TARGET_REPOMIRROR	?= "http://ftp.us.debian.org/debian"
+TARGET_CROSS_TOP	= $(BASE_DIR)/toolchain
+TARGET_CHROOT		= $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)
+#TARGET_CROSS		= $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/usr/bin/
+TARGET_LIBDIR		= $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/lib
+TARGET_USRLIBDIR	= $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/lib
+TARGET_INCDIR		= $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/include
+TARGET_LDFLAGS		=
+TARGET_CUSTOM_FLAGS	= -O2 -pipe
+TARGET_CFLAGS		= $(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) $(TARGET_CUSTOM_FLAGS)
 
 NATIVE_GCC_VERSION=4.8.2
 
 toolchain: $(TARGET_CROSS_TOP)/.unpacked
 
 $(TARGET_CROSS_TOP)/.unpacked: 
-	mkdir -p $(TARGET_TEMP) && \
-	sudo debootstrap $(TARGET_DISTRO) $(TARGET_TEMP) && \
-	sudo chroot $(TARGET_TEMP) apt-get -y install build-essential; exit
+	mkdir -p $(TARGET_CHROOT) && \
+	sudo debootstrap --include=build-essential,libtool,zlib1g-dev,sudo \
+	$(TARGET_DISTRO) $(TARGET_CHROOT) $(TARGET_REPOMIRROR) && \
+	sudo rm -f $(TARGET_CHROOT)/etc/passwd \
+		   $(TARGET_CHROOT)/etc/passwd- \
+		   $(TARGET_CHROOT)/etc/shadow \
+		   $(TARGET_CHROOT)/etc/shadow- \
+		   $(TARGET_CHROOT)/etc/group \
+		   $(TARGET_CHROOT)/etc/group- \
+		   $(TARGET_CHROOT)/etc/sudoers && \
+	cd $(TARGET_CHROOT)/etc && \
+	sudo ln /etc/passwd && \
+	sudo ln /etc/passwd- && \
+	sudo ln /etc/shadow && \
+	sudo ln /etc/shadow- && \
+	sudo ln /etc/group && \
+	sudo ln /etc/group- && \
+	sudo ln /etc/sudoers && \
 	USER=`whoami` && \
-	sudo chown -R $(USER):$(USER) $(TARGET_CROSS_TOP)/temp
-	mkdir -p $(TARGET_LIBDIR)
-	#find $(TARGET_TEMP)/lib 	-type l -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_LIBDIR) '{}' +
-	#find $(TARGET_TEMP)/lib 	-type f -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_LIBDIR) '{}' +
-	#find $(TARGET_TEMP)/lib64 	-type l -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_LIBDIR) '{}' +
-	#find $(TARGET_TEMP)/lib64 	-type f -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_LIBDIR) '{}' +
-	#find $(TARGET_TEMP)/usr/lib 	-type l -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_USRLIBDIR) '{}' +
-	#find $(TARGET_TEMP)/usr/lib 	-type f -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_USRLIBDIR) '{}' +
-	#find $(TARGET_TEMP)/usr/lib64 	-type l -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_USRLIBDIR) '{}' +
-	#find $(TARGET_TEMP)/usr/lib64 	-type f -name *.so* \
-	#-exec mv -f --backup=numbered -t $(TARGET_USRLIBDIR) '{}' +
-	#rm -rf $(TARGET_TEMP)
+	sudo mkdir -p $(TARGET_CHROOT)$(HOME) && \
+	sudo chown --reference=$(HOME) $(TARGET_CHROOT)$(HOME) && \
+	sudo chmod --reference=$(HOME) $(TARGET_CHROOT)$(HOME) && \
+	sudo mount -o bind $(HOME) $(TARGET_CHROOT)$(HOME) && \
 	touch $@
 
 endif
