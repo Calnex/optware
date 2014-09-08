@@ -121,6 +121,7 @@ endif
 	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin
 	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/optwareUSB \
 		$(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/
+	sed -i -e 's/http:\/\/packages.calnexsol.com/http:\/\/packages.calnexsol.com\/$(TARGET_DISTRO)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/optwareUSB
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 	# build optware-bootstrap.xsh next
 	rm -rf $(BUILD_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)-bootstrap_*_$(TARGET_ARCH).xsh
@@ -138,6 +139,7 @@ endif
 	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/bootstrap.sh \
 	   $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/ipkg.sh \
 	   $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap/
+	sed -i -e 's/http:\/\/packages.calnexsol.com/http:\/\/packages.calnexsol.com\/$(TARGET_DISTRO)/g' $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap/bootstrap.sh
 ifneq (OPTWARE-BOOTSTRAP_REAL_OPT_DIR,)
 	sed -i -e '/^[ 	]*REAL_OPT_DIR=.*/s|=.*|=$(OPTWARE-BOOTSTRAP_REAL_OPT_DIR)|' \
 	       -e 's/$${OPTWARE_TARGET}/$(OPTWARE_TARGET)/g' \
@@ -153,7 +155,7 @@ endif
 	sed -i -e "s/NNN/`wc -c $@ | awk '{print $$1}'`/" $@
 	tar -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -czf - bootstrap >>$@
 	chmod 755 $@
-	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPTWARE-BOOTSTRAP_IPK_DIR)
+#	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 
 optware-bootstrap-ipk: $(OPTWARE-BOOTSTRAP_XSH)
 optware-bootstrap-xsh: $(OPTWARE-BOOTSTRAP_XSH)
