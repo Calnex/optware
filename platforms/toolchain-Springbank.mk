@@ -62,7 +62,7 @@ toolchain: $(TARGET_CROSS_TOP)/.unpacked
 
 $(TARGET_CROSS_TOP)/.unpacked: 
 	mkdir -p $(TARGET_CHROOT) && \
-	sudo debootstrap --include=build-essential,libtool,zlib1g-dev,sudo \
+	sudo debootstrap --include=build-essential,pkg-config,libtool,zlib1g-dev,libffi-dev,sudo \
 	$(TARGET_DISTRO) $(TARGET_CHROOT) $(TARGET_REPOMIRROR) && \
 	sudo rm -f $(TARGET_CHROOT)/etc/passwd \
 		   $(TARGET_CHROOT)/etc/passwd- \
