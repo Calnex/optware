@@ -24,11 +24,19 @@ TARGET_CROSS		= /opt/bin/
 TARGET_LIBDIR		= /opt/lib
 TARGET_INCDIR		= /opt/include
 TARGET_LDFLAGS		= -L/opt/lib
-TARGET_CUSTOM_FLAGS	= -O2 -pipe -I$(TARGET_CHROOT)/usr/include
+TARGET_CUSTOM_FLAGS	= -O2 -pipe 
+TARGET_CPPFLAGS		= -I$(TARGET_CHROOT)/usr/include/c++/4.7 \
+			  -I$(TARGET_CHROOT)/usr/include/c++/4.7/x86_65-linux-gnu \
+			  -I$(TARGET_CHROOT)/usr/include/c++/4.7/backward \
+			  -I$(TARGET_CHROOT)/usr/local/include \
+			  -I$(TARGET_CHROOT)/usr/lib/gcc/x86_64-linux-gnu/4.7/include-fixed \
+			  -I$(TARGET_CHROOT)/usr/include/x86_64-linux-gnu \
+			  -I$(TARGET_CHROOT)/usr/include
 TARGET_CFLAGS		= -I/opt/include \
 			  $(TARGET_OPTIMIZATION) \
 			  $(TARGET_DEBUGGING) \
-			  $(TARGET_CUSTOM_FLAGS)
+			  $(TARGET_CUSTOM_FLAGS) \
+			  $(TARGET_CPPFLAGS) 
 
 toolchain:
 
@@ -65,7 +73,7 @@ $(TARGET_CROSS_TOP)/.unpacked:
 	sudo debootstrap --include=build-essential,libtool,zlib1g-dev \
 	$(TARGET_DISTRO) $(TARGET_CHROOT) http://ftp.uk.debian.org/debian && \
 	USER=`whoami` && \
-	sudo chown -R $(USER):$(USER) $(TARGET_CHROOT)
+	sudo chown -R $(USER) $(TARGET_CHROOT)
 	touch $@
 
 endif
