@@ -35,7 +35,6 @@ PACKAGES_THAT_NEED_TO_BE_FIXED =
 # libao - has runtime trouble?
 COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
-			endor \
 			geoip \
 			gettext \
 			glib \
@@ -72,6 +71,8 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			xsp \
 			zlib \
 
+CALNEX_PACKAGES =	endor \
+			debian-root \
 ##############
 
 HOST_MACHINE:=$(shell \
@@ -114,7 +115,7 @@ export TMPDIR=$(BASE_DIR)/tmp
 
 ##############
 
-all: directories toolchain packages
+all: directories toolchain packages calnex-packages
 
 TARGET_OPTIMIZATION=-O2 #-mtune=xscale -march=armv4 -Wa,-mcpu=xscale
 TARGET_DEBUGGING= #-g
@@ -238,6 +239,7 @@ PACKAGES_SOURCE:=$(patsubst %,%-source,$(PACKAGES))
 PACKAGES_DIRCLEAN:=$(patsubst %,%-dirclean,$(PACKAGES))
 PACKAGES_STAGE:=$(patsubst %,%-stage,$(PACKAGES))
 PACKAGES_IPKG:=$(patsubst %,%-ipk,$(PACKAGES))
+CALNEX_PACKAGES_IPKG:=$(patsubst %,%-ipk,$(CALNEX_PACKAGES))
 
 $(PACKAGES) : directories toolchain
 $(PACKAGES_STAGE) : directories toolchain
@@ -271,6 +273,9 @@ endif
 	@echo "ALL DONE."
 
 packages: $(PACKAGES_IPKG)
+	$(MAKE) index
+
+calnex-packages: $(CALNEX_PACKAGES_IPKG)
 	$(MAKE) index
 
 .PHONY: all clean dirclean distclean directories packages source toolchain \
