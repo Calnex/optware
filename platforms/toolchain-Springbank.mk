@@ -64,26 +64,8 @@ $(TARGET_CROSS_TOP)/.unpacked:
 	mkdir -p $(TARGET_CHROOT) && \
 	sudo debootstrap --include=build-essential,pkg-config,libtool,zlib1g-dev,libffi-dev,sudo \
 	$(TARGET_DISTRO) $(TARGET_CHROOT) $(TARGET_REPOMIRROR) && \
-	sudo rm -f $(TARGET_CHROOT)/etc/passwd \
-		   $(TARGET_CHROOT)/etc/passwd- \
-		   $(TARGET_CHROOT)/etc/shadow \
-		   $(TARGET_CHROOT)/etc/shadow- \
-		   $(TARGET_CHROOT)/etc/group \
-		   $(TARGET_CHROOT)/etc/group- \
-		   $(TARGET_CHROOT)/etc/sudoers && \
-	cd $(TARGET_CHROOT)/etc && \
-	sudo ln /etc/passwd && \
-	sudo ln /etc/passwd- && \
-	sudo ln /etc/shadow && \
-	sudo ln /etc/shadow- && \
-	sudo ln /etc/group && \
-	sudo ln /etc/group- && \
-	sudo ln /etc/sudoers && \
-	USER=`whoami` && \
-	sudo mkdir -p $(TARGET_CHROOT)$(HOME) && \
-	sudo chown --reference=$(HOME) $(TARGET_CHROOT)$(HOME) && \
-	sudo chmod --reference=$(HOME) $(TARGET_CHROOT)$(HOME) && \
-	sudo mount -o bind $(HOME) $(TARGET_CHROOT)$(HOME) && \
+	sudo chown --reference=$(HOME) $(TARGET_CHROOT) && \
+	sudo chmod --reference=$(HOME) $(TARGET_CHROOT) && \
 	touch $@
 
 endif
