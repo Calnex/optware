@@ -96,7 +96,8 @@ DEBIAN-ROOT_IPK=$(BUILD_DIR)/DEBIAN-ROOT_$(DEBIAN-ROOT_VERSION)-$(DEBIAN-ROOT_IP
 # shown below to make various patches to it.
 #
 $(DEBIAN-ROOT_BUILD_DIR)/.configured: $(DEBIAN-ROOT_PATCHES) make/debian-root.mk
-	$(MAKE) optware-bootstrap-stage
+#	$(MAKE) packages
+	$(MAKE) optware-bootstrap-ipk
 	sudo rm -rf $(BUILD_DIR)/$(DEBIAN-ROOT_DIR) $(@D)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)
 	cp -ar $(DEBIAN-ROOT_CONFIG) $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)
@@ -112,24 +113,24 @@ $(DEBIAN-ROOT_BUILD_DIR)/.configured: $(DEBIAN-ROOT_PATCHES) make/debian-root.mk
 		--distribution				$(TARGET_DISTRO)		\
 		--bootloader				grub2				\
 		--binary-filesystem			ext4				\
-		--chroot-filesystem			ext4				\
 		--memtest				memtest86+			\
 		--checksums				sha1				\
 		--debian-installer			live				\
 		--debian-installer-preseedfile		debconf				\
 		--win32-loader				false				\
 		--loadlin				false				\
-		--grub-splash				splash.tga			\
+		--grub-splash				splash.png			\
+		--bootappend-live		"boot=live config username=calnex"	\
 		--mirror-bootstrap			$(DEBIAN-ROOT_MIRROR)		\
 		--mirror-chroot				$(DEBIAN-ROOT_MIRROR)		\
 		--backports				true				\
-		--mirror-chroot-backports		$(DEBIAN-ROOT_MIRROR)		\
 		--iso-application			"Springbank installer"		\
 		--iso-publisher				"Calnex Solutions"		\
 		--iso-volume				"Springbank installer"		\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\
-		sudo cp $(STAGING_DIR)/bin/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
+		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
+		sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
 	)
 	touch $@
 
