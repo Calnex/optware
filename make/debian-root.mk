@@ -52,7 +52,6 @@ DEBIAN-ROOT_IPK_VERSION=1
 # which they should be applied to the source code.
 #
 DEBIAN-ROOT_CONFIG=$(DEBIAN-ROOT_SRC_DIR)/config
-DEBIAN-ROOT_MIRROR="http://packages.calnexsol.com:3142/debian"
 
 #
 # If the compilation of the package requires additional
@@ -121,8 +120,8 @@ $(DEBIAN-ROOT_BUILD_DIR)/.configured: $(DEBIAN-ROOT_PATCHES) make/debian-root.mk
 		--loadlin				false				\
 		--grub-splash				splash.png			\
 		--bootappend-live		"boot=live config username=calnex"	\
-		--mirror-bootstrap			$(DEBIAN-ROOT_MIRROR)		\
-		--mirror-chroot				$(DEBIAN-ROOT_MIRROR)		\
+		--mirror-bootstrap			$(TARGET_REPO_MIRROR)		\
+		--mirror-chroot				$(TARGET_REPO_MIRROR)		\
 		--backports				true				\
 		--iso-application			"Springbank installer"		\
 		--iso-publisher				"Calnex Solutions"		\
