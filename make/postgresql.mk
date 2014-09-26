@@ -51,7 +51,8 @@ POSTGRESQL_IPK_VERSION=2
 # which they should be applied to the source code.
 #
 ifneq ($(HOSTCC), $(TARGET_CC))
-POSTGRESQL_PATCHES=$(POSTGRESQL_SOURCE_DIR)/src-timezone-Makefile.patch $(POSTGRESQL_SOURCE_DIR)/disable-buildtime-test.patch
+#POSTGRESQL_PATCHES+=$(POSTGRESQL_SOURCE_DIR)/src-timezone-Makefile.patch 
+POSTGRESQL_PATCHES+=$(POSTGRESQL_SOURCE_DIR)/disable-buildtime-test.patch
 POSTGRESQL_CONFIG_ENV=pgac_cv_snprintf_long_long_int_format='%lld'
 endif
 
@@ -130,6 +131,7 @@ $(POSTGRESQL_BUILD_DIR)/.configured: $(DL_DIR)/$(POSTGRESQL_SOURCE) $(POSTGRESQL
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
 		--disable-nls \
+		--with-system-tzdata=/usr/share/zoneinfo \
 		--with-includes=$(STAGING_INCLUDE_DIR) \
 		--with-libs=$(STAGING_LIB_DIR) \
 	)

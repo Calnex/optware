@@ -149,7 +149,8 @@ endif
 		patch -d $(BUILD_DIR)/$(GLIB_DIR) -p1 ; \
 	fi
 	mv $(BUILD_DIR)/$(GLIB_DIR) $(@D)
-	cp $(SOURCE_DIR)/glib/glib.cache $(@D)/arm.cache
+	cp $(SOURCE_DIR)/glib/glib.cache $(@D)/glib.cache
+	chmod a-w $(@D)/glib.cache
 	sed -i -e 's/^ *$$as_echo_n /echo -n /' $(@D)/configure
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -163,7 +164,7 @@ endif
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
-		--cache-file=arm.cache \
+		--cache-file=glib.cache \
 		--prefix=/opt \
 		$(GLIB_CONFIG_OPT) \
 		--disable-nls \

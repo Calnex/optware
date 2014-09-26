@@ -121,6 +121,7 @@ ifeq (darwin,$(TARGET_OS))
 		-e '/arch_only/s|`/usr/bin/arch`|$(TARGET_ARCH)|' \
 		$(@D)/support/shobj-conf
 endif
+	autoreconf -vif $(@D); \
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(READLINE_CPPFLAGS)" \

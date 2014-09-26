@@ -105,7 +105,7 @@ geoip-source: $(DL_DIR)/$(GEOIP_SOURCE) $(GEOIP_PATCHES)
 # shown below to make various patches to it.
 #
 $(GEOIP_BUILD_DIR)/.configured: $(DL_DIR)/$(GEOIP_SOURCE) $(GEOIP_PATCHES) make/geoip.mk
-#	$(MAKE) zlib-stage
+	$(MAKE) zlib-stage
 	rm -rf $(BUILD_DIR)/$(GEOIP_DIR) $(@D)
 	$(GEOIP_UNZIP) $(DL_DIR)/$(GEOIP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(GEOIP_PATCHES)" ; \
@@ -116,6 +116,7 @@ $(GEOIP_BUILD_DIR)/.configured: $(DL_DIR)/$(GEOIP_SOURCE) $(GEOIP_PATCHES) make/
 		then mv $(BUILD_DIR)/$(GEOIP_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
+		libtoolize -f && \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GEOIP_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(GEOIP_LDFLAGS)" \

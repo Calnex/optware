@@ -30,14 +30,16 @@ PACKAGES_READY_FOR_TESTING =
 
 # Document issues for broken packages here.
 #
-PACKAGES_THAT_NEED_TO_BE_FIXED = 
-
+PACKAGES_THAT_NEED_TO_BE_FIXED = glib \
+				 tshark-1.4.9 \
+				 tshark-1.10.3 \
+				 tshark-1.11.3 \
 # libao - has runtime trouble?
 COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
+			endor \
 			geoip \
 			gettext \
-			glib \
 			gnutls \
 			ipkg-opt \
 			ipkg-utils \
@@ -63,16 +65,12 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			readline \
 			springbank \
 			sqlite \
-			tshark-1.4.9 \
-			tshark-1.10.3 \
-			tshark-1.11.3 \
 			wget \
 			wget-ssl \
 			xsp \
 			zlib \
 
-CALNEX_PACKAGES =	endor \
-			debian-root \
+CALNEX_PACKAGES =	debian-root \
 ##############
 
 HOST_MACHINE:=$(shell \
