@@ -30,16 +30,14 @@ PACKAGES_READY_FOR_TESTING =
 
 # Document issues for broken packages here.
 #
-PACKAGES_THAT_NEED_TO_BE_FIXED = glib \
-				 tshark-1.4.9 \
-				 tshark-1.10.3 \
-				 tshark-1.11.3 \
-# libao - has runtime trouble?
+PACKAGES_THAT_NEED_TO_BE_FIXED =
+
+
 COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
-			endor \
 			geoip \
 			gettext \
+			glib \
 			gnutls \
 			ipkg-opt \
 			ipkg-utils \
@@ -65,12 +63,16 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			readline \
 			springbank \
 			sqlite \
+			tshark-1.4.9 \
+			tshark-1.10.3 \
+			tshark-1.11.3 \
 			wget \
 			wget-ssl \
 			xsp \
 			zlib \
 
 CALNEX_PACKAGES =	debian-root \
+			endor \
 ##############
 
 HOST_MACHINE:=$(shell \
@@ -193,6 +195,7 @@ TARGET_AR=$(TARGET_CROSS)ar
 TARGET_AS=$(TARGET_CROSS)as
 TARGET_NM=$(TARGET_CROSS)nm
 TARGET_RANLIB=$(TARGET_CROSS)ranlib
+TARGET_READELF=$(TARGET_CROSS)readelf
 TARGET_STRIP?=$(TARGET_CROSS)strip
 TARGET_LIBTOOL?=$(TARGET_CROSS)libtool
 TARGET_CONFIGURE_OPTS+= \
@@ -205,6 +208,7 @@ TARGET_CONFIGURE_OPTS+= \
 	GCC=$(TARGET_CC) \
 	CXX=$(TARGET_CXX) \
 	RANLIB=$(TARGET_RANLIB) \
+	READELF=$(TARGET_READELF) \
 	STRIP=$(TARGET_STRIP) \
 	LIBTOOL=$(TARGET_LIBTOOL)
 TARGET_PATH=$(STAGING_PREFIX)/bin:$(STAGING_DIR)/bin:/opt/bin:/opt/sbin:/bin:/sbin:/usr/bin:/usr/sbin

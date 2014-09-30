@@ -122,7 +122,6 @@ $(<FOO>_BUILD_DIR)/.configured: $(DL_DIR)/$(<FOO>_SOURCE) $(<FOO>_PATCHES) make/
 		then mv $(BUILD_DIR)/$(<FOO>_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(<FOO>_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(<FOO>_LDFLAGS)" \
 		./configure \

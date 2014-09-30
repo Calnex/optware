@@ -118,7 +118,6 @@ $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mon
 		then mv $(BUILD_DIR)/$(MONO_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(MONO_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(MONO_LDFLAGS)" \
 		PATH="$(STAGING_DIR)/opt/bin:$(PATH)" \
@@ -190,7 +189,7 @@ $(MONO_IPK_DIR)/CONTROL/control:
 #
 $(MONO_IPK): $(MONO_BUILD_DIR)/.built
 	rm -rf $(MONO_IPK_DIR) $(BUILD_DIR)/mono_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(MONO_BUILD_DIR) DESTDIR=$(MONO_IPK_DIR) install-strip
+	$(MAKE) -C $(MONO_BUILD_DIR) DESTDIR=$(MONO_IPK_DIR) install-strip
 	cd $(MONO_IPK_DIR)/opt/lib/mono && \
 	tar --remove-files -cvzf long-symlinks.tar.gz \
 		`find . -type l -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`

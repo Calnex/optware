@@ -116,7 +116,6 @@ $(C_ARES_BUILD_DIR)/.configured: $(DL_DIR)/$(C_ARES_SOURCE) $(C_ARES_PATCHES) ma
 		then mv $(BUILD_DIR)/$(C_ARES_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(C_ARES_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(C_ARES_LDFLAGS)" \
 		./configure \

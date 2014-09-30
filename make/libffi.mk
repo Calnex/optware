@@ -121,7 +121,6 @@ $(LIBFFI_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBFFI_SOURCE) $(LIBFFI_PATCHES) ma
 		then mv $(BUILD_DIR)/$(LIBFFI_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(LIBFFI_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(LIBFFI_LDFLAGS)" \
 		./configure \

@@ -4,7 +4,7 @@
 #
 ###########################################################
 
-LIBSTDC++_VERSION?=5.0.7
+LIBSTDC++_VERSION?=6.0.20
 LIBSTDC++_MAJOR=$(shell echo $(LIBSTDC++_VERSION) | sed 's/\..*//')
 
 LIBSTDC++_DIR=libstdc++-$(LIBSTDC++_VERSION)
@@ -45,11 +45,7 @@ endif
 
 LIBSTDC++_IPK_VERSION=6
 
-LIBSTDC++_TARGET_LIBDIR ?= $(strip \
-	$(if $(filter cs08q1armel ts509 pre i686g25, $(OPTWARE_TARGET)), $(TARGET_USRLIBDIR), \
-	$(if $(filter fsg3v4, $(OPTWARE_TARGET)), $(TARGET_LIBDIR)/../../lib, \
-	$(if $(filter vt4, $(OPTWARE_TARGET)), $(TARGET_CROSS_TOP)/tmp, \
-	$(TARGET_LIBDIR)))))
+LIBSTDC++_TARGET_LIBDIR ?= $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/$(GNU_TARGET_NAME)/lib
 
 LIBSTDC++_BUILD_DIR=$(BUILD_DIR)/libstdc++
 LIBSTDC++_SOURCE_DIR=$(SOURCE_DIR)/libstdc++

@@ -153,7 +153,6 @@ endif
 	chmod a-w $(@D)/glib.cache
 	sed -i -e 's/^ *$$as_echo_n /echo -n /' $(@D)/configure
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GLIB_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(GLIB_LDFLAGS)" \
 		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \

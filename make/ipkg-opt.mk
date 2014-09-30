@@ -129,7 +129,6 @@ $(IPKG-OPT_BUILD_DIR)/.configured: $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
 	(cd $(@D); \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(IPKG-OPT_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(IPKG-OPT_LDFLAGS)" \
-		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \

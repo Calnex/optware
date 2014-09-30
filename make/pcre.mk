@@ -125,7 +125,6 @@ endif
 	fi
 	mv $(BUILD_DIR)/$(PCRE_DIR) $(@D)
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CC_FOR_BUILD=$(HOSTCC) \
 		CPPFLAGS="$(STAGING_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS)" \

@@ -2,7 +2,7 @@ TARGET_ARCH=x86_64
 TARGET_OS=linux
 
 #Ugly and fragile hack to cope with floating between machines.
-LIBSTDC++_VERSION=
+LIBSTDC++_VERSION=6.0.20
 LIBNSL_VERSION=2.6.18
 
 GNU_TARGET_NAME = x86_64-calnex-linux-gnu
@@ -31,9 +31,9 @@ toolchain:
 else
 
 HOSTCC = gcc
-GNU_HOST_NAME = $(HOST_MACHINE)-pc-linux-gnu
+GNU_HOST_NAME = $(GNU_TARGET_NAME)
 TARGET_DISTRO ?= wheezy
-TARGET_REPOMIRROR ?= http://ftp.debian.org/debian/
+TARGET_REPO_MIRROR ?= http://ftp.debian.org/debian/
 TARGET_CROSS_TOP = $(BASE_DIR)/toolchain
 TARGET_CROSS = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/bin/$(GNU_TARGET_NAME)-
 TARGET_LIBDIR = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/lib

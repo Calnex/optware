@@ -76,7 +76,6 @@ ifeq (darwin,$(TARGET_OS))
 	sed -i -e 's/`.*uname -s.*`/Darwin/' $(ZLIB_BUILD_DIR)/configure
 endif
 	(cd $(ZLIB_BUILD_DIR); \
-		$(TARGET_CONFIGURE_OPTS) \
 		prefix=/opt \
 		./configure \
 		--shared \

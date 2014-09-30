@@ -120,7 +120,6 @@ ifeq ($(OPTWARE_TARGET), $(filter ts101 vt4, $(OPTWARE_TARGET)))
 	sed -i -e '/_POSIX_TIMERS/s|#elif .*|#elif 0|' $(@D)/src/ptimer.c
 endif
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(WGET_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(WGET_LDFLAGS)" \
 		ac_cv_header_idna_h=no \
@@ -145,7 +144,6 @@ ifeq ($(OPTWARE_TARGET), $(filter ts101 vt4, $(OPTWARE_TARGET)))
 	sed -i -e '/_POSIX_TIMERS/s|#elif .*|#elif 0|' $(@D)/src/ptimer.c
 endif
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(WGET_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(WGET_LDFLAGS)" \
 		./configure \

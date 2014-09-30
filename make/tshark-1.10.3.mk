@@ -125,7 +125,6 @@ $(TSHARK_1.10.3_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_1.10.3_SOURCE) $(TSHA
 	sed -i -e '/^INCLUDES/s|-I$$(includedir)|-I$(STAGING_INCLUDE_DIR)|' $(@D)/plugins/*/Makefile.am
 	autoreconf -vif $(@D)
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(TSHARK_1.10.3_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(TSHARK_1.10.3_LDFLAGS)" \
 		LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \

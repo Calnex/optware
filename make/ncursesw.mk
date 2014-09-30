@@ -6,7 +6,7 @@
 
 NCURSESW_DIR=$(BUILD_DIR)/ncursesw
 
-NCURSESW_VERSION=5.9
+NCURSESW_VERSION=5.7
 NCURSESW_SITE=ftp://invisible-island.net/ncurses
 NCURSESW_SOURCE=ncurses-$(NCURSESW_VERSION).tar.gz
 NCURSESW_UNZIP=zcat
@@ -55,7 +55,6 @@ ifneq ($(HOSTCC), $(TARGET_CC))
 endif
 	# configure again, this time for real
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS)" \
 		./configure \
@@ -79,7 +78,7 @@ ncursesw-unpack: $(NCURSESW_DIR)/.configured
 
 $(NCURSESW_DIR)/.built: $(NCURSESW_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSESW_DIR)
+	$(MAKE) -C $(NCURSESW_DIR)
 	touch $@
 
 ncursesw: $(NCURSESW_DIR)/.built

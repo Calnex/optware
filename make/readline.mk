@@ -123,7 +123,6 @@ ifeq (darwin,$(TARGET_OS))
 endif
 	autoreconf -vif $(@D); \
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(READLINE_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(READLINE_LDFLAGS)" \
 		./configure \

@@ -132,7 +132,6 @@ $(XSP_BUILD_DIR)/.configured: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES) make/xsp.mk
 	sed -i -e 's/dbpage1.sqlite \\//g' $(@D)/test/1.1/webcontrols/Makefile.am 
 	sed -i -e '/dbpage2.sqlite/d' $(@D)/test/1.1/webcontrols/Makefile.am 
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(XSP_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(XSP_LDFLAGS)" \
 		PATH="/opt/bin:/opt/sbin:$(PATH)" \

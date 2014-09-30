@@ -6,7 +6,7 @@
 
 NCURSES_DIR=$(BUILD_DIR)/ncurses
 
-NCURSES_VERSION=5.9
+NCURSES_VERSION=5.7
 NCURSES=ncurses-$(NCURSES_VERSION)
 NCURSES_SITE=ftp://invisible-island.net/ncurses
 NCURSES_SOURCE=$(NCURSES).tar.gz
@@ -75,7 +75,6 @@ endif
 	$(NCURSES_UNZIP) $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	mv $(BUILD_DIR)/$(NCURSES) $(@D)
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS)" \
 		./configure \

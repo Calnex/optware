@@ -117,7 +117,6 @@ $(SQLITE_BUILD_DIR)/.configured: $(DL_DIR)/$(SQLITE_SOURCE) $(SQLITE_PATCHES) ma
 		then autoreconf -vif $(@D); \
 	fi
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		config_BUILD_CC="$(HOSTCC)" \
 		config_TARGET_CC="$(TARGET_CC)" \
 		./configure \

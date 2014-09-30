@@ -118,7 +118,6 @@ $(NETTLE_BUILD_DIR)/.configured: $(DL_DIR)/$(NETTLE_SOURCE) $(NETTLE_PATCHES) ma
 		then mv $(BUILD_DIR)/$(NETTLE_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(NETTLE_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(NETTLE_LDFLAGS)" \
 		./configure \

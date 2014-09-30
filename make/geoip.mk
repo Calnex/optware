@@ -117,7 +117,6 @@ $(GEOIP_BUILD_DIR)/.configured: $(DL_DIR)/$(GEOIP_SOURCE) $(GEOIP_PATCHES) make/
 	fi
 	(cd $(@D); \
 		libtoolize -f && \
-		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GEOIP_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(GEOIP_LDFLAGS)" \
 		./configure \
