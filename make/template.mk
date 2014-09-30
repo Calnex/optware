@@ -122,6 +122,7 @@ $(<FOO>_BUILD_DIR)/.configured: $(DL_DIR)/$(<FOO>_SOURCE) $(<FOO>_PATCHES) make/
 		then mv $(BUILD_DIR)/$(<FOO>_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(<FOO>_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(<FOO>_LDFLAGS)" \
 		./configure \
@@ -142,7 +143,7 @@ $(<FOO>_BUILD_DIR)/.configured: $(DL_DIR)/$(<FOO>_SOURCE) $(<FOO>_PATCHES) make/
 #
 $(<FOO>_BUILD_DIR)/.built: $(<FOO>_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -155,7 +156,7 @@ $(<FOO>_BUILD_DIR)/.built: $(<FOO>_BUILD_DIR)/.configured
 #
 $(<FOO>_BUILD_DIR)/.staged: $(<FOO>_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 <foo>-stage: $(<FOO>_BUILD_DIR)/.staged
@@ -193,7 +194,7 @@ $(<FOO>_IPK_DIR)/CONTROL/control:
 #
 $(<FOO>_IPK): $(<FOO>_BUILD_DIR)/.built
 	rm -rf $(<FOO>_IPK_DIR) $(BUILD_DIR)/<foo>_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(<FOO>_BUILD_DIR) DESTDIR=$(<FOO>_IPK_DIR) install-strip
+	$(MAKE) -C $(<FOO>_BUILD_DIR) DESTDIR=$(<FOO>_IPK_DIR) install-strip
 #	install -d $(<FOO>_IPK_DIR)/opt/etc/
 #	install -m 644 $(<FOO>_SOURCE_DIR)/<foo>.conf $(<FOO>_IPK_DIR)/opt/etc/<foo>.conf
 #	install -d $(<FOO>_IPK_DIR)/opt/etc/init.d
@@ -222,7 +223,7 @@ $(<FOO>_IPK): $(<FOO>_BUILD_DIR)/.built
 #
 <foo>-clean:
 	rm -f $(<FOO>_BUILD_DIR)/.built
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(<FOO>_BUILD_DIR) clean
+	$(MAKE) -C $(<FOO>_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

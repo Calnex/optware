@@ -43,13 +43,15 @@ bzip2-unpack: $(BZIP2_BUILD_DIR)/.configured
 
 $(BZIP2_BUILD_DIR)/.built: $(BZIP2_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) \
+	$(MAKE) -C $(@D) \
 		PREFIX=/opt \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(BZIP2_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(BZIP2_LDFLAGS)" \
 		-f Makefile-libbz2_so
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) \
+	$(MAKE) -C $(@D) \
 		PREFIX=/opt \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(BZIP2_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(BZIP2_LDFLAGS)" \
 		-f Makefile \
@@ -92,15 +94,15 @@ $(BZIP2_IPK_DIR)/CONTROL/control:
 $(BZIP2_IPK): $(BZIP2_BUILD_DIR)/.built
 	rm -rf $(BZIP2_IPK_DIR) $(BUILD_DIR)/bzip2_*_$(TARGET_ARCH).ipk
 	install -d $(BZIP2_IPK_DIR)/opt/bin
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(BZIP2_BUILD_DIR)/bzip2 -o $(BZIP2_IPK_DIR)/opt/bin/bzip2-bzip2
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(BZIP2_BUILD_DIR)/bzip2recover -o $(BZIP2_IPK_DIR)/opt/bin/bzip2recover
+	$(STRIP_COMMAND) $(BZIP2_BUILD_DIR)/bzip2 -o $(BZIP2_IPK_DIR)/opt/bin/bzip2-bzip2
+	$(STRIP_COMMAND) $(BZIP2_BUILD_DIR)/bzip2recover -o $(BZIP2_IPK_DIR)/opt/bin/bzip2recover
 	install -d $(BZIP2_IPK_DIR)/opt/include
 	install -m 644 $(BZIP2_BUILD_DIR)/bzlib.h $(BZIP2_IPK_DIR)/opt/include
 	install -d $(BZIP2_IPK_DIR)/opt/lib
 	install -m 644 $(BZIP2_BUILD_DIR)/libbz2.so.$(BZIP2_LIB_VERSION) $(BZIP2_IPK_DIR)/opt/lib
 	cd $(BZIP2_IPK_DIR)/opt/lib && ln -fs libbz2.so.$(BZIP2_LIB_VERSION) libbz2.so.1.0
 	cd $(BZIP2_IPK_DIR)/opt/lib && ln -fs libbz2.so.1.0 libbz2.so
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(BZIP2_IPK_DIR)/opt/lib/libbz2.so.$(BZIP2_LIB_VERSION)
+	$(STRIP_COMMAND) $(BZIP2_IPK_DIR)/opt/lib/libbz2.so.$(BZIP2_LIB_VERSION)
 	install -d $(BZIP2_IPK_DIR)/opt/doc/bzip2
 	install -m 644 $(BZIP2_BUILD_DIR)/manual*.html $(BZIP2_IPK_DIR)/opt/doc/bzip2
 	cd $(BZIP2_IPK_DIR)/opt/bin && ln -fs bzip2 bzcat
@@ -121,7 +123,7 @@ $(BZIP2_IPK): $(BZIP2_BUILD_DIR)/.built
 bzip2-ipk: bzip2-stage $(BZIP2_IPK)
 
 bzip2-clean:
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(BZIP2_BUILD_DIR) clean
+	$(MAKE) -C $(BZIP2_BUILD_DIR) clean
 
 bzip2-dirclean:
 	rm -rf $(BUILD_DIR)/$(BZIP2_DIR) $(BZIP2_BUILD_DIR) $(BZIP2_IPK_DIR) $(BZIP2_IPK)

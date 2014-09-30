@@ -114,6 +114,7 @@ $(LIBTASN1_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBTASN1_SOURCE) $(LIBTASN1_PATCH
 #	cat $(LIBTASN1_PATCHES) | patch -d $(BUILD_DIR)/$(LIBTASN1_DIR) -p1
 	mv $(BUILD_DIR)/$(LIBTASN1_DIR) $(@D)
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(LIBTASN1_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(LIBTASN1_LDFLAGS)" \
 		./configure \
@@ -133,7 +134,7 @@ libtasn1-unpack: $(LIBTASN1_BUILD_DIR)/.configured
 #
 $(LIBTASN1_BUILD_DIR)/.built: $(LIBTASN1_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -146,7 +147,7 @@ libtasn1: $(LIBTASN1_BUILD_DIR)/.built
 #
 $(LIBTASN1_BUILD_DIR)/.staged: $(LIBTASN1_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBTASN1_BUILD_DIR) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(LIBTASN1_BUILD_DIR) DESTDIR=$(STAGING_DIR) install
 #	sed -i -e 's|echo $$includes $$tasn1_cflags|echo "-I$(STAGING_INCLUDE_DIR)"|' $(STAGING_PREFIX)/bin/libtasn1-config
 	rm -f $(STAGING_DIR)/opt/lib/libtasn1.la
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/libtasn1.pc
@@ -187,7 +188,7 @@ $(LIBTASN1_IPK_DIR)/CONTROL/control:
 #
 $(LIBTASN1_IPK): $(LIBTASN1_BUILD_DIR)/.built
 	rm -rf $(LIBTASN1_IPK_DIR) $(BUILD_DIR)/libtasn1_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBTASN1_BUILD_DIR) DESTDIR=$(LIBTASN1_IPK_DIR) install-strip
+	$(MAKE) -C $(LIBTASN1_BUILD_DIR) DESTDIR=$(LIBTASN1_IPK_DIR) install-strip
 #	rm -r $(LIBTASN1_IPK_DIR)/opt/info
 	#install -d $(LIBTASN1_IPK_DIR)/opt/etc/
 	#install -m 644 $(LIBTASN1_SOURCE_DIR)/libtasn1.conf $(LIBTASN1_IPK_DIR)/opt/etc/libtasn1.conf
@@ -209,7 +210,7 @@ libtasn1-ipk: $(LIBTASN1_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 libtasn1-clean:
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBTASN1_BUILD_DIR) clean
+	$(MAKE) -C $(LIBTASN1_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

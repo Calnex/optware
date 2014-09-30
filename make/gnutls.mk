@@ -120,6 +120,7 @@ $(GNUTLS_BUILD_DIR)/.configured: $(DL_DIR)/$(GNUTLS_SOURCE) $(GNUTLS_PATCHES) ma
 	mv $(BUILD_DIR)/$(GNUTLS_DIR) $(@D)
 	(cd $(@D); autoreconf -vif)
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GNUTLS_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(GNUTLS_LDFLAGS)" \
 		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
@@ -142,7 +143,7 @@ gnutls-unpack: $(GNUTLS_BUILD_DIR)/.configured
 #
 $(GNUTLS_BUILD_DIR)/.built: $(GNUTLS_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -156,7 +157,7 @@ gnutls: $(GNUTLS_BUILD_DIR)/.built
 $(GNUTLS_BUILD_DIR)/.staged: $(GNUTLS_BUILD_DIR)/.built
 	rm -f $@
 	rm -f $(STAGING_PREFIX)/bin/*gnutls*
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) install \
+	$(MAKE) -C $(@D) install \
 		DESTDIR=$(STAGING_DIR) program_transform_name=""
 #	sed -i -e 's|echo $$includes $$.*_cflags|echo "-I$(STAGING_INCLUDE_DIR)"|' $(STAGING_PREFIX)/bin/*gnutls-config
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/gnutls*.pc
@@ -214,7 +215,7 @@ $(GNUTLS-DEV_IPK_DIR)/CONTROL/control:
 $(GNUTLS_IPK) $(GNUTLS-DEV_IPK): $(GNUTLS_BUILD_DIR)/.built
 	rm -rf $(GNUTLS_IPK_DIR) $(BUILD_DIR)/gnutls_*_$(TARGET_ARCH).ipk
 	rm -rf $(GNUTLS-DEV_IPK_DIR) $(BUILD_DIR)/gnutls-dev_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(GNUTLS_BUILD_DIR) DESTDIR=$(GNUTLS_IPK_DIR) program_transform_name="" install-strip
+	$(MAKE) -C $(GNUTLS_BUILD_DIR) DESTDIR=$(GNUTLS_IPK_DIR) program_transform_name="" install-strip
 	install -d $(GNUTLS-DEV_IPK_DIR)/opt
 	mv $(GNUTLS_IPK_DIR)/opt/include $(GNUTLS-DEV_IPK_DIR)/opt/
 	install -d $(GNUTLS-DEV_IPK_DIR)/opt/share/man
@@ -241,7 +242,7 @@ gnutls-ipk: $(GNUTLS_IPK) $(GNUTLS-DEV_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 gnutls-clean:
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(GNUTLS_BUILD_DIR) clean
+	$(MAKE) -C $(GNUTLS_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

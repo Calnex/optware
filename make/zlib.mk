@@ -58,7 +58,7 @@ $(ZLIB_HOST_BUILD_DIR)/.staged: host/.configured $(DL_DIR)/$(ZLIB_SOURCE) make/z
 		./configure \
 		--shared \
 	)
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	install -d $(HOST_STAGING_INCLUDE_DIR)
 	install -m 644 $(@D)/zlib.h $(HOST_STAGING_INCLUDE_DIR)
 	install -m 644 $(@D)/zconf.h $(HOST_STAGING_INCLUDE_DIR)
@@ -76,6 +76,7 @@ ifeq (darwin,$(TARGET_OS))
 	sed -i -e 's/`.*uname -s.*`/Darwin/' $(ZLIB_BUILD_DIR)/configure
 endif
 	(cd $(ZLIB_BUILD_DIR); \
+		$(TARGET_CONFIGURE_OPTS) \
 		prefix=/opt \
 		./configure \
 		--shared \
@@ -86,7 +87,7 @@ zlib-unpack: $(ZLIB_BUILD_DIR)/.configured
 
 $(ZLIB_BUILD_DIR)/.built: $(ZLIB_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) RANLIB="$(TARGET_RANLIB)" AR="$(TARGET_AR) rc" \
+	$(MAKE) RANLIB="$(TARGET_RANLIB)" AR="$(TARGET_AR) rc" \
 		SHAREDLIB="libz.$(SHLIB_EXT)" \
 		SHAREDLIBV="libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB)" \
 		SHAREDLIBM="libz$(SO).1$(DYLIB)" \
@@ -147,7 +148,7 @@ $(ZLIB_IPK): $(ZLIB_BUILD_DIR)/.built
 	install -m 644 $(ZLIB_BUILD_DIR)/zconf.h $(ZLIB_IPK_DIR)/opt/include
 	install -d $(ZLIB_IPK_DIR)/opt/lib
 	install -m 644 $(ZLIB_BUILD_DIR)/libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB) $(ZLIB_IPK_DIR)/opt/lib
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(ZLIB_IPK_DIR)/opt/lib/libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB)
+	$(STRIP_COMMAND) $(ZLIB_IPK_DIR)/opt/lib/libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB)
 	cd $(ZLIB_IPK_DIR)/opt/lib && ln -fs libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB) libz$(SO).1$(DYLIB)
 	cd $(ZLIB_IPK_DIR)/opt/lib && ln -fs libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB) libz.$(SHLIB_EXT)
 	$(MAKE) $(ZLIB_IPK_DIR)/CONTROL/control
@@ -159,7 +160,7 @@ zlib-ipk: $(ZLIB_IPK)
 zlib-clean: zlib-unstage
 	rm -f $(ZLIB_BUILD_DIR)/.built
 	rm -f $(ZLIB_HOST_BUILD_DIR)/.staged
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(ZLIB_BUILD_DIR) clean
+	$(MAKE) -C $(ZLIB_BUILD_DIR) clean
 
 zlib-dirclean: zlib-unstage
 	rm -rf $(BUILD_DIR)/$(ZLIB_DIR) $(ZLIB_BUILD_DIR) $(ZLIB_IPK_DIR) $(ZLIB_IPK)

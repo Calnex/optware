@@ -28,25 +28,8 @@ LIBSTDC++_LIBNAME_MAJOR=$(strip \
 # 	ts101
 # 	openwrt-ixp4xx
 # 	gumstix1151
-ifeq (glibc, $(LIBC_STYLE))
-LIBSTDC++_USED=yes
-else
-ifeq (libstdc++, $(filter libstdc++, $(PACKAGES)))
-LIBSTDC++_USED=yes
-endif
-endif
-
-ifndef LIBSTDC++_USED
-LIBSTDC++_DEPENDS=libuclibc++
-LIBSTDC++_VERSION=0.2.0
-LIBSTDC++_DESCRIPTION==Standard C++ library, wrapped for uClibc++
-LIBSTDC++_LIBNAME=
-endif
-
-LIBSTDC++_IPK_VERSION=6
-
+LIBSTDC++_IPK_VERSION=1
 LIBSTDC++_TARGET_LIBDIR ?= $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/$(GNU_TARGET_NAME)/lib
-
 LIBSTDC++_BUILD_DIR=$(BUILD_DIR)/libstdc++
 LIBSTDC++_SOURCE_DIR=$(SOURCE_DIR)/libstdc++
 LIBSTDC++_IPK_DIR=$(BUILD_DIR)/libstdc++-$(LIBSTDC++_VERSION)-ipk
@@ -107,7 +90,7 @@ ifdef LIBSTDC++_USED
 	 ln -s $(LIBSTDC++_LIBNAME_FULL) $(LIBSTDC++_LIBNAME); \
 	 ln -s $(LIBSTDC++_LIBNAME_FULL) $(LIBSTDC++_LIBNAME_MAJOR) \
 	)
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(LIBSTDC++_IPK_DIR)/opt/lib/*.$(SHLIB_EXT)
+	$(STRIP_COMMAND) $(LIBSTDC++_IPK_DIR)/opt/lib/*.$(SHLIB_EXT)
 endif
 	$(MAKE) $(LIBSTDC++_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBSTDC++_IPK_DIR)

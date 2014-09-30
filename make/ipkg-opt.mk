@@ -129,6 +129,7 @@ $(IPKG-OPT_BUILD_DIR)/.configured: $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
 	(cd $(@D); \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(IPKG-OPT_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(IPKG-OPT_LDFLAGS)" \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -147,8 +148,8 @@ ipkg-opt-unpack: $(IPKG-OPT_BUILD_DIR)/.configured
 #
 $(IPKG-OPT_BUILD_DIR)/.built: $(IPKG-OPT_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) \
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	\
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -190,7 +191,7 @@ $(IPKG-OPT_IPK_DIR)/CONTROL/control:
 
 $(IPKG-OPT_IPK): $(IPKG-OPT_BUILD_DIR)/.built
 	rm -rf $(IPKG-OPT_IPK_DIR) $(BUILD_DIR)/ipkg-opt_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(IPKG-OPT_BUILD_DIR) DESTDIR=$(IPKG-OPT_IPK_DIR) install-strip
+	$(MAKE) -C $(IPKG-OPT_BUILD_DIR) DESTDIR=$(IPKG-OPT_IPK_DIR) install-strip
 	install -d $(IPKG-OPT_IPK_DIR)/opt/etc/
 ifneq (, $(filter ddwrt ds101 ds101g fsg3 gumstix1151 mss nas100d nslu2 oleg slugosbe slugosle ts72xx wl500g, $(OPTWARE_TARGET)))
 	echo "#Uncomment the following line for native packages feed (if any)" \
@@ -229,7 +230,7 @@ ipkg-opt-ipk: $(IPKG-OPT_BUILD_DIR)/.ipk
 #
 ipkg-opt-clean:
 	rm -f $(IPKG-OPT_BUILD_DIR)/.built
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(IPKG-OPT_BUILD_DIR) clean
+	$(MAKE) -C $(IPKG-OPT_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

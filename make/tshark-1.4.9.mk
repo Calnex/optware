@@ -130,6 +130,7 @@ $(TSHARK_1.4.9_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_1.4.9_SOURCE) $(TSHARK
 #	rm -rf $(@D)/doc
 	autoreconf -vif $(@D)
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(TSHARK_1.4.9_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(TSHARK_1.4.9_LDFLAGS)" \
 		LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
@@ -161,7 +162,7 @@ tshark-$(TSHARK_1.4.9_VERSION)-unpack: $(TSHARK_1.4.9_BUILD_DIR)/.configured
 $(TSHARK_1.4.9_BUILD_DIR)/.built: $(TSHARK_1.4.9_BUILD_DIR)/.configured
 	rm -f $@
 	$(MAKE) CC_FOR_BUILD=$(HOSTCC) CC=$(HOSTCC) -C $(@D)/tools/lemon lemon
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -174,7 +175,7 @@ tshark-$(TSHARK_1.4.9_VERSION): $(TSHARK_1.4.9_BUILD_DIR)/.built
 #
 $(TSHARK_1.4.9_BUILD_DIR)/.staged: $(TSHARK_1.4.9_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 tshark-$(TSHARK_1.4.9_VERSION)-stage: $(TSHARK_1.4.9_BUILD_DIR)/.staged
@@ -212,12 +213,12 @@ $(TSHARK_1.4.9_IPK_DIR)/CONTROL/control:
 #
 $(TSHARK_1.4.9_IPK): $(TSHARK_1.4.9_BUILD_DIR)/.built
 	rm -rf $(TSHARK_1.4.9_IPK_DIR) $(BUILD_DIR)/tshark-$(TSHARK_1.4.9_VERSION)_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(TSHARK_1.4.9_BUILD_DIR) \
+	$(MAKE) -C $(TSHARK_1.4.9_BUILD_DIR) \
 		DESTDIR=$(TSHARK_1.4.9_IPK_DIR) \
 		install
 	rm -f $(TSHARK_1.4.9_IPK_DIR)/$(TSHARK_1.4.9_LIB_DIR)/*.la
 	rm -f $(TSHARK_1.4.9_IPK_DIR)/$(TSHARK_1.4.9_LIB_DIR)/wireshark/plugins/*/*.la
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) \
+	$(STRIP_COMMAND) \
 		$(TSHARK_1.4.9_IPK_DIR)/opt/bin/[a-em-z]* \
 		$(TSHARK_1.4.9_IPK_DIR)/$(TSHARK_1.4.9_LIB_DIR)/lib* \
 		$(TSHARK_1.4.9_IPK_DIR)/$(TSHARK_1.4.9_LIB_DIR)/wireshark/plugins/*/*.so
@@ -239,7 +240,7 @@ tshark-$(TSHARK_1.4.9_VERSION)-ipk: $(TSHARK_1.4.9_IPK)
 #
 tshark-$(TSHARK_1.4.9_VERSION)-clean:
 	rm -f $(TSHARK_1.4.9_BUILD_DIR)/.built
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(TSHARK_1.4.9_BUILD_DIR) clean
+	$(MAKE) -C $(TSHARK_1.4.9_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

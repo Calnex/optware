@@ -105,7 +105,7 @@ $(GLIB_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(GLIB_SOURCE) make/gl
 		./configure \
 		--prefix=/opt	\
 	)
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 glib-host: $(GLIB_HOST_BUILD_DIR)/.built
@@ -113,7 +113,7 @@ glib-host: $(GLIB_HOST_BUILD_DIR)/.built
 
 $(GLIB_HOST_BUILD_DIR)/.staged: $(GLIB_HOST_BUILD_DIR)/.built host/.configured make/glib.mk
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
+	$(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
 	touch $@
 
 glib-host-stage: $(GLIB_HOST_BUILD_DIR)/.staged
@@ -153,6 +153,7 @@ endif
 	chmod a-w $(@D)/glib.cache
 	sed -i -e 's/^ *$$as_echo_n /echo -n /' $(@D)/configure
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GLIB_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(GLIB_LDFLAGS)" \
 		PKG_CONFIG_PATH="$(STAGING_LIB_DIR)/pkgconfig" \
@@ -181,7 +182,7 @@ glib-unpack: $(GLIB_BUILD_DIR)/.configured
 #
 $(GLIB_BUILD_DIR)/.built: $(GLIB_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -195,7 +196,7 @@ glib: $(GLIB_BUILD_DIR)/.built
 #
 $(GLIB_BUILD_DIR)/.staged: $(GLIB_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) install-strip prefix=$(STAGING_DIR)/opt
+	$(MAKE) -C $(@D) install-strip prefix=$(STAGING_DIR)/opt
 	install $(@D)/glib/glibconfig.h $(STAGING_INCLUDE_DIR)/glib-2.0/
 	rm -rf $(STAGING_DIR)/opt/lib/libgio-2.0.la
 	rm -rf $(STAGING_DIR)/opt/lib/libglib-2.0.la
@@ -246,7 +247,7 @@ $(GLIB_IPK_DIR)/CONTROL/control:
 #
 $(GLIB_IPK): $(GLIB_BUILD_DIR)/.built
 	rm -rf $(GLIB_IPK_DIR) $(BUILD_DIR)/glib_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(GLIB_BUILD_DIR) install-strip prefix=$(GLIB_IPK_DIR)/opt
+	$(MAKE) -C $(GLIB_BUILD_DIR) install-strip prefix=$(GLIB_IPK_DIR)/opt
 	rm -rf $(GLIB_IPK_DIR)/opt/share/gtk-doc
 	rm -rf $(GLIB_IPK_DIR)/opt/man
 	$(MAKE) $(GLIB_IPK_DIR)/CONTROL/control
@@ -263,7 +264,7 @@ glib-ipk: $(GLIB_IPK)
 #
 glib-clean:
 	rm -f $(GLIB_BUILD_DIR)/.built
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(GLIB_BUILD_DIR) clean
+	$(MAKE) -C $(GLIB_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

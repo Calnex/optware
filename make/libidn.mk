@@ -114,6 +114,7 @@ $(LIBIDN_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBIDN_SOURCE) $(LIBIDN_PATCHES) ma
 #	cat $(LIBIDN_PATCHES) | patch -d $(BUILD_DIR)/$(LIBIDN_DIR) -p1
 	mv $(BUILD_DIR)/$(LIBIDN_DIR) $(@D)
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(LIBIDN_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(LIBIDN_LDFLAGS)" \
 		./configure \
@@ -135,7 +136,7 @@ libidn-unpack: $(LIBIDN_BUILD_DIR)/.configured
 #
 $(LIBIDN_BUILD_DIR)/.built: $(LIBIDN_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -148,7 +149,7 @@ libidn: $(LIBIDN_BUILD_DIR)/.built
 #
 $(LIBIDN_BUILD_DIR)/.staged: $(LIBIDN_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	rm -f $(STAGING_LIB_DIR)/libidn.la
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/libidn.pc
 	touch $@
@@ -188,7 +189,7 @@ $(LIBIDN_IPK_DIR)/CONTROL/control:
 #
 $(LIBIDN_IPK): $(LIBIDN_BUILD_DIR)/.built
 	rm -rf $(LIBIDN_IPK_DIR) $(BUILD_DIR)/libidn_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBIDN_BUILD_DIR) DESTDIR=$(LIBIDN_IPK_DIR) install-strip
+	$(MAKE) -C $(LIBIDN_BUILD_DIR) DESTDIR=$(LIBIDN_IPK_DIR) install-strip
 	rm -f $(LIBIDN_IPK_DIR)/opt/lib/libidn.a
 	$(MAKE) $(LIBIDN_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBIDN_IPK_DIR)
@@ -203,7 +204,7 @@ libidn-ipk: $(LIBIDN_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 libidn-clean:
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBIDN_BUILD_DIR) clean
+	$(MAKE) -C $(LIBIDN_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

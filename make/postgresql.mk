@@ -121,6 +121,7 @@ $(POSTGRESQL_BUILD_DIR)/.configured: $(DL_DIR)/$(POSTGRESQL_SOURCE) $(POSTGRESQL
 	fi
 	mv $(BUILD_DIR)/$(POSTGRESQL_DIR) $(@D)
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(POSTGRESQL_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(POSTGRESQL_LDFLAGS)" \
 		$(POSTGRESQL_CONFIG_ENV) \
@@ -143,7 +144,7 @@ postgresql-unpack: $(POSTGRESQL_BUILD_DIR)/.configured
 #
 $(POSTGRESQL_BUILD_DIR)/.built: $(POSTGRESQL_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) \
+	$(MAKE) -C $(@D) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(POSTGRESQL_CPPFLAGS)" \
 		;
 	touch $@
@@ -158,7 +159,7 @@ postgresql: $(POSTGRESQL_BUILD_DIR)/.built
 #
 $(POSTGRESQL_BUILD_DIR)/.staged: $(POSTGRESQL_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 postgresql-stage: $(POSTGRESQL_BUILD_DIR)/.staged
@@ -194,9 +195,9 @@ $(POSTGRESQL_IPK_DIR)/CONTROL/control:
 #
 $(POSTGRESQL_IPK): $(POSTGRESQL_BUILD_DIR)/.built
 	rm -rf $(POSTGRESQL_IPK_DIR) $(BUILD_DIR)/postgresql_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(POSTGRESQL_BUILD_DIR) DESTDIR=$(POSTGRESQL_IPK_DIR) install-strip
+	$(MAKE) -C $(POSTGRESQL_BUILD_DIR) DESTDIR=$(POSTGRESQL_IPK_DIR) install-strip
 	rm -f $(POSTGRESQL_IPK_DIR)/opt/lib/libpq.a $(POSTGRESQL_IPK_DIR)/opt/lib/libecpg*.a $(POSTGRESQL_IPK_DIR)/opt/lib/libpgtypes*.a
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(POSTGRESQL_IPK_DIR)/opt/bin/pg_config
+	$(STRIP_COMMAND) $(POSTGRESQL_IPK_DIR)/opt/bin/pg_config
 #	install -d $(POSTGRESQL_IPK_DIR)/opt/etc/
 #	install -m 644 $(POSTGRESQL_SOURCE_DIR)/postgresql.conf $(POSTGRESQL_IPK_DIR)/opt/etc/postgresql.conf
 	install -d $(POSTGRESQL_IPK_DIR)/opt/etc/init.d
@@ -234,7 +235,7 @@ postgresql-ipk: $(POSTGRESQL_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 postgresql-clean:
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(POSTGRESQL_BUILD_DIR) clean
+	$(MAKE) -C $(POSTGRESQL_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

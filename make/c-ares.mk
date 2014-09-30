@@ -116,6 +116,7 @@ $(C_ARES_BUILD_DIR)/.configured: $(DL_DIR)/$(C_ARES_SOURCE) $(C_ARES_PATCHES) ma
 		then mv $(BUILD_DIR)/$(C_ARES_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(C_ARES_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(C_ARES_LDFLAGS)" \
 		./configure \
@@ -137,8 +138,8 @@ c-ares-unpack: $(C_ARES_BUILD_DIR)/.configured
 #
 $(C_ARES_BUILD_DIR)/.built: $(C_ARES_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) \
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	\
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -151,8 +152,8 @@ c-ares: $(C_ARES_BUILD_DIR)/.built
 #
 $(C_ARES_BUILD_DIR)/.staged: $(C_ARES_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) \
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	\
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/libcares.pc
 	touch $@
 
@@ -191,7 +192,7 @@ $(C_ARES_IPK_DIR)/CONTROL/control:
 #
 $(C_ARES_IPK): $(C_ARES_BUILD_DIR)/.built
 	rm -rf $(C_ARES_IPK_DIR) $(BUILD_DIR)/c-ares_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(C_ARES_BUILD_DIR) DESTDIR=$(C_ARES_IPK_DIR) install-strip
+	$(MAKE) -C $(C_ARES_BUILD_DIR) DESTDIR=$(C_ARES_IPK_DIR) install-strip
 	$(MAKE) $(C_ARES_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(C_ARES_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(C_ARES_IPK_DIR)
@@ -206,7 +207,7 @@ c-ares-ipk: $(C_ARES_IPK)
 #
 c-ares-clean:
 	rm -f $(C_ARES_BUILD_DIR)/.built
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(C_ARES_BUILD_DIR) clean
+	$(MAKE) -C $(C_ARES_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

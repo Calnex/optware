@@ -115,9 +115,9 @@ $(GEOIP_BUILD_DIR)/.configured: $(DL_DIR)/$(GEOIP_SOURCE) $(GEOIP_PATCHES) make/
 	if test "$(BUILD_DIR)/$(GEOIP_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(GEOIP_DIR) $(@D) ; \
 	fi
-	autoreconf -vif $(@D); \
 	(cd $(@D); \
 		libtoolize -f && \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GEOIP_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(GEOIP_LDFLAGS)" \
 		./configure \
@@ -138,7 +138,7 @@ geoip-unpack: $(GEOIP_BUILD_DIR)/.configured
 #
 $(GEOIP_BUILD_DIR)/.built: $(GEOIP_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -151,7 +151,7 @@ geoip: $(GEOIP_BUILD_DIR)/.built
 #
 $(GEOIP_BUILD_DIR)/.staged: $(GEOIP_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	rm -f $(STAGING_LIB_DIR)/libGeoIP*.la
 	touch $@
 
@@ -190,8 +190,8 @@ $(GEOIP_IPK_DIR)/CONTROL/control:
 #
 $(GEOIP_IPK): $(GEOIP_BUILD_DIR)/.built
 	rm -rf $(GEOIP_IPK_DIR) $(BUILD_DIR)/geoip_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(GEOIP_BUILD_DIR) DESTDIR=$(GEOIP_IPK_DIR) install
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(GEOIP_IPK_DIR)/opt/bin/geoip* $(GEOIP_IPK_DIR)/opt/lib/libGeoIP*.so*
+	$(MAKE) -C $(GEOIP_BUILD_DIR) DESTDIR=$(GEOIP_IPK_DIR) install
+	$(STRIP_COMMAND) $(GEOIP_IPK_DIR)/opt/bin/geoip* $(GEOIP_IPK_DIR)/opt/lib/libGeoIP*.so*
 	$(MAKE) $(GEOIP_IPK_DIR)/CONTROL/control
 	echo $(GEOIP_CONFFILES) | sed -e 's/ /\n/g' > $(GEOIP_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GEOIP_IPK_DIR)
@@ -207,7 +207,7 @@ geoip-ipk: $(GEOIP_IPK)
 #
 geoip-clean:
 	rm -f $(GEOIP_BUILD_DIR)/.built
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(GEOIP_BUILD_DIR) clean
+	$(MAKE) -C $(GEOIP_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

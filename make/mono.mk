@@ -118,6 +118,7 @@ $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mon
 		then mv $(BUILD_DIR)/$(MONO_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(MONO_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(MONO_LDFLAGS)" \
 		PATH="$(STAGING_DIR)/opt/bin:$(PATH)" \
@@ -138,7 +139,7 @@ mono-unpack: $(MONO_BUILD_DIR)/.configured
 #
 $(MONO_BUILD_DIR)/.built: $(MONO_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -151,7 +152,7 @@ mono: $(MONO_BUILD_DIR)/.built
 #
 $(MONO_BUILD_DIR)/.staged: $(MONO_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 mono-stage: $(MONO_BUILD_DIR)/.staged
@@ -213,7 +214,7 @@ mono-ipk: $(MONO_IPK)
 #
 mono-clean:
 	rm -f $(MONO_BUILD_DIR)/.built
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(MONO_BUILD_DIR) clean
+	$(MAKE) -C $(MONO_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

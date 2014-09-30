@@ -6,7 +6,7 @@
 
 NCURSESW_DIR=$(BUILD_DIR)/ncursesw
 
-NCURSESW_VERSION=5.7
+NCURSESW_VERSION=5.9
 NCURSESW_SITE=ftp://invisible-island.net/ncurses
 NCURSESW_SOURCE=ncurses-$(NCURSESW_VERSION).tar.gz
 NCURSESW_UNZIP=zcat
@@ -51,10 +51,11 @@ ifneq ($(HOSTCC), $(TARGET_CC))
 		--disable-widec		\
 		--enable-safe-sprintf	\
 	);
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)/ncurses make_hash make_keys
+	$(MAKE) -C $(@D)/ncurses make_hash make_keys
 endif
 	# configure again, this time for real
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS)" \
 		./configure \
@@ -85,7 +86,7 @@ ncursesw: $(NCURSESW_DIR)/.built
 
 $(NCURSESW_DIR)/.staged: $(NCURSESW_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(STAGING_DIR) install.includes install.libs
+	$(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(STAGING_DIR) install.includes install.libs
 	sed -i -e '/^prefix=/s|=.*|=$(STAGING_PREFIX)|' $(STAGING_PREFIX)/bin/ncursesw[0-9]*-config
 	touch $@
 
@@ -122,15 +123,15 @@ $(NCURSESW-DEV_IPK_DIR)/CONTROL/control:
 $(NCURSESW_IPK) $(NCURSESW-DEV_IPK): $(NCURSESW_DIR)/.built
 	rm -rf $(NCURSESW_IPK_DIR) $(BUILD_DIR)/ncursesw_*_$(TARGET_ARCH).ipk
 	rm -rf $(NCURSESW-DEV_IPK_DIR) $(BUILD_DIR)/ncursesw-dev_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(NCURSESW_IPK_DIR) install.libs
+	$(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(NCURSESW_IPK_DIR) install.libs
 	rm -rf $(NCURSESW_IPK_DIR)/opt/include
 	rm -f $(NCURSESW_IPK_DIR)/opt/lib/*.a
-#	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(NCURSESW_IPK_DIR)/opt/bin/*
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(NCURSESW_IPK_DIR)/opt/lib/*.so
+#	$(STRIP_COMMAND) $(NCURSESW_IPK_DIR)/opt/bin/*
+	$(STRIP_COMMAND) $(NCURSESW_IPK_DIR)/opt/lib/*.so
 	$(MAKE) $(NCURSESW_IPK_DIR)/CONTROL/control
 	# ncursesw-dev
 	install -d $(NCURSESW-DEV_IPK_DIR)/opt/include/ncursesw
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(NCURSESW-DEV_IPK_DIR) install.includes
+	$(MAKE) -C $(NCURSESW_DIR) DESTDIR=$(NCURSESW-DEV_IPK_DIR) install.includes
 	# building ipk's
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(NCURSESW_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(NCURSESW_IPK_DIR)
@@ -141,7 +142,7 @@ $(NCURSESW_IPK) $(NCURSESW-DEV_IPK): $(NCURSESW_DIR)/.built
 ncursesw-ipk: $(NCURSESW_IPK) $(NCURSESW-DEV_IPK)
 
 ncursesw-clean:
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(NCURSESW_DIR) clean
+	$(MAKE) -C $(NCURSESW_DIR) clean
 
 ncursesw-dirclean:
 	rm -rf $(NCURSESW_DIR) \

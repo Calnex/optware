@@ -117,6 +117,7 @@ $(LIBGCRYPT_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBGCRYPT_SOURCE) $(LIBGCRYPT_PA
 	fi
 	mv $(BUILD_DIR)/$(LIBGCRYPT_DIR) $(@D)
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(LIBGCRYPT_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(LIBGCRYPT_LDFLAGS)" \
 		ac_cv_sys_symbol_underscore=no \
@@ -139,7 +140,7 @@ libgcrypt-unpack: $(LIBGCRYPT_BUILD_DIR)/.configured
 #
 $(LIBGCRYPT_BUILD_DIR)/.built: $(LIBGCRYPT_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -152,7 +153,7 @@ libgcrypt: $(LIBGCRYPT_BUILD_DIR)/.built
 #
 $(LIBGCRYPT_BUILD_DIR)/.staged: $(LIBGCRYPT_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) transform='' install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) transform='' install
 	sed -i -e '/_cflags=/s|-I/opt/include||g' \
 	       -e '/_cflags=/s|-I$${prefix}/include|-I$(STAGING_INCLUDE_DIR)|' \
 	       -e 's|I$$includedir|I$(STAGING_INCLUDE_DIR)|' \
@@ -195,7 +196,7 @@ $(LIBGCRYPT_IPK_DIR)/CONTROL/control:
 #
 $(LIBGCRYPT_IPK): $(LIBGCRYPT_BUILD_DIR)/.built
 	rm -rf $(LIBGCRYPT_IPK_DIR) $(BUILD_DIR)/libgcrypt_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBGCRYPT_BUILD_DIR) DESTDIR=$(LIBGCRYPT_IPK_DIR) transform='' install-strip
+	$(MAKE) -C $(LIBGCRYPT_BUILD_DIR) DESTDIR=$(LIBGCRYPT_IPK_DIR) transform='' install-strip
 	#install -d $(LIBGCRYPT_IPK_DIR)/opt/etc/
 	#install -m 644 $(LIBGCRYPT_SOURCE_DIR)/libgcrypt.conf $(LIBGCRYPT_IPK_DIR)/opt/etc/libgcrypt.conf
 	#install -d $(LIBGCRYPT_IPK_DIR)/opt/etc/init.d
@@ -216,7 +217,7 @@ libgcrypt-ipk: $(LIBGCRYPT_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 libgcrypt-clean:
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBGCRYPT_BUILD_DIR) clean
+	$(MAKE) -C $(LIBGCRYPT_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

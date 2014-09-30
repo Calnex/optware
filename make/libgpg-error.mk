@@ -114,6 +114,7 @@ $(LIBGPG-ERROR_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBGPG-ERROR_SOURCE) $(LIBGPG
 	#cat $(LIBGPG-ERROR_PATCHES) | patch -d $(BUILD_DIR)/$(LIBGPG-ERROR_DIR) -p1
 	mv $(BUILD_DIR)/$(LIBGPG-ERROR_DIR) $(@D)
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(LIBGPG-ERROR_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(LIBGPG-ERROR_LDFLAGS)" \
 		./configure \
@@ -134,7 +135,7 @@ libgpg-error-unpack: $(LIBGPG-ERROR_BUILD_DIR)/.configured
 #
 $(LIBGPG-ERROR_BUILD_DIR)/.built: $(LIBGPG-ERROR_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -147,7 +148,7 @@ libgpg-error: $(LIBGPG-ERROR_BUILD_DIR)/.built
 #
 $(LIBGPG-ERROR_BUILD_DIR)/.staged: $(LIBGPG-ERROR_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	sed -i -e 's|-I$$includedir|-I$(STAGING_INCLUDE_DIR)|' $(STAGING_PREFIX)/bin/gpg-error-config
 	rm -f $(STAGING_DIR)/opt/lib/libgpg-error.la
 	touch $@
@@ -187,7 +188,7 @@ $(LIBGPG-ERROR_IPK_DIR)/CONTROL/control:
 #
 $(LIBGPG-ERROR_IPK): $(LIBGPG-ERROR_BUILD_DIR)/.built
 	rm -rf $(LIBGPG-ERROR_IPK_DIR) $(BUILD_DIR)/libgpg-error_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBGPG-ERROR_BUILD_DIR) DESTDIR=$(LIBGPG-ERROR_IPK_DIR) install-strip
+	$(MAKE) -C $(LIBGPG-ERROR_BUILD_DIR) DESTDIR=$(LIBGPG-ERROR_IPK_DIR) install-strip
 	$(MAKE) $(LIBGPG-ERROR_IPK_DIR)/CONTROL/control
 	echo $(LIBGPG-ERROR_CONFFILES) | sed -e 's/ /\n/g' > $(LIBGPG-ERROR_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBGPG-ERROR_IPK_DIR)
@@ -202,7 +203,7 @@ libgpg-error-ipk: $(LIBGPG-ERROR_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 libgpg-error-clean:
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBGPG-ERROR_BUILD_DIR) clean
+	$(MAKE) -C $(LIBGPG-ERROR_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

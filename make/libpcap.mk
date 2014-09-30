@@ -115,6 +115,7 @@ $(LIBPCAP_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBPCAP_SOURCE) $(LIBPCAP_PATCHES)
 	fi
 	mv $(BUILD_DIR)/$(LIBPCAP_DIR) $(@D)
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(LIBPCAP_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(LIBPCAP_LDFLAGS)" \
 		ac_cv_linux_vers=2 \
@@ -139,7 +140,7 @@ libpcap-unpack: $(LIBPCAP_BUILD_DIR)/.configured
 #
 $(LIBPCAP_BUILD_DIR)/.built: $(LIBPCAP_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) \
+	$(MAKE) -C $(@D) \
 		LDFLAGS="$(STAGING_LDFLAGS) $(LIBPCAP_LDFLAGS)" \
 		;
 	touch $@
@@ -156,7 +157,7 @@ libpcap: $(LIBPCAP_BUILD_DIR)/.built
 $(LIBPCAP_BUILD_DIR)/.staged: $(LIBPCAP_BUILD_DIR)/.built
 	rm -f $@
 	rm -f $(STAGING_DIR)/opt/share/man/man3/pcap_*.3pcap
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	rm -f $(STAGING_LIB_DIR)/opt/lib/libpcap.a
 	touch $@
 
@@ -212,8 +213,8 @@ $(LIBPCAP_IPK) $(LIBPCAP-DEV_IPK): $(LIBPCAP_BUILD_DIR)/.built
 	rm -rf $(LIBPCAP_IPK_DIR) $(BUILD_DIR)/libpcap_*_$(TARGET_ARCH).ipk
 	rm -rf $(LIBPCAP-DEV_IPK_DIR) $(BUILD_DIR)/libpcap-dev_*_$(TARGET_ARCH).ipk
 	install -d $(LIBPCAP_IPK_DIR)/opt/bin
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBPCAP_BUILD_DIR) DESTDIR=$(LIBPCAP_IPK_DIR) install
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(LIBPCAP_IPK_DIR)/opt/lib/libpcap.so.[0-9]*.[0-9]*.[0-9]*
+	$(MAKE) -C $(LIBPCAP_BUILD_DIR) DESTDIR=$(LIBPCAP_IPK_DIR) install
+	$(STRIP_COMMAND) $(LIBPCAP_IPK_DIR)/opt/lib/libpcap.so.[0-9]*.[0-9]*.[0-9]*
 	rm -f $(LIBPCAP_IPK_DIR)/opt/lib/libpcap.a
 	$(MAKE) $(LIBPCAP_IPK_DIR)/CONTROL/control
 	$(MAKE) $(LIBPCAP-DEV_IPK_DIR)/CONTROL/control
@@ -236,7 +237,7 @@ libpcap-ipk: $(LIBPCAP_IPK) $(LIBPCAP-DEV_IPK)
 #
 libpcap-clean:
 	rm -f $(LIBPCAP_BUILD_DIR)/.built
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(LIBPCAP_BUILD_DIR) clean
+	$(MAKE) -C $(LIBPCAP_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

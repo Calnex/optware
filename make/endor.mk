@@ -135,6 +135,7 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) make/
 	(cd $(@D); \
 		mdtool generate-makefiles Endor.sln -d:release && \
 		sed -i -e 's/PROGRAMFILES = \\/PROGRAMFILES = \\\n\t$$(ASSEMBLY) \\/g' `find $(ENDOR_BUILD_DIR) -name Makefile.am` && \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(ENDOR_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(ENDOR_LDFLAGS)" \
 		./autogen.sh \
@@ -153,7 +154,7 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 #
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -166,7 +167,7 @@ endor: $(ENDOR_BUILD_DIR)/.built
 #
 $(ENDOR_BUILD_DIR)/.staged: $(ENDOR_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 endor-stage: $(ENDOR_BUILD_DIR)/.staged
@@ -204,7 +205,7 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 #
 $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
+	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
 	cd $(ENDOR_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
@@ -235,7 +236,7 @@ endor-ipk: $(ENDOR_IPK)
 #
 endor-clean:
 	rm -f $(ENDOR_BUILD_DIR)/.built
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(ENDOR_BUILD_DIR) clean
+	$(MAKE) -C $(ENDOR_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

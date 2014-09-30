@@ -155,7 +155,7 @@ debian-root: $(DEBIAN-ROOT_BUILD_DIR)/.built
 #
 $(DEBIAN-ROOT_BUILD_DIR)/.staged: $(DEBIAN-ROOT_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 debian-root-stage: $(DEBIAN-ROOT_BUILD_DIR)/.staged
@@ -193,7 +193,7 @@ $(DEBIAN-ROOT_IPK_DIR)/CONTROL/control:
 #
 $(DEBIAN-ROOT_IPK): $(DEBIAN-ROOT_BUILD_DIR)/.built
 	rm -rf $(DEBIAN-ROOT_IPK_DIR) $(BUILD_DIR)/DEBIAN-ROOT_*_$(TARGET_ARCH).ipk
-#	$(TARGET_BUILD_OPTS) $(MAKE) -C $(DEBIAN-ROOT_BUILD_DIR) DESTDIR=$(DEBIAN-ROOT_IPK_DIR) install-strip
+#	$(MAKE) -C $(DEBIAN-ROOT_BUILD_DIR) DESTDIR=$(DEBIAN-ROOT_IPK_DIR) install-strip
 	$(MAKE) $(DEBIAN-ROOT_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN-ROOT_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN-ROOT_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN-ROOT_IPK_DIR)

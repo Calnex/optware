@@ -120,6 +120,7 @@ ifeq ($(OPTWARE_TARGET), $(filter ts101 vt4, $(OPTWARE_TARGET)))
 	sed -i -e '/_POSIX_TIMERS/s|#elif .*|#elif 0|' $(@D)/src/ptimer.c
 endif
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(WGET_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(WGET_LDFLAGS)" \
 		ac_cv_header_idna_h=no \
@@ -144,6 +145,7 @@ ifeq ($(OPTWARE_TARGET), $(filter ts101 vt4, $(OPTWARE_TARGET)))
 	sed -i -e '/_POSIX_TIMERS/s|#elif .*|#elif 0|' $(@D)/src/ptimer.c
 endif
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(WGET_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(WGET_LDFLAGS)" \
 		./configure \
@@ -168,12 +170,12 @@ wget-ssl-unpack: $(WGET-SSL_BUILD_DIR)/.configured
 #
 $(WGET_BUILD_DIR)/.built: $(WGET_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 $(WGET-SSL_BUILD_DIR)/.built: $(WGET-SSL_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -230,7 +232,7 @@ $(WGET-SSL_IPK_DIR)/CONTROL/control:
 $(WGET_IPK): $(WGET_BUILD_DIR)/.built
 	rm -rf $(WGET_IPK_DIR) $(BUILD_DIR)/wget_*_$(TARGET_ARCH).ipk
 	install -d $(WGET_IPK_DIR)/opt/bin
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(WGET_BUILD_DIR)/src/wget -o $(WGET_IPK_DIR)/opt/bin/wget
+	$(STRIP_COMMAND) $(WGET_BUILD_DIR)/src/wget -o $(WGET_IPK_DIR)/opt/bin/wget
 	install -d $(WGET_IPK_DIR)/opt/man/man1
 	install -m 644 $(WGET_BUILD_DIR)/doc/wget.1 $(WGET_IPK_DIR)/opt/man/man1
 	install -d $(WGET_IPK_DIR)/opt/etc/
@@ -246,7 +248,7 @@ $(WGET_BUILD_DIR)/.ipk: $(WGET_IPK)
 $(WGET-SSL_IPK): $(WGET-SSL_BUILD_DIR)/.built
 	rm -rf $(WGET-SSL_IPK_DIR) $(BUILD_DIR)/wget-ssl_*_$(TARGET_ARCH).ipk
 	install -d $(WGET-SSL_IPK_DIR)/opt/bin
-	$(TARGET_BUILD_OPTS) $(STRIP_COMMAND) $(WGET-SSL_BUILD_DIR)/src/wget -o $(WGET-SSL_IPK_DIR)/opt/bin/wget
+	$(STRIP_COMMAND) $(WGET-SSL_BUILD_DIR)/src/wget -o $(WGET-SSL_IPK_DIR)/opt/bin/wget
 	install -d $(WGET-SSL_IPK_DIR)/opt/man/man1
 	install -m 644 $(WGET-SSL_BUILD_DIR)/doc/wget.1 $(WGET-SSL_IPK_DIR)/opt/man/man1
 	install -d $(WGET-SSL_IPK_DIR)/opt/etc/
@@ -271,8 +273,8 @@ wget-ssl-ipk: $(WGET-SSL_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 wget-clean:
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(WGET_BUILD_DIR) clean
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(WGET-SSL_BUILD_DIR) clean
+	$(MAKE) -C $(WGET_BUILD_DIR) clean
+	$(MAKE) -C $(WGET-SSL_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created

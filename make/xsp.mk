@@ -132,6 +132,7 @@ $(XSP_BUILD_DIR)/.configured: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES) make/xsp.mk
 	sed -i -e 's/dbpage1.sqlite \\//g' $(@D)/test/1.1/webcontrols/Makefile.am 
 	sed -i -e '/dbpage2.sqlite/d' $(@D)/test/1.1/webcontrols/Makefile.am 
 	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(XSP_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(XSP_LDFLAGS)" \
 		PATH="/opt/bin:/opt/sbin:$(PATH)" \
@@ -157,7 +158,7 @@ xsp-unpack: $(XSP_BUILD_DIR)/.configured
 #
 $(XSP_BUILD_DIR)/.built: $(XSP_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D)
+	$(MAKE) -C $(@D)
 	touch $@
 
 #
@@ -170,7 +171,7 @@ xsp: $(XSP_BUILD_DIR)/.built
 #
 $(XSP_BUILD_DIR)/.staged: $(XSP_BUILD_DIR)/.built
 	rm -f $@
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 xsp-stage: $(XSP_BUILD_DIR)/.staged
@@ -208,7 +209,7 @@ $(XSP_IPK_DIR)/CONTROL/control:
 #
 $(XSP_IPK): $(XSP_BUILD_DIR)/.built
 	rm -rf $(XSP_IPK_DIR) $(BUILD_DIR)/xsp_*_$(TARGET_ARCH).ipk
-	$(TARGET_BUILD_OPTS) $(MAKE) -C $(XSP_BUILD_DIR) DESTDIR=$(XSP_IPK_DIR) install-strip
+	$(MAKE) -C $(XSP_BUILD_DIR) DESTDIR=$(XSP_IPK_DIR) install-strip
 	$(MAKE) $(XSP_IPK_DIR)/CONTROL/control
 	echo $(XSP_CONFFILES) | sed -e 's/ /\n/g' > $(XSP_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(XSP_IPK_DIR)
@@ -224,7 +225,7 @@ xsp-ipk: $(XSP_IPK)
 #
 xsp-clean:
 	rm -f $(XSP_BUILD_DIR)/.built
-	-$(TARGET_BUILD_OPTS) $(MAKE) -C $(XSP_BUILD_DIR) clean
+	$(MAKE) -C $(XSP_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created
