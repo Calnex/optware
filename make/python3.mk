@@ -21,8 +21,8 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-PYTHON3_VERSION=3.2.3
-PYTHON3_VERSION_MAJOR=3.2
+PYTHON3_VERSION=3.3.1
+PYTHON3_VERSION_MAJOR=3.3
 PYTHON3_SITE=http://www.python.org/ftp/python/$(PYTHON3_VERSION)
 PYTHON3_DIR=Python-$(PYTHON3_VERSION)
 PYTHON3_SOURCE=$(PYTHON3_DIR).tgz
@@ -144,8 +144,8 @@ endif
 #	$(MAKE) autoconf-host-stage
 	rm -rf $(BUILD_DIR)/$(PYTHON3_DIR) $(@D)
 	$(PYTHON3_UNZIP) $(DL_DIR)/$(PYTHON3_SOURCE) | tar -C $(BUILD_DIR) -xf -
-	cat $(PYTHON3_PATCHES) | patch -bd $(BUILD_DIR)/$(PYTHON3_DIR) -p1
-	sed -i -e 's/MIPS_LINUX/MIPS/' $(BUILD_DIR)/$(PYTHON3_DIR)/Modules/_ctypes/libffi/configure.ac
+#	cat $(PYTHON3_PATCHES) | patch -bd $(BUILD_DIR)/$(PYTHON3_DIR) -p1
+#	sed -i -e 's/MIPS_LINUX/MIPS/' $(BUILD_DIR)/$(PYTHON3_DIR)/Modules/_ctypes/libffi/configure.ac
 	autoreconf -vif $(BUILD_DIR)/$(PYTHON3_DIR)
 	mkdir -p $(@D)
 	( \
@@ -154,6 +154,7 @@ endif
 	echo "library-dirs=$(STAGING_LIB_DIR)"; \
 	echo "rpath=/opt/lib") > $(@D)/setup.cfg
 	(cd $(@D); \
+	 $(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(PYTHON3_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(PYTHON3_LDFLAGS)" \
 		ac_cv_sizeof_off_t=8 \
@@ -264,7 +265,7 @@ python3-ipk: $(PYTHON3_IPK)
 # This is called from the top level makefile to clean all of the built files.
 #
 python3-clean:
-	-$(MAKE) -C $(PYTHON3_BUILD_DIR) clean
+	$(MAKE) -C $(PYTHON3_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created
