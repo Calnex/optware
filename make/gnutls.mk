@@ -118,7 +118,7 @@ $(GNUTLS_BUILD_DIR)/.configured: $(DL_DIR)/$(GNUTLS_SOURCE) $(GNUTLS_PATCHES) ma
 		then cat $(GNUTLS_PATCHES) | patch -d $(BUILD_DIR)/$(GNUTLS_DIR) -p1; \
 	fi
 	mv $(BUILD_DIR)/$(GNUTLS_DIR) $(@D)
-	(cd $(@D); autoreconf -vif)
+	autoreconf -vif $(@D); \
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GNUTLS_CPPFLAGS)" \

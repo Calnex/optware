@@ -111,7 +111,7 @@ mono-source: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES)
 # shown below to make various patches to it.
 #
 $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mono.mk
-	$(MAKE) gettext-stage
+	$(MAKE) gettext-stage glib-stage
 	rm -rf $(BUILD_DIR)/$(MONO_DIR) $(@D)
 	$(MONO_UNZIP) $(DL_DIR)/$(MONO_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test "$(BUILD_DIR)/$(MONO_DIR)" != "$(@D)" ; \

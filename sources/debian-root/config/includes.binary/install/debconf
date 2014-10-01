@@ -379,7 +379,7 @@ d-i finish-install/reboot_in_progress note
 
 # This will prevent the installer from ejecting the CD during the reboot,
 # which is useful in some situations.
-#d-i cdrom-detect/eject boolean false
+d-i cdrom-detect/eject boolean false
 
 # This is how to make the installer shutdown when finished, but not
 # reboot into the installed system.
@@ -418,6 +418,13 @@ d-i finish-install/reboot_in_progress note
 # still a usable /target directory. You can chroot to /target and use it
 # directly, or use the apt-install and in-target commands to easily install
 # packages and run commands in the target system.
-#d-i preseed/late_command string apt-install zsh; in-target chsh -s /bin/zsh
+d-i preseed/late_command string \
+	cp -ar /install /target/boot/ ; \
+	cp /boot/grub/splash.png /target/boot/grub/ ; \
+	cp /boot/grub/grub.cfg /target/boot/grub/ ; \
+	sed -i -e 's/set default=0/set default=0\nGRUB_TIMEOUT=3/g' /target/boot/grub/grub.cfg ; \
+	sed -i -e 's/- Live Demo//g' /target/boot/grub/grub.cfg ; \
+	sed -i -e 's/live/boot/g' /target/boot/grub/grub.cfg ; \
+	sed -i -e 's/install/boot\/install/g' /target/boot/grub/grub.cfg ; \
 
 

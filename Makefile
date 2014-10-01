@@ -30,7 +30,8 @@ PACKAGES_READY_FOR_TESTING =
 
 # Document issues for broken packages here.
 #
-PACKAGES_THAT_NEED_TO_BE_FIXED =
+PACKAGES_THAT_NEED_TO_BE_FIXED = gnutls \
+				 wget-ssl \
 
 
 COMMON_CROSS_PACKAGES = bzip2 \
@@ -38,7 +39,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			geoip \
 			gettext \
 			glib \
-			gnutls \
 			ipkg-opt \
 			ipkg-utils \
 			ipkg-web \
@@ -67,7 +67,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			tshark-1.10.3 \
 			tshark-1.11.3 \
 			wget \
-			wget-ssl \
 			xsp \
 			zlib \
 
@@ -96,8 +95,9 @@ STAGING_DIR=$(BASE_DIR)/staging
 STAGING_PREFIX=$(STAGING_DIR)/opt
 STAGING_INCLUDE_DIR=$(STAGING_PREFIX)/include
 STAGING_LIB_DIR=$(STAGING_PREFIX)/lib
+STAGING_LIB64_DIR=$(STAGING_PREFIX)/lib64
 STAGING_CPPFLAGS=$(TARGET_CFLAGS) -I$(STAGING_INCLUDE_DIR)
-STAGING_LDFLAGS=$(TARGET_LDFLAGS) -L$(STAGING_LIB_DIR) -Wl,-rpath,/opt/lib -Wl,-rpath-link,$(STAGING_LIB_DIR)
+STAGING_LDFLAGS=$(TARGET_LDFLAGS) -L$(STAGING_LIB_DIR) -L$(STAGING_LIB64_DIR) -Wl,-rpath,/opt/lib -Wl,-rpath-link,$(STAGING_LIB_DIR)
 
 HOST_BUILD_DIR=$(BASE_DIR)/host/builds
 HOST_STAGING_DIR=$(BASE_DIR)/host/staging
@@ -123,6 +123,14 @@ TARGET_DEBUGGING= #-g
 include $(OPTWARE_TOP)/platforms/toolchain-$(OPTWARE_TARGET).mk
 ifndef TARGET_USRLIBDIR
 TARGET_USRLIBDIR = $(TARGET_LIBDIR)
+endif
+
+ifndef TARGET_LIB32DIR
+TARGET_LIB32DIR = $(TARGET_LIBDIR)
+endif
+
+ifndef TARGET_LIB64DIR
+TARGET_LIB64DIR = $(TARGET_LIBDIR)
 endif
 
 ifeq (darwin,$(TARGET_OS))
@@ -216,7 +224,7 @@ TARGET_PATH=$(STAGING_PREFIX)/bin:$(STAGING_DIR)/bin:/opt/bin:/opt/sbin:/bin:/sb
 STRIP_COMMAND ?= $(TARGET_STRIP) --remove-section=.comment --remove-section=.note --strip-unneeded
 
 PATCH_LIBTOOL=sed -i \
-	-e 's|^sys_lib_search_path_spec=.*"$$|sys_lib_search_path_spec="$(TARGET_LIBDIR) $(STAGING_LIB_DIR)"|' \
+	-e 's|^sys_lib_search_path_spec=.*"$$|sys_lib_search_path_spec="$(TARGET_LIBDIR) $(TARGET_USRLIBDIR) $(TARGET_LIB32DIR) $(TARGET_LIB64DIR) $(STAGING_LIB_DIR)"|' \
 	-e 's|^sys_lib_dlsearch_path_spec=.*"$$|sys_lib_dlsearch_path_spec=""|' \
 	-e 's|^hardcode_libdir_flag_spec=.*"$$|hardcode_libdir_flag_spec=""|' \
 	-e 's|nmedit |$(TARGET_CROSS)nmedit |' \
