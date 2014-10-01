@@ -44,7 +44,7 @@ ncurses-source: $(DL_DIR)/$(NCURSES_SOURCE)
 
 $(NCURSES_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(NCURSES_SOURCE) make/ncurses.mk
 	rm -rf $(HOST_BUILD_DIR)/$(NCURSES) $(@D)
-	$(NCURSES_UNZIP) $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(HOST_BUILD_DIR) -xvf -
+	$(NCURSES_UNZIP) $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(HOST_BUILD_DIR) -xf -
 	mv $(HOST_BUILD_DIR)/$(NCURSES) $(@D)
 	(cd $(@D); \
 		./configure \
@@ -72,7 +72,7 @@ endif
 		$(STAGING_LIB_DIR)/libmenu.* \
 		$(STAGING_LIB_DIR)/libncurses.* \
 		$(STAGING_LIB_DIR)/libpanel.*
-	$(NCURSES_UNZIP) $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(NCURSES_UNZIP) $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	mv $(BUILD_DIR)/$(NCURSES) $(@D)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \

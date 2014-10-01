@@ -113,7 +113,7 @@ mono-source: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES)
 $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mono.mk
 	$(MAKE) gettext-stage glib-stage
 	rm -rf $(BUILD_DIR)/$(MONO_DIR) $(@D)
-	$(MONO_UNZIP) $(DL_DIR)/$(MONO_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(MONO_UNZIP) $(DL_DIR)/$(MONO_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test "$(BUILD_DIR)/$(MONO_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(MONO_DIR) $(@D) ; \
 	fi

@@ -112,7 +112,7 @@ tshark-$(TSHARK_1.4.9_VERSION)-source: $(DL_DIR)/$(TSHARK_1.4.9_SOURCE) $(TSHARK
 $(TSHARK_1.4.9_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_1.4.9_SOURCE) $(TSHARK_1.4.9_PATCHES) make/tshark-$(TSHARK_1.4.9_VERSION).mk
 	$(MAKE) c-ares-stage geoip-stage glib-stage libpcap-stage pcre-stage zlib-stage
 	rm -rf $(BUILD_DIR)/$(TSHARK_1.4.9_DIR) $(@D)
-	$(TSHARK_1.4.9_UNZIP) $(DL_DIR)/$(TSHARK_1.4.9_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(TSHARK_1.4.9_UNZIP) $(DL_DIR)/$(TSHARK_1.4.9_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(TSHARK_1.4.9_PATCHES)" ; \
 		then cat $(TSHARK_1.4.9_PATCHES) | \
 		patch -bd $(BUILD_DIR)/$(TSHARK_1.4.9_DIR) -p1 ; \
@@ -135,7 +135,6 @@ $(TSHARK_1.4.9_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_1.4.9_SOURCE) $(TSHARK
 		LDFLAGS="$(STAGING_LDFLAGS) $(TSHARK_1.4.9_LDFLAGS)" \
 		LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
 		LD_LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)" \
-		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
 		ac_wireshark_inttypes_h_defines_formats=yes \
 		./configure \
 		--build=$(GNU_HOST_NAME) \

@@ -20,6 +20,11 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #
 
+# Pretty output (doesn't bloody work)
+%.o: %.c
+	@echo [CC] $@
+	@gcc -o $@ -c $<
+
 # one of `ls platforms/toolchain-*.mk | sed 's|^platforms/toolchain-\(.*\)\.mk$$|\1|'`
 OPTWARE_TARGET ?= Springbank
 
@@ -30,15 +35,17 @@ PACKAGES_READY_FOR_TESTING =
 
 # Document issues for broken packages here.
 #
-PACKAGES_THAT_NEED_TO_BE_FIXED = gnutls \
-				 wget-ssl \
+PACKAGES_THAT_NEED_TO_BE_FIXED =
 
 
-COMMON_CROSS_PACKAGES = bzip2 \
+COMMON_CROSS_PACKAGES = autogen \
+			bzip2 \
 			c-ares \
 			geoip \
 			gettext \
 			glib \
+			gnutls \
+			guile \
 			ipkg-opt \
 			ipkg-utils \
 			ipkg-web \
@@ -51,6 +58,8 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			libpcap \
 			libstdc++ \
 			libtasn1 \
+			libtool \
+			libunistring \
 			mono \
 			ncurses \
 			ncursesw \
@@ -67,6 +76,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			tshark-1.10.3 \
 			tshark-1.11.3 \
 			wget \
+			wget-ssl \
 			xsp \
 			zlib \
 
@@ -218,7 +228,8 @@ TARGET_CONFIGURE_OPTS+= \
 	RANLIB=$(TARGET_RANLIB) \
 	READELF=$(TARGET_READELF) \
 	STRIP=$(TARGET_STRIP) \
-	LIBTOOL=$(TARGET_LIBTOOL)
+	LIBTOOL=$(TARGET_LIBTOOL) \
+	PKG_CONFIG_PATH=$(STAGING_LIB_DIR)/pkgconfig
 TARGET_PATH=$(STAGING_PREFIX)/bin:$(STAGING_DIR)/bin:/opt/bin:/opt/sbin:/bin:/sbin:/usr/bin:/usr/sbin
 
 STRIP_COMMAND ?= $(TARGET_STRIP) --remove-section=.comment --remove-section=.note --strip-unneeded
@@ -242,7 +253,6 @@ STRIP=
 PKG_CONFIG=pkg-config
 
 # Preload the correct library paths.
-PKG_CONFIG_PATH=$(STAGING_LIB_DIR)/pkgconfig
 LIBRARY_PATH="$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)"
 LD_LIBRARY_PATH="$(TARGET_LD_LIBRARY_PATH):$(STAGING_LIB_DIR):$(TARGET_LIB_DIR)"
 

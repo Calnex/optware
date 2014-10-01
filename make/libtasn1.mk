@@ -110,7 +110,7 @@ libtasn1-source: $(DL_DIR)/$(LIBTASN1_SOURCE) $(LIBTASN1_PATCHES)
 $(LIBTASN1_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBTASN1_SOURCE) $(LIBTASN1_PATCHES) make/libtasn1.mk
 #	$(MAKE) <bar>-stage <baz>-stage
 	rm -rf $(BUILD_DIR)/$(LIBTASN1_DIR) $(@D)
-	$(LIBTASN1_UNZIP) $(DL_DIR)/$(LIBTASN1_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(LIBTASN1_UNZIP) $(DL_DIR)/$(LIBTASN1_SOURCE) | tar -C $(BUILD_DIR) -xf -
 #	cat $(LIBTASN1_PATCHES) | patch -d $(BUILD_DIR)/$(LIBTASN1_DIR) -p1
 	mv $(BUILD_DIR)/$(LIBTASN1_DIR) $(@D)
 	(cd $(@D); \

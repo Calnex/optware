@@ -106,7 +106,7 @@ sqlite-source: $(DL_DIR)/$(SQLITE_SOURCE) $(SQLITE_PATCHES)
 $(SQLITE_BUILD_DIR)/.configured: $(DL_DIR)/$(SQLITE_SOURCE) $(SQLITE_PATCHES) make/sqlite.mk
 #	$(MAKE)
 	rm -rf $(BUILD_DIR)/$(SQLITE_DIR) $(@D)
-	$(SQLITE_UNZIP) $(DL_DIR)/$(SQLITE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(SQLITE_UNZIP) $(DL_DIR)/$(SQLITE_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(SQLITE_PATCHES)"; \
 		then cat $(SQLITE_PATCHES) | patch -d $(BUILD_DIR)/$(SQLITE_DIR) -p1; \
 	fi

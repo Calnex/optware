@@ -113,7 +113,7 @@ libdb-source: $(DL_DIR)/$(LIBDB_SOURCE) $(LIBDB_PATCHES)
 #
 $(LIBDB_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBDB_SOURCE) $(LIBDB_PATCHES)
 	rm -rf $(BUILD_DIR)/$(LIBDB_DIR) $(LIBDB_BUILD_DIR)
-	$(LIBDB_UNZIP) $(DL_DIR)/$(LIBDB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(LIBDB_UNZIP) $(DL_DIR)/$(LIBDB_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	#cat $(LIBDB_PATCHES) | patch -d $(BUILD_DIR)/$(LIBDB_DIR) -p1
 	mv $(BUILD_DIR)/$(LIBDB_DIR) $(LIBDB_BUILD_DIR)
 	(cd $(LIBDB_BUILD_DIR)/build_unix; \

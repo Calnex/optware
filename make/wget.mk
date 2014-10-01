@@ -113,7 +113,7 @@ wget-ssl-source: $(DL_DIR)/$(WGET_SOURCE) $(WGET_PATCHES)
 #
 $(WGET_BUILD_DIR)/.configured: $(DL_DIR)/$(WGET_SOURCE) $(WGET_PATCHES) make/wget.mk
 	rm -rf $(BUILD_DIR)/$(WGET_DIR) $(@D)
-	$(WGET_UNZIP) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(WGET_UNZIP) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) -xf -
 #	cat $(WGET_PATCHES) | patch -d $(BUILD_DIR)/$(WGET_DIR) -p1
 	mv $(BUILD_DIR)/$(WGET_DIR) $(@D)
 ifeq ($(OPTWARE_TARGET), $(filter ts101 vt4, $(OPTWARE_TARGET)))
@@ -138,7 +138,7 @@ endif
 $(WGET-SSL_BUILD_DIR)/.configured: $(DL_DIR)/$(WGET_SOURCE) $(WGET_PATCHES) make/wget.mk
 	$(MAKE) libidn-stage openssl-stage gnutls-stage
 	rm -rf $(BUILD_DIR)/$(WGET_DIR) $(@D)
-	$(WGET_UNZIP) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(WGET_UNZIP) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) -xf -
 #	cat $(WGET_PATCHES) | patch -d $(BUILD_DIR)/$(WGET_DIR) -p1
 	mv $(BUILD_DIR)/$(WGET_DIR) $(@D)
 ifeq ($(OPTWARE_TARGET), $(filter ts101 vt4, $(OPTWARE_TARGET)))

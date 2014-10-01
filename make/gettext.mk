@@ -87,7 +87,7 @@ gettext-source: $(DL_DIR)/$(GETTEXT_SOURCE) $(GETTEXT_PATCHES)
 
 $(GETTEXT_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(GETTEXT_SOURCE) make/gettext.mk
 	rm -rf $(HOST_BUILD_DIR)/$(GETTEXT_DIR) $(@D)
-	$(GETTEXT_UNZIP) $(DL_DIR)/$(GETTEXT_SOURCE) | tar -C $(HOST_BUILD_DIR) -xvf -
+	$(GETTEXT_UNZIP) $(DL_DIR)/$(GETTEXT_SOURCE) | tar -C $(HOST_BUILD_DIR) -xf -
 	mv $(HOST_BUILD_DIR)/$(GETTEXT_DIR) $(@D)
 	(cd $(@D); \
 		./configure \
@@ -124,7 +124,7 @@ gettext-host-stage: $(GETTEXT_HOST_BUILD_DIR)/.staged
 #
 $(GETTEXT_BUILD_DIR)/.configured: $(DL_DIR)/$(GETTEXT_SOURCE) $(GETTEXT_PATCHES)
 	rm -rf $(BUILD_DIR)/$(GETTEXT_DIR) $(GETTEXT_BUILD_DIR)
-	$(GETTEXT_UNZIP) $(DL_DIR)/$(GETTEXT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(GETTEXT_UNZIP) $(DL_DIR)/$(GETTEXT_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	mv $(BUILD_DIR)/$(GETTEXT_DIR) $(GETTEXT_BUILD_DIR)
 	(cd $(GETTEXT_BUILD_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \

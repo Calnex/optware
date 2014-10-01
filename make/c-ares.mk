@@ -107,7 +107,7 @@ c-ares-source: $(DL_DIR)/$(C_ARES_SOURCE) $(C_ARES_PATCHES)
 $(C_ARES_BUILD_DIR)/.configured: $(DL_DIR)/$(C_ARES_SOURCE) $(C_ARES_PATCHES) make/c-ares.mk
 #	$(MAKE) <bar>-stage <baz>-stage
 	rm -rf $(BUILD_DIR)/$(C_ARES_DIR) $(@D)
-	$(C_ARES_UNZIP) $(DL_DIR)/$(C_ARES_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(C_ARES_UNZIP) $(DL_DIR)/$(C_ARES_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(C_ARES_PATCHES)" ; \
 		then cat $(C_ARES_PATCHES) | \
 		patch -d $(BUILD_DIR)/$(C_ARES_DIR) -p1 ; \

@@ -36,7 +36,7 @@ $(NCURSESW_DIR)/.configured: $(DL_DIR)/$(NCURSESW_SOURCE) make/ncursesw.mk
 		$(STAGING_LIB_DIR)/libmenuw.* \
 		$(STAGING_LIB_DIR)/libncursesw.* \
 		$(STAGING_LIB_DIR)/libpanelw.*
-	$(NCURSESW_UNZIP) $(DL_DIR)/$(NCURSESW_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(NCURSESW_UNZIP) $(DL_DIR)/$(NCURSESW_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	mv $(BUILD_DIR)/$(NCURSES) $(NCURSESW_DIR)
 ifneq ($(HOSTCC), $(TARGET_CC))
 	# configure without wide char just to make two build tools

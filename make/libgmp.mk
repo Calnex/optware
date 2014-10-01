@@ -118,7 +118,7 @@ libgmp-source: $(DL_DIR)/$(LIBGMP_SOURCE) $(LIBGMP_PATCHES)
 $(LIBGMP_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBGMP_SOURCE) $(LIBGMP_PATCHES) make/libgmp.mk
 #	$(MAKE) <bar>-stage <baz>-stage
 	rm -rf $(BUILD_DIR)/$(LIBGMP_DIR) $(@D)
-	$(LIBGMP_UNZIP) $(DL_DIR)/$(LIBGMP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(LIBGMP_UNZIP) $(DL_DIR)/$(LIBGMP_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(LIBGMP_PATCHES)" ; \
 		then cat $(LIBGMP_PATCHES) | \
 		patch -d $(BUILD_DIR)/$(LIBGMP_DIR) -p0 ; \
@@ -168,7 +168,7 @@ libgmp-stage: $(LIBGMP_BUILD_DIR)/.staged
 
 $(LIBGMP_HOST_BUILD_DIR)/.staged: host/.configured $(DL_DIR)/$(LIBGMP_SOURCE) make/libgmp.mk
 	rm -rf $(HOST_BUILD_DIR)/$(LIBGMP_DIR) $(@D)
-	$(LIBGMP_UNZIP) $(DL_DIR)/$(LIBGMP_SOURCE) | tar -C $(HOST_BUILD_DIR) -xvf -
+	$(LIBGMP_UNZIP) $(DL_DIR)/$(LIBGMP_SOURCE) | tar -C $(HOST_BUILD_DIR) -xf -
 	if test "$(HOST_BUILD_DIR)/$(LIBGMP_DIR)" != "$(@D)" ; \
 		then mv $(HOST_BUILD_DIR)/$(LIBGMP_DIR) $(@D) ; \
 	fi

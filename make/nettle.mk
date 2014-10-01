@@ -113,7 +113,7 @@ nettle-source: $(DL_DIR)/$(NETTLE_SOURCE) $(NETTLE_PATCHES)
 $(NETTLE_BUILD_DIR)/.configured: $(DL_DIR)/$(NETTLE_SOURCE) $(NETTLE_PATCHES) make/nettle.mk
 	$(MAKE) libgmp-stage 
 	rm -rf $(BUILD_DIR)/$(NETTLE_DIR) $(@D)
-	$(NETTLE_UNZIP) $(DL_DIR)/$(NETTLE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(NETTLE_UNZIP) $(DL_DIR)/$(NETTLE_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test "$(BUILD_DIR)/$(NETTLE_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(NETTLE_DIR) $(@D) ; \
 	fi

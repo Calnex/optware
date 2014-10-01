@@ -111,9 +111,9 @@ $(DL_DIR)/$(<FOO>_SOURCE):
 # shown below to make various patches to it.
 #
 $(<FOO>_BUILD_DIR)/.configured: $(DL_DIR)/$(<FOO>_SOURCE) $(<FOO>_PATCHES) make/<foo>.mk
-	$(MAKE) <bar>-stage <baz>-stage
+	$(MAKE) <foo>-stage <bar>-stage
 	rm -rf $(BUILD_DIR)/$(<FOO>_DIR) $(@D)
-	$(<FOO>_UNZIP) $(DL_DIR)/$(<FOO>_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(<FOO>_UNZIP) $(DL_DIR)/$(<FOO>_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(<FOO>_PATCHES)" ; \
 		then cat $(<FOO>_PATCHES) | \
 		patch -d $(BUILD_DIR)/$(<FOO>_DIR) -p0 ; \

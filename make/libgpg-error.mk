@@ -110,7 +110,7 @@ libgpg-error-source: $(DL_DIR)/$(LIBGPG-ERROR_SOURCE) $(LIBGPG-ERROR_PATCHES)
 $(LIBGPG-ERROR_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBGPG-ERROR_SOURCE) $(LIBGPG-ERROR_PATCHES)
 	#$(MAKE) <bar>-stage <baz>-stage
 	rm -rf $(BUILD_DIR)/$(LIBGPG-ERROR_DIR) $(@D)
-	$(LIBGPG-ERROR_UNZIP) $(DL_DIR)/$(LIBGPG-ERROR_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(LIBGPG-ERROR_UNZIP) $(DL_DIR)/$(LIBGPG-ERROR_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	#cat $(LIBGPG-ERROR_PATCHES) | patch -d $(BUILD_DIR)/$(LIBGPG-ERROR_DIR) -p1
 	mv $(BUILD_DIR)/$(LIBGPG-ERROR_DIR) $(@D)
 	(cd $(@D); \

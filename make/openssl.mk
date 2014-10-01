@@ -36,7 +36,7 @@ $(DL_DIR)/$(OPENSSL_SOURCE):
 
 $(OPENSSL_BUILD_DIR)/.configured: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCHES) make/openssl.mk
 	rm -rf $(BUILD_DIR)/$(OPENSSL_DIR) $(@D)
-	$(OPENSSL_UNZIP) $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) -xvf - 
+	$(OPENSSL_UNZIP) $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) -xf - 
 	mv $(BUILD_DIR)/$(OPENSSL_DIR) $(@D)
 	(cd $(@D) && \
 		./Configure \

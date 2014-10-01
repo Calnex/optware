@@ -109,7 +109,7 @@ $(READLINE_BUILD_DIR)/.configured: $(DL_DIR)/$(READLINE_SOURCE) $(READLINE_PATCH
 #	$(MAKE) <bar>-stage <baz>-stage
 	$(MAKE) ncurses-stage
 	rm -rf $(BUILD_DIR)/$(READLINE_DIR) $(@D)
-	$(READLINE_UNZIP) $(DL_DIR)/$(READLINE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(READLINE_UNZIP) $(DL_DIR)/$(READLINE_SOURCE) | tar -C $(BUILD_DIR) -xf -
 #	cat $(READLINE_PATCHES) | patch -d $(BUILD_DIR)/$(READLINE_DIR) -p1
 	if test "$(BUILD_DIR)/$(READLINE_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(READLINE_DIR) $(@D) ; \

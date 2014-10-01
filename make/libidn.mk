@@ -110,7 +110,7 @@ libidn-source: $(DL_DIR)/$(LIBIDN_SOURCE) $(LIBIDN_PATCHES)
 $(LIBIDN_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBIDN_SOURCE) $(LIBIDN_PATCHES) make/libidn.mk
 #	$(MAKE) <bar>-stage <baz>-stage
 	rm -rf $(BUILD_DIR)/$(LIBIDN_DIR) $(@D)
-	$(LIBIDN_UNZIP) $(DL_DIR)/$(LIBIDN_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(LIBIDN_UNZIP) $(DL_DIR)/$(LIBIDN_SOURCE) | tar -C $(BUILD_DIR) -xf -
 #	cat $(LIBIDN_PATCHES) | patch -d $(BUILD_DIR)/$(LIBIDN_DIR) -p1
 	mv $(BUILD_DIR)/$(LIBIDN_DIR) $(@D)
 	(cd $(@D); \

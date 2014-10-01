@@ -109,7 +109,7 @@ libpcap-source: $(DL_DIR)/$(LIBPCAP_SOURCE) $(LIBPCAP_PATCHES)
 $(LIBPCAP_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBPCAP_SOURCE) $(LIBPCAP_PATCHES) make/libpcap.mk
 #	$(MAKE) <bar>-stage <baz>-stage
 	rm -rf $(BUILD_DIR)/$(LIBPCAP_DIR) $(@D)
-	$(LIBPCAP_UNZIP) $(DL_DIR)/$(LIBPCAP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(LIBPCAP_UNZIP) $(DL_DIR)/$(LIBPCAP_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(LIBPCAP_PATCHES)"; then \
 	cat $(LIBPCAP_PATCHES) | patch -d $(BUILD_DIR)/$(LIBPCAP_DIR) -p1; \
 	fi

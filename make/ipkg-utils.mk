@@ -93,7 +93,7 @@ $(IPKG-UTILS_DIR)/.unpacked: $(DL_DIR)/$(IPKG-UTILS_SOURCE) make/ipkg-utils.mk
 	rm -f $@
 	mkdir -p $(TOOL_BUILD_DIR)
 	mkdir -p $(DL_DIR)
-	zcat $(DL_DIR)/$(IPKG-UTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+	zcat $(DL_DIR)/$(IPKG-UTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xf -
 	cd $(SOURCE_DIR); cat $(IPKG-UTILS_PATCHES) | patch -p1 -d $(IPKG-UTILS_DIR)
 	touch $@
 

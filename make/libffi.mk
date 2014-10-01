@@ -112,7 +112,7 @@ libffi-source: $(DL_DIR)/$(LIBFFI_SOURCE) $(LIBFFI_PATCHES)
 #
 $(LIBFFI_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBFFI_SOURCE) $(LIBFFI_PATCHES) make/libffi.mk
 	rm -rf $(BUILD_DIR)/$(LIBFFI_DIR) $(@D)
-	$(LIBFFI_UNZIP) $(DL_DIR)/$(LIBFFI_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(LIBFFI_UNZIP) $(DL_DIR)/$(LIBFFI_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(LIBFFI_PATCHES)" ; \
 		then cat $(LIBFFI_PATCHES) | \
 		patch -d $(BUILD_DIR)/$(LIBFFI_DIR) -p1 ; \

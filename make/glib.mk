@@ -102,7 +102,7 @@ glib-source: $(DL_DIR)/$(GLIB_SOURCE) $(GLIB_PATCHES)
 
 $(GLIB_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(GLIB_SOURCE) make/glib.mk
 	rm -rf $(HOST_BUILD_DIR)/$(GLIB_DIR) $(@D)
-	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(HOST_BUILD_DIR) -xvf -
+	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(HOST_BUILD_DIR) -xf -
 	mv $(HOST_BUILD_DIR)/$(GLIB_DIR) $(@D)
 	(cd $(@D); \
 		./configure \
@@ -149,7 +149,7 @@ ifneq ($(HOSTCC), $(TARGET_CC))
 	$(MAKE) glib-host-stage
 endif
 	rm -rf $(BUILD_DIR)/$(GLIB_DIR) $(@D)
-	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	mv $(BUILD_DIR)/$(GLIB_DIR) $(@D)
 	cp $(SOURCE_DIR)/glib/glib.cache $(@D)/arm.cache
 	sed -i -e 's/^ *$$as_echo_n /echo -n /' $(@D)/configure
@@ -194,7 +194,7 @@ glib: $(GLIB_BUILD_DIR)/.built
 $(GLIB_BUILD_DIR)/.staged: $(GLIB_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) install-strip prefix=$(STAGING_DIR)/opt
-	install $(@D)/glibconfig.h $(STAGING_INCLUDE_DIR)/glib-2.0/
+	install $(@D)/glib/glibconfig.h $(STAGING_INCLUDE_DIR)/glib-2.0/
 	rm -rf $(STAGING_DIR)/opt/lib/libgio-2.0.la
 	rm -rf $(STAGING_DIR)/opt/lib/libglib-2.0.la
 	rm -rf $(STAGING_DIR)/opt/lib/libgmodule-2.0.la

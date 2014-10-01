@@ -51,7 +51,7 @@ zlib-source: $(DL_DIR)/$(ZLIB_SOURCE)
 
 $(ZLIB_HOST_BUILD_DIR)/.staged: host/.configured $(DL_DIR)/$(ZLIB_SOURCE) make/zlib.mk
 	rm -rf $(HOST_BUILD_DIR)/$(ZLIB_DIR) $(@D)
-	$(ZLIB_UNZIP) $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(HOST_BUILD_DIR) -xvf -
+	$(ZLIB_UNZIP) $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(HOST_BUILD_DIR) -xf -
 	mv $(HOST_BUILD_DIR)/$(ZLIB_DIR) $(@D)
 	(cd $(@D); \	
 		prefix=/opt \
@@ -70,7 +70,7 @@ $(ZLIB_BUILD_DIR)/.configured: $(DL_DIR)/$(ZLIB_SOURCE) make/zlib.mk
 	rm -rf $(BUILD_DIR)/$(ZLIB_DIR) $(ZLIB_BUILD_DIR)
 	rm -f $(STAGING_INCLUDE_DIR)/zconf.h $(STAGING_INCLUDE_DIR)/zlib.h
 	rm -f $(STAGING_LIB_DIR)/libz.a $(STAGING_LIB_DIR)/libz.so*
-	$(ZLIB_UNZIP) $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(ZLIB_UNZIP) $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	mv $(BUILD_DIR)/$(ZLIB_DIR) $(ZLIB_BUILD_DIR)
 ifeq (darwin,$(TARGET_OS))
 	sed -i -e 's/`.*uname -s.*`/Darwin/' $(ZLIB_BUILD_DIR)/configure

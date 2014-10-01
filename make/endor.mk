@@ -124,7 +124,7 @@ endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)
 #
 $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) make/endor.mk
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
-	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_PATCHES)" ; \
 		then cat $(ENDOR_PATCHES) | \
 		patch -d $(BUILD_DIR)/$(ENDOR_DIR) -p0 ; \

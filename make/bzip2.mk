@@ -34,7 +34,7 @@ bzip2-source: $(DL_DIR)/$(BZIP2_SOURCE)
 
 $(BZIP2_BUILD_DIR)/.configured: $(DL_DIR)/$(BZIP2_SOURCE) make/bzip2.mk
 	rm -rf $(BUILD_DIR)/$(BZIP2_DIR) $(@D)
-	$(BZIP2_UNZIP) $(DL_DIR)/$(BZIP2_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(BZIP2_UNZIP) $(DL_DIR)/$(BZIP2_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	mv $(BUILD_DIR)/$(BZIP2_DIR) $(@D)
 	sed -i -e 's/^CFLAGS *=/&$$(CPPFLAGS) /; s|1.0.4|$(BZIP2_VERSION)|' $(@D)/Makefile*
 	touch $@
@@ -43,13 +43,13 @@ bzip2-unpack: $(BZIP2_BUILD_DIR)/.configured
 
 $(BZIP2_BUILD_DIR)/.built: $(BZIP2_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D) \
+	@$(MAKE) -C $(@D) \
 		PREFIX=/opt \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(BZIP2_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(BZIP2_LDFLAGS)" \
 		-f Makefile-libbz2_so
-	$(MAKE) -C $(@D) \
+	@$(MAKE) -C $(@D) \
 		PREFIX=/opt \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(BZIP2_CPPFLAGS)" \

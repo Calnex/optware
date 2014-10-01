@@ -115,7 +115,7 @@ postgresql-source: $(DL_DIR)/$(POSTGRESQL_SOURCE) $(POSTGRESQL_PATCHES)
 $(POSTGRESQL_BUILD_DIR)/.configured: $(DL_DIR)/$(POSTGRESQL_SOURCE) $(POSTGRESQL_PATCHES) make/postgresql.mk
 	$(MAKE) readline-stage zlib-stage
 	rm -rf $(BUILD_DIR)/$(POSTGRESQL_DIR) $(@D)
-	$(POSTGRESQL_UNZIP) $(DL_DIR)/$(POSTGRESQL_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(POSTGRESQL_UNZIP) $(DL_DIR)/$(POSTGRESQL_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(POSTGRESQL_PATCHES)" ; then \
 		cat $(POSTGRESQL_PATCHES) | patch -d $(BUILD_DIR)/$(POSTGRESQL_DIR) -p1 ; \
 	fi
