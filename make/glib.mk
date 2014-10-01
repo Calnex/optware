@@ -249,7 +249,7 @@ $(GLIB_IPK): $(GLIB_BUILD_DIR)/.built
 	rm -rf $(GLIB_IPK_DIR)/opt/man
 	$(MAKE) $(GLIB_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GLIB_IPK_DIR)
-
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(GLIB_IPK_DIR)
 #
 # This is called from the top level makefile to create the IPK file.
 #
