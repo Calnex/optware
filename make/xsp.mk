@@ -119,7 +119,7 @@ xsp-source: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES)
 # shown below to make various patches to it.
 #
 $(XSP_BUILD_DIR)/.configured: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES) make/xsp.mk
-#	$(MAKE) <bar>-stage <baz>-stage
+	$(MAKE) libtool-stage
 	rm -rf $(BUILD_DIR)/$(XSP_DIR) $(@D)
 	$(XSP_UNZIP) $(DL_DIR)/$(XSP_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(XSP_PATCHES)" ; \

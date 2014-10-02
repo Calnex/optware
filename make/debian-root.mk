@@ -100,7 +100,10 @@ $(DEBIAN-ROOT_BUILD_DIR)/.configured: $(DEBIAN-ROOT_PATCHES) make/debian-root.mk
 	sudo rm -rf $(BUILD_DIR)/$(DEBIAN-ROOT_DIR) $(@D)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)
 	cp -ar $(DEBIAN-ROOT_CONFIG) $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)
-	cp -ar $(PACKGE_DIR) $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)/config/includes.binary/
+	mkdir -p $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)/config/includes.binary/optware
+	cd $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)/config/includes.binary/optware ; \
+		wget -r --no-parent --reject "index.html*" \
+		http://packages.calnexsol.com/$(TARGET_DISTRO)/ | true; # Don't error out.
 	if test "$(BUILD_DIR)/$(DEBIAN-ROOT_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-ROOT_DIR) $(@D) ; \
 	fi
