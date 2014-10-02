@@ -139,7 +139,7 @@ mono-unpack: $(MONO_BUILD_DIR)/.configured
 #
 $(MONO_BUILD_DIR)/.built: $(MONO_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D)
 	touch $@
 
 #
