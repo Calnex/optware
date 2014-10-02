@@ -38,14 +38,12 @@ PACKAGES_READY_FOR_TESTING =
 PACKAGES_THAT_NEED_TO_BE_FIXED =
 
 
-COMMON_CROSS_PACKAGES = autogen \
-			bzip2 \
+COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
 			geoip \
 			gettext \
 			glib \
 			gnutls \
-			guile \
 			ipkg-opt \
 			ipkg-utils \
 			ipkg-web \
@@ -59,7 +57,6 @@ COMMON_CROSS_PACKAGES = autogen \
 			libstdc++ \
 			libtasn1 \
 			libtool \
-			libunistring \
 			mono \
 			ncurses \
 			ncursesw \
@@ -215,7 +212,6 @@ TARGET_NM=$(TARGET_CROSS)nm
 TARGET_RANLIB=$(TARGET_CROSS)ranlib
 TARGET_READELF=$(TARGET_CROSS)readelf
 TARGET_STRIP?=$(TARGET_CROSS)strip
-TARGET_LIBTOOL?=$(TARGET_CROSS)libtool
 TARGET_CONFIGURE_OPTS+= \
 	AR=$(TARGET_AR) \
 	AS=$(TARGET_AS) \
@@ -228,7 +224,6 @@ TARGET_CONFIGURE_OPTS+= \
 	RANLIB=$(TARGET_RANLIB) \
 	READELF=$(TARGET_READELF) \
 	STRIP=$(TARGET_STRIP) \
-	LIBTOOL=$(TARGET_LIBTOOL) \
 	PKG_CONFIG_PATH=$(STAGING_LIB_DIR)/pkgconfig
 TARGET_PATH=$(STAGING_PREFIX)/bin:$(STAGING_DIR)/bin:/opt/bin:/opt/sbin:/bin:/sbin:/usr/bin:/usr/sbin
 
