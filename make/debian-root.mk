@@ -112,14 +112,14 @@ $(DEBIAN-ROOT_BUILD_DIR)/.configured: $(DEBIAN-ROOT_PATCHES) make/debian-root.mk
 	# what you're doing!) 								\
 	sudo lb config									\
 		--architectures				amd64				\
-		--binary-images				iso-hybrid			\
+		--binary-images				hdd				\
 		--distribution				$(TARGET_DISTRO)		\
-		--bootloader				grub2				\
+		--bootloader				grub				\
 		--binary-filesystem			ext4				\
 		--memtest				memtest86+			\
 		--checksums				sha1				\
-		--debian-installer			live				\
-		--debian-installer-preseedfile		debconf				\
+		--debian-installer                      live				\
+		--debian-installer-preseedfile          debconf				\
 		--win32-loader				false				\
 		--loadlin				false				\
 		--grub-splash				splash.png			\
@@ -127,9 +127,6 @@ $(DEBIAN-ROOT_BUILD_DIR)/.configured: $(DEBIAN-ROOT_PATCHES) make/debian-root.mk
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)		\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)		\
 		--backports				true				\
-		--iso-application			"Springbank installer"		\
-		--iso-publisher				"Calnex Solutions"		\
-		--iso-volume				"Springbank installer"		\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
