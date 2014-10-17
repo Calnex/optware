@@ -1,2 +1,1 @@
-openssh-server sudo
-
+openssh-server sudo samba wget

@@ -100,10 +100,6 @@ $(DEBIAN-ROOT_BUILD_DIR)/.configured: $(DEBIAN-ROOT_PATCHES) make/debian-root.mk
 	sudo rm -rf $(BUILD_DIR)/$(DEBIAN-ROOT_DIR) $(@D)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)
 	cp -ar $(DEBIAN-ROOT_CONFIG) $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)
-	mkdir -p $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)/config/includes.binary/optware
-	cd $(BUILD_DIR)/$(DEBIAN-ROOT_DIR)/config/includes.binary/optware ; \
-		wget -r --no-parent --reject "index.html*" \
-		http://packages.calnexsol.com/$(TARGET_DISTRO)/ | true; # Don't error out.
 	if test "$(BUILD_DIR)/$(DEBIAN-ROOT_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-ROOT_DIR) $(@D) ; \
 	fi
@@ -111,21 +107,22 @@ $(DEBIAN-ROOT_BUILD_DIR)/.configured: $(DEBIAN-ROOT_PATCHES) make/debian-root.mk
 	# Live config recipe (no not modify unless you know 				\
 	# what you're doing!) 								\
 	sudo lb config									\
-		--architectures				amd64				\
-		--binary-images				hdd				\
+		--architecture				amd64				\
+		--binary-image				iso-hybrid			\
 		--distribution				$(TARGET_DISTRO)		\
-		--bootloader				grub				\
+		--apt-indices				false				\
+		--apt-recommends			false				\
+		--bootloader				grub2				\
 		--binary-filesystem			ext4				\
 		--memtest				memtest86+			\
 		--checksums				sha1				\
 		--debian-installer                      live				\
 		--debian-installer-preseedfile          debconf				\
+		--debootstrap-options			"--variant=minbase"		\
 		--win32-loader				false				\
 		--loadlin				false				\
 		--grub-splash				splash.png			\
 		--bootappend-live		"boot=live config username=calnex"	\
-		--mirror-bootstrap			$(TARGET_REPO_MIRROR)		\
-		--mirror-chroot				$(TARGET_REPO_MIRROR)		\
 		--backports				true				\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\

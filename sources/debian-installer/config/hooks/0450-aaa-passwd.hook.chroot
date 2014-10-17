@@ -4,8 +4,7 @@ set -e
 
 echo "setting root password"
 # Set root password
-#echo 'root:$5$Hikksh95jH2sPpr$hScRAk6ZdfAsAjmrhqVGJSGF.86J6XYoXJgb1.L3Lu1' | /usr/sbin/chpasswd -e
-usermod -p '$1$h8QxFYkt$6jZ5Pvf.90d9lOKyP0IzH0' root
+echo 'root:$5$Hikksh95jH2sPpr$hScRAk6ZdfAsAjmrhqVGJSGF.86J6XYoXJgb1.L3Lu1' | /usr/sbin/chpasswd -e
 
 echo "creating calnex user"
 # Create calnex user and setup passwords.
