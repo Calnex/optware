@@ -112,17 +112,10 @@ $(DEBIAN-ROOT_BUILD_DIR)/.configured: $(DEBIAN-ROOT_PATCHES) make/debian-root.mk
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
 		--apt-recommends			false				\
-		--bootloader				grub2				\
-		--binary-filesystem			ext4				\
 		--memtest				memtest86+			\
 		--checksums				sha1				\
-		--debian-installer                      live				\
-		--debian-installer-preseedfile          debconf				\
-		--debootstrap-options			"--variant=minbase"		\
 		--win32-loader				false				\
 		--loadlin				false				\
-		--grub-splash				splash.png			\
-		--bootappend-live		"boot=live config username=calnex"	\
 		--backports				true				\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\

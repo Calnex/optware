@@ -1,7 +1,0 @@
-Package: *
-Pin: release a=wheezy-backports
-Pin-Priority: 500
-
-Package: linux-image-amd64
-Pin: release a=wheezy-backports
-Pin-Priority: 1000

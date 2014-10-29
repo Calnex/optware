@@ -1,0 +1,53 @@
+#! /bin/bash
+
+if [ -f /dev/sda3  ]
+then
+fdisk /dev/sda <<EOF1
+n
+p
+3
+4194368
+20971583
+t
+3
+82
+w
+EOF1
+partprobe
+mkswap /dev/sda3
+reboot
+else
+swapon /dev/sda3
+fi
+
+if [ -f /dev/sda4  ]
+then
+fdisk /dev/sda <<EOF2
+n
+p
+4
+20971584
+
+w
+EOF2
+partprobe
+file -s /dev/sda4 | grep ext4
+    if [[ $? != 0 ]]
+    then
+        mkfs.ext4 -L persistence /dev/sda4
+        mkdir -p /mnt/home
+        mount /dev/sda4 /mnt/home
+        echo '/home union' >> /mnt/home/persistence.conf
+        umount /mnt/home
+        rm -rf /mnt/home
+    fi
+reboot
+fi
+
+/opt/bin/ipkg list_installed | grep endor
+if [[ $? != 0 ]]
+then
+/opt/bin/ipkg update && \
+/opt/bin/ipkg install endor && \
+reboot
+fi

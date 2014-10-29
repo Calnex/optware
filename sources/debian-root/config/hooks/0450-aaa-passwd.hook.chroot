@@ -4,15 +4,22 @@ set -e
 
 echo "setting root password"
 # Set root password
-echo 'root:$5$Hikksh95jH2sPpr$hScRAk6ZdfAsAjmrhqVGJSGF.86J6XYoXJgb1.L3Lu1' | /usr/sbin/chpasswd -e
+usermod -p '$1$p5idBRtn$4olM0uQUxiQ01namDZmAF.' root
 
-echo "creating calnex user"
 # Create calnex user and setup passwords.
-useradd -m calnex -s /bin/bash -k /etc/skel -p '$1$jvsLnaDW$h1O4euTqEsB13IZswdKXq/'
+echo "creating calnex user"
+useradd -m calnex -s /bin/bash -k /etc/skel -p '$1$mo36plQY$ajxPaQumb5zLpiVmFRu81.'
 
-#echo "creating samba user"
-#(echo c4ln3X; echo c4ln3X) | smbpasswd -s -a calnex
+# Create samba db entry for the calnex user
+echo "creating samba user"
+(echo c4ln3X; echo c4ln3X) | smbpasswd -s -a calnex
 
+# Give them very limited sudo (voodoo) access
 echo "configuring voodoo"
 mv /usr/bin/sudo /usr/bin/voodoo
 
+# Generate a set of ssh keys for the system
+ssh-keygen -q -f /etc/ssh/ssh_host_key -N '' -t rsa1
+ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
+ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
+ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa -b 521

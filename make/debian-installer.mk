@@ -99,6 +99,12 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 	$(MAKE) optware-bootstrap-ipk debian-root
 	sudo rm -rf $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR) $(@D)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
+	# Apply the Debian root configs such that the live demo and
+	# root FS match as closely as possible.
+	cp -ar $(DEBIAN-ROOT_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
+	# Configs for the live system *OLNY*
+	cp -ar $(DEBIAN-LIVE_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
+	# Configs for the installer
 	cp -ar $(DEBIAN-INSTALLER_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware
 	cd $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware ; \
@@ -114,18 +120,13 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--architectures				amd64				\
 		--binary-images				iso-hybrid			\
 		--distribution				$(TARGET_DISTRO)		\
-		--bootloader				grub2				\
-		--binary-filesystem			ext4				\
 		--memtest				memtest86+			\
 		--checksums				sha1				\
 		--debian-installer			live				\
 		--debian-installer-preseedfile		debconf				\
 		--win32-loader				false				\
 		--loadlin				false				\
-		--grub-splash				splash.png			\
 		--bootappend-live		"boot=live config username=calnex"	\
-		--mirror-bootstrap			$(TARGET_REPO_MIRROR)		\
-		--mirror-chroot				$(TARGET_REPO_MIRROR)		\
 		--backports				true				\
 		--iso-application			"Springbank installer"		\
 		--iso-publisher				"Calnex Solutions"		\
@@ -133,7 +134,6 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
-		sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
 		sudo cp $(DEBIAN-ROOT_BUILD_DIR)/live-image-amd64.hybrid.iso $(@D)/config/includes.binary/ ;\
 	)
 	touch $@

@@ -1,1 +1,1 @@
-openssh-server sudo samba
+openssh-server sudo samba wget tftpd parted

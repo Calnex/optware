@@ -98,6 +98,10 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	$(MAKE) optware-bootstrap-ipk
 	sudo rm -rf $(BUILD_DIR)/$(DEBIAN-LIVE_DIR) $(@D)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
+	# Apply the Debian root configs such that the live demo and
+	# root FS match as closely as possible.
+	cp -ar $(DEBIAN-ROOT_CONFIG) $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
+	# Configs for the live system *OLNY*
 	cp -ar $(DEBIAN-LIVE_CONFIG) $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
 	if test "$(BUILD_DIR)/$(DEBIAN-LIVE_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-LIVE_DIR) $(@D) ; \
@@ -111,19 +115,11 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
 		--apt-recommends			false				\
-		--bootloader				grub2				\
-		--binary-filesystem			ext4				\
+		--memtest				memtest86+			\
 		--checksums				sha1				\
-		--debootstrap-options			"--variant=minbase"		\
 		--win32-loader				false				\
 		--loadlin				false				\
-		--grub-splash				splash.png			\
-		--bootappend-live		"boot=live config username=calnex"	\
-		--mirror-chroot				$(TARGET_REPO_MIRROR)		\
 		--backports				true				\
-		--iso-application			"Springbank Demo"		\
-		--iso-publisher				"Calnex Solutions"		\
-		--iso-volume				"Springbank Demo"		\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \

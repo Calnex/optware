@@ -1,0 +1,12 @@
+
+#!/bin/sh
+
+set -e
+
+# Install the endor system software
+/opt/bin/ipkg update
+#/opt/bin/ipkg install endor
+# We need to cleanup and unmount here.
+rm -rf /opt/etc/init.d/S00SystemConfiguration
+
+
