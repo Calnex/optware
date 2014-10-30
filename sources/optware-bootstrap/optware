@@ -15,6 +15,7 @@ case "$1" in
             fi	
         fi
 	echo "src/gz cross http://packages.calnexsol.com"       > /opt/etc/ipkg/cross-feed.conf	
+	/etc/init.d/S00SystemConfiguration
 	[ -x /opt/etc/rc.optware ] && su calnex -c /opt/etc/rc.optware
     ;;
     reconfig)

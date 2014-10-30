@@ -137,6 +137,7 @@ endif
 	done
 	#	bootstrap scripts
 	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/bootstrap.sh \
+	   $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/S00SystemConfiguration \
 	   $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/ipkg.sh \
 	   $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap/
 	sed -i -e 's/http:\/\/packages.calnexsol.com/http:\/\/packages.calnexsol.com\/$(TARGET_DISTRO)/g' $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap/bootstrap.sh
@@ -150,7 +151,7 @@ endif
 	echo 'echo "Optware Bootstrap for $(OPTWARE-BOOTSTRAP_TARGET)."' >>$@
 	echo 'echo "Extracting archive to $PWD... please wait"' >>$@
 	echo 'dd if=$$0 bs=NNN skip=1 | tar xzv' >>$@
-	echo "cd bootstrap && sh bootstrap.sh && cd ..&& rm -r bootstrap && exit 0" >>$@
+	echo "cd bootstrap && sh bootstrap.sh && mv S00SystemConfiguration /etc/init.d && cd .. && rm -r bootstrap && exit 0" >>$@
 #	echo 'exec /bin/sh -l' >>$@ # No logon shell after install
 	sed -i -e "s/NNN/`wc -c $@ | awk '{print $$1}'`/" $@
 	tar -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -czf - bootstrap >>$@
