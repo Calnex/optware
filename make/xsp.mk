@@ -210,6 +210,7 @@ $(XSP_IPK_DIR)/CONTROL/control:
 $(XSP_IPK): $(XSP_BUILD_DIR)/.built
 	rm -rf $(XSP_IPK_DIR) $(BUILD_DIR)/xsp_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(XSP_BUILD_DIR) DESTDIR=$(XSP_IPK_DIR) install-strip
+	rm -rf $(XSP_IPK_DIR)/usr
 	$(MAKE) $(XSP_IPK_DIR)/CONTROL/control
 	echo $(XSP_CONFFILES) | sed -e 's/ /\n/g' > $(XSP_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(XSP_IPK_DIR)

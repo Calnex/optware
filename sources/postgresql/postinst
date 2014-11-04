@@ -5,13 +5,20 @@ pgdata="$pghome/data"
 pgver="$pghome/8.2"
 pgdumpground="$pgver/dump"
 
-mkdir -p $pghome
-mkdir -p $pgdumpground
+if [ ! -d $pghome ]
+then
+    mkdir -p $pghome
+fi
+if [ ! -d $pgdumpground ]
+then
+    mkdir -p $pgdumpground
+fi
 
 # initdb if not done before
 dbinited=0
 if [ -d $pgdata ]; then
     echo The $pgdata directory already exists
+    dbinited=1
 else
     echo "Initialize database ... "
     /opt/bin/initdb -D "$pgdata"
@@ -19,14 +26,8 @@ else
     dbinited=1
 fi
 
-psql -U calnex -d postgres -c "UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';"
-psql -U calnex -d postgres -c "DROP DATABASE template1;"
-psql -U calnex -d postgres -c "CREATE DATABASE template1 WITH TEMPLATE = template0 ENCODING = 'UNICODE';"
-psql -U calnex -d postgres -c "UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template1';"
-psql -U calnex -d template1 -c "VACUUM FREEZE;"
-
 # compatibility check and start db
-/opt/etc/init.d/S98postgresql
+/opt/etc/init.d/S98postgresql start
 
 if [ "$dbinited." = "1." -a -n "`pidof postmaster`" ]; then
     echo "Now database server is ready, you can test the connection by:"
@@ -35,3 +36,11 @@ if [ "$dbinited." = "1." -a -n "`pidof postmaster`" ]; then
     echo "To allow access from other user, see http://www.postgresql.org/docs/8.2/interactive/sql-createuser.html"
     echo "To allow access from network, see http://developer.postgresql.org/docs/postgres/runtime-config.html#RUNTIME-CONFIG-CONNECTION"
 fi
+
+sleep 5
+
+psql -U calnex -d postgres -c "UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';"
+psql -U calnex -d postgres -c "DROP DATABASE template1;"
+psql -U calnex -d postgres -c "CREATE DATABASE template1 WITH TEMPLATE = template0 ENCODING = 'UNICODE';"
+psql -U calnex -d postgres -c "UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template1';"
+psql -U calnex -d template1 -c "VACUUM FREEZE;"

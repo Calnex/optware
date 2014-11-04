@@ -12,10 +12,12 @@ case "$1" in
             if ! grep ' /opt ' /proc/mounts >/dev/null 2>&1 ; then
                 mkdir -p /opt
                 mount -o bind ${REAL_OPT_DIR} /opt
-            fi	
+            fi
         fi
-	echo "src/gz cross http://packages.calnexsol.com"       > /opt/etc/ipkg/cross-feed.conf	
-	/etc/init.d/S00SystemConfiguration
+	echo "src/gz cross http://packages.calnexsol.com"       > /opt/etc/ipkg/cross-feed.conf
+	if [ -f /etc/init.d/S00SystemConfiguration ]; then
+		/etc/init.d/S00SystemConfiguration
+	fi
 	[ -x /opt/etc/rc.optware ] && su calnex -c /opt/etc/rc.optware
     ;;
     reconfig)
