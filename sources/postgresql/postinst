@@ -39,7 +39,14 @@ if [ "$dbinited." = "1." -a -n "`pidof postmaster`" ]; then
     echo "To allow access from network, see http://developer.postgresql.org/docs/postgres/runtime-config.html#RUNTIME-CONFIG-CONNECTION"
 fi
 
-sleep 5
+pg_running=3
+while [ $pg_running != 0 ]
+do
+    sleep 0.5
+    pg_ctl status -D $pgdata
+    pg_running=$?
+done
+
 
 psql -U calnex -d postgres -c "UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';"
 psql -U calnex -d postgres -c "DROP DATABASE template1;"
