@@ -9,7 +9,7 @@ su calnex -c '/opt/bin/ipkg update'
 su calnex -c '/opt/bin/ipkg install endor'
 
 # We need to cleanup and unmount here.
-rm -rf /opt/etc/init.d/S00SystemConfiguration
+rm -rf /etc/init.d/S00SystemConfiguration
 
 for i in /opt/etc/init.d/S??* ;do
         # Ignore dangling symlinks (if any).
