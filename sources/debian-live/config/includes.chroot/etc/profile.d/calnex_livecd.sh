@@ -5,4 +5,4 @@
 # inside a Live CD and that it is expected to get certain failures
 # when querying free disk space
 
-CALNEX_LIVECD=1
+export CALNEX_LIVECD=1
