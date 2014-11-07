@@ -1,4 +1,6 @@
 #!/bin/sh
+sudo pkill -f opt
+sudo umount `mount | grep $PWD | awk '{ print $3}'`
 sudo rm -rf builds/debian-root builds/debian-live builds/debian-installer
 rm -rf a.out packages staging lib builds tmp host toolchain
 rm -f downloads/*git*
