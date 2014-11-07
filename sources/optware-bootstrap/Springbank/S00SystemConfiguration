@@ -1,6 +1,6 @@
 #! /bin/bash
 
-if [ ! -f /dev/sda3  ]
+if [ ! -b /dev/sda3  ]
 then
 fdisk /dev/sda <<EOF1
 n
@@ -15,12 +15,9 @@ w
 EOF1
 partprobe
 mkswap /dev/sda3
-reboot
-else
-swapon /dev/sda3
 fi
 
-if [ ! -f /dev/sda4  ]
+if [ ! -b /dev/sda4  ]
 then
 fdisk /dev/sda <<EOF2
 n
@@ -47,8 +44,7 @@ fi
 /opt/bin/ipkg list_installed | grep endor
 if [[ $? != 0 ]]
 then
-su calnex -c '/opt/bin/ipkg update' && \
-su calnex -c '/opt/bin/ipkg install endor' && \
-reboot
+su calnex -c '/opt/bin/ipkg update'
+su calnex -c '/opt/bin/ipkg install endor'
 fi
 

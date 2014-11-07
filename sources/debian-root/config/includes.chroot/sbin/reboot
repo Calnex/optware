@@ -1,9 +1,0 @@
-#! /bin/sh
-
-echo "r" > /proc/sysrq-trigger
-echo "e" > /proc/sysrq-trigger
-echo "i" > /proc/sysrq-trigger
-echo "s" > /proc/sysrq-trigger
-echo "u" > /proc/sysrq-trigger
-sleep 0.5
-echo "b" > /proc/sysrq-trigger
