@@ -106,10 +106,10 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	if test "$(BUILD_DIR)/$(DEBIAN-LIVE_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-LIVE_DIR) $(@D) ; \
 	fi
-        # Temporary hook to pull in demo files!
-        cd $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/includes.chroot/etc/skel ; \
-                wget -r --no-parent --reject "index.html*" \
-                http://packages.calnexsol.com/demo_files/ | true; # Don't error out.
+	# Temporary hook to pull in demo files!
+	cd $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/includes.chroot/etc/skel ; \
+		wget -r --no-parent --reject "index.html*" \
+		http://packages.calnexsol.com/demo_files/ | true; # Don't error out.
 	(cd $(@D); \
 	# Live config recipe (no not modify unless you know 				\
 	# what you're doing!) 								\
