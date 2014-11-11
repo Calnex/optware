@@ -213,7 +213,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-webapp $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-instrumentcontroller $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-instrumentcontroller
-	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-virtualinstrument
+	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_IPK_DIR)/opt/etc/init.d/S98endor-virtualinstrument
 	install -m 755 $(ENDOR_IPK_DIR)/opt/lib/endor/WebApp.dll $(ENDOR_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
 	install -d $(ENDOR_IPK_DIR)/opt/share/endor
 	install -m 755 $(ENDOR_BUILD_DIR)/Endor/Instrument/VirtualInstrument/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
