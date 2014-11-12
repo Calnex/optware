@@ -18,7 +18,7 @@ case "$1" in
 	if [ -f /etc/init.d/S00SystemConfiguration ]; then
 		/etc/init.d/S00SystemConfiguration
 	fi
-	[ -x /opt/etc/rc.optware ] && su calnex -c '/opt/etc/rc.optware start'
+	[ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
     ;;
     reconfig)
 	true
