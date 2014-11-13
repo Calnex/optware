@@ -1,0 +1,18 @@
+from os import curdir, sep
+from os.path import join as pjoin
+
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+class StoreHandler(BaseHTTPRequestHandler):
+    def do_HEAD(self):
+        self.send_response(302)
+        print(self.client_address)
+        self.send_header("Location", "http://" + self.client_address[0] + ":49496" + self.path)
+        self.end_headers()
+        
+    def do_GET(self):
+        self.do_HEAD()
+
+
+server = HTTPServer(('', 8888), StoreHandler)
+server.serve_forever()

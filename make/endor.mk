@@ -211,6 +211,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
+	install -m 755 $(ENDOR_SOURCE_DIR)/cat-redirect $(ENDOR_IPK_DIR)/opt/bin/cat-redirect
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-webapp $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-instrumentcontroller $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-instrumentcontroller
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_IPK_DIR)/opt/etc/init.d/S98endor-virtualinstrument
