@@ -20,7 +20,7 @@ fi
 case "$rc" in
     start)
         echo -n "Starting Cat RemotingServer: "
-	/opt/bin/calnex.cat.remotingserver
+	screen -dmS CAT_RS /opt/bin/calnex.cat.remotingserver
 	python3 /opt/bin/cat-redirect
         echo ok
         ;;
