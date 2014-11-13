@@ -6,7 +6,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 class StoreHandler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         self.send_response(302)
-        self.send_header("Location", "http://" + self.headers.get('Host').replace('8888', '80') + self.path)
+        self.send_header("Location", "http://" + self.headers.get('Host').replace('49496', '80') + self.path)
         self.end_headers()
         
     def do_GET(self):
