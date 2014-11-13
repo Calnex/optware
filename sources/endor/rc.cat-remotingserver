@@ -21,12 +21,13 @@ case "$rc" in
     start)
         echo -n "Starting Cat RemotingServer: "
 	screen -dmS CAT_RS /opt/bin/calnex.cat.remotingserver
-	python3 /opt/bin/cat-redirect
+	python3 /opt/bin/cat-redirect &
         echo ok
         ;;
     stop)
         echo -n "Stopping Cat RemotingServer: "
         pkill -f 'mono /opt/lib/endor/Calnex.Cat.RemotingServer.exe'
+	pkill -f 'python3 /opt/bin/cat-redirect'
         echo ok
         ;;
     restart)
