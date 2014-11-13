@@ -227,7 +227,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/prerm $(ENDOR_IPK_DIR)/CONTROL/prerm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_IPK_DIR)
-	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
+#	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.
