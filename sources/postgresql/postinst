@@ -29,7 +29,7 @@ else
 fi
 
 # compatibility check and start db
-/opt/etc/init.d/S98postgresql start
+/opt/etc/init.d/S95postgresql start
 
 if [ "$dbinited." = "1." -a -n "`pidof postmaster`" ]; then
     echo "Now database server is ready, you can test the connection by:"

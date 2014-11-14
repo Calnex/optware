@@ -1,4 +1,4 @@
 #!/bin/sh
 
-/opt/etc/init.d/S98postgresql stop
+/opt/etc/init.d/S95postgresql stop
 sleep 1
