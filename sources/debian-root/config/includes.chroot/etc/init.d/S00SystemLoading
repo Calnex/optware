@@ -1,12 +1,12 @@
 #! /bin/sh
 
-screen -dmS LOADING python3 /sbin/loading_server &
+screen -dmS LOADING python3 /sbin/loading_server > /dev/null
 
 LOADED=1
 
 while [ -n $LOADED ]
 do
-	wget -qO- localhost:8000 &> /dev/null 
+	wget -qO- localhost:8000 > /dev/null
 	LOADED=$?
 	sleep 0.2
 done
