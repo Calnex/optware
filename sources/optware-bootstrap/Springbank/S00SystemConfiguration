@@ -44,7 +44,7 @@ fi
 /opt/bin/ipkg list_installed | grep endor
 if [[ $? != 0 ]]
 then
-su calnex -c '/opt/bin/ipkg update'
-su calnex -c '/opt/bin/ipkg install endor'
+su - calnex -c '/opt/bin/ipkg update'
+su - calnex -c '/opt/bin/ipkg install endor'
 fi
 

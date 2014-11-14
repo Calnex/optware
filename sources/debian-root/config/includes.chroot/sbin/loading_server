@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 screen -dmS LOADING python3 /sbin/loading_server.py > /dev/null
 

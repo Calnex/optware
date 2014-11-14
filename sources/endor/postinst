@@ -2,6 +2,7 @@
 
 cd /opt/lib/endor
 tar -xzf long-filepaths.tar.gz
+ln -s html CAT
 
 /opt/lib/ipkg/info/postgresql.postinst
 echo "waiting for DB daemon to start"
@@ -12,3 +13,4 @@ python3 /opt/lib/endor/schema/Baseline/RebuildDb.py --superuser calnex --path /o
 /opt/etc/init.d/S97endor-instrumentcontroller start
 /opt/etc/init.d/S98cat-remotingserver start
 /opt/etc/init.d/S99endor-webapp start
+
