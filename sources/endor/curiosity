@@ -1,0 +1,6 @@
+#! /bin/sh
+
+if [ -x /opt/etc/init.d/S98cat-remotingserver ]
+then
+	/opt/etc/init.d/S98cat-remotingserver stop
+fi

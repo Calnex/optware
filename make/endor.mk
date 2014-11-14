@@ -211,6 +211,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
+	install -m 755 $(ENDOR_SOURCE_DIR)/curiosity $(ENDOR_IPK_DIR)/opt/bin/curiosity
 	install -m 755 $(ENDOR_SOURCE_DIR)/cat-redirect $(ENDOR_IPK_DIR)/opt/bin/cat-redirect
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-instrumentcontroller $(ENDOR_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
@@ -218,14 +219,13 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-webapp $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_IPK_DIR)/opt/lib/endor/WebApp.dll $(ENDOR_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
 	install -d $(ENDOR_IPK_DIR)/opt/share/endor
-	mv $(ENDOR_IPK_DIR)/opt/lib/endor/html $(ENDOR_IPK_DIR)/opt/lib/endor/CAT
 	install -m 755 $(ENDOR_BUILD_DIR)/Endor/Instrument/VirtualInstrument/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
 	cp -r $(ENDOR_BUILD_DIR)/Endor/Data/Schema $(ENDOR_IPK_DIR)/opt/lib/endor/schema
-#	install -m 644 $(ENDOR_SOURCE_DIR)/endor.conf $(ENDOR_IPK_DIR)/opt/etc/endor.conf
 	$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
 	install -m 755 $(ENDOR_SOURCE_DIR)/prerm $(ENDOR_IPK_DIR)/CONTROL/prerm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
+	mv $(ENDOR_IPK_DIR)/opt/lib/endor/html $(ENDOR_IPK_DIR)/opt/lib/endor/CAT
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_IPK_DIR)
 #	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
 
