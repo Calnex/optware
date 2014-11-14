@@ -225,7 +225,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
 	install -m 755 $(ENDOR_SOURCE_DIR)/prerm $(ENDOR_IPK_DIR)/CONTROL/prerm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
-	mv $(ENDOR_IPK_DIR)/opt/lib/endor/html $(ENDOR_IPK_DIR)/opt/lib/endor/CAT
+	ln -s $(ENDOR_IPK_DIR)/opt/lib/endor/html $(ENDOR_IPK_DIR)/opt/lib/endor/CAT
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_IPK_DIR)
 #	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
 
