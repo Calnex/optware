@@ -1,1 +1,1 @@
-openssh-server sudo samba wget tftpd parted python3 file screen libgdiplus
+openssh-server sudo samba wget tftpd parted python3 file screen libgdiplus chkconfig
