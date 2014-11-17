@@ -1,17 +1,21 @@
 #! /bin/bash
 
+echo "Starting loading server"
+
 screen -dmS LOADING python3 /sbin/loading_server.py > /dev/null
 
 LOADED=1
 i=0
 
-while [ -n $LOADED ]
+echo "Waiting for main server to be ready"
+
+while [ $LOADED -ne "0" ]
 do
 	wget -qO- localhost:8000 > /dev/null
 	LOADED=$?
 	sleep 0.2
 	((i++))
-	if [[ i -gt 2000 ]]
+	if [[ $i -gt 2000 ]]
 	then
 		LOADED=0
 	fi
