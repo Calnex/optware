@@ -12,7 +12,18 @@
 #  and adjusts the firewall configuration to point port 80 at it.
 ### END INIT INFO
 
-/sbin/loading_server &
-INIT_SERVER_MESSAGE="init_server called"
+case "$1" in
+  start)
+        /sbin/loading_server &
+		    INIT_SERVER_MESSAGE="init_server called"
+        ;;
+  stop)
+        pkill -f '/sbin/loading_server'
+        ;;
+  *)
+        echo "Usage: $SCRIPTNAME {start}" >&2
+        exit 3
+        ;;
+esac
 
 exit 0
