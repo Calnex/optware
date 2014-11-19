@@ -19,7 +19,7 @@ case "$1" in
 		/etc/init.d/S00SystemConfiguration
 	fi
 	if [ -x /etc/init.d/S00SystemLoading ]; then
-		/etc/init.d/S00SystemLoading
+		/etc/init.d/S00SystemLoading start
 	fi
 	[ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
     ;;
