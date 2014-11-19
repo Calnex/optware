@@ -23,6 +23,3 @@ ssh-keygen -q -f /etc/ssh/ssh_host_key -N '' -t rsa1
 ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
 ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
 ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa -b 521
-
-# Install the booting splash screen
-plymouth-set-default-theme

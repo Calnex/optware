@@ -114,8 +114,8 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	# Live config recipe (no not modify unless you know 				\
 	# what you're doing!) 								\
 	sudo lb config									\
-		--architecture				amd64				\
-		--binary-image				iso-hybrid			\
+		--architectures				amd64				\
+		--binary-images				iso-hybrid			\
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
 		--apt-recommends			false				\
@@ -124,7 +124,9 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--win32-loader				false				\
 		--loadlin				false				\
 		--backports				true				\
-		--mirror-bootstrap			$(TARGET_REPO_MIRROR)		\
+		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
+		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
+		--mirror-chroot-security		$(TARGET_REPO_MIRROR)/security	\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
