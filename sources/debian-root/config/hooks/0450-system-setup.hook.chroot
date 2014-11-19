@@ -24,8 +24,5 @@ ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
 ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
 ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa -b 521
 
-# Enable our custom service
-ln -s /etc/init.d/SystemLoading /etc/rc2.d/
-ln -s /etc/init.d/SystemLoading /etc/rc3.d/
-ln -s /etc/init.d/SystemLoading /etc/rc4.d/
-ln -s /etc/init.d/SystemLoading /etc/rc5.d/
+# Install the booting splash screen
+plymouth-set-default-theme

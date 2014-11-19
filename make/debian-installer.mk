@@ -101,9 +101,9 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	# Apply the Debian root configs such that the live demo and
 	# root FS match as closely as possible.
-	cp -ar $(DEBIAN-ROOT_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
+	#cp -ar $(DEBIAN-ROOT_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	# Configs for the live system *OLNY*
-	cp -ar $(DEBIAN-LIVE_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
+	#cp -ar $(DEBIAN-LIVE_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	# Configs for the installer
 	cp -ar $(DEBIAN-INSTALLER_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware
@@ -119,7 +119,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 	sudo lb config									\
 		--architectures				amd64				\
 		--binary-images				iso-hybrid			\
-		--distribution				$(TARGET_DISTRO)		\
+		--distribution				jessie				\
 		--memtest				memtest86+			\
 		--checksums				sha1				\
 		--debian-installer			live				\
