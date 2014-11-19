@@ -41,10 +41,27 @@ file -s /dev/sda4 | grep ext4
 reboot
 fi
 
-/opt/bin/ipkg list_installed | grep endor
+/opt/bin/ipkg list_installed | grep endor 2&1>/dev/null
 if [[ $? != 0 ]]
 then
-su - calnex -c '/opt/bin/ipkg update'
-su - calnex -c '/opt/bin/ipkg install endor'
+
+	CONNECTED=1
+	i=0
+
+	# Wait for network
+	while [ $CONNECTED -ne "0" ]
+	do
+
+		ping -c 1 packages.calnexsol.com >/dev/null
+		CONNECTED=$?
+		((i++))
+		if [[ $i -gt 2000 ]]
+		then
+			CONNECTED=0
+		fi
+	done
+
+	su - calnex -c '/opt/bin/ipkg update'
+	su - calnex -c '/opt/bin/ipkg install endor'
 fi
 
