@@ -2,7 +2,7 @@
 
 echo "Starting loading server"
 
-screen -dmS LOADING python3 /sbin/loading_server.py
+screen -dmS LOADING python3 /sbin/loading_server.py >/var/log/initserver.log
 
 LOADED=1
 i=0
