@@ -1,13 +1,18 @@
 #! /bin/sh
 ### BEGIN INIT INFO
 # Provides:          init_server
-# Required-Start:    
-# Required-Stop:
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs $network
 # Should-Start:
-# Default-Start:     
-# Default-Stop:      
-# Short-Description: script used to launch the python based loading screen
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Python Initialisation WebServer
+# Description:       Script to launch a python webserver hosting
+#  initialisation content. The script then polls for the main server
+#  and adjusts the firewall configuration to point port 80 at it.
 ### END INIT INFO
 
 /sbin/loading_server &
+INIT_SERVER_MESSAGE="init_server called"
+
 exit 0
