@@ -13,5 +13,5 @@ class StoreHandler(BaseHTTPRequestHandler):
                                                 self.wfile.write(fh.read().encode())
 
 
-server = HTTPServer(('', 6000), StoreHandler)
+server = HTTPServer(('', 8080), StoreHandler)
 server.serve_forever()

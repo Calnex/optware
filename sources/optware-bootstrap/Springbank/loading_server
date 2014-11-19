@@ -2,7 +2,7 @@
 
 echo "Starting loading server"
 
-screen -dmS LOADING python3 /sbin/loading_server.py > /dev/null
+screen -dmS LOADING python3 /sbin/loading_server.py
 
 LOADED=1
 i=0
@@ -22,4 +22,4 @@ do
 done
 
 iptables -t nat -R PREROUTING 1 -i eth0 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8000
-pkill -f 'python3 /sbin/loading_server'
+pkill -f 'python3 /sbin/loading_server.py'
