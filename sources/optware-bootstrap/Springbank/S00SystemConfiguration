@@ -41,7 +41,7 @@ file -s /dev/sda4 | grep ext4
 reboot
 fi
 
-/opt/bin/ipkg list_installed | grep endor 2&1>/dev/null
+/opt/bin/ipkg list_installed | grep endor >/dev/null
 if [[ $? != 0 ]]
 then
 
