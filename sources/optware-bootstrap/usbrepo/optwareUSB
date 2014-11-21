@@ -14,10 +14,13 @@ fi
 case "$rc" in
     add)
         REPO=`find /media -type f -name Packages.gz | sed 's/Packages.gz/\*/g'`
-        su calnex -c "echo $REPO	> /opt/etc/ipkg/cross-feed.conf"
+	if [ $REPO -ne "" ]
+	then
+	        su calnex -c "echo $REPO	> /opt/etc/ipkg/cross-feed.conf"
+	fi
         ;;
     remove)
-	su calnex -c "echo 'src/gz cross http://packages.calnexsol.com/__TARGET_DISTRO__'	> /opt/etc/ipkg/cross-feed.conf"
+	su calnex -c "echo 'src/gz cross http://packages.calnexsol.com/optware/__TARGET_DISTRO__'	> /opt/etc/ipkg/cross-feed.conf"
         ;;
     *)
         echo "Usage: $0 (add|remove)"

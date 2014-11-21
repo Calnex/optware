@@ -45,23 +45,44 @@ fi
 if [[ $? != 0 ]]
 then
 
-	CONNECTED=1
-	i=0
+	ATTCHED=`cat /sys/class/net/eth0/carrier`
+	NETFAIL=0
+	if [ $ATTCHED -ne "0" ]
+	then
 
-	# Wait for network
-	while [ $CONNECTED -ne "0" ]
-	do
+		CONNECTED=1
+		i=0
 
-		ping -c 1 packages.calnexsol.com >/dev/null
-		CONNECTED=$?
-		((i++))
-		if [[ $i -gt 2000 ]]
-		then
-			CONNECTED=0
-		fi
-	done
+		# Wait for network
+		while [ $CONNECTED -ne "0" ]
+		do
 
-	su - calnex -c '/opt/bin/ipkg update'
-	su - calnex -c '/opt/bin/ipkg install endor'
+			ping -c 1 packages.calnexsol.com >/dev/null
+			sleep 0.1
+			CONNECTED=$?
+			((i++))
+			if [[ $i -gt 2000 ]]
+			then
+				CONNECTED=0
+				NETFAIL=1
+			fi
+		done
+	else
+		NETFAIL=1		
+	fi
+	
+	if [ $NETFAIL -ne "0" ]
+	then
+		cat '#! /bin/sh'                                                             > /sbin/get-ip-address
+		cat 'echo "Please insert installation media and run the following commands"' >> /sbin/get-ip-address
+		cat 'echo "ipkg update"'                                                     >> /sbin/get-ip-address
+		cat 'echo "ipkg install endor"'                                              >> /sbin/get-ip-address
+		cat 'echo "reboot"'                                                          >> /sbin/get-ip-address
+		
+	else
+		su - calnex -c '/opt/bin/ipkg update'
+		su - calnex -c '/opt/bin/ipkg install endor'
+		reboot
+	fi
 fi
 

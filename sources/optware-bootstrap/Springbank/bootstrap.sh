@@ -53,7 +53,7 @@ echo "Installing wget..."
 if [ ! -e /opt/etc/ipkg/cross-feed.conf ]
 then
 	echo "Creating /opt/etc/ipkg/cross-feed.conf..."
-	echo "src/gz cross http://packages.calnexsol.com/__TARGET_DISTRO__"	> /opt/etc/ipkg/cross-feed.conf
+	echo "src/gz cross http://packages.calnexsol.com/optware/__TARGET_DISTRO__"	> /opt/etc/ipkg/cross-feed.conf
 fi
 
 chmod -R 0777 /opt

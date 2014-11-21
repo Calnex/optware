@@ -46,7 +46,7 @@ TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) $(TARGET_CUSTOM_FLAGS)
 
 NATIVE_GCC_VERSION=4.9.1
 
-TOOLCHAIN_BINARY_SITE=http://packages.calnexsol.com/toolchains
+TOOLCHAIN_BINARY_SITE=http://packages.calnexsol.com/optware/toolchains
 ifeq (wheezy, $(TARGET_DISTRO))
 LIBC_STYLE=eglibc
 TOOLCHAIN_BINARY=gcc491-eglibc213_x86_64.tar.gz
