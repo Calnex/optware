@@ -40,6 +40,15 @@ ENDOR_SUGGESTS=
 ENDOR_CONFLICTS=
 
 #
+# Data Storage information
+#
+DATASTORAGE_REPOSITORY=git@github.com:Calnex/DataStorage.git
+DATASTORAGE_VERSION=1.0
+DATASTORAGE_SOURCE=endorDataStorage-$(DATASTORAGE_VERSION).tar.gz
+DATASTORAGE_DIR=DataStorage
+
+
+#
 # ENDOR_IPK_VERSION should be incremented when the ipk changes.
 #
 ENDOR_IPK_VERSION=git
@@ -78,6 +87,12 @@ ENDOR_SOURCE_DIR=$(SOURCE_DIR)/endor
 ENDOR_IPK_DIR=$(BUILD_DIR)/endor-$(ENDOR_VERSION)-ipk
 ENDOR_IPK=$(BUILD_DIR)/endor_$(ENDOR_VERSION)-$(ENDOR_IPK_VERSION)_$(TARGET_ARCH).ipk
 
+
+DATASTORAGE_GIT_OPTIONS?=--depth 1
+DATASTORAGE_GIT_TAG?=HEAD
+DATASTORAGE_TREEISH=$(DATASTORAGE_GIT_TAG)
+
+
 .PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
 
 #
@@ -94,7 +109,22 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 			--prefix=$(ENDOR_DIR)/ \
 			$(ENDOR_TREEISH) | \
 		gzip > $@) && \
-		rm -rf endor ; \
+		rm -rf endor ;\
+	)
+# 			--prefix=$(DATASTORAGE_DIR)/ \
+
+		
+$(DL_DIR)/$(DATASTORAGE_SOURCE):
+	(cd $(BUILD_DIR) ; \
+		rm -rf endorDataStorage && \
+		git clone $(DATASTORAGE_REPOSITORY) endorDataStorage $(DATASTORAGE_GIT_OPTIONS) && \
+		cd endorDataStorage && \
+		(git archive \
+			--format=tar \
+ 			--prefix=$(DATASTORAGE_DIR)/ \
+            $(DATASTORAGE_TREEISH) | \
+		gzip > $@) && \
+		rm -rf endorDataStorage ;\
 	)
 
 #
@@ -102,7 +132,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 # This target will be called by the top level Makefile to download the
 # source code's archive (.tar.gz, .bz2, etc.)
 #
-endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)
+endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) $(DL_DIR)/$(DATASTORAGE_SOURCE)
 
 #
 # This target unpacks the source code in the build directory.
@@ -122,7 +152,7 @@ endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
-$(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) make/endor.mk
+$(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)$(DL_DIR)/$(DATASTORAGE_SOURCE)  make/endor.mk
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
 	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_PATCHES)" ; \
@@ -131,6 +161,10 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) make/
 	fi
 	if test "$(BUILD_DIR)/$(ENDOR_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(ENDOR_DIR) $(@D) ; \
+	fi
+	$(ENDOR_UNZIP) $(DL_DIR)/$(DATASTORAGE_SOURCE) | tar -C $(BUILD_DIR) -xf -
+	if test "$(BUILD_DIR)/$(DATASTORAGE_DIR)" != "$(@D)" ; \
+		then mv $(BUILD_DIR)/$(DATASTORAGE_DIR) $(@D)/Libs ; \
 	fi
 	(cd $(@D); \
 		mdtool generate-makefiles Endor.sln -d:release && \
