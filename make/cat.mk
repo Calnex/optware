@@ -133,8 +133,6 @@ $(CAT_BUILD_DIR)/.configured: $(DL_DIR)/$(CAT_SOURCE) $(CAT_PATCHES) make/cat.mk
 		then mv $(BUILD_DIR)/$(CAT_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-	    rm Calnex.CAT.sln && \
-	    cp ~/Optware/Calnex.CAT.atp.sln ./Calnex.CAT.sln && \
 		mdtool generate-makefiles Calnex.CAT.Build.sln -d:Release && \
 		sed -i -e 's/PROGRAMFILES = \\/PROGRAMFILES = \\\n\t$$(ASSEMBLY) \\/g' `find $(CAT_BUILD_DIR) -name Makefile.am` && \
 		$(TARGET_CONFIGURE_OPTS) \
