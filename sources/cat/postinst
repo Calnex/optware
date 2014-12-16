@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#
+# All of the exciting stuff (files to start the CAT, etc) is
+# done in the Endor installer.  We are only providing the 
+# CAT binaries here
+#
+cd /opt/lib/endor
+tar -xzf long-filepaths.tar.gz
+ln -s html CAT
+
