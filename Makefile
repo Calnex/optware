@@ -81,6 +81,8 @@ CALNEX_PACKAGES =	debian-root \
 			endor \
 ##############
 
+
+
 HOST_MACHINE:=$(shell \
 if test x86_64 = `uname -m` -a 32-bit = `file /sbin/init | awk '{print $$3}'`; then echo i386 ; else uname -m; fi \
 | sed -e 's/i[3-9]86/i386/' )
