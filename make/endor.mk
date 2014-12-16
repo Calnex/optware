@@ -92,6 +92,8 @@ DATASTORAGE_GIT_OPTIONS?=--depth 1
 DATASTORAGE_GIT_TAG?=HEAD
 DATASTORAGE_TREEISH=$(DATASTORAGE_GIT_TAG)
 
+ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
+
 
 .PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
 
@@ -186,9 +188,12 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 #
 # This builds the actual binary.
 #
-$(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
+$(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured 
 	rm -f $@
 	$(MAKE) -C $(@D)
+	echo "Thinking about making the CAT"
+	pwd
+	$(MAKE) cat
 	touch $@
 
 #
@@ -242,6 +247,9 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
 	cd $(ENDOR_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \
+		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
+	cd $(ENDOR_CAT_BUILD_DIR)/Release && \
+	tar --remove-files -cvzf $(ENDOR_IPK_DIR)/opt/lib/endor/cat.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
