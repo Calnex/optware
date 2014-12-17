@@ -7,12 +7,12 @@ tar -xzf long-filepaths.tar.gz
 # Unpack the CAT
 # (take the CAT out of the bag?)
 #
-mkdir ./CATLibs
-cd ./CATLibs
-tar -zxf ../cat.tar.gz
+#mkdir ./CATLibs
+#cd ./CATLibs
+#tar -zxf ../cat.tar.gz
 
 # Link the CAT into the folder structure at the correct place
-ln -s ./html ../CAT
+ln -s ./CATLibs/html CAT
 
 /opt/lib/ipkg/info/postgresql.postinst
 echo "waiting for DB daemon to start"
