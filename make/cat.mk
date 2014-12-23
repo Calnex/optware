@@ -38,6 +38,7 @@ CAT_PRIORITY=optional
 CAT_DEPENDS=mono
 CAT_SUGGESTS=
 CAT_CONFLICTS=
+CAT_GIT_BRANCH=Release
 
 #
 # CAT_IPK_VERSION should be incremented when the ipk changes.
@@ -84,10 +85,15 @@ CAT_IPK=$(BUILD_DIR)/cat_$(CAT_VERSION)-$(CAT_IPK_VERSION)_$(TARGET_ARCH).ipk
 # This is the dependency on the source code.  If the source is missing,
 # then it will be fetched from the site using wget.
 #
+# Pull the Release version of the CAT
+#
 $(DL_DIR)/$(CAT_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf cat && \
-		git clone $(CAT_REPOSITORY) cat $(CAT_GIT_OPTIONS) && \
+        mkdir cat && \
+        cd cat && \
+        git init && \
+        git remote add -t $(CAT_GIT_BRANCH) -f origin $(CAT_REPOSITORY) && \
 		cd cat && \
 		(git archive \
 			--format=tar \
