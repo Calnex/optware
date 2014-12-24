@@ -87,13 +87,30 @@ CAT_IPK=$(BUILD_DIR)/cat_$(CAT_VERSION)-$(CAT_IPK_VERSION)_$(TARGET_ARCH).ipk
 #
 # Pull the Release version of the CAT
 #
+#$(DL_DIR)/$(CAT_SOURCE):
+#	(cd $(BUILD_DIR) ; \
+#		rm -rf cat && \
+#        mkdir cat && \
+#        cd cat && \
+#        git init && \
+#        git remote add -t $(CAT_GIT_BRANCH) -f origin $(CAT_REPOSITORY) && \
+#		cd cat && \
+#		(git archive \
+#			--format=tar \
+#			--prefix=$(CAT_DIR)/ \
+#			$(CAT_TREEISH) | \
+#		gzip > $@) && \
+#		rm -rf cat ;\
+#	)
+
+# atp temporary fix - pull main line cat (1.0.4)
 $(DL_DIR)/$(CAT_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf cat && \
         mkdir cat && \
         cd cat && \
         git init && \
-        git remote add -t $(CAT_GIT_BRANCH) -f origin $(CAT_REPOSITORY) && \
+        git pull $(CAT_REPOSITORY) && \
 		cd cat && \
 		(git archive \
 			--format=tar \
@@ -102,6 +119,9 @@ $(DL_DIR)/$(CAT_SOURCE):
 		gzip > $@) && \
 		rm -rf cat ;\
 	)
+
+
+
 
 #
 # The source code depends on it existing within the download directory.
