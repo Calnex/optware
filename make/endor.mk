@@ -118,26 +118,10 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 #
 # atp: this is the real version
 #
-#$(DL_DIR)/$(DATASTORAGE_SOURCE):
-#	(cd $(BUILD_DIR) ; \
-#		rm -rf endorDataStorage && \
-#		git clone $(DATASTORAGE_REPOSITORY) endorDataStorage $(DATASTORAGE_GIT_OPTIONS) && \
-#		cd endorDataStorage && \
-#		(git archive \
-#			--format=tar \
-# 			--prefix=$(DATASTORAGE_DIR)/ \
-#            $(DATASTORAGE_TREEISH) | \
-#		gzip > $@) && \
-#		rm -rf endorDataStorage ;\
-#	)
-
-#
-# Clone one specific branch while we try to deal with version mismatches
-#   
 $(DL_DIR)/$(DATASTORAGE_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endorDataStorage && \
-		git clone $(DATASTORAGE_REPOSITORY) -b Patch1 --single-branch endorDataStorage && \
+		git clone $(DATASTORAGE_REPOSITORY) endorDataStorage $(DATASTORAGE_GIT_OPTIONS) && \
 		cd endorDataStorage && \
 		(git archive \
 			--format=tar \
@@ -146,6 +130,22 @@ $(DL_DIR)/$(DATASTORAGE_SOURCE):
 		gzip > $@) && \
 		rm -rf endorDataStorage ;\
 	)
+
+#
+# Clone one specific branch while we try to deal with version mismatches
+#   
+#$(DL_DIR)/$(DATASTORAGE_SOURCE):
+#	(cd $(BUILD_DIR) ; \
+#		rm -rf endorDataStorage && \
+#		git clone $(DATASTORAGE_REPOSITORY) -b Patch1 --single-branch endorDataStorage && \
+#		cd endorDataStorage && \
+#		(git archive \
+#			--format=tar \
+# 			--prefix=$(DATASTORAGE_DIR)/ \
+#            $(DATASTORAGE_TREEISH) | \
+#		gzip > $@) && \
+#		rm -rf endorDataStorage ;\
+#	)
     
     
 #
