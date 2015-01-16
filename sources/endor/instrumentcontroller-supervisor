@@ -12,6 +12,6 @@ exitStatus=1
 
 while [ $exitStatus -ne 0 ]
 do
-	/opt/bin/instrumentcontroller -r 1 1>/dev/null 2>&1
+	/opt/bin/calnex.endor.instrument.controller -r 1 1>/dev/null 2>&1
 	exitStatus=$?
 done

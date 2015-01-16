@@ -20,12 +20,12 @@ fi
 case "$rc" in
     start)
         echo -n "Starting Endor Virtual Instrument: "
-	/opt/bin/virtualinstrument 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
+        /opt/bin/calnex.endor.instrument.virtual 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
         echo ok
         ;;
     stop)
         echo -n "Stopping Endor Virtual Instrument: "
-        pkill -f 'mono /opt/lib/endor/VirtualInstrument.exe'
+        pkill -f 'mono /opt/lib/endor/Calnex.Endor.Instrument.Virtual.exe'
         echo ok
         ;;
     restart)

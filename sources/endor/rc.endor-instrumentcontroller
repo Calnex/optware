@@ -20,13 +20,13 @@ fi
 case "$rc" in
     start)
         echo -n "Starting Endor Instrument Controller: "
-	/opt/bin/instrumentcontroller-supervisor 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
+        /opt/bin/instrumentcontroller-supervisor 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
         echo ok
         ;;
     stop)
         echo -n "Stopping Endor Instrument Controller: "
-	pkill -9 -f '/bin/sh /opt/bin/instrumentcontroller-supervisor'
-        pkill -2 -f 'mono /opt/lib/endor/InstrumentController.exe'
+        pkill -9 -f '/bin/sh /opt/bin/instrumentcontroller-supervisor'
+        pkill -2 -f 'mono /opt/lib/endor/Calnex.Endor.Instrument.Controller.exe'
         echo ok
         ;;
     restart)

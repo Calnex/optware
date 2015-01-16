@@ -27,7 +27,7 @@ case "$rc" in
         ;;
     stop)
         echo -n "Stopping Cat RemotingServer: "
-        pkill -f 'mono /opt/lib/endor/Calnex.Cat.RemotingServer.exe'
+        pkill -f 'mono /opt/lib/endor/CATLibs/Calnex.Cat.RemotingServer.exe'
 	pkill -f 'python3 /opt/bin/cat-redirect'
         echo ok
         ;;
