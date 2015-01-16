@@ -104,7 +104,7 @@ ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 $(DL_DIR)/$(ENDOR_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone $(ENDOR_REPOSITORY) endor $(ENDOR_GIT_OPTIONS) && \
+		git clone $(ENDOR_REPOSITORY) -b release --single-branch endor $(ENDOR_GIT_OPTIONS) && \
 		cd endor/Server/Software && \
 		(git archive \
 			--format=tar \
@@ -121,7 +121,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 $(DL_DIR)/$(DATASTORAGE_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endorDataStorage && \
-		git clone $(DATASTORAGE_REPOSITORY) endorDataStorage $(DATASTORAGE_GIT_OPTIONS) && \
+		git clone $(DATASTORAGE_REPOSITORY)  -b release --single-branch endorDataStorage $(DATASTORAGE_GIT_OPTIONS) && \
 		cd endorDataStorage && \
 		(git archive \
 			--format=tar \
@@ -280,7 +280,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/rc.endor-webapp $(ENDOR_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_IPK_DIR)/opt/lib/endor/WebApp.dll $(ENDOR_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
 	install -d $(ENDOR_IPK_DIR)/opt/share/endor
-	install -m 755 $(ENDOR_BUILD_DIR)/Endor/Instrument/VirtualInstrument/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
+	install -m 755 $(ENDOR_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
 	cp -r $(ENDOR_BUILD_DIR)/Endor/Data/Schema $(ENDOR_IPK_DIR)/opt/lib/endor/schema
 	$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
