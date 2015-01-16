@@ -121,7 +121,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 $(DL_DIR)/$(DATASTORAGE_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endorDataStorage && \
-		git clone $(DATASTORAGE_REPOSITORY)  -b release --single-branch endorDataStorage $(DATASTORAGE_GIT_OPTIONS) && \
+		git clone $(DATASTORAGE_REPOSITORY)  -b Release --single-branch endorDataStorage $(DATASTORAGE_GIT_OPTIONS) && \
 		cd endorDataStorage && \
 		(git archive \
 			--format=tar \
