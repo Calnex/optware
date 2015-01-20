@@ -38,7 +38,7 @@ CAT_PRIORITY=optional
 CAT_DEPENDS=mono
 CAT_SUGGESTS=
 CAT_CONFLICTS=
-CAT_GIT_BRANCH=Release
+CAT_GIT_BRANCH=WebService-EndorRelease
 
 #
 # CAT_IPK_VERSION should be incremented when the ipk changes.
