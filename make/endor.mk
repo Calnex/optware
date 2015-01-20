@@ -208,11 +208,11 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 # This builds the actual binary.
 #
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured 
-    rm -f $@
-    $(MAKE) -C $(@D)
-    echo "Copying the previously-built CAT"
-    echo "Endor build is $(ENDOR_BUILD_DIR)"
-    touch $@
+	rm -f $@
+	$(MAKE) -C $(@D)
+	echo "Copying the previously-built CAT"
+	echo "Endor build is $(ENDOR_BUILD_DIR)"
+	touch $@
 
 # echo "Thinking about making the CAT"
 # pwd
