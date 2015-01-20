@@ -210,9 +210,11 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured 
 	rm -f $@
 	$(MAKE) -C $(@D)
-	echo "Thinking about making the CAT"
-	pwd
-	$(MAKE) cat
+	#echo "Thinking about making the CAT"
+	#pwd
+	#$(MAKE) cat
+    echo Copying the previously-built CAT
+    echo Endor build is $(ENDOR_BUILD_DIR)
 	touch $@
 
 #
