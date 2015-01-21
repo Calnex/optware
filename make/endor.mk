@@ -217,7 +217,7 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	if [ -d ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs ] ; \
 		then rm -rf ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs ; \
 	fi
-	mkdir ${ENDOR_BUILD_DIR}/Web/WebApp/CATLibs
+	mkdir ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
 	cp -r ${ENDOR_BUILD_DIR}/Libs/CAT ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
 	touch $@
 
