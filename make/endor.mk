@@ -214,12 +214,10 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	#pwd
 	#$(MAKE) cat
 	echo "Using precompiled CAT binaries"
-	if [ -d ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs ] ; \
-		then rm -rf ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs ; \
-	fi
-	mkdir ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
-	cp -rv ${ENDOR_BUILD_DIR}/Libs/CAT/* ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
-	touch $@
+	#if [ -d ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs ] ; then rm -rf ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs ; fi
+	#mkdir ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
+	#cp -rv ${ENDOR_BUILD_DIR}/Libs/CAT/* ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
+	#touch $@
 
     
     
@@ -272,6 +270,8 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
+	mkdir $(ENDOR_IPK_DIR)/opt/lib/endor/CATLibs
+	cp -rv ${ENDOR_BUILD_DIR}/Libs/CAT/* $(ENDOR_IPK_DIR)/opt/lib/endor/CATLibs/
 	cd $(ENDOR_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
