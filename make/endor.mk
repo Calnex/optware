@@ -271,8 +271,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	tar --remove-files -cvzf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	cd $(ENDOR_CAT_BUILD_DIR)/Release && \
-	tar --remove-files -cvzf $(ENDOR_IPK_DIR)/opt/lib/endor/cat.tar.gz \
-		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
+	#tar --remove-files -cvzf $(ENDOR_IPK_DIR)/opt/lib/endor/cat.tar.gz `find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
 	install -m 755 $(ENDOR_SOURCE_DIR)/curiosity $(ENDOR_IPK_DIR)/opt/bin/curiosity
