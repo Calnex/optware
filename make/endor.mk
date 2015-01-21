@@ -220,7 +220,6 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	mkdir ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
 	cp -rv ${ENDOR_BUILD_DIR}/Libs/CAT/* ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
 	touch $@
-	exit 100
 
     
     
