@@ -214,8 +214,8 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	#pwd
 	#$(MAKE) cat
 	echo "Using precompiled CAT binaries"
-	if [ -d ${ENDOR_BUILD_DIR}/Web/WebApp/CATLibs ]; then \
-		rm -rf ${ENDOR_BUILD_DIR}/Web/WebApp/CATLibs \
+	if [ -d ${ENDOR_BUILD_DIR}/Web/WebApp/CATLibs ] ; \
+		then rm -rf ${ENDOR_BUILD_DIR}/Web/WebApp/CATLibs ; \
 	fi
 	mkdir ${ENDOR_BUILD_DIR}/Web/WebApp/CATLibs
 	cp -r ${ENDOR_BUILD_DIR)}/Libs/CAT ${ENDOR_BUILD_DIR}/Web/WebApp/CATLibs
