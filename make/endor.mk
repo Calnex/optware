@@ -104,7 +104,7 @@ ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 $(DL_DIR)/$(ENDOR_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone $(ENDOR_REPOSITORY) -b master --single-branch endor $(ENDOR_GIT_OPTIONS) && \
+		git clone $(ENDOR_REPOSITORY) -b release --single-branch endor $(ENDOR_GIT_OPTIONS) && \
 		cd endor/Server/Software && \
 		(git archive \
 			--format=tar \
@@ -199,6 +199,9 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)$(DL_D
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
 	)
+	
+	exit 100
+	
 #	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
