@@ -185,10 +185,6 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make
 	if test "$(BUILD_DIR)/$(ENDOR_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(ENDOR_DIR) $(@D) ; \
 	fi
-	$(ENDOR_UNZIP) $(DL_DIR)/$(DATASTORAGE_SOURCE) | tar -C $(BUILD_DIR) -xf -
-	if test "$(BUILD_DIR)/$(DATASTORAGE_DIR)" != "$(@D)" ; \
-		then mv $(BUILD_DIR)/$(DATASTORAGE_DIR) $(@D)/Libs ; \
-	fi
 	(cd $(@D); \
 		mdtool generate-makefiles Endor.sln -d:release && \
 		sed -i -e 's/PROGRAMFILES = \\/PROGRAMFILES = \\\n\t$$(ASSEMBLY) \\/g' `find $(ENDOR_BUILD_DIR) -name Makefile.am` && \
