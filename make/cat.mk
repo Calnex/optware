@@ -90,8 +90,9 @@ CAT_IPK=$(BUILD_DIR)/cat_$(CAT_VERSION)-$(CAT_IPK_VERSION)_$(TARGET_ARCH).ipk
 $(DL_DIR)/$(CAT_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf cat && \
-        git clone $(CAT_REPOSITORY) -b $(CAT_GIT_BRANCH) --single-branch cat && \
+		git clone $(CAT_REPOSITORY) cat && \
 		cd cat && \
+		git checkout $(CAT_GIT_BRANCH) && \
 		(git archive \
 			--format=tar \
 			--prefix=$(CAT_DIR)/ \

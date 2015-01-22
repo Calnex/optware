@@ -210,10 +210,14 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured 
 	rm -f $@
 	$(MAKE) -C $(@D)
-	echo "Thinking about making the CAT"
-	pwd
-	$(MAKE) cat
-	touch $@
+	#echo "Thinking about making the CAT"
+	#pwd
+	#$(MAKE) cat
+	echo "Using precompiled CAT binaries"
+	#if [ -d ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs ] ; then rm -rf ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs ; fi
+	#mkdir ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
+	#cp -rv ${ENDOR_BUILD_DIR}/Libs/CAT/* ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
+	#touch $@
 
     
     
@@ -266,12 +270,13 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
+	mkdir $(ENDOR_IPK_DIR)/opt/lib/endor/CATLibs
+	cp -rv ${ENDOR_BUILD_DIR}/Libs/CAT/* $(ENDOR_IPK_DIR)/opt/lib/endor/CATLibs/
 	cd $(ENDOR_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
-	cd $(ENDOR_CAT_BUILD_DIR)/Release && \
-	tar --remove-files -cvzf $(ENDOR_IPK_DIR)/opt/lib/endor/cat.tar.gz \
-		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
+	#cd $(ENDOR_CAT_BUILD_DIR)/Release && \
+	#tar --remove-files -cvzf $(ENDOR_IPK_DIR)/opt/lib/endor/cat.tar.gz `find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
 	install -m 755 $(ENDOR_SOURCE_DIR)/curiosity $(ENDOR_IPK_DIR)/opt/bin/curiosity
