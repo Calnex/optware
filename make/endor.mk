@@ -105,6 +105,8 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endor && \
 		git clone $(ENDOR_REPOSITORY) -b release --single-branch endor $(ENDOR_GIT_OPTIONS) && \
+		rm -rf endor/Libs/DataStorage && \
+		git clone $(DATASTORAGE_REPOSITORY)  -b Release --single-branch endor/Libs/DataStorage $(DATASTORAGE_GIT_OPTIONS) && \
 		cd endor/Server/Software && \
 		(git archive \
 			--format=tar \
@@ -118,18 +120,18 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 #
 # atp: this is the real version
 #
-$(DL_DIR)/$(DATASTORAGE_SOURCE):
-	(cd $(BUILD_DIR) ; \
-		rm -rf endorDataStorage && \
-		git clone $(DATASTORAGE_REPOSITORY)  -b Release --single-branch endorDataStorage $(DATASTORAGE_GIT_OPTIONS) && \
-		cd endorDataStorage && \
-		(git archive \
-			--format=tar \
- 			--prefix=$(DATASTORAGE_DIR)/ \
-            $(DATASTORAGE_TREEISH) | \
-		gzip > $@) && \
-		rm -rf endorDataStorage ;\
-	)
+#$(DL_DIR)/$(DATASTORAGE_SOURCE):
+#	(cd $(BUILD_DIR) ; \
+#		rm -rf endorDataStorage && \
+#		git clone $(DATASTORAGE_REPOSITORY)  -b Release --single-branch endorDataStorage $(DATASTORAGE_GIT_OPTIONS) && \
+#		cd endorDataStorage && \
+#		(git archive \
+#			--format=tar \
+#			--prefix=$(DATASTORAGE_DIR)/ \
+#          	$(DATASTORAGE_TREEISH) | \
+#			gzip > $@) && \
+#		rm -rf endorDataStorage ;\
+#	)
 
 #
 # Clone one specific branch while we try to deal with version mismatches
@@ -199,9 +201,6 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)$(DL_D
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
 	)
-	
-	exit 100
-	
 #	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
