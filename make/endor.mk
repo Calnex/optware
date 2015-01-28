@@ -90,7 +90,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endor && \
 		git clone $(ENDOR_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) && \
-		git submodule update --recursive &&\
+		git submodule update --recursive && \
 		cd endor/Server/Software && \
 		(git archive \
 			--format=tar \
