@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-ENDOR_REPOSITORY=git@github.com:Calnex/Springbank.git
+ENDOR_REPOSITORY=https://github.com/Calnex/Springbank
 ENDOR_VERSION=1.0
 ENDOR_SOURCE=endor-$(ENDOR_VERSION).tar.gz
 ENDOR_DIR=endor-$(ENDOR_VERSION)
@@ -38,15 +38,6 @@ ENDOR_PRIORITY=optional
 ENDOR_DEPENDS=postgresql, mono, xsp
 ENDOR_SUGGESTS=
 ENDOR_CONFLICTS=
-
-#
-# Data Storage information
-#
-DATASTORAGE_REPOSITORY=git@github.com:Calnex/DataStorage.git
-DATASTORAGE_VERSION=1.0
-DATASTORAGE_SOURCE=endorDataStorage-$(DATASTORAGE_VERSION).tar.gz
-DATASTORAGE_DIR=DataStorage
-
 
 #
 # ENDOR_IPK_VERSION should be incremented when the ipk changes.
@@ -87,13 +78,7 @@ ENDOR_SOURCE_DIR=$(SOURCE_DIR)/endor
 ENDOR_IPK_DIR=$(BUILD_DIR)/endor-$(ENDOR_VERSION)-ipk
 ENDOR_IPK=$(BUILD_DIR)/endor_$(ENDOR_VERSION)-$(ENDOR_IPK_VERSION)_$(TARGET_ARCH).ipk
 
-
-DATASTORAGE_GIT_OPTIONS?=--depth 1
-DATASTORAGE_GIT_TAG?=HEAD
-DATASTORAGE_TREEISH=$(DATASTORAGE_GIT_TAG)
-
 ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
-
 
 .PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
 
@@ -104,7 +89,8 @@ ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 $(DL_DIR)/$(ENDOR_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone $(ENDOR_REPOSITORY) -b release --single-branch endor $(ENDOR_GIT_OPTIONS) && \
+		git clone $(ENDOR_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) && \
+		git submodule update --recursive &&\
 		cd endor/Server/Software && \
 		(git archive \
 			--format=tar \
@@ -113,41 +99,28 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		gzip > $@) && \
 		rm -rf endor ;\
 	)
-# 			--prefix=$(DATASTORAGE_DIR)/ \
 
 #
-# atp: this is the real version
+# REAL CODE - NOTE THAT IT PULLS FROM THE RELEASE BRANCH
 #
-$(DL_DIR)/$(DATASTORAGE_SOURCE):
-	(cd $(BUILD_DIR) ; \
-		rm -rf endorDataStorage && \
-		git clone $(DATASTORAGE_REPOSITORY)  -b Release --single-branch endorDataStorage $(DATASTORAGE_GIT_OPTIONS) && \
-		cd endorDataStorage && \
-		(git archive \
-			--format=tar \
- 			--prefix=$(DATASTORAGE_DIR)/ \
-            $(DATASTORAGE_TREEISH) | \
-		gzip > $@) && \
-		rm -rf endorDataStorage ;\
-	)
-
+# This is the dependency on the source code.  If the source is missing,
+# then it will be fetched from the site using wget.
 #
-# Clone one specific branch while we try to deal with version mismatches
-#   
-#$(DL_DIR)/$(DATASTORAGE_SOURCE):
+#$(DL_DIR)/$(ENDOR_SOURCE):
 #	(cd $(BUILD_DIR) ; \
-#		rm -rf endorDataStorage && \
-#		git clone $(DATASTORAGE_REPOSITORY) -b Patch1 --single-branch endorDataStorage && \
-#		cd endorDataStorage && \
+#		rm -rf endor && \
+#		git clone $(ENDOR_REPOSITORY) -b release --single-branch endor --depth=1 $(ENDOR_GIT_OPTIONS) && \
+#		git submodule update --recursive &&\
+#		cd endor/Server/Software && \
 #		(git archive \
 #			--format=tar \
-# 			--prefix=$(DATASTORAGE_DIR)/ \
-#            $(DATASTORAGE_TREEISH) | \
+#			--prefix=$(ENDOR_DIR)/ \
+#			$(ENDOR_TREEISH) | \
 #		gzip > $@) && \
-#		rm -rf endorDataStorage ;\
+#		rm -rf endor ;\
 #	)
-    
-    
+
+
 #
 # The source code depends on it existing within the download directory.
 # This target will be called by the top level Makefile to download the
@@ -211,14 +184,7 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured 
 	rm -f $@
 	$(MAKE) -C $(@D)
-	#echo "Thinking about making the CAT"
-	#pwd
-	#$(MAKE) cat
-	echo "Using precompiled CAT binaries"
-	#if [ -d ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs ] ; then rm -rf ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs ; fi
-	#mkdir ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
-	#cp -rv ${ENDOR_BUILD_DIR}/Libs/CAT/* ${ENDOR_BUILD_DIR}/Endor/Web/WebApp/CATLibs
-	#touch $@
+	touch $@
 
     
     
@@ -296,6 +262,11 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
+
+
+	# ANd die for now
+	exit 100
+
 
 #
 # This is called from the top level makefile to create the IPK file.
