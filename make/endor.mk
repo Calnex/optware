@@ -89,14 +89,16 @@ ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 $(DL_DIR)/$(ENDOR_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone $(ENDOR_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) && \
-		git submodule update --recursive && \
+		cd endor && \
+		git submodule sync --recursive && \
+		cd Server/Software/Libs/CAT && \
+		git submodule update --init --reference ~/jobs/EndorGitRepo/workspace/Server/Software/Libs/CAT/ && \
+		cd Calnex.Endor.DataStorage && \
+		git submodule update --init --reference ~/jobs/EndorGitRepo/workspace/Server/Software/Libs/CAT/Calnex.Endor.DataStorage && \
+		cd $(BUILD_DIR) && \
 		cd endor/Server/Software && \
-		(git archive \
-			--format=tar \
-			--prefix=$(ENDOR_DIR)/ \
-			$(ENDOR_TREEISH) | \
-		gzip > $@) && \
+		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
+		cd $(BUILD_DIR) && \
 		rm -rf endor ;\
 	)
 
