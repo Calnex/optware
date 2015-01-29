@@ -129,7 +129,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 # This target will be called by the top level Makefile to download the
 # source code's archive (.tar.gz, .bz2, etc.)
 #
-endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) $(DL_DIR)/$(DATASTORAGE_SOURCE)
+endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) 
 
 #
 # This target unpacks the source code in the build directory.
@@ -149,7 +149,7 @@ endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) $(DL_DIR)/$(DATASTORAGE
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
-$(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)$(DL_DIR)/$(DATASTORAGE_SOURCE)  make/endor.mk
+$(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make/endor.mk
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
 	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_PATCHES)" ; \
@@ -158,10 +158,6 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)$(DL_D
 	fi
 	if test "$(BUILD_DIR)/$(ENDOR_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(ENDOR_DIR) $(@D) ; \
-	fi
-	$(ENDOR_UNZIP) $(DL_DIR)/$(DATASTORAGE_SOURCE) | tar -C $(BUILD_DIR) -xf -
-	if test "$(BUILD_DIR)/$(DATASTORAGE_DIR)" != "$(@D)" ; \
-		then mv $(BUILD_DIR)/$(DATASTORAGE_DIR) $(@D)/Libs ; \
 	fi
 	(cd $(@D); \
 		mdtool generate-makefiles Endor.sln -d:release && \
