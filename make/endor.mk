@@ -237,7 +237,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
 	#mkdir $(ENDOR_IPK_DIR)/opt/lib/endor/CATLibs
-	#cp -rv ${ENDOR_BUILD_DIR}/Libs/CAT/* $(ENDOR_IPK_DIR)/opt/lib/endor/CATLibs/
+	cp -rv ${ENDOR_BUILD_DIR}/Libs/CAT/Release/html/* $(ENDOR_IPK_DIR)/opt/lib/endor/CAT/
 	cd $(ENDOR_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`

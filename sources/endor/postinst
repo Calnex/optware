@@ -13,8 +13,8 @@ tar -xzf long-filepaths.tar.gz
 #cd ..
 
 # Link the CAT into the folder structure at the correct place
-ln -s ./CATLibs/html CAT
-ln -s ./CATLibs/html/js js 
+#ln -s ./CATLibs/html CAT
+#ln -s ./CATLibs/html/js js 
 
 /opt/lib/ipkg/info/postgresql.postinst
 echo "waiting for DB daemon to start"
