@@ -89,6 +89,7 @@ ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 $(DL_DIR)/$(ENDOR_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endor && \
+		git clone $(ENDOR_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) && \
 		cd endor && \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
