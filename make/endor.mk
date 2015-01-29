@@ -262,11 +262,6 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_IPK_DIR)
 
-
-	# ANd die for now
-	exit 100
-
-
 #
 # This is called from the top level makefile to create the IPK file.
 #
