@@ -38,7 +38,8 @@ PACKAGES_READY_FOR_TESTING =
 PACKAGES_THAT_NEED_TO_BE_FIXED =
 
 
-COMMON_CROSS_PACKAGES = bzip2 \
+COMMON_CROSS_PACKAGES = atftp \
+			bzip2 \
 			c-ares \
 			geoip \
 			gettext \
