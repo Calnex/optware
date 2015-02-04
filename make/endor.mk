@@ -204,7 +204,8 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured # This is the build co
 	rm -f $@#
 	pwd
 	ls -l
-	#cd $(ENDOR_BUILD_DIR)
+	cd $(ENDOR_BUILD_DIR)/builds/endor
+	/usr/bin/xbuild /target:Rebuild /property:Configuration=Release
 	
 	
 	#$(MAKE) -C $(@D)endor: $(ENDOR_BUILD_DIR)/.built
