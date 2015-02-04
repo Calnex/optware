@@ -202,9 +202,9 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 ##
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured # This is the build convenience target.
 	rm -f $@#
+	cd $(ENDOR_BUILD_DIR)
 	pwd
 	ls -l
-	cd $(ENDOR_BUILD_DIR)/builds/endor
 	/usr/bin/xbuild /target:Rebuild /property:Configuration=Release
 	
 	
