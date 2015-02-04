@@ -199,13 +199,13 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 
 #
 # This builds the actual binary.
-##
+#
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured # This is the build convenience target.
-	rm -f $@#
-	cd $(ENDOR_BUILD_DIR)
-	pwd
-	ls -l
-	/usr/bin/xbuild /target:Rebuild /property:Configuration=Release
+	rm -f $@
+	cd $(ENDOR_BUILD_DIR) && \
+	pwd && \
+	ls -l && \
+	/usr/bin/xbuild /target:Rebuild /property:Configuration=Release Endor.sln
 	
 	
 	#$(MAKE) -C $(@D)endor: $(ENDOR_BUILD_DIR)/.built
