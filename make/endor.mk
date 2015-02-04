@@ -111,77 +111,23 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 #
 endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) 
 
-## atp Removed when we try xbuild   #
-## atp Removed when we try xbuild   # This target unpacks the source code in the build directory.
-## atp Removed when we try xbuild   # If the source archive is not .tar.gz or .tar.bz2, then you will need
-## atp Removed when we try xbuild   # to change the commands here.  Patches to the source code are also
-## atp Removed when we try xbuild   # applied in this target as required.
-## atp Removed when we try xbuild   #
-## atp Removed when we try xbuild   # This target also configures the build within the build directory.
-## atp Removed when we try xbuild   # Flags such as LDFLAGS and CPPFLAGS should be passed into configure
-## atp Removed when we try xbuild   # and NOT $(MAKE) below.  Passing it to configure causes configure to
-## atp Removed when we try xbuild   # correctly BUILD the Makefile with the right paths, where passing it
-## atp Removed when we try xbuild   # to Make causes it to override the default search paths of the compiler.
-## atp Removed when we try xbuild   #
-## atp Removed when we try xbuild   # If the compilation of the package requires other packages to be staged
-## atp Removed when we try xbuild   # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
-## atp Removed when we try xbuild   #
-## atp Removed when we try xbuild   # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
-## atp Removed when we try xbuild   # shown below to make various patches to it.
-## atp Removed when we try xbuild   #
-## atp Removed when we try xbuild   $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make/endor.mk
-## atp Removed when we try xbuild   	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
-## atp Removed when we try xbuild   	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xf -
-## atp Removed when we try xbuild   	if test -n "$(ENDOR_PATCHES)" ; \
-## atp Removed when we try xbuild   		then cat $(ENDOR_PATCHES) | \
-## atp Removed when we try xbuild   		patch -d $(BUILD_DIR)/$(ENDOR_DIR) -p0 ; \
-## atp Removed when we try xbuild   	fi
-## atp Removed when we try xbuild   	if test "$(BUILD_DIR)/$(ENDOR_DIR)" != "$(@D)" ; \
-## atp Removed when we try xbuild   		then mv $(BUILD_DIR)/$(ENDOR_DIR) $(@D) ; \
-## atp Removed when we try xbuild   	fi
-## atp Removed when we try xbuild   	(cd $(@D); \
-## atp Removed when we try xbuild   		mdtool generate-makefiles Endor.sln -d:release && \
-## atp Removed when we try xbuild   		sed -i -e 's/PROGRAMFILES = \\/PROGRAMFILES = \\\n\t$$(ASSEMBLY) \\/g' `find $(ENDOR_BUILD_DIR) -name Makefile.am` && \
-## atp Removed when we try xbuild   		$(TARGET_CONFIGURE_OPTS) \
-## atp Removed when we try xbuild   		CPPFLAGS="$(STAGING_CPPFLAGS) $(ENDOR_CPPFLAGS)" \
-## atp Removed when we try xbuild   		LDFLAGS="$(STAGING_LDFLAGS) $(ENDOR_LDFLAGS)" \
-## atp Removed when we try xbuild   		./autogen.sh \
-## atp Removed when we try xbuild   		--build=$(GNU_HOST_NAME) \
-## atp Removed when we try xbuild   		--host=$(GNU_TARGET_NAME) \
-## atp Removed when we try xbuild   		--target=$(GNU_TARGET_NAME) \
-## atp Removed when we try xbuild   		--prefix=/opt \
-## atp Removed when we try xbuild   	)
-## atp Removed when we try xbuild   
-## atp Removed when we try xbuild   #	$(PATCH_LIBTOOL) $(@D)/libtool
-## atp Removed when we try xbuild   	touch $@
-## atp Removed when we try xbuild   
-## atp Removed when we try xbuild   endor-unpack: $(ENDOR_BUILD_DIR)/.configured
-## atp Removed when we try xbuild   
-## atp Removed when we try xbuild   #
-## atp Removed when we try xbuild   # This builds the actual binary.
-## atp Removed when we try xbuild   #
-## atp Removed when we try xbuild   $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured 
-## atp Removed when we try xbuild   	rm -f $@
-## atp Removed when we try xbuild   	$(MAKE) -C $(@D)
-## atp Removed when we try xbuild   	touch $@
-## atp Removed when we try xbuild   
-
-
-
-
-
-
-
-
-
-
-
-
 #
 # This target unpacks the source code in the build directory.
 # If the source archive is not .tar.gz or .tar.bz2, then you will need
 # to change the commands here.  Patches to the source code are also
 # applied in this target as required.
+#
+# This target also configures the build within the build directory.
+# Flags such as LDFLAGS and CPPFLAGS should be passed into configure
+# and NOT $(MAKE) below.  Passing it to configure causes configure to
+# correctly BUILD the Makefile with the right paths, where passing it
+# to Make causes it to override the default search paths of the compiler.
+#
+# If the compilation of the package requires other packages to be staged
+# first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
+#
+# If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
+# shown below to make various patches to it.
 #
 $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make/endor.mk
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
@@ -193,6 +139,20 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make
 	if test "$(BUILD_DIR)/$(ENDOR_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(ENDOR_DIR) $(@D) ; \
 	fi
+	(cd $(@D); \
+		mdtool generate-makefiles Endor.sln -d:release && \
+		sed -i -e 's/PROGRAMFILES = \\/PROGRAMFILES = \\\n\t$$(ASSEMBLY) \\/g' `find $(ENDOR_BUILD_DIR) -name Makefile.am` && \
+		$(TARGET_CONFIGURE_OPTS) \
+		CPPFLAGS="$(STAGING_CPPFLAGS) $(ENDOR_CPPFLAGS)" \
+		LDFLAGS="$(STAGING_LDFLAGS) $(ENDOR_LDFLAGS)" \
+		./autogen.sh \
+		--build=$(GNU_HOST_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/opt \
+	)
+
+#	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
 endor-unpack: $(ENDOR_BUILD_DIR)/.configured
@@ -200,17 +160,13 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 #
 # This builds the actual binary.
 #
-$(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured # This is the build convenience target.
+$(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured 
 	rm -f $@
-	cd $(ENDOR_BUILD_DIR) && \
-	pwd && \
-	ls -l && \
-	/usr/bin/xbuild /target:Rebuild /property:Configuration=Release Endor.sln
-	
-	
-	#$(MAKE) -C $(@D)endor: $(ENDOR_BUILD_DIR)/.built
-	#touch $@
-	exit 100
+	$(MAKE) -C $(@D)
+	touch $@
+
+
+
 #
 # If you are building a library, then you need to stage it too.
 #
