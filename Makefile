@@ -38,8 +38,7 @@ PACKAGES_READY_FOR_TESTING =
 PACKAGES_THAT_NEED_TO_BE_FIXED =
 
 
-COMMON_CROSS_PACKAGES = atftp \
-			bzip2 \
+COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
 			geoip \
 			gettext \
@@ -70,7 +69,6 @@ COMMON_CROSS_PACKAGES = atftp \
 			readline \
 			springbank \
 			sqlite \
-			tftp-hpa \
 			tshark-1.4.9 \
 			tshark-1.10.3 \
 			tshark-1.11.3 \
