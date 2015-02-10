@@ -93,9 +93,9 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		cd endor && \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
-		git submodule update --init --reference ~/jobs/EndorGitRepo/workspace/Server/Software/Libs/CAT/ && \
+		git submodule update --init --remote --reference ~/jobs/EndorGitRepo/workspace/Server/Software/Libs/CAT/ && \
 		cd Calnex.Endor.DataStorage && \
-		git submodule update --init --reference ~/jobs/EndorGitRepo/workspace/Server/Software/Libs/CAT/Calnex.Endor.DataStorage && \
+		git submodule update --init --remote --reference ~/jobs/EndorGitRepo/workspace/Server/Software/Libs/CAT/Calnex.Endor.DataStorage && \
 		cd $(BUILD_DIR) && \
 		cd endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
