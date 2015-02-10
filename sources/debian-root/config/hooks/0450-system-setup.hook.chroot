@@ -26,10 +26,10 @@ ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa -b 521
 
 # Create a folder for the TFTP server and ensure that the
 # calnex user can write to it
-if [ -d /srv/tftpd ] 
+if [ -d /srv/tftp ] 
 then
-    rm -rf /srv/tftpd
+    rm -rf /srv/tftp
 fi
 
-mkdir /srv/tftpd
-chown calnex /srv/tftpd
+mkdir /srv/tftp
+chown calnex /srv/tftp
