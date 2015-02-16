@@ -4,6 +4,9 @@
 #
 ###########################################################
 
+BZIP2_LOCAL_SITE=$(PACKAGES_SERVER)
+
+
 BZIP2_VERSION=1.0.6
 BZIP2_SITE=http://www.bzip.org/$(BZIP2_VERSION)
 BZIP2_LIB_VERSION=$(BZIP2_VERSION)
@@ -27,6 +30,7 @@ BZIP2_IPK_DIR=$(BUILD_DIR)/bzip2-$(BZIP2_VERSION)-ipk
 .PHONY: bzip2-source bzip2-unpack bzip2 bzip2-stage bzip2-ipk bzip2-clean bzip2-dirclean bzip2-check
 
 $(DL_DIR)/$(BZIP2_SOURCE):
+	$(WGET) -P $(@D) $(BZIP2_LOCAL_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(BZIP2_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 
