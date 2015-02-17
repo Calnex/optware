@@ -26,6 +26,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+READLINE_CALNEX_SITE=$(PACKAGES_SERVER)
+
 READLINE_SITE=http://ftp.gnu.org/pub/gnu/readline
 READLINE_VERSION=6.3
 READLINE_SOURCE=readline-$(READLINE_VERSION).tar.gz
@@ -80,6 +83,7 @@ READLINE_IPK=$(BUILD_DIR)/readline_$(READLINE_VERSION)-$(READLINE_IPK_VERSION)_$
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(READLINE_SOURCE):
+	$(WGET) -P $(@D) $(READLINE_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(READLINE_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

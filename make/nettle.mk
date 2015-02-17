@@ -26,6 +26,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+NETTLE_CALNEX_SITE=$(PACKAGES_SERVER)
+
 NETTLE_SITE=http://www.lysator.liu.se/~nisse/archive
 NETTLE_VERSION=2.7.1
 NETTLE_SOURCE=nettle-$(NETTLE_VERSION).tar.gz
@@ -82,6 +85,7 @@ NETTLE_IPK=$(BUILD_DIR)/nettle_$(NETTLE_VERSION)-$(NETTLE_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(NETTLE_SOURCE):
+	$(WGET) -P $(@D) $(NETTLE_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(NETTLE_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

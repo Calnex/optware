@@ -36,6 +36,9 @@
 #
 # You should change all these variables to suit your package.
 #
+
+LIBDB_CALNEX_SITE=$(PACKAGES_SERVER)
+
 LIBDB_SITE=http://download.oracle.com/berkeley-db
 LIBDB_VERSION=5.3.21
 LIBDB_LIB_VERSION=5.3
@@ -86,6 +89,7 @@ LIBDB_IPK=$(BUILD_DIR)/libdb_$(LIBDB_VERSION)-$(LIBDB_IPK_VERSION)_$(TARGET_ARCH
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBDB_SOURCE):
+	$(WGET) -P $(DL_DIR) $(LIBDB_CALNEX_SITE)/$(LIBDB_SOURCE) || \
 	$(WGET) -P $(DL_DIR) $(LIBDB_SITE)/$(LIBDB_SOURCE) || \
 	$(WGET) -P $(DL_DIR) $(SOURCES_NLO_SITE)/$(LIBDB_SOURCE)
 

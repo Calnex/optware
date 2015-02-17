@@ -19,6 +19,8 @@
 #
 # You should change all these variables to suit your package.
 #
+LIBTOOL_CALNEX_SITE=$(PACKAGES_SERVER)
+
 LIBTOOL_SITE=http://ftp.gnu.org/gnu/libtool
 LIBTOOL_VERSION=2.4
 LIBTOOL_SOURCE=libtool-$(LIBTOOL_VERSION).tar.xz
@@ -74,6 +76,7 @@ LIBTOOL_HOST_BUILD_DIR=$(HOST_BUILD_DIR)/libtool
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBTOOL_SOURCE):
+	$(WGET) -P $(@D) $(LIBTOOL_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(LIBTOOL_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

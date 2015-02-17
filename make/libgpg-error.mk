@@ -26,6 +26,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+LIBGPG-ERROR_CALNEX_SITE=$(PACKAGES_SERVER)
+
 LIBGPG-ERROR_SITE=ftp://ftp.gnupg.org/gcrypt/libgpg-error
 LIBGPG-ERROR_VERSION=1.10
 LIBGPG-ERROR_SOURCE=libgpg-error-$(LIBGPG-ERROR_VERSION).tar.gz
@@ -82,6 +85,7 @@ LIBGPG-ERROR_IPK=$(BUILD_DIR)/libgpg-error_$(LIBGPG-ERROR_VERSION)-$(LIBGPG-ERRO
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBGPG-ERROR_SOURCE):
+	$(WGET) -P $(@D) $(LIBGPG-ERROR_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(LIBGPG-ERROR_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

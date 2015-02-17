@@ -21,6 +21,8 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
+PCRE_CALNEX_SITE=$(PACKAGES_SERVER)
+
 PCRE_SITE=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre
 PCRE_VERSION=8.35
 PCRE_SOURCE=pcre-$(PCRE_VERSION).tar.bz2
@@ -86,6 +88,7 @@ PCRE-DEV_IPK=$(BUILD_DIR)/pcre-dev_$(PCRE_VERSION)-$(PCRE_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(PCRE_SOURCE):
+	$(WGET) -P $(@D) $(PCRE_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(PCRE_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

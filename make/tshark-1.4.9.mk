@@ -26,6 +26,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+TSHARK_1.4.9_CALNEX_SITE=$(PACKAGES_SERVER)
+
 TSHARK_1.4.9_SITE=http://www.wireshark.org/download/src/all-versions
 TSHARK_1.4.9_VERSION = 1.4.9
 TSHARK_1.4.9_SOURCE=wireshark-$(TSHARK_1.4.9_VERSION).tar.bz2
@@ -81,6 +84,7 @@ TSHARK_1.4.9_LIB_DIR=/opt/lib/wireshark/$(TSHARK_1.4.9_VERSION)
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(TSHARK_1.4.9_SOURCE):
+	$(WGET) -P $(@D) $(TSHARK_1.4.9_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(TSHARK_1.4.9_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

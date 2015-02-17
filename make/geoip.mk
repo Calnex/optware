@@ -20,6 +20,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+GEOIP_CALNEX_SITE=$(PACKAGES_SERVER)
+
 GEOIP_SITE=http://www.maxmind.com/download/geoip/api/c
 GEOIP_VERSION=1.4.8
 GEOIP_SOURCE=GeoIP-$(GEOIP_VERSION).tar.gz
@@ -76,6 +79,7 @@ GEOIP_IPK=$(BUILD_DIR)/geoip_$(GEOIP_VERSION)-$(GEOIP_IPK_VERSION)_$(TARGET_ARCH
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GEOIP_SOURCE):
+	$(WGET) -P $(@D) $(GEOIP_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(GEOIP_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

@@ -4,6 +4,8 @@
 #
 ###########################################################
 
+NCURSES_CALNEX_SITE=$(PACKAGES_SERVER)
+
 NCURSES_DIR=$(BUILD_DIR)/ncurses
 
 NCURSES_VERSION=5.9
@@ -37,6 +39,7 @@ NCURSES_HOST_BUILD_DIR=$(HOST_BUILD_DIR)/ncurses
 ncurses-dirclean ncurses-check ncurses-host
 
 $(DL_DIR)/$(NCURSES_SOURCE):
+	$(WGET) -P $(@D) $(NCURSES_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(NCURSES_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

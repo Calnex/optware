@@ -12,7 +12,7 @@
 # GLIB_UNZIP is the command used to unzip the source.
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
-GLIB_LOCAL_SITE=$(PACKAGES_SERVER)
+GLIB_CALNEX_SITE=$(PACKAGES_SERVER)
 
 GLIB_MAJOR_VERSION=2.40
 GLIB_MINOR_VERSION=0
@@ -91,7 +91,7 @@ glib-check glib-host glib-host-stage
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GLIB_SOURCE):
-	$(WGET) -P $(@D) $(GLIB_LOCAL_SITE)/$(@F) || \
+	$(WGET) -P $(@D) $(GLIB_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(GLIB_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

@@ -26,6 +26,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+LIBFFI_CALNEX_SITE=$(PACKAGES_SERVER)
+
 LIBFFI_SITE=ftp://sourceware.org/pub/libffi
 LIBFFI_VERSION=3.1
 LIBFFI_SOURCE=libffi-$(LIBFFI_VERSION).tar.gz
@@ -82,6 +85,7 @@ LIBFFI_IPK=$(BUILD_DIR)/libffi_$(LIBFFI_VERSION)-$(LIBFFI_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBFFI_SOURCE):
+	$(WGET) -P $(@D) $(LIBFFI_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(LIBFFI_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

@@ -26,6 +26,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+IPKG-UTILS_CALNEX_SITE=$(PACKAGES_SERVER)
+
 IPKG-UTILS_VERSION:=1.7
 IPKG-UTILS_SITE:=http://nslu.sf.net/downloads
 #IPKG-UTILS_SITE:=http://handhelds.org/packages/ipkg-utils/
@@ -73,6 +76,7 @@ IPKG-UTILS_IPK=$(BUILD_DIR)/ipkg-utils_$(IPKG-UTILS_VERSION)-$(IPKG-UTILS_IPK_VE
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(IPKG-UTILS_SOURCE):
+	$(WGET) -P $(@D) $(IPKG-UTILS_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(IPKG-UTILS_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

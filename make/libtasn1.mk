@@ -26,6 +26,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+LIBTASN1_CALNEX_SITE=$(PACKAGES_SERVER)
+
 LIBTASN1_SITE=http://ftp.gnu.org/gnu/libtasn1
 LIBTASN1_VERSION=2.13
 LIBTASN1_SOURCE=libtasn1-$(LIBTASN1_VERSION).tar.gz
@@ -82,6 +85,7 @@ LIBTASN1_IPK=$(BUILD_DIR)/libtasn1_$(LIBTASN1_VERSION)-$(LIBTASN1_IPK_VERSION)_$
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBTASN1_SOURCE):
+	$(WGET) -P $(@D) $(LIBTASN1_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(LIBTASN1_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

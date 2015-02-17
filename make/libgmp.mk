@@ -21,6 +21,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+LIBGMP_CALNEX_SITE=$(PACKAGES_SERVER)
+
 LIBGMP_SITE=ftp://ftp.gnu.org/gnu/gmp
 LIBGMP_VERSION=6.0.0
 LIBGMP_SUBVERSION=a
@@ -87,6 +90,7 @@ endif
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBGMP_SOURCE):
+	$(WGET) -P $(@D) $(LIBGMP_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(LIBGMP_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

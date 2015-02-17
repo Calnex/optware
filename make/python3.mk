@@ -21,6 +21,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+PYTHON3_CALNEX_SITE=$(PACKAGES_SERVER)
+
 PYTHON3_VERSION=3.3.1
 PYTHON3_VERSION_MAJOR=3.3
 PYTHON3_SITE=http://www.python.org/ftp/python/$(PYTHON3_VERSION)
@@ -107,6 +110,7 @@ PYTHON3_CONFIGURE_ENV?=
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(PYTHON3_SOURCE):
+	$(WGET) -P $(@D) $(PYTHON3_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(PYTHON3_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

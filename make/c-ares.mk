@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-C_ARES_LOCAL_SITE=$(PACKAGES_SERVER)
+C_ARES_CALNEX_SITE=$(PACKAGES_SERVER)
 
 
 C_ARES_SITE=http://daniel.haxx.se/projects/c-ares
@@ -80,7 +80,7 @@ C_ARES_IPK=$(BUILD_DIR)/c-ares_$(C_ARES_VERSION)-$(C_ARES_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(C_ARES_SOURCE):
-	$(WGET) -P $(@D) $(C_ARES_LOCAL_SITE)/$(@F) || \
+	$(WGET) -P $(@D) $(C_ARES_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(C_ARES_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

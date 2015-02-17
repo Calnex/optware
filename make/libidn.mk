@@ -26,6 +26,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+LIBIDN_CALNEX_SITE=$(PACKAGES_SERVER)
+
 LIBIDN_SITE=http://ftp.gnu.org/gnu/libidn
 LIBIDN_VERSION=1.25
 LIBIDN_SOURCE=libidn-$(LIBIDN_VERSION).tar.gz
@@ -82,6 +85,7 @@ LIBIDN_IPK=$(BUILD_DIR)/libidn_$(LIBIDN_VERSION)-$(LIBIDN_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBIDN_SOURCE):
+	$(WGET) -P $(@D) $(LIBIDN_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(LIBIDN_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

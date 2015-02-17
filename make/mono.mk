@@ -26,6 +26,8 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+MONO_CALNEX_SITE=$(PACKAGES_SERVER)
+
 MONO_SITE=http://download.mono-project.com/sources/mono
 MONO_VERSION=3.2.8
 MONO_SOURCE=mono-$(MONO_VERSION).tar.bz2
@@ -82,6 +84,7 @@ MONO_IPK=$(BUILD_DIR)/mono_$(MONO_VERSION)-$(MONO_IPK_VERSION)_$(TARGET_ARCH).ip
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(MONO_SOURCE):
+	$(WGET) -P $(@D) $(MONO_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(MONO_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

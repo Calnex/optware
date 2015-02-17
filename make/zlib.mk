@@ -4,7 +4,8 @@
 #
 #############################################################
 
-ZLIP_SITE=$(PACKAGES_SERVER)
+ZLIB_CALNEX_SITE=$(PACKAGES_SERVER)
+
 ZLIB_SITE2=http://$(SOURCEFORGE_MIRROR)/sourceforge/libpng
 ZLIB_SITE3=http://zlib.net
 ZLIB_VERSION:=1.2.5
@@ -44,7 +45,7 @@ zlib-dirclean zlib-check zlib-host zlib-host-stage zlib-unstage
 
 
 $(DL_DIR)/$(ZLIB_SOURCE):
-	$(WGET) -P $(@D) $(ZLIB_SITE)/$(@F) || \
+	$(WGET) -P $(@D) $(ZLIB_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(ZLIB_SITE2)/$(@F) || \
 	$(WGET) -P $(@D) $(ZLIB_SITE3)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)

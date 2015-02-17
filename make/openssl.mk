@@ -2,6 +2,8 @@
 # Openssl build for Springbank
 #
 
+OPENSSL_CALNEX_SITE=$(PACKAGES_SERVER)
+
 OPENSSL_SITE=http://www.openssl.org/source
 OPENSSL_VERSION=1.0.1g
 OPENSSL_LIB_VERSION=1.0.0
@@ -30,6 +32,7 @@ OPENSSL_DEV_IPK=$(BUILD_DIR)/openssl-dev_$(OPENSSL_VERSION)-$(OPENSSL_IPK_VERSIO
 .PHONY: openssl-source openssl-unpack openssl openssl-stage openssl-ipk openssl-clean openssl-dirclean openssl-check
 
 $(DL_DIR)/$(OPENSSL_SOURCE):
+	$(WGET) -P $(@D) $(OPENSSL_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(OPENSSL_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

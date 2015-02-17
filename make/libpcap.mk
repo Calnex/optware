@@ -19,6 +19,9 @@
 #
 # You should change all these variables to suit your package.
 #
+
+LIBPCAP_CALNEX_SITE=$(PACKAGES_SERVER)
+
 LIBPCAP_SITE=http://www.tcpdump.org/release
 LIBPCAP_VERSION=1.3.0
 LIBPCAP_SOURCE=libpcap-$(LIBPCAP_VERSION).tar.gz
@@ -81,6 +84,7 @@ LIBPCAP_IPK=$(BUILD_DIR)/libpcap_$(LIBPCAP_VERSION)-$(LIBPCAP_IPK_VERSION)_$(TAR
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBPCAP_SOURCE):
+	$(WGET) -P $(@D) $(LIBPCAP_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(LIBPCAP_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

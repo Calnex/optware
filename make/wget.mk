@@ -15,6 +15,10 @@
 #
 # You should change all these variables to suit your package.
 #
+
+WGET_CALNEX_SITE=$(PACKAGES_SERVER)
+
+
 WGET_SITE=http://ftp.gnu.org/pub/gnu/wget
 WGET_VERSION=1.15
 WGET_SOURCE=wget-$(WGET_VERSION).tar.gz
@@ -85,6 +89,7 @@ WGET-SSL_IPK=$(BUILD_DIR)/wget-ssl_$(WGET_VERSION)-$(WGET_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(WGET_SOURCE):
+	$(WGET) -P $(@D) $(WGET_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(WGET_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

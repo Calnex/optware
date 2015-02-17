@@ -26,6 +26,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+GNUTLS_CALNEX_SITE=$(PACKAGES_SERVER)
+
 GNUTLS_SITE=http://ftp.gnu.org/pub/gnu/gnutls
 GNUTLS_VERSION=3.1.5
 GNUTLS_SOURCE=gnutls-$(GNUTLS_VERSION).tar.xz
@@ -85,6 +88,7 @@ GNUTLS-DEV_IPK=$(BUILD_DIR)/gnutls-dev_$(GNUTLS_VERSION)-$(GNUTLS_IPK_VERSION)_$
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GNUTLS_SOURCE):
+	$(WGET) -P $(@D) $(GNUTLS_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(GNUTLS_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

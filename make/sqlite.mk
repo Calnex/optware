@@ -20,6 +20,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+SQLITE_CALNEX_SITE=$(PACKAGES_SERVER)
+
 SQLITE_SITE=http://www.sqlite.org/2014
 SQLITE_VERSION=3.8.5
 SQLITE_DIR=sqlite-autoconf-3080500
@@ -78,6 +81,7 @@ SQLITE_IPK=$(BUILD_DIR)/sqlite_$(SQLITE_VERSION)-$(SQLITE_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(SQLITE_SOURCE):
+	$(WGET) -P $(@D) $(SQLITE_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SQLITE_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 

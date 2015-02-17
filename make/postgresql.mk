@@ -26,6 +26,9 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+
+POSTGRESQL_CALNEX_SITE=$(PACKAGES_SERVER)
+
 POSTGRESQL_VERSION=9.3.4
 POSTGRESQL_SITE=ftp://ftp.postgresql.org/pub/source/v$(POSTGRESQL_VERSION)
 POSTGRESQL_SOURCE=postgresql-$(POSTGRESQL_VERSION).tar.bz2
@@ -87,6 +90,7 @@ POSTGRESQL_IPK=$(BUILD_DIR)/postgresql_$(POSTGRESQL_VERSION)-$(POSTGRESQL_IPK_VE
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(POSTGRESQL_SOURCE):
+	$(WGET) -P $(@D) $(POSTGRESQL_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(POSTGRESQL_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 
