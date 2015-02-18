@@ -80,6 +80,8 @@ ENDOR_IPK=$(BUILD_DIR)/endor_$(ENDOR_VERSION)-$(ENDOR_IPK_VERSION)_$(TARGET_ARCH
 
 ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 
+ENDOR_GIT_REFERENCE_ROOT?=$(ENDOR_COMMON_SOURCE_REPOSITORY)
+
 .PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
 
 #
@@ -89,13 +91,13 @@ ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 $(DL_DIR)/$(ENDOR_SOURCE):
 	(cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone $(ENDOR_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) && \
+		git clone $(ENDOR_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_GIT_REFERENCE_ROOT)/Springbank && \
 		cd endor && \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
-		git submodule update --init --remote --reference ~/jobs/EndorGitRepo/workspace/Server/Software/Libs/CAT/ && \
+		git submodule update --init --remote --reference $(ENDOR_GIT_REFERENCE_ROOT)/CAT && \
 		cd Calnex.Endor.DataStorage && \
-		git submodule update --init --remote --reference ~/jobs/EndorGitRepo/workspace/Server/Software/Libs/CAT/Calnex.Endor.DataStorage && \
+		git submodule update --init --remote --reference $(ENDOR_GIT_REFERENCE_ROOT)/DataStorage && \
 		cd $(BUILD_DIR) && \
 		cd endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
