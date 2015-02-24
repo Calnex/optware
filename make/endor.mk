@@ -213,7 +213,7 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
-	mkdir $(ENDOR_IPK_DIR)/opt/lib/endor/CAT
+	mkdir -p $(ENDOR_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv ${ENDOR_BUILD_DIR}/Libs/CAT/Release/html/* $(ENDOR_IPK_DIR)/opt/lib/endor/CAT/
 	cd $(ENDOR_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \
