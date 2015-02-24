@@ -142,7 +142,7 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make
 		then mv $(BUILD_DIR)/$(ENDOR_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-		mdtool generate-makefiles Endor.sln -d:release && \
+		mdtool generate-makefiles EndorParagon.sln -d:release && \
 		sed -i -e 's/PROGRAMFILES = \\/PROGRAMFILES = \\\n\t$$(ASSEMBLY) \\/g' `find $(ENDOR_BUILD_DIR) -name Makefile.am` && \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(ENDOR_CPPFLAGS)" \
