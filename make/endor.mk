@@ -154,7 +154,7 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
 	)
-
+	sed -i -e 's/endorparagon/endor/g' `find $(ENDOR_BUILD_DIR) -name Makefile`
 #	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
