@@ -144,7 +144,7 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make
 	(cd $(@D); \
 		mdtool generate-makefiles EndorParagon.sln -d:release && \
 		sed -i -e 's/PROGRAMFILES = \\/PROGRAMFILES = \\\n\t$$(ASSEMBLY) \\/g' `find $(ENDOR_BUILD_DIR) -name Makefile.am` && \
-		sed -i -e 's/endorparagon/endor/g' `find $(ENDOR_BUILD_DIR) -name Makefile.am` && \
+		sed -i -e 's/EndorParagon/Endor/g' autogen.sh configure.ac && \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(ENDOR_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(ENDOR_LDFLAGS)" \
@@ -154,7 +154,6 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
 	)
-	sed -i -e 's/endorparagon/endor/g' `find $(ENDOR_BUILD_DIR) -name Makefile`
 #	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
