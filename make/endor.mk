@@ -101,7 +101,6 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		cd $(BUILD_DIR) && \
 		if [ -e "${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT}" ] ; \
 			then /bin/sh ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} $(BUILD_DIR)/endor ; \
-			exit 1 ; \
 		fi ; \
 		cd endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
