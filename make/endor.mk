@@ -99,6 +99,10 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		cd Calnex.Endor.DataStorage && \
 		git submodule update --init --remote --reference $(ENDOR_GIT_REFERENCE_ROOT)/DataStorage && \
 		cd $(BUILD_DIR) && \
+		if [ -e ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} ] ; \
+			then /bin/sh ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} $(BUILD_DIR) ; \
+			exit 1 ; \
+		fi 
 		cd endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
 		cd $(BUILD_DIR) && \
