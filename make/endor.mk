@@ -100,7 +100,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		git submodule update --init --remote --reference $(ENDOR_GIT_REFERENCE_ROOT)/DataStorage && \
 		cd $(BUILD_DIR) && \
 		if [ -e "${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT}" ] ; \
-			then /bin/sh ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} $(BUILD_DIR) ; \
+			then /bin/sh ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} $(BUILD_DIR)/endor ; \
 			exit 1 ; \
 		fi ; \
 		cd endor/Server/Software && \
