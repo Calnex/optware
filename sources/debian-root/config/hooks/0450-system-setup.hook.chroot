@@ -10,10 +10,6 @@ usermod -p '$1$p5idBRtn$4olM0uQUxiQ01namDZmAF.' root
 echo "creating calnex user"
 useradd -m calnex -s /bin/bash -k /etc/skel -p '$1$mo36plQY$ajxPaQumb5zLpiVmFRu81.'
 
-# Create samba db entry for the calnex user
-echo "creating samba user"
-(echo calnex; echo calnex) | smbpasswd -s -a calnex
-
 # Give them very limited sudo (voodoo) access
 echo "configuring voodoo"
 mv /usr/bin/sudo /usr/bin/voodoo
