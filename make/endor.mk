@@ -235,7 +235,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -d $(ENDOR_IPK_DIR)/opt/share/endor
 	install -m 755 $(ENDOR_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
 	cp -r $(ENDOR_BUILD_DIR)/Endor/Data/Schema $(ENDOR_IPK_DIR)/opt/lib/endor/schema
-	cp $(ENDOR_BUILD_DIR)/Configuration/VI_Paragon_Config.xml $(ENDOR_IPK_DIR)/opt/lib/endor/bin/VI_Config.xml
+	cp $(ENDOR_BUILD_DIR)/Endor/Configuration/VI_Paragon_Config.xml $(ENDOR_IPK_DIR)/opt/lib/endor/bin/VI_Config.xml
 	$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
 	install -m 755 $(ENDOR_SOURCE_DIR)/prerm $(ENDOR_IPK_DIR)/CONTROL/prerm
