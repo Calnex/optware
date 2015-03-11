@@ -58,7 +58,7 @@ EOM
 
 # Now create the version file we want
 # 
-CreateBundleVersionFile `date +"%Y-%d-%m"` $1
+CreateBundleVersionFile `date +"%Y-%m-%d"` $1
 
 
 
