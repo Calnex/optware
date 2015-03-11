@@ -78,7 +78,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			zlib \
 
 CALNEX_PACKAGES =	debian-root \
-			endor \
+			endor-paragon \
 ##############
 
 
