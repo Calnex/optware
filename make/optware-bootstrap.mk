@@ -94,6 +94,7 @@ else
 	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/optware $(OPTWARE-BOOTSTRAP_IPK_DIR)$(OPTWARE-BOOTSTRAP_RC)
 endif
 	sed -i -e 's/__TARGET_DISTRO__/$(TARGET_DISTRO)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)$(OPTWARE-BOOTSTRAP_RC)
+	sed -i -e 's/__TARGET_PRODUCT__/$(TARGET_PRODUCT)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)$(OPTWARE-BOOTSTRAP_RC)
 	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/opt/etc/init.d
 	if [ -e $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE_TARGET)/S00optware ] ; then \
 		install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE_TARGET)/S00optware \
@@ -123,6 +124,7 @@ endif
 	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/optwareUSB \
 		$(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/
 	sed -i -e 's/__TARGET_DISTRO__/$(TARGET_DISTRO)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/optwareUSB
+	sed -i -e 's/__TARGET_PRODUCT__/$(TARGET_PRODUCT)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/optwareUSB
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 	# build optware-bootstrap.xsh next
 	rm -rf $(BUILD_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)-bootstrap_*_$(TARGET_ARCH).xsh
@@ -147,6 +149,7 @@ endif
 	   
 	# Fixup distro
 	sed -i -e 's/__TARGET_DISTRO__/$(TARGET_DISTRO)/g' $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap/bootstrap.sh
+	sed -i -e 's/__TARGET_PRODUCT__/$(TARGET_PRODUCT)/g' $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap/bootstrap.sh
 ifneq (OPTWARE-BOOTSTRAP_REAL_OPT_DIR,)
 	sed -i -e '/^[ 	]*REAL_OPT_DIR=.*/s|=.*|=$(OPTWARE-BOOTSTRAP_REAL_OPT_DIR)|' \
 	       -e 's/$${OPTWARE_TARGET}/$(OPTWARE_TARGET)/g' \

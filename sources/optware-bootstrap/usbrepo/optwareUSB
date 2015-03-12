@@ -20,7 +20,7 @@ case "$rc" in
 	fi
         ;;
     remove)
-	su calnex -c "echo 'src/gz cross http://packages.calnexsol.com/optware/__TARGET_DISTRO__'	> /opt/etc/ipkg/cross-feed.conf"
+	su calnex -c "echo 'src/gz cross http://packages.calnexsol.com/optware/__TARGET_DISTRO__/__TARGET_PRODUCT__'	> /opt/etc/ipkg/cross-feed.conf"
         ;;
     *)
         echo "Usage: $0 (add|remove)"
