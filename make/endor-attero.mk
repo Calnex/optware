@@ -134,7 +134,7 @@ endor-attero-source: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $(ENDOR_PATCHES)
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
-$(ENDOR_ATTERO_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $(ENDOR_ATTERO_PATCHES)  make/endor-attero.mk
+$(ENDOR_ATTERO_BUILD_DIR)/.configured-attero: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $(ENDOR_ATTERO_PATCHES)  make/endor-attero.mk
 	rm -rf $(BUILD_DIR)/$(ENDOR_ATTERO_DIR) $(@D)
 	$(ENDOR_ATTERO_UNZIP) $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_ATTERO_PATCHES)" ; \
@@ -160,12 +160,12 @@ $(ENDOR_ATTERO_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $(ENDOR_
 #	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
-endor-attero-unpack: $(ENDOR_ATTERO_BUILD_DIR)/.configured
+endor-attero-unpack: $(ENDOR_ATTERO_BUILD_DIR)/.configured-attero
 
 #
 # This builds the actual binary.
 #
-$(ENDOR_ATTERO_BUILD_DIR)/.built: $(ENDOR_ATTERO_BUILD_DIR)/.configured 
+$(ENDOR_ATTERO_BUILD_DIR)/.built-attero: $(ENDOR_ATTERO_BUILD_DIR)/.configured-attero 
 	rm -f $@
 	$(MAKE) -C $(@D)
 	touch $@
@@ -175,7 +175,7 @@ $(ENDOR_ATTERO_BUILD_DIR)/.built: $(ENDOR_ATTERO_BUILD_DIR)/.configured
 #
 # If you are building a library, then you need to stage it too.
 #
-$(ENDOR_ATTERO_BUILD_DIR)/.staged: $(ENDOR_ATTERO_BUILD_DIR)/.built
+$(ENDOR_ATTERO_BUILD_DIR)/.staged-attero: $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
@@ -213,7 +213,7 @@ $(ENDOR_ATTERO_IPK_DIR)/CONTROL/control:
 #
 # You may need to patch your application to make it use these locations.
 #
-$(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
+$(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	rm -rf $(ENDOR_ATTERO_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_ATTERO_BUILD_DIR) DESTDIR=$(ENDOR_ATTERO_IPK_DIR) install-strip
 	mkdir -p $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT

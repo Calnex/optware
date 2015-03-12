@@ -134,7 +134,7 @@ endor-paragon-source: $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) $(ENDOR_PATCHES)
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
-$(ENDOR_PARAGON_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) $(ENDOR_PARAGON_PATCHES)  make/endor-paragon.mk
+$(ENDOR_PARAGON_BUILD_DIR)/.configured-paragon: $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) $(ENDOR_PARAGON_PATCHES)  make/endor-paragon.mk
 	rm -rf $(BUILD_DIR)/$(ENDOR_PARAGON_DIR) $(@D)
 	$(ENDOR_PARAGON_UNZIP) $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_PARAGON_PATCHES)" ; \
@@ -160,12 +160,12 @@ $(ENDOR_PARAGON_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) $(ENDO
 #	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
-endor-paragon-unpack: $(ENDOR_PARAGON_BUILD_DIR)/.configured
+endor-paragon-unpack: $(ENDOR_PARAGON_BUILD_DIR)/.configured-paragon
 
 #
 # This builds the actual binary.
 #
-$(ENDOR_PARAGON_BUILD_DIR)/.built: $(ENDOR_PARAGON_BUILD_DIR)/.configured 
+$(ENDOR_PARAGON_BUILD_DIR)/.built-paragon: $(ENDOR_PARAGON_BUILD_DIR)/.configured-paragon 
 	rm -f $@
 	$(MAKE) -C $(@D)
 	touch $@
@@ -175,7 +175,7 @@ $(ENDOR_PARAGON_BUILD_DIR)/.built: $(ENDOR_PARAGON_BUILD_DIR)/.configured
 #
 # If you are building a library, then you need to stage it too.
 #
-$(ENDOR_PARAGON_BUILD_DIR)/.staged: $(ENDOR_PARAGON_BUILD_DIR)/.built
+$(ENDOR_PARAGON_BUILD_DIR)/.staged-paragon: $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
@@ -213,7 +213,7 @@ $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control:
 #
 # You may need to patch your application to make it use these locations.
 #
-$(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
+$(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	rm -rf $(ENDOR_PARAGON_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_PARAGON_BUILD_DIR) DESTDIR=$(ENDOR_PARAGON_IPK_DIR) install-strip
 	mkdir -p $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
