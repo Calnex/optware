@@ -29,3 +29,13 @@ fi
 
 mkdir /srv/tftp
 chown calnex /srv/tftp
+
+# Provide an SSH key for the calnex account
+mkdir ~calnex/.ssh
+chown calnex ~calnex/.ssh
+chmod 700 ~calnex/.ssh
+
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCWURSqMLV0u32T2GRkS1q3DIcfBFjTxLffDAfeH84GYQ276oelweVHno+mINHaahQqgkzT/+8MmcNxw1K/URdh8Vd58+YhRp98IdG5ovnxAETDaIzkGAXTld8J/j0LTTkDCjLAabzayCUtA0+DEv7E3EKjtFGt87wDRJu/oqU9brH5BJSpXhW/XNwsqAigbaKmFvsa/m1ydr8HGatODFpfcGAO7Ca3jTtdwCaMOgt0eDcfY03pbPSa39TguNhs+9eg08ArSGRQmeaF+IGf/jO+ZhhKdjyALNNsOcDerw907vKU0yOdO20zPuVJtDWmeh6p2/urXCXA91pgk9FbuIhL alan@debian" > ~calnex/.ssh/authorized_keys2
+chown calnex ~calnex/.ssh/authorized_keys2
+chmod 600 ~calnex/.ssh/authorized_keys2
+
