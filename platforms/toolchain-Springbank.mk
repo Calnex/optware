@@ -55,6 +55,10 @@ LIBC_STYLE=glibc
 TOOLCHAIN_BINARY=gcc491-glibc219_x86_64.tar.gz
 endif
 
+ifeq ("", $(TARGET_PRODUCT))
+        $(error TARGET_PRODUCT has not been set.  Exiting.)
+endif
+
 toolchain: $(TARGET_CROSS_TOP)/.unpacked
 
 $(DL_DIR)/$(TOOLCHAIN_BINARY):
