@@ -20,7 +20,7 @@ tar -xzf long-filepaths.tar.gz
 echo "waiting for DB daemon to start"
 echo "Product is ${PRODUCT}"
 echo "This is the environment"
-end
+env
 echo "End of environment display"
 sleep 3
 python3 /opt/lib/endor/schema/Baseline/RebuildDb_${PRODUCT}.py --superuser calnex --path /opt/lib/endor/schema/Baseline
