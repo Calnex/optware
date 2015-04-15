@@ -38,6 +38,8 @@ DEBIAN-LIVE_DEPENDS=
 DEBIAN-LIVE_SUGGESTS=
 DEBIAN-LIVE_CONFLICTS=
 
+TARGET_PRODUCT ?= Paragon
+
 #
 # DEBIAN-LIVE_IPK_VERSION should be incremented when the ipk changes.
 #
@@ -144,7 +146,7 @@ debian-live-unpack: $(DEBIAN-LIVE_BUILD_DIR)/.configured
 $(DEBIAN-LIVE_BUILD_DIR)/.built: $(DEBIAN-LIVE_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
-		sudo lb build; \
+		PRODUCT=$(TARGET_PRODUCT) sudo lb build; \
 	)
 	touch $@
 
