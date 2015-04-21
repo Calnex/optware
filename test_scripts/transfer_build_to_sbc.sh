@@ -1,13 +1,14 @@
 #! /bin/sh
 
-if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 USERNAME TARGETHOST REFERENCEHOST"
+set -x
+
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 TARGETHOST REFERENCEHOST"
     exit 1
 fi
 
-USERNAME=$1
-TARGETHOST=$2
-REFERENCEHOST=$3
+TARGETHOST=$1
+REFERENCEHOST=$2
 
 # Make sure the host is there, bomb out if it's not
 #
@@ -21,31 +22,39 @@ fi
 # Relies on SSH keys being correctly set up
 #
 echo "Stopping services on $1"
-ssh ${USERNAME}@${TARGETHOST} "/opt/etc/init.d/S99endor-webapp stop"
-ssh ${USERNAME}@${TARGETHOST} "/opt/etc/init.d/S98cat-remotingserver stop"
-ssh ${USERNAME}@${TARGETHOST} "/opt/etc/init.d/S97endor-instrumentcontroller stop"
-ssh ${USERNAME}@${TARGETHOST} "/opt/etc/init.d/S96endor-virtualinstrument stop"
-ssh ${USERNAME}@${TARGETHOST} "/opt/etc/init.d/S95postgresql stop"
+ssh ${TARGETHOST} "/opt/etc/init.d/S99endor-webapp stop"
+ssh ${TARGETHOST} "/opt/etc/init.d/S98cat-remotingserver stop"
+ssh ${TARGETHOST} "/opt/etc/init.d/S97endor-instrumentcontroller stop"
+ssh ${TARGETHOST} "/opt/etc/init.d/S96endor-virtualinstrument stop"
+ssh ${TARGETHOST} "/opt/etc/init.d/S95postgresql stop"
 
 # Delete the entire old application folder
 #
 echo "Removing old build on $1"
-ssh ${USERNAME}@${TARGETHOST} "~/test_helpers/remove_old_endor_folder.sh"
+ssh ${TARGETHOST} "~/test_helpers/remove_old_endor_folder.sh"
 
 # And copy the new folder to the target machine
 #
-echo "Copying files from reference machine to $1"
-ssh ${USERNAME}@${TARGETHOST} "scp -r ${USERNAME}@${REFERENCEHOST}:/opt/lib/endor /opt/lib/endor"
+
+if [ -d "/tmp/endor_staging" ]; then
+	rm -rf /tmp/endor_staging
+fi
+
+echo "Copying files from ${REFERENCE_HOST} to localhost"
+scp -r ${REFERENCEHOST}:/opt/lib/endor /tmp/endor_staging
+
+echo "Copying files to ${TARGETHOST} from localhost"
+scp -r /tmp/endor_staging ${TARGETHOST}:/opt/lib/endor
 
 # Restart operations on test machine
 echo "Restarting services"
-ssh ${USERNAME}@${TARGETHOST} "/opt/etc/init.d/S95postgresql start"
-ssh ${USERNAME}@${TARGETHOST} "cd /opt/lib/endor; python3 RebuildDb_Paragon.py"
+ssh ${TARGETHOST} "/opt/etc/init.d/S95postgresql start"
+ssh ${TARGETHOST} "cd /opt/lib/endor/schema/Baseline; python3 RebuildDb.py --superuser=calnex"
 
-ssh ${USERNAME}@${TARGETHOST} "/opt/etc/init.d/S96endor-virtualinstrument start"
-ssh ${USERNAME}@${TARGETHOST} "/opt/etc/init.d/S97endor-instrumentcontroller start"
-ssh ${USERNAME}@${TARGETHOST} "/opt/etc/init.d/S98cat-remotingserver start"
-ssh ${USERNAME}@${TARGETHOST} "/opt/etc/init.d/S99endor-webapp start"
+ssh ${TARGETHOST} "/opt/etc/init.d/S96endor-virtualinstrument start"
+ssh ${TARGETHOST} "/opt/etc/init.d/S97endor-instrumentcontroller start"
+ssh ${TARGETHOST} "/opt/etc/init.d/S98cat-remotingserver start"
+ssh ${TARGETHOST} "/opt/etc/init.d/S99endor-webapp start"
 
 sleep 5
 
