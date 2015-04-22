@@ -51,9 +51,9 @@ echo "Restarting services"
 ssh ${TARGETHOST} "/opt/etc/init.d/S95postgresql start"
 ssh ${TARGETHOST} "cd /opt/lib/endor/schema/Baseline; python3 RebuildDb.py --superuser=calnex"
 
-ssh ${TARGETHOST} "reboot"
+ssh ${TARGETHOST} "voodoo reboot"
 
 echo "Waiting for ${TARGETHOST} to reboot"
-sleep 60
+sleep 45
 
 echo "Ready to run tests!"
