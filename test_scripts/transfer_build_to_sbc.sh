@@ -51,11 +51,9 @@ echo "Restarting services"
 ssh ${TARGETHOST} "/opt/etc/init.d/S95postgresql start"
 ssh ${TARGETHOST} "cd /opt/lib/endor/schema/Baseline; python3 RebuildDb.py --superuser=calnex"
 
-ssh ${TARGETHOST} "/opt/etc/init.d/S96endor-virtualinstrument start"
-ssh ${TARGETHOST} "/opt/etc/init.d/S97endor-instrumentcontroller start"
-ssh ${TARGETHOST} "/opt/etc/init.d/S98cat-remotingserver start"
-ssh ${TARGETHOST} "/opt/etc/init.d/S99endor-webapp start"
+ssh ${TARGETHOST} "reboot"
 
-sleep 5
+echo "Waiting for ${TARGETHOST} to reboot"
+sleep 60
 
 echo "Ready to run tests!"
