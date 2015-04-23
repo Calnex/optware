@@ -41,9 +41,12 @@ if [ -d "/tmp/endor_staging" ]; then
         rm -rf /tmp/endor_staging
 fi
 
-echo "Copying files from ${REFERENCE_HOST} to localhost"
+ssh ${REFERENCEHOST} ${SSH_OPTIONS} "ls -la"
+ssh ${REFERENCEHOST} ${SSH_OPTIONS} "env"
+
+echo "Copying files from ${REFERENCEHOST} to localhost"
 mkdir -p /tmp/endor_staging
-scp ${SSH_OPTIONS}  -r ${REFERENCEHOST}:/opt/lib/endor/* /tmp/endor_staging
+scp ${SSH_OPTIONS} -r ${REFERENCEHOST}:/opt/lib/endor/* /tmp/endor_staging
 
 echo "Copying files to ${TARGETHOST} from localhost"
 scp ${SSH_OPTIONS} -r /tmp/endor_staging ${TARGETHOST}:/opt/lib/endor
