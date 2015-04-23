@@ -222,7 +222,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	
 	# Copy mask data to the output folder
 	mkdir -p $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Mask_XML
-	cp ${ENDOR_ATTERO_BUILD_DIR}/Libs/CAT/Mask_XML/*.xml $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Mask_XML/
+	cp ${ENDOR_ATTERO_BUILD_DIR}/Libs/CAT/WanderAnalysisTool/Mask_XML/*.xml $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Mask_XML/
 	
 	cd $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \
