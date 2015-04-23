@@ -10,7 +10,7 @@ fi
 TARGETHOST=$1
 REFERENCEHOST=$2
 
-SSH_OPTIONS=-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+SSH_OPTIONS='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
 # Make sure the host is there, bomb out if it's not
 #
@@ -37,13 +37,13 @@ ssh ${TARGETHOST} ${SSH_OPTIONS} "~/test_helpers/remove_old_endor_folder.sh"
 
 # And copy the new folder to the target machine
 #
-
 if [ -d "/tmp/endor_staging" ]; then
-	rm -rf /tmp/endor_staging
+        rm -rf /tmp/endor_staging
 fi
 
 echo "Copying files from ${REFERENCE_HOST} to localhost"
-scp ${SSH_OPTIONS}  -r ${REFERENCEHOST}:/opt/lib/endor /tmp/endor_staging
+mkdir -p /tmp/endor_staging
+scp ${SSH_OPTIONS}  -r ${REFERENCEHOST}:/opt/lib/endor/* /tmp/endor_staging
 
 echo "Copying files to ${TARGETHOST} from localhost"
 scp ${SSH_OPTIONS} -r /tmp/endor_staging ${TARGETHOST}:/opt/lib/endor
