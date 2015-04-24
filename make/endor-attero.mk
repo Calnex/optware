@@ -223,7 +223,7 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	
 	# Copy mask data to the output folder
 	mkdir -p $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Mask_XML
-	cp ${ENDOR_ATTERO_BUILD_DIR}/Libs/CAT/WanderAnalysisTool/Mask_XML/*.xml $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Mask_XML/
+	cp $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*.xml $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Mask_XML/
 	
 	cd $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \
