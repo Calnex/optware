@@ -217,12 +217,12 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	rm -rf $(ENDOR_PARAGON_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_PARAGON_BUILD_DIR) DESTDIR=$(ENDOR_PARAGON_IPK_DIR) install-strip
 	# Copy the CAT binaries to the output folder
-	mkdir -p $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT
-	cp -rv ${ENDOR_ATTERO_BUILD_DIR}/Libs/CAT/Release/html/* $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT/
+	mkdir -p $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
+	cp -rv ${ENDOR_PARAGON_BUILD_DIR}/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
 	
 	# Copy mask data to the output folder
-	mkdir -p $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Mask_XML
-	cp $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*.xml $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Mask_XML/
+	mkdir -p $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Mask_XML
+	cp ${ENDOR_PARAGON_BUILD_DIR}/Libs/CAT/WanderAnalysisTool/Mask_XML/*.xml $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Mask_XML/
 	
 	cd $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \

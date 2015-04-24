@@ -44,8 +44,6 @@ fi
 echo "Trying ls"
 ssh -v ${REFERENCEHOST} ${SSH_OPTIONS} "ls"
 
-sleep 60
-
 echo "Trying env"
 ssh -v ${REFERENCEHOST} ${SSH_OPTIONS} "env"
 
