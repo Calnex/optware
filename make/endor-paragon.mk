@@ -220,10 +220,6 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	mkdir -p $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv ${ENDOR_PARAGON_BUILD_DIR}/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
 	
-	# Copy mask data to the output folder
-	mkdir -p $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Mask_XML
-	cp ${ENDOR_PARAGON_BUILD_DIR}/Libs/CAT/WanderAnalysisTool/Mask_XML/*.xml $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Mask_XML/
-	
 	cd $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor && \
 	tar --remove-files -cvzf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
@@ -238,6 +234,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.cat-remotingserver $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/WebApp.dll $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML
 	install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML ${ENDOR_PARAGON_BUILD_DIR}/Libs/CAT/WanderAnalysisTool/Mask_XML/*
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
