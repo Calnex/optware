@@ -234,6 +234,9 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.cat-remotingserver $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/WebApp.dll $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
+	
+	# CAT's Mask_XML file
+	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML
 	install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML ${ENDOR_PARAGON_BUILD_DIR}/Libs/CAT/WanderAnalysisTool/Mask_XML/*
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor
