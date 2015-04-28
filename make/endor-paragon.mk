@@ -216,15 +216,9 @@ $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control:
 $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	rm -rf $(ENDOR_PARAGON_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_PARAGON_BUILD_DIR) DESTDIR=$(ENDOR_PARAGON_IPK_DIR) install-strip
-	# Copy the CAT binaries to the output folder
-	mkdir -p $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
-	cp -rv ${ENDOR_PARAGON_BUILD_DIR}/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
 	
-	cd $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor && \
-	tar --remove-files -cvzf long-filepaths.tar.gz \
-		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
-	#cd $(ENDOR_CAT_BUILD_DIR)/Release && \
-	#tar --remove-files -cvzf $(ENDOR_IPK_DIR)/opt/lib/endor/cat.tar.gz `find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
+	# Configuration files
+	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_PARAGON_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/curiosity $(ENDOR_PARAGON_IPK_DIR)/opt/bin/curiosity
@@ -235,10 +229,21 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/WebApp.dll $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
 	
-	# CAT's Mask_XML file
+	# CAT HTML and Javascript
+	#
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
+	#install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT ${ENDOR_PARAGON_BUILD_DIR}/Libs/CAT/Release/html/*
+
+	#mkdir -p $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
+	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
+
+	# CAT's Mask_XML files
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML
-	install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML ${ENDOR_PARAGON_BUILD_DIR}/Libs/CAT/WanderAnalysisTool/Mask_XML/*
+	install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*
+	
+	# Various other required files
+	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
 	cp -r $(ENDOR_PARAGON_BUILD_DIR)/Endor/Data/Schema $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/schema
@@ -248,14 +253,22 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/postinst $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/prerm $(ENDOR_PARAGON_IPK_DIR)/CONTROL/prerm
 	echo $(ENDOR_PARAGON_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_PARAGON_IPK_DIR)/CONTROL/conffiles
+
+	# Some tidy-ups
+	#
+	rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs
+	rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/phantomJs/phantomjs.exe
 	
-	echo
-	echo
-	echo
-	echo EndorParagonIpkDir is $(ENDOR_PARAGON_IPK_DIR)
-	exit 1
 	
+	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
+	# Build any such files into a tarball that can later be purged.
+	#
+	cd $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor && \
+	tar --remove-files -czf long-filepaths.tar.gz \
+		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	
+	# Now go and build the package
+	#
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_PARAGON_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_PARAGON_IPK_DIR)
 
