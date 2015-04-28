@@ -232,9 +232,6 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	# CAT HTML and Javascript
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
-	#install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT ${ENDOR_PARAGON_BUILD_DIR}/Libs/CAT/Release/html/*
-
-	#mkdir -p $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
 
 	# CAT's Mask_XML files
