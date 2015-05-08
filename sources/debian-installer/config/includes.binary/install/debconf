@@ -409,7 +409,9 @@ d-i cdrom-detect/eject boolean false
 # This first command is run as early as possible, just after
 # preseeding is read.
 d-i preseed/early_command string \
-	dd if=/cdrom/live-image-amd64.hybrid.iso of=/dev/sda bs=8M && sync && reboot
+	dd if=/cdrom/live-image-amd64.hybrid.iso of=/dev/sda bs=8M && \
+	read -p "Please remove installation media and press any key to reboot" && \
+	sync && reboot
 # This command is run immediately before the partitioner starts. It may be
 # useful to apply dynamic partitioner preseeding that depends on the state
 # of the disks (which may not be visible when preseed/early_command runs).
