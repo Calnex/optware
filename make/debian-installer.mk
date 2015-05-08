@@ -126,6 +126,12 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--debian-installer-preseedfile		debconf				\
 		--win32-loader				false				\
 		--loadlin				false				\
+		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
+		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
+		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/security	\
+		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
+		--mirror-binary-security	$(TARGET_REPO_MIRROR)/security	\
+		--debootstrap-options		"--no-check-gpg" \
 		--bootappend-live		"boot=live config username=calnex"	\
 		--iso-application			"Springbank installer"		\
 		--iso-publisher				"Calnex Solutions"		\
