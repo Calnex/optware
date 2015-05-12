@@ -223,7 +223,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_PARAGON_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/curiosity $(ENDOR_PARAGON_IPK_DIR)/opt/bin/curiosity
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-redirect $(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-redirect
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-virtualinstrument.paragon $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-instrumentcontroller $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.cat-remotingserver $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
@@ -244,7 +244,6 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
 	cp -r $(ENDOR_PARAGON_BUILD_DIR)/Endor/Data/Schema $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/schema
-	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Configuration/VI_Paragon_Config.xml $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/VI_Config.xml
 	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb_Paragon.py $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
 		$(MAKE) $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/postinst $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst
