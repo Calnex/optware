@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec mono "/opt/lib/endor/TranslatorCLUI.exe" "$@"
