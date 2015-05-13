@@ -231,8 +231,8 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	
 	# Shell scripts
 	#
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_DHCP.sh   $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_ifconfig_DHCP.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_static.sh $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_ifconfig_static.sh
+	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_DHCP.sh   $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/set_ifconfig_DHCP.sh
+	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_static.sh $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/set_ifconfig_static.sh
 	
 	# CAT HTML and Javascript
 	#
