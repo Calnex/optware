@@ -241,6 +241,11 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
 
+	# Help documentation
+	#
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/Documents
+	cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/Documents
+	
 	# CAT's Mask_XML files
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML
