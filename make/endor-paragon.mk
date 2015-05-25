@@ -95,9 +95,17 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		cd endor && \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
-		git submodule update --init --remote --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/CAT && \
-		cd Calnex.Endor.DataStorage && \
-		git submodule update --init --remote --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/DataStorage && \
+		if [ -z ${CAT_TAG} ] ; \
+			then \
+				/usr/bin/git branch -d br_${CAT_TAG} || true \
+				/usr/bin/git checkout -b br_${CAT_TAG} ${CAT_TAG} \
+				/usr/bin/git submodule update --recursive \
+			else \
+				git submodule update --init --remote --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/CAT && \
+				cd Calnex.Endor.DataStorage && \
+				git submodule update --init --remote --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/DataStorage && \
+		fi; \
+		/usr/bin/git log --pretty=format:'%h' -n 1 \
 		cd $(BUILD_DIR) && \
 		if [ -e "${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT}" ] ; \
 			then /bin/sh ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} $(BUILD_DIR)/endor ; \
