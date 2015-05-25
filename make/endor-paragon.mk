@@ -95,7 +95,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		cd endor && \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
-		if [ -z ${CAT_TAG} ] ; \
+		if [ -z "${CAT_TAG}" ] ; \
 			then \
 				/usr/bin/git branch -d br_${CAT_TAG} || true && \
 				/usr/bin/git checkout -b br_${CAT_TAG} ${CAT_TAG} && \
