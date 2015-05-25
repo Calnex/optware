@@ -6,4 +6,8 @@ if [ "$BASH" ]; then
   fi
 fi
 
+if [ -f ~/.timezone ]; then
+  export TZ=$(cat ~/.timezone)
+fi
+
 mesg n
