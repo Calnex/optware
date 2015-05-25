@@ -97,12 +97,12 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		cd Server/Software/Libs/CAT && \
 		if [ -z "${CAT_TAG}" ] ; \
 			then \
-			    echo "Checking out a drop of the cat"
+			    echo "Checking out a drop of the cat" && \
 				DUMMY=`/usr/bin/git branch -d br_${CAT_TAG}` && \
 				/usr/bin/git checkout -b br_${CAT_TAG} ${CAT_TAG} && \
 				/usr/bin/git submodule update --recursive; \
 			else \
-			    echo "Checking out submodules"
+			    echo "Checking out submodules" && \
 				git submodule update --init --remote --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/CAT && \
 				cd Calnex.Endor.DataStorage && \
 				git submodule update --init --remote --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/DataStorage; \
