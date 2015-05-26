@@ -243,6 +243,9 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	#
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_DHCP.sh   $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_ifconfig_DHCP.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_static.sh $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_ifconfig_static.sh
+	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_gateway.sh         $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_gateway.sh
+	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_ip.sh              $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_ip.sh
+	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_subnet_mask.sh     $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_subnet_mask.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/poweroff.sh            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/poweroff.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/reboot.sh              $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/reboot.sh
 	
