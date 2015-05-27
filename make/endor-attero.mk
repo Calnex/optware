@@ -98,6 +98,14 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		git submodule update --init --remote --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/CAT && \
 		cd Calnex.Endor.DataStorage && \
 		git submodule update --init --remote --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/DataStorage && \
+		cd .. && \
+		if [ ! -z "${CAT_TAG}" ] ; \
+			then \
+			    echo "Checking out a drop of the cat"             && \
+				/usr/bin/git checkout -b br_${CAT_TAG} ${CAT_TAG} && \
+				/usr/bin/git submodule update --recursive;           \
+		fi; \
+		/usr/bin/git log --pretty=format:'%h' -n 1 && \
 		cd $(BUILD_DIR) && \
 		if [ -e "${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT}" ] ; \
 			then /bin/sh ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} $(BUILD_DIR)/endor ; \
@@ -220,21 +228,26 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	# Configuration files
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_ATTERO_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.translatorclui $(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/curiosity $(ENDOR_ATTERO_IPK_DIR)/opt/bin/curiosity
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-redirect $(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-redirect
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrumentcontroller-supervisor   $(ENDOR_ATTERO_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.translatorclui       $(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/curiosity                         $(ENDOR_ATTERO_IPK_DIR)/opt/bin/curiosity
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-redirect                      $(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-redirect
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-virtualinstrument.attero $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-instrumentcontroller $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.cat-remotingserver $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-webapp $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-webapp
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-translatorclui $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-translator
-	install -m 755 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/WebApp.dll $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-instrumentcontroller     $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.cat-remotingserver             $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-webapp                   $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-webapp
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-translatorclui           $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-translator
+	install -m 755 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/WebApp.dll             $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
 	
 	# Shell scripts
 	#
 	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_DHCP.sh   $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/set_ifconfig_DHCP.sh
 	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_static.sh $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/set_ifconfig_static.sh
+	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_gateway.sh         $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/get_gateway.sh
+	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_ip.sh              $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/get_ip.sh
+	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_subnet_mask.sh     $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/get_subnet_mask.sh
+	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/poweroff.sh            $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/poweroff.sh
+	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/reboot.sh              $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/reboot.sh
 	
 	# CAT HTML and Javascript
 	#
@@ -246,7 +259,12 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML
 	install -m 755 -t $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*
 
-	# Various othre required files
+	# Help documentation
+	#
+	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
+	cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/* $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
+	
+	# Various other required files
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/share/endor
 	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_ATTERO_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
