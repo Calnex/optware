@@ -1,0 +1,30 @@
+#! /bin/sh
+
+#########
+if [ -z "$1" ] ; then
+    case `echo "$0" | /bin/sed 's:^.*/\(.*\):\1:g'` in
+        S??*) rc="start" ;;
+        K??*) rc="stop" ;;
+        *) rc="usage" ;;
+    esac
+else
+    rc="$1"
+fi
+
+case "$rc" in
+    start)
+	    echo -n "Waiting for database to be available... "
+		sleep 5
+        echo ok
+        ;;
+    stop)
+        ;;
+    restart)
+        "$0" stop
+        sleep 1
+        "$0" start
+        ;;
+    *)
+        echo "Usage: $0 (start|stop|restart|usage)"
+        ;;
+esac
