@@ -249,6 +249,8 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_subnet_mask.sh     $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/get_subnet_mask.sh
 	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/poweroff.sh            $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/poweroff.sh
 	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/reboot.sh              $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/reboot.sh
+	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_time.sh            $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/set_time.sh
+	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_date.sh            $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/set_date.sh
 	
 	# CAT HTML and Javascript
 	#
