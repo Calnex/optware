@@ -52,7 +52,9 @@ then
 
 		CONNECTED=1
 		i=0
-
+		
+		voodoo dhclient
+		
 		# Wait for network
 		while [ $CONNECTED -ne "0" ]
 		do
