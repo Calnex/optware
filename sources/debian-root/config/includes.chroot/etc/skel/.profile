@@ -11,3 +11,7 @@ if [ -f ~/.timezone ]; then
 fi
 
 mesg n
+
+# Calnex additions
+#
+HOSTALIASES=/opt/etc/hostaliases

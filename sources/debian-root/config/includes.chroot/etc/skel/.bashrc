@@ -108,3 +108,7 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# Calnex additions
+#
+HOSTALIASES=/opt/etc/hostaliases

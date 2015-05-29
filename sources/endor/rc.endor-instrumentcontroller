@@ -19,8 +19,10 @@ fi
 
 case "$rc" in
     start)
-        echo -n "Starting Endor Instrument Controller: "
+		echo "Setting host name"
 		/usr/bin/voodoo /bin/hostname springbank-`/opt/bin/psql -d endor -c 'select serial_number from embedded_info;' -t -A`
+		echo "`hostname` localhost" > ${HOSTALIASES}
+        echo -n "Starting Endor Instrument Controller: "
         /opt/bin/instrumentcontroller-supervisor 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
         echo ok
         ;;
