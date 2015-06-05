@@ -89,7 +89,8 @@ ENDOR_ATTERO_GIT_REFERENCE_ROOT?=$(ENDOR_COMMON_SOURCE_REPOSITORY)
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
-	(cd $(BUILD_DIR) ; \
+	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
+		cd $(BUILD_DIR) ; \
 		rm -rf endor && \
 		git clone $(ENDOR_ATTERO_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/Springbank && \
 		cd endor && \
@@ -110,6 +111,9 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		if [ -e "${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT}" ] ; \
 			then /bin/sh ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} $(BUILD_DIR)/endor ; \
 		fi ; \
+		echo "using System.Reflection;" > endor/Server/Software/Endor/BuildInformation/Version.cs ; \
+		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
+		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		cd endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
 		cd $(BUILD_DIR) && \
