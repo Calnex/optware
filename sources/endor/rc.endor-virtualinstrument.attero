@@ -20,7 +20,7 @@ fi
 case "$rc" in
     start)
         echo -n "Starting Endor Virtual Instrument: "
-        /opt/bin/calnex.endor.instrument.virtual  --probetype "attero" 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
+        /opt/bin/calnex.endor.instrument.virtual --config /opt/lib/endor/Calnex.Endor.Instrument.Virtual.Attero.config 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
         echo ok
         ;;
     stop)
