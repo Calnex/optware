@@ -91,7 +91,7 @@ ENDOR_PARAGON_GIT_REFERENCE_ROOT?=$(ENDOR_COMMON_SOURCE_REPOSITORY)
 $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
-		rm -rf endor && git checkout 
+		rm -rf endor && git checkout \
 		git clone $(ENDOR_PARAGON_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/Springbank && \
 		cd endor && \
 		if [ -e "${ENDOR_PARAGON_COMMIT_ID}" ] ; \
