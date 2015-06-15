@@ -94,8 +94,8 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		rm -rf endor && \
 		git clone $(ENDOR_PARAGON_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/Springbank && \
 		cd endor && \
-		if [ -e "${ENDOR_PARAGON_COMMIT_ID}" ] ; \
-			then /usr/bin/git checkout ${ENDOR_PARAGON_COMMIT_ID} ; \
+		if [ ! -z "${ENDOR_COMMIT_ID}" ] ; \
+			then /usr/bin/git checkout ${ENDOR_COMMIT_ID} ; \
 		fi ; \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
