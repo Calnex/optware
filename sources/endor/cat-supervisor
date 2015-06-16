@@ -1,0 +1,11 @@
+#! /bin/sh
+
+exitStatus=1
+
+export MONO_GC_PARAMS=nursery-size=32m
+
+while [ $exitStatus -ne 0 ]
+do
+	mono /opt/lib/endor/Calnex.Cat.RemotingServer.exe > /dev/null 2>&1 &
+	exitStatus=$?
+done

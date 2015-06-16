@@ -236,6 +236,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrumentcontroller-supervisor    $(ENDOR_PARAGON_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-supervisor                     $(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-supervisor
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.translatorclui        $(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/curiosity                          $(ENDOR_PARAGON_IPK_DIR)/opt/bin/curiosity
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-redirect                       $(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-redirect
