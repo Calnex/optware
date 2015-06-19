@@ -109,7 +109,6 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 				/usr/bin/git checkout -b br_${CAT_TAG} ${CAT_TAG} && \
 				/usr/bin/git submodule update --recursive;           \
 		fi; \
-		/usr/bin/git log --pretty=format:'%h' -n 1 && \
 		cd $(BUILD_DIR) && \
 		if [ -e "${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT}" ] ; \
 			then /bin/sh ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} $(BUILD_DIR)/endor ; \
@@ -117,6 +116,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		echo "using System.Reflection;" > endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
+		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
 		cd endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cz -f $@ --exclude=.git* * && \
 		cd $(BUILD_DIR) && \
@@ -268,7 +268,9 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	# Help documentation
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/Documents
-	cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/Documents
+	cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
+	install -m 444 $(ENDOR_PARAGON_SOURCE_DIR)/Endor/BuildInformation/GitCommitIds.txt            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
+		
 	
 	# CAT's Mask_XML files
 	#
