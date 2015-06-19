@@ -269,7 +269,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/Documents
 	cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
-	install -m 444 $(ENDOR_PARAGON_SOURCE_DIR)/Endor/BuildInformation/GitCommitIds.txt            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
+	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
 		
 	
 	# CAT's Mask_XML files
