@@ -21,6 +21,7 @@ case "$rc" in
     start)
         echo -n "Starting Endor Instrument Controller: "
         /opt/bin/instrumentcontroller-supervisor 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
+		sleep 3
         echo ok
         ;;
     stop)
