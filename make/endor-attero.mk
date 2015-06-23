@@ -273,7 +273,10 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	# Help documentation
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
-	cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/* $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
+	cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithAttero/*.xml  $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
+	cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithAttero/*.pdf  $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
+	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt                  $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
+	
 	
 	# Various other required files
 	#
