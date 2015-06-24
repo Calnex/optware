@@ -270,14 +270,6 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML
 	install -m 755 -t $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*
 
-	# Help documentation
-	#
-	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
-	cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithAttero/*.xml  $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
-	cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithAttero/*.pdf  $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
-	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt                  $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
-	
-	
 	# Various other required files
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/share/endor
@@ -289,6 +281,15 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/prerm $(ENDOR_ATTERO_IPK_DIR)/CONTROL/prerm
 	echo $(ENDOR_ATTERO_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_ATTERO_IPK_DIR)/CONTROL/conffiles
 	
+	# Help documentation
+	#
+	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
+	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
+
+	cd $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithAttero && \
+	find . -name *.xml | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/ && \
+	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/
+
 	# Some tidy-ups
 	#
 	rm -rf $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/phantomJs
