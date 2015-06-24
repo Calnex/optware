@@ -265,23 +265,6 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
 
-	# Help documentation
-	#
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/Documents
-	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt                 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
-
-	# What we want to do is ...
-	# cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/*.xml $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
-	# cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/*.pdf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
-
-	# What we have to do is...
-#	oldDir=$(pwd)
-#	echo ${oldDir}
-#	cd $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon
-#	find . -name *.xml | cpio -pdm $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
-#	find . -name *.pdf | cpio -pdm $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
-#	echo "Restoring folder to ${oldDir}"
-#	cd ${oldDir}
 	
 	# CAT's Mask_XML files
 	#
@@ -305,6 +288,27 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/phantomJs/phantomjs.exe
 	
 	
+	# Help documentation (note that this changes directory)
+	#
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/Documents
+	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt                 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
+
+	# What we want to do is ...
+	# cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/*.xml $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
+	# cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/*.pdf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
+
+	# What we have to do is...
+	oldDir=$(pwd)
+	echo ${oldDir}
+	cd $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon
+	find . -name *.xml | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
+	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
+	echo "Restoring folder to ${oldDir}"
+	cd ${oldDir}
+
+exit 100
+
+
 	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
 	# Build any such files into a tarball that can later be purged.
 	#
