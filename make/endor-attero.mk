@@ -117,6 +117,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		echo "using System.Reflection;" > endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
+		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
 		cd endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
 		cd $(BUILD_DIR) && \
