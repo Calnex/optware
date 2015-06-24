@@ -306,7 +306,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	echo "Restoring folder to ${oldDir}"
 	cd ${oldDir}
 
-exit 100
+	exit 100
 
 
 	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
