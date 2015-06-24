@@ -276,10 +276,12 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 
 	# What we have to do is...
 	oldDir=`pwd`
+	echo ${oldDir}
 	cd $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon
 	find . -name *.xml | cpio -pdm $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
 	find . -name *.pdf | cpio -pdm $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
-	cd ${oldDir}	
+	echo "Restoring folder to ${oldDir}"
+	cd ${oldDir}
 	
 	# CAT's Mask_XML files
 	#
