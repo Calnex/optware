@@ -275,7 +275,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	# cp -rv $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon/*.pdf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
 
 	# What we have to do is...
-	oldDir=`pwd`
+	oldDir=$(pwd)
 	echo ${oldDir}
 	cd $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon
 	find . -name *.xml | cpio -pdm $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
