@@ -1,0 +1,9 @@
+#! /bin/bash
+
+sleep 30
+
+ifconfig | grep eth0 > /dev/null
+if [[ $? != 0 ]]
+then
+  dhclient
+fi
