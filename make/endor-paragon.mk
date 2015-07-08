@@ -92,7 +92,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone $(ENDOR_PARAGON_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/Springbank && \
+		git clone $(ENDOR_PARAGON_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/Springbank --branch ${ENDOR_BRANCH_PARAM} --single-branch && \
 		cd endor && \
 		if [ ! -z "${ENDOR_COMMIT_ID}" ] ; \
 			then /usr/bin/git checkout ${ENDOR_COMMIT_ID} ; \
@@ -110,9 +110,6 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 				/usr/bin/git submodule update --recursive;           \
 		fi; \
 		cd $(BUILD_DIR) && \
-		if [ -e "${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT}" ] ; \
-			then /bin/sh ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} $(BUILD_DIR)/endor ; \
-		fi ; \
 		echo "using System.Reflection;" > endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
