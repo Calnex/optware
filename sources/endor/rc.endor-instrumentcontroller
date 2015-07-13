@@ -19,6 +19,10 @@ fi
 
 case "$rc" in
     start)
+        # There have been issues with the named pipes remaining locked if the IC doesn't die nicely
+        # So we manually remove them here
+        rm /tmp/*Channel*
+        
         echo -n "Starting Endor Instrument Controller: "
         /opt/bin/instrumentcontroller-supervisor 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
 		sleep 3
