@@ -116,7 +116,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
 		echo $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)  ;\
-		# Minify the Javascript \
+		# Minify the Paragon Javascript \
 		python $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/minify2.py \
 			--type="js" \
 			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon/paragonApp.min.js" \
@@ -124,6 +124,15 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 			--file-inclusions="*.js" \
 			--file-exclusions="-spec.js" \
 			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon" \
+			--jar-file="$(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/yuicompressor-2.4.7.jar" ; \
+		# Minify the ngUtils Javascript \
+		python $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/minify2.py \
+			--type="js" \
+			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/Paragon/ngUtils.min.js" \
+			--folder-exclusions="\\test \\Vendor \\img \\css" \
+			--file-inclusions="*.js" \
+			--file-exclusions="-spec.js" \
+			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils" \
 			--jar-file="$(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/yuicompressor-2.4.7.jar" ; \
 		cd endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cz -f $@ --exclude=.git* * && \
