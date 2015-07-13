@@ -128,7 +128,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		# Minify the ngUtils Javascript \
 		python $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/minify2.py \
 			--type="js" \
-			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/Paragon/ngUtils.min.js" \
+			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js" \
 			--folder-exclusions="\\test \\Vendor \\img \\css" \
 			--file-inclusions="*.js" \
 			--file-exclusions="-spec.js" \
