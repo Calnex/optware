@@ -115,7 +115,6 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
-		echo $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)  ;\
 		# Minify the Paragon Javascript \
 		python $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/minify2.py \
 			--type="js" \

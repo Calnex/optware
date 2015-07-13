@@ -77,6 +77,7 @@ ENDOR_ATTERO_BUILD_DIR=$(BUILD_DIR)/endor
 ENDOR_ATTERO_SOURCE_DIR=$(SOURCE_DIR)/endor
 ENDOR_ATTERO_IPK_DIR=$(BUILD_DIR)/endor-attero-$(ENDOR_ATTERO_VERSION)-ipk
 ENDOR_ATTERO_IPK=$(BUILD_DIR)/endor_$(ENDOR_ATTERO_VERSION)-$(ENDOR_ATTERO_IPK_VERSION)_$(TARGET_ARCH).ipk
+ENDOR_ATTERO_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 
 ENDOR_ATTERO_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 
@@ -118,6 +119,24 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
+		# Minify the Attero Javascript \
+		python $(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/minify2.py \
+			--type="js" \
+			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Attero/atteroApp.min.js" \
+			--folder-exclusions="\\test \\Vendor \\img \\css" \
+			--file-inclusions="*.js" \
+			--file-exclusions="-spec.js" \
+			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Attero" \
+			--jar-file="$(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/yuicompressor-2.4.7.jar" ; \
+		# Minify the ngUtils Javascript \
+		python $(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/minify2.py \
+			--type="js" \
+			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js" \
+			--folder-exclusions="\\test \\Vendor \\img \\css" \
+			--file-inclusions="*.js" \
+			--file-exclusions="-spec.js" \
+			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils" \
+			--jar-file="$(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/yuicompressor-2.4.7.jar" ; \
 		cd endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
 		cd $(BUILD_DIR) && \
