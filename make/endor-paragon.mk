@@ -27,7 +27,6 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 ENDOR_PARAGON_REPOSITORY=https://github.com/Calnex/Springbank
-ENDOR_PARAGON_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
 ENDOR_PARAGON_VERSION=1.0
 ENDOR_PARAGON_SOURCE=endor-paragon-$(ENDOR_PARAGON_VERSION).tar.gz
 ENDOR_PARAGON_DIR=endor-$(ENDOR_PARAGON_VERSION)
@@ -94,13 +93,11 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone $(ENDOR_PARAGON_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/Springbank --branch ${ENDOR_BRANCH_PARAM} && \
+		git clone $(ENDOR_PARAGON_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/Springbank --branch ${ENDOR_BRANCH_PARAM} --single-branch && \
 		cd endor && \
-		if [ ! -z "${ENDOR_TAG}" ] ; \
-			# Use a specific tag \
-			/usr/bin/git branch -d temp_build_branch && \
-			git checkout -b temp_build_branch ${ENDOR_TAG} \
-		fi; \
+		if [ ! -z "${ENDOR_COMMIT_ID}" ] ; \
+			then /usr/bin/git checkout ${ENDOR_COMMIT_ID} ; \
+		fi ; \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
 		git submodule update --init --remote --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/CAT && \
@@ -118,16 +115,6 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
-		# Checkout Endor Documentation \
-		cd $(BUILD_DIR) && \
-		git clone $(ENDOR_PARAGON_DOCUMENTATION_REPOSITORY) EndorDocumentation --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/EndorDocumentation --branch ${ENDOR_BRANCH_PARAM} && \
-		if [ ! -z "${ENDOR_TAG}" ] ; \
-			# Use a specific tag \
-			cd EndorDocumentation && \
-			/usr/bin/git branch -d temp_build_branch && \
-			git checkout -b temp_build_branch ${ENDOR_TAG} && \
-			cd .. \
-		fi; \
 		# Minify the Paragon Javascript \
 		python $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/minify2.py \
 			--type="js" \
