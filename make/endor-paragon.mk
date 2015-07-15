@@ -27,6 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 ENDOR_PARAGON_REPOSITORY=https://github.com/Calnex/Springbank
+ENDOR_PARAGON_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
 ENDOR_PARAGON_VERSION=1.0
 ENDOR_PARAGON_SOURCE=endor-paragon-$(ENDOR_PARAGON_VERSION).tar.gz
 ENDOR_PARAGON_DIR=endor-$(ENDOR_PARAGON_VERSION)
@@ -93,11 +94,16 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone $(ENDOR_PARAGON_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/Springbank --branch ${ENDOR_BRANCH_PARAM} --single-branch && \
+		git clone $(ENDOR_PARAGON_REPOSITORY) endor $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/Springbank --branch ${ENDOR_BRANCH_PARAM} && \
 		cd endor && \
 		if [ ! -z "${ENDOR_COMMIT_ID}" ] ; \
 			then /usr/bin/git checkout ${ENDOR_COMMIT_ID} ; \
 		fi ; \
+		if [ ! -z "${TAG_NAME}" ] ; \
+			then \
+			    echo "Checking out TAG: ${TAG_NAME} "  ;  \
+			    /usr/bin/git checkout -b br_${TAG_NAME} ${TAG_NAME} ; \
+		fi; \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
 		git submodule update --init --remote --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/CAT && \
@@ -115,6 +121,17 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
+		# \
+		# Check out EndorDocumentation \
+		# \
+		cd $(BUILD_DIR)/endor/Server/Software ; \
+		/usr/bin/git clone $(ENDOR_PARAGON_DOCUMENTATION_REPOSITORY) EndorDocumentation --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/EndorDocumentation ; \
+		if [ ! -z "${TAG_NAME}" ] ; \
+			then \
+			cd $(BUILD_DIR)/endor/Server/Software/EndorDocumentation ; \
+			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
+			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
+		fi; \
 		# Minify the Paragon Javascript \
 		python $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/minify2.py \
 			--type="js" \
@@ -133,9 +150,19 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 			--file-exclusions="-spec.js" \
 			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils" \
 			--jar-file="$(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/yuicompressor-2.4.7.jar" ; \
-		cd endor/Server/Software && \
+		cd $(BUILD_DIR)/endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cz -f $@ --exclude=.git* * && \
-		cd $(BUILD_DIR) && \
+		# Cleanup any branches we created \
+		if [ ! -z "${TAG_NAME}" ] ; \
+			then \
+			cd $(BUILD_DIR)/endor/Server/Software/EndorDocumentation ; \
+			/usr/bin/git checkout master ; \
+			/usr/bin/git branch -d br_doc_${TAG_NAME} ; \
+			cd $(BUILD_DIR)/endor ; \
+			/usr/bin/git checkout master ; \
+			/usr/bin/git branch -d br_${TAG_NAME} ; \
+		fi; \
+		cd $(BUILD_DIR) ;\
 		rm -rf endor ;\
 	)
 
@@ -308,11 +335,9 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/Documents
 	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt                 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
 
-	cd $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithParagon && \
-	/usr/bin/git checkout ${ENDOR_BRANCH_PARAM} && \
+	cd $(ENDOR_PARAGON_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithParagon && \
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/ && \
-	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/ && \
-	/usr/bin/git checkout master
+	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
 	
 	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
 	# Build any such files into a tarball that can later be purged.
