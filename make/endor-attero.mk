@@ -27,6 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 ENDOR_ATTERO_REPOSITORY=https://github.com/Calnex/Springbank
+ENDOR_ATTERO_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
 ENDOR_ATTERO_VERSION=1.0
 ENDOR_ATTERO_SOURCE=endor-$(ENDOR_ATTERO_VERSION).tar.gz
 ENDOR_ATTERO_DIR=endor-$(ENDOR_ATTERO_VERSION)
@@ -71,7 +72,7 @@ ENDOR_ATTERO_LDFLAGS=
 # You should not change any of these variables.
 #
 ENDOR_ATTERO_GIT_TAG?=HEAD
-ENDOR_ATTERO_GIT_OPTIONS?=--depth 1
+ENDOR_ATTERO_GIT_OPTIONS?=
 ENDOR_ATTERO_TREEISH=$(ENDOR_ATTERO_GIT_TAG)
 ENDOR_ATTERO_BUILD_DIR=$(BUILD_DIR)/endor
 ENDOR_ATTERO_SOURCE_DIR=$(SOURCE_DIR)/endor
@@ -93,11 +94,16 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
 		rm -rf endor && \
-		git clone $(ENDOR_ATTERO_REPOSITORY) endor --depth=1 $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/Springbank && \
+		git clone $(ENDOR_ATTERO_REPOSITORY) endor $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/Springbank && \
 		cd endor && \
 		if [ ! -z "${ENDOR_COMMIT_ID}" ] ; \
 			then /usr/bin/git checkout ${ENDOR_COMMIT_ID} ; \
 		fi ; \
+		if [ ! -z "${TAG_NAME}" ] ; \
+			then \
+			    echo "Checking out TAG: ${TAG_NAME} "  ;  \
+			    /usr/bin/git checkout -b br_${TAG_NAME} ${TAG_NAME} ; \
+		fi; \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
 		git submodule update --init --remote --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/CAT && \
@@ -119,6 +125,17 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
+		# \
+		# Check out EndorDocumentation \
+		# \
+		cd $(BUILD_DIR)/endor/Server/Software ; \
+		/usr/bin/git clone $(ENDOR_ATTERO_DOCUMENTATION_REPOSITORY) EndorDocumentation --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/EndorDocumentation ; \
+		if [ ! -z "${TAG_NAME}" ] ; \
+			then \
+			cd $(BUILD_DIR)/endor/Server/Software/EndorDocumentation ; \
+			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
+			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
+		fi; \
 		# Minify the Attero Javascript \
 		python $(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/minify2.py \
 			--type="js" \
@@ -137,9 +154,19 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			--file-exclusions="-spec.js" \
 			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils" \
 			--jar-file="$(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/yuicompressor-2.4.7.jar" ; \
-		cd endor/Server/Software && \
+		cd $(BUILD_DIR)/endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
-		cd $(BUILD_DIR) && \
+		# Cleanup any branches we created \
+		if [ ! -z "${TAG_NAME}" ] ; \
+			then \
+			cd $(BUILD_DIR)/endor/Server/Software/EndorDocumentation ; \
+			/usr/bin/git checkout master ; \
+			/usr/bin/git branch -d br_doc_${TAG_NAME} ; \
+			cd $(BUILD_DIR)/endor ; \
+			/usr/bin/git checkout master ; \
+			/usr/bin/git branch -d br_${TAG_NAME} ; \
+		fi; \
+		cd $(BUILD_DIR) ;\
 		rm -rf endor ;\
 	)
 
