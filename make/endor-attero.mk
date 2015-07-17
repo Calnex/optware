@@ -127,6 +127,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			--file-inclusions="*.js" \
 			--file-exclusions="-spec.js" \
 			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Attero" \
+			--java-interpreter="/usr/bin/java" \
 			--jar-file="$(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/yuicompressor-2.4.7.jar" ; \
 		# Minify the ngUtils Javascript \
 		python3 $(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/minify2.py \
@@ -136,6 +137,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			--file-inclusions="*.js" \
 			--file-exclusions="-spec.js" \
 			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils" \
+			--java-interpreter="/usr/bin/java" \
 			--jar-file="$(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/yuicompressor-2.4.7.jar" ; \
 		cd endor/Server/Software && \
 		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
