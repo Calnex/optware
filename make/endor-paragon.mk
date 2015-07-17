@@ -133,7 +133,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
 		# Minify the Paragon Javascript \
-		python $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/minify2.py \
+		python3 $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/minify2.py \
 			--type="js" \
 			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon/paragonApp.min.js" \
 			--folder-exclusions="\\test \\Vendor \\img \\css" \
@@ -142,7 +142,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon" \
 			--jar-file="$(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/yuicompressor-2.4.7.jar" ; \
 		# Minify the ngUtils Javascript \
-		python $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/minify2.py \
+		python3 $(ENDOR_PARAGON_BUILD_UTILITIES_DIR)/minify2.py \
 			--type="js" \
 			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js" \
 			--folder-exclusions="\\test \\Vendor \\img \\css" \

@@ -120,7 +120,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
 		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
 		# Minify the Attero Javascript \
-		python $(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/minify2.py \
+		python3 $(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/minify2.py \
 			--type="js" \
 			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Attero/atteroApp.min.js" \
 			--folder-exclusions="\\test \\Vendor \\img \\css" \
@@ -129,7 +129,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Attero" \
 			--jar-file="$(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/yuicompressor-2.4.7.jar" ; \
 		# Minify the ngUtils Javascript \
-		python $(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/minify2.py \
+		python3 $(ENDOR_ATTERO_BUILD_UTILITIES_DIR)/minify2.py \
 			--type="js" \
 			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js" \
 			--folder-exclusions="\\test \\Vendor \\img \\css" \
