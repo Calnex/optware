@@ -191,7 +191,7 @@ def combineAndCheckCompression(files, jarFile, fileType):
             stdin=PIPE,
             stdout=PIPE)
             
-        compressedFile = proc.communicate(input=thisFile)[0]
+        compressedFile = proc.communicate(input=bytes(thisFile, "utf8"))[0]
 
         if proc.returncode != 0:
             raise ValueError("Error processing " + filename)
@@ -211,7 +211,7 @@ def createMinifiedFile(uncompressedFile, jarFile, fileType):
         stdin=PIPE,
         stdout=PIPE)
             
-    compressedFile = proc.communicate(input=uncompressedFile)[0]
+    compressedFile = proc.communicate(input=bytes(uncompressedFile, "utf8"))[0]
 
     if proc.returncode != 0:
         raise ValueError("Error processing complete file")
@@ -224,8 +224,9 @@ def createMinifiedFile(uncompressedFile, jarFile, fileType):
 # =========================================================================
 
 def createOutputFile(compressedFile, filename):
+    compressedFileAsString = compressedFile.decode(encoding='UTF-8')
     with open(filename, "w") as f:
-        f.write(compressedFile)
+        f.write(compressedFileAsString)
 
 # =========================================================================
 
