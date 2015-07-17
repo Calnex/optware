@@ -13,7 +13,7 @@ yuiFileExclusions=None
 yuiFolder=None
 yuiFolderSource=None
 yuiVersion=None
-
+yuiJavaInterpreter=None
 
 def getArguments(argv):
     
@@ -26,9 +26,21 @@ def getArguments(argv):
     global yuiFolderSource
     global yuiFolderDest
     global yuiJarFile
+    global yuiJavaInterpreter
     
     try:
-        opts,args = getopt.getopt(argv, "hi:o:", ["type=", "output=", "folder-exclusions=", "file-inclusions=", "file-exclusions=", "scratch-folder=", "file-list=", "folder-source=", "folder-dest=", "jar-file="])
+        opts,args = getopt.getopt(argv, "hi:o:", [ 
+            "type=", 
+            "output=", 
+            "folder-exclusions=", 
+            "file-inclusions=", 
+            "file-exclusions=", 
+            "scratch-folder=", 
+            "file-list=", 
+            "folder-source=", 
+            "folder-dest=", 
+            "jar-file=",
+            "java-interpreter="  ])
     except getopt.GetoptError as e:
         print("Error in argument list {}".format(e))
         sys.exit(2)
@@ -50,6 +62,8 @@ def getArguments(argv):
             yuiFolderSource = arg
         elif opt == "--jar-file":
             yuiJarFile = arg
+        elif opt == "--java-interpreter":
+            yuiJavaInterpreter = arg
 
 # =========================================================================
 
@@ -160,7 +174,7 @@ def buildFileList(folderList, includedFiles, excludedFiles):
 
 # =========================================================================
 
-def combineAndCheckCompression(files, jarFile, fileType):
+def combineAndCheckCompression(files, jarFile, fileType, javaInterpreter):
     print ("Combine And Check Compression")
     
     # This step creates a single, uncompressed file.  
@@ -171,7 +185,7 @@ def combineAndCheckCompression(files, jarFile, fileType):
     # - appends the original, uncompressed file to the output file.
     # and then it works out the overall compression ratio
     
-    # This will store our uncomporessed file - let's hope we don't 
+    # This will store our uncompressed file - let's hope we don't 
     # have multi-gigabyte javascript (for many reasons!)
     uncompressedFile = ""
     totalCompressedSize = 0
@@ -181,17 +195,19 @@ def combineAndCheckCompression(files, jarFile, fileType):
         print("    Adding {}".format(filename))
 
         # Read the file and append it to our "single uncompressed file"
-        with open(filename, "r") as f:
-            thisFile = f.read()
-            uncompressedFile = uncompressedFile + thisFile
-
+        with open(filename, 'r+b') as f:
+            thisFileWithSig = f.read()
+            thisFileWithoutSig = thisFileWithSig.decode("utf-8-sig")
+            uncompressedFile = uncompressedFile + thisFileWithoutSig
+        
         proc = Popen(
-            ['java -jar ' + jarFile + ' --type ' + fileType ],
-            shell=True,
+            [javaInterpreter, '-jar', jarFile, '--type', fileType ],
+            shell=False,
             stdin=PIPE,
             stdout=PIPE)
             
-        compressedFile = proc.communicate(input=bytes(thisFile, "utf8"))[0]
+        compressedFile = proc.communicate(input=bytes(thisFileWithoutSig, "utf-8"))[0]
+        proc.wait()
 
         if proc.returncode != 0:
             raise ValueError("Error processing " + filename)
@@ -202,16 +218,16 @@ def combineAndCheckCompression(files, jarFile, fileType):
     
 # =========================================================================
 
-def createMinifiedFile(uncompressedFile, jarFile, fileType):
+def createMinifiedFile(uncompressedFile, jarFile, fileType, javaInterpreter):
     print ("Create Minified File")
 
     proc = Popen(
-        ['java -jar ' + jarFile + ' --type ' + fileType ],
-        shell=True,
+        [javaInterpreter, '-jar', jarFile, '--type', fileType ],
+        shell=False,
         stdin=PIPE,
         stdout=PIPE)
             
-    compressedFile = proc.communicate(input=bytes(uncompressedFile, "utf8"))[0]
+    compressedFile = proc.communicate(input=bytes(uncompressedFile, "utf-8"))[0]
 
     if proc.returncode != 0:
         raise ValueError("Error processing complete file")
@@ -240,8 +256,8 @@ def main(argv):
     folders = buildDirectoryList(yuiFolderSource, yuiFolderExclusions)
     files   = buildFileList(folders, yuiFileInclusions, yuiFileExclusions)
     
-    uncompressedFile = combineAndCheckCompression(files, yuiJarFile, yuiType)
-    compressedScript = createMinifiedFile(uncompressedFile, yuiJarFile, yuiType)
+    uncompressedFile = combineAndCheckCompression(files, yuiJarFile, yuiType, yuiJavaInterpreter)
+    compressedScript = createMinifiedFile(uncompressedFile, yuiJarFile, yuiType, yuiJavaInterpreter)
 
     createOutputFile(compressedScript, yuiOutput)
     
