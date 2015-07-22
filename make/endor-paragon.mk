@@ -309,8 +309,8 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
-	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/phantomJs
-	install -m 500 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Calnex.CAT.ChartRenderer/phantomJs/phantomjs                            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/phantomJs/phantomjs
+	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs
+	install -m 500 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Calnex.CAT.ChartRenderer/phantomJs/phantomjs                            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
 
 	
 	# CAT's Mask_XML files
