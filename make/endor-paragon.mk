@@ -272,7 +272,7 @@ $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control:
 # Daemon startup scripts should be installed in $(ENDOR_IPK_DIR)/opt/etc/init.d/S??endor
 #
 # You may need to patch your application to make it use these locations.
-#
+# 
 $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	rm -rf $(ENDOR_PARAGON_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_PARAGON_BUILD_DIR) DESTDIR=$(ENDOR_PARAGON_IPK_DIR) install-strip
@@ -309,6 +309,8 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
+	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/phantomJs
+	install -m 500 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Calnex.CAT.ChartRenderer/phantomJs/phantomjs                            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/phantomJs/phantomjs
 
 	
 	# CAT's Mask_XML files
