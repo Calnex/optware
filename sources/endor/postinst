@@ -3,6 +3,17 @@
 cd /opt/lib/endor
 tar -xzf long-filepaths.tar.gz
 
+#
+# This block sets up the machine as a real machine,
+# that speaks to a physical embedded.
+#
+if [ -e /opt/bin/calnex.endor.instrument.controller ]; then
+    rm /opt/bin/calnex.endor.instrument.controller
+fi
+
+ln -s  /opt/bin/calnex.endor.instrument.controller.physicalinstrument /opt/bin/calnex.endor.instrument.controller 
+
+
 /opt/lib/ipkg/info/postgresql.postinst
 echo "waiting for DB daemon to start"
 sleep 3
@@ -12,4 +23,3 @@ python3 /opt/lib/endor/schema/Baseline/RebuildDb.py --superuser calnex --path /o
 # /opt/etc/init.d/S97endor-instrumentcontroller start
 # /opt/etc/init.d/S98cat-remotingserver start
 # /opt/etc/init.d/S99endor-webapp start
-

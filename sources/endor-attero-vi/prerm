@@ -1,0 +1,19 @@
+#! /bin/sh
+
+#
+# postinst for the endor-paragon-vi project.
+# 
+# We are removing the VI, so we are going to force the
+# instrument controller to connect to the physical instrument.
+# We do this by creating a softlink to point 
+# /opt/bin/calnex.endor.instrument.controller to
+# /opt/bin/calnex.endor.instrument.controller.physicalinstrument
+#
+
+cd /opt/bin
+
+if [ -e /opt/bin/calnex.endor.instrument.controller ]; then
+    rm /opt/bin/calnex.endor.instrument.controller
+fi
+
+ln -s /opt/bin/calnex.endor.instrument.controller.physicalinstrument /opt/bin/calnex.endor.instrument.controller
