@@ -285,8 +285,9 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.translatorclui        $(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/curiosity                          $(ENDOR_PARAGON_IPK_DIR)/opt/bin/curiosity
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-redirect                       $(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-redirect
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrument.controller.virtual      $(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.virtualinstrument
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrument.controller.physical     $(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.physicalinstrument
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-wait-for-database         $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-virtualinstrument.paragon $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-instrumentcontroller      $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.cat-remotingserver              $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp                    $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
