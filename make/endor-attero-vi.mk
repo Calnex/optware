@@ -38,7 +38,7 @@ ENDOR_ATTERO_VI_SECTION=base
 ENDOR_ATTERO_VI_PRIORITY=optional
 ENDOR_ATTERO_VI_DEPENDS=endor-attero-ipk
 ENDOR_ATTERO_VI_SUGGESTS=
-ENDOR_ATTERO_VI_CONFLICTS=endor-attero-vi-ipk
+ENDOR_ATTERO_VI_CONFLICTS=endor-paragon-vi-ipk
 
 #
 # ENDOR_IPK_VERSION should be incremented when the ipk changes.
