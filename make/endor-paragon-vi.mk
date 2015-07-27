@@ -143,7 +143,7 @@ endor-paragon-vi-stage: $(ENDOR_BUILD_DIR)/.staged
 $(ENDOR_PARAGON_VI_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	@echo "Package: endor" >>$@
+	@echo "Package: endor-vi" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_PARAGON_VI_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_PARAGON_VI_SECTION)" >>$@

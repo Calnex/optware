@@ -143,7 +143,7 @@ endor-attero-vi-stage: $(ENDOR_BUILD_DIR)/.staged
 $(ENDOR_ATTERO_VI_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	@echo "Package: endor" >>$@
+	@echo "Package: endor-vi" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_ATTERO_VI_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_ATTERO_VI_SECTION)" >>$@
