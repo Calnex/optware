@@ -36,9 +36,10 @@ ENDOR_ATTERO_VI_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_ATTERO_VI_DESCRIPTION=Describe endor here.
 ENDOR_ATTERO_VI_SECTION=base
 ENDOR_ATTERO_VI_PRIORITY=optional
-ENDOR_ATTERO_VI_DEPENDS=endor-attero-ipk
+ENDOR_ATTERO_VI_DEPENDS=endor
+ENDOR_ATTERO_VI_PACKAGE=endor-vi
 ENDOR_ATTERO_VI_SUGGESTS=
-ENDOR_ATTERO_VI_CONFLICTS=endor-paragon-vi-ipk
+ENDOR_ATTERO_VI_CONFLICTS=
 
 #
 # ENDOR_IPK_VERSION should be incremented when the ipk changes.
@@ -143,7 +144,7 @@ endor-attero-vi-stage: $(ENDOR_BUILD_DIR)/.staged
 $(ENDOR_ATTERO_VI_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	@echo "Package: endor-vi" >>$@
+	@echo "Package: $(ENDOR_ATTERO_VI_PACKAGE)" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_ATTERO_VI_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_ATTERO_VI_SECTION)" >>$@
