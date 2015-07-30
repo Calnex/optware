@@ -122,7 +122,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--distribution				jessie				\
 		--memtest				memtest86+			\
 		--checksums				sha1				\
-		--debian-installer			netboot				\
+		--debian-installer			live				\
 		--debian-installer-preseedfile		debconf				\
 		--win32-loader				false				\
 		--loadlin				false				\
