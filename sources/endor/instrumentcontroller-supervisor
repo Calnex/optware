@@ -8,8 +8,37 @@
 
 #exec 1>$syslog_pipe 2>&1
 
-exitStatus=1
+embeddedAddress=10.10.10.10
+readlink /opt/bin/calnex.endor.instrument.controller | grep virtual > /dev/null
+if [ $? -eq 0 ]
+then
+	embeddedAddress=127.0.0.1
+fi
 
+countdown=130
+embeddedReady=1
+until [ $embeddedReady -eq 0 -o $countdown -eq 0 ]
+do
+	countdown=$(($countdown-1))
+	netcat -z -w 1 $embeddedAddress 1575 1>/dev/null 2>&1
+	embeddedReady=$?
+	sleep 1
+done
+
+if [ $countdown -eq 0 ]
+then
+	# inserted from ip_fallback
+	/sbin/ifconfig | grep eth0 > /dev/null
+	if [ $? -ne 0 ]
+	then
+		dhclient &
+	fi
+
+	psql -d endor -c "INSERT INTO ic_error (time_stamp, error_class, handled, msg) VALUES (now(), 'Fatal', 'f', 'Could not connect to Embedded controller');"
+	exit
+fi
+
+exitStatus=1
 while [ $exitStatus -ne 0 ]
 do
 	/opt/bin/calnex.endor.instrument.controller -r 1 1>/dev/null 2>&1

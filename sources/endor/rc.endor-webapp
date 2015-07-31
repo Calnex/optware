@@ -20,14 +20,12 @@ fi
 case "$rc" in
     start)
         echo -n "Starting Endor Webapp: "
-		sleep 3 # Sleep to be sure that the instrument controller has updated the database
-	            # with hardware probe type information
-			
-		cd /opt/lib/endor && /opt/bin/xsp4 --address 127.0.0.1 --port 8000 --nonstop 1>/dev/null 2>&1 & #1>$syslog_pipe 2>&1 &
+	/opt/bin/calnex.endor.webapp &
         echo ok
         ;;
     stop)
         echo -n "Stopping Endor Webapp: "
+	pkill 9 -f '/bin/sh /opt/bin/calnex.endor.webapp'
         pkill -f '/opt/bin/mono /opt/lib/mono/4.5/xsp4.exe'
         echo ok
         ;;

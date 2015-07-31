@@ -1,6 +1,6 @@
 #! /bin/bash
 
-sleep 30
+sleep 300
 
 ifconfig | grep eth0 > /dev/null
 if [[ $? != 0 ]]
