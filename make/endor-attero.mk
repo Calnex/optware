@@ -290,8 +290,8 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.translatorclui       $(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/curiosity                         $(ENDOR_ATTERO_IPK_DIR)/opt/bin/curiosity
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-redirect                      $(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-redirect
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.virtual     $(ENDOR_ATTERO_IPK_DIR)/opt/bin/instrument.controller.virtualinstrument
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.physical    $(ENDOR_ATTERO_IPK_DIR)/opt/bin/instrument.controller.physicalinstrument
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.virtual     $(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.virtualinstrument
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.physical    $(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.physicalinstrument
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-wait-for-database        $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-instrumentcontroller     $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.cat-remotingserver             $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
