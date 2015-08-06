@@ -107,9 +107,9 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 	# Configs for the installer
 	cp -ar $(DEBIAN-INSTALLER_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware
-#	cd $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware ; \
-#		wget -r --no-parent --no-host-directories --cut-dirs=2 --reject "index.html*" \
-#		http://packages.calnexsol.com/optware/$(TARGET_DISTRO)/ | true; # Don't error out.
+	cd $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware ; \
+		wget -r --no-parent --no-host-directories --cut-dirs=2 --reject "index.html*" \
+		http://packages.calnexsol.com/optware/$(TARGET_DISTRO)/ | true; # Don't error out.
 	if test "$(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR) $(@D) ; \
 	fi
