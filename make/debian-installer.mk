@@ -74,6 +74,9 @@ DEBIAN-INSTALLER_SRC_DIR=$(SOURCE_DIR)/debian-installer
 DEBIAN-INSTALLER_IPK_DIR=$(BUILD_DIR)/debian-installer-$(DEBIAN-INSTALLER_VERSION)-ipk
 DEBIAN-INSTALLER_IPK=$(BUILD_DIR)/DEBIAN-INSTALLER_$(DEBIAN-INSTALLER_VERSION)-$(DEBIAN-INSTALLER_IPK_VERSION)_$(TARGET_ARCH).ipk
 
+# Make sure product is always declared
+PRODUCT?=Paragon
+
 .PHONY: debian-installer-source debian-installer-unpack debian-installer debian-installer-stage debian-installer-ipk debian-installer-clean debian-installer-dirclean debian-installer-check
 
 #
