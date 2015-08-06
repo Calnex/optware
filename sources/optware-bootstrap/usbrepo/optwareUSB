@@ -13,10 +13,10 @@ fi
 
 case "$rc" in
     add)
-        REPO=`find /media -type f -name Packages.gz | sed 's/Packages.gz/\*/g'`
+        REPO=`find /media -type f -name Packages -exec grep -l "\bendor\b" {} \; | sed 's/Packages//g' | sed s'/^\///'`
 	if [ "$REPO" != "" ]
 	then
-	        su calnex -c "echo $REPO	> /opt/etc/ipkg/cross-feed.conf"
+	        su calnex -c "echo 'src/gz local file://'$REPO	> /opt/etc/ipkg/cross-feed.conf"
 	fi
         ;;
     remove)
