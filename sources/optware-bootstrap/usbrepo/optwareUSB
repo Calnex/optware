@@ -14,7 +14,7 @@ fi
 case "$rc" in
     add)
         REPO=`find /media -type f -name Packages.gz | sed 's/Packages.gz/\*/g'`
-	if [ $REPO -ne "" ]
+	if [ "$REPO" != "" ]
 	then
 	        su calnex -c "echo $REPO	> /opt/etc/ipkg/cross-feed.conf"
 	fi
