@@ -14,7 +14,7 @@ PGUSER=calnex
 PGLOG="$PGDATA/serverlog"
 
 # PID file location
-PGPID="$PGDATA/serverlog/postmaster.pid"
+PGPID="$PGDATA/postmaster.pid"
 
 # What to use to shut down the postmaster
 PGCTL="$prefix/bin/pg_ctl"
