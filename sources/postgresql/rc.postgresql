@@ -23,6 +23,7 @@ PGCTL="$prefix/bin/pg_ctl"
 # as it adds no value and can cause the postmaster to misrecognize a stale
 # lock file)
 DAEMON="$prefix/bin/postmaster"
+DAEMON_SUPERVISOR="$prefix/bin/postmaster-supervisor"
 
 #########
 if [ -z "$1" ] ; then
@@ -40,19 +41,19 @@ case "$rc" in
 	echo -n "Starting PostgreSQL: "
 	if [ -e $PGPID ]
 	then
-		if ps ax | grep -v grep | grep -q $DAEMON
+		if ps ax | grep -v grep | grep -q $DAEMON_SUPERVISOR
 		then
 			echo "PostgreSQL is already running"
 		else
 			rm -f $PGPID
-			$DAEMON -D $PGDATA >>$PGLOG 2>&1 &
+			$DAEMON_SUPERVISOR -D $PGDATA >>$PGLOG 2>&1 &
 			echo ok
 		fi
 	else
-		$DAEMON -D $PGDATA >>$PGLOG 2>&1 &
+		$DAEMON_SUPERVISOR -D $PGDATA >>$PGLOG 2>&1 &
 		echo ok
 	fi
-        ;;
+	;;
     stop)
 	echo -n "Stopping PostgreSQL: "
 	$PGCTL stop -D $PGDATA -s -m fast
