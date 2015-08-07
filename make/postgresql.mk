@@ -205,6 +205,7 @@ $(POSTGRESQL_IPK): $(POSTGRESQL_BUILD_DIR)/.built
 #	install -d $(POSTGRESQL_IPK_DIR)/opt/etc/
 #	install -m 644 $(POSTGRESQL_SOURCE_DIR)/postgresql.conf $(POSTGRESQL_IPK_DIR)/opt/etc/postgresql.conf
 	install -d $(POSTGRESQL_IPK_DIR)/opt/etc/init.d
+	install -m 755 $(POSTGRESQL_SOURCE_DIR)/postmaster-supervisor $(POSTGRESQL_IPK_DIR)/opt/bin/postmaster-supervisor
 	install -m 755 $(POSTGRESQL_SOURCE_DIR)/rc.postgresql $(POSTGRESQL_IPK_DIR)/opt/etc/init.d/S95postgresql
 	sed \
 	    -e '/^#max_connections = /{s|^#||;s|= [0-9]*|= 8|}' \
