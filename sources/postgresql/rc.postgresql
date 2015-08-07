@@ -38,18 +38,20 @@ fi
 case "$rc" in
     start)
 	echo -n "Starting PostgreSQL: "
-	        if [ -e $PGPID ]
-        then
-                if ps ax | grep -v grep | grep -q $DAEMON
-                then
-                        echo "PostgreSQL is already running"
-                        exit
-                else
-                        rm -f $PGPID
-                fi
-        fi
-	$DAEMON -D $PGDATA >>$PGLOG 2>&1 &
-	echo ok
+	if [ -e $PGPID ]
+	then
+		if ps ax | grep -v grep | grep -q $DAEMON
+		then
+			echo "PostgreSQL is already running"
+		else
+			rm -f $PGPID
+			$DAEMON -D $PGDATA >>$PGLOG 2>&1 &
+			echo ok
+		fi
+	else
+		$DAEMON -D $PGDATA >>$PGLOG 2>&1 &
+		echo ok
+	fi
         ;;
     stop)
 	echo -n "Stopping PostgreSQL: "
