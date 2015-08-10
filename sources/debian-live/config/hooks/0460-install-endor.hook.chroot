@@ -5,11 +5,15 @@ set -e
 
 # Install the endor system software
 export PATH=/opt/bin:/opt/sbin:$PATH
+
+# postgres uses ps whch needs /proc mounted
+mount -t proc proc /proc
 su calnex -c '/opt/bin/ipkg update'
 su calnex -c '/opt/bin/ipkg install endor-vi'
 
 # We need to cleanup and unmount here.
 rm -f /etc/init.d/S00SystemConfiguration
+umount proc
 
 for i in /opt/etc/init.d/S??* ;do
         # Ignore dangling symlinks (if any).
