@@ -57,7 +57,7 @@ case "$rc" in
 	;;
     stop)
 	echo -n "Stopping PostgreSQL: "
-    pkill -9 $DAEMON_SUPERVISOR
+        pkill -9 -f $DAEMON_SUPERVISOR
 	$PGCTL stop -D $PGDATA -s -m fast
 	echo ok
         ;;
