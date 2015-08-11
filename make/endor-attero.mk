@@ -1,20 +1,20 @@
 ###########################################################
 #
-# endor
+# endor-attero
 #
 ###########################################################
 
-# You must replace "endor" and "ENDOR" with the lower case name and
+# You must replace "endor-attero" and "ENDOR_ATTERO" with the lower case name and
 # upper case name of your new package.  Some places below will say
 # "Do not change this" - that does not include this global change,
 # which must always be done to ensure we have unique names.
 
 #
-# ENDOR_VERSION, ENDOR_SITE and ENDOR_SOURCE define
+# ENDOR_ATTERO_VERSION, ENDOR_ATTERO_SITE and ENDOR_ATTERO_SOURCE define
 # the upstream location of the source code for the package.
-# ENDOR_DIR is the directory which is created when the source
+# ENDOR_ATTERO_DIR is the directory which is created when the source
 # archive is unpacked.
-# ENDOR_UNZIP is the command used to unzip the source.
+# ENDOR_ATTERO_UNZIP is the command used to unzip the source.
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
 # You should change all these variables to suit your package.
@@ -26,34 +26,39 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+BUILD_VERSION_NUMBER?=0.1.0.0
+BUILD_NUMBER?=devel
+ENDOR_ATTERO_BRANCH_PARAM?=master
+
+
 ENDOR_ATTERO_REPOSITORY=https://github.com/Calnex/Springbank
 ENDOR_ATTERO_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
-ENDOR_ATTERO_VERSION=1.0
-ENDOR_ATTERO_SOURCE=endor-$(ENDOR_ATTERO_VERSION).tar.gz
-ENDOR_ATTERO_DIR=endor-$(ENDOR_ATTERO_VERSION)
+ENDOR_ATTERO_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
+ENDOR_ATTERO_SOURCE=endor-attero-$(ENDOR_ATTERO_VERSION).tar.gz
+ENDOR_ATTERO_DIR=endor-attero
 ENDOR_ATTERO_UNZIP=zcat
 ENDOR_ATTERO_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
-ENDOR_ATTERO_DESCRIPTION=Describe endor here.
+ENDOR_ATTERO_DESCRIPTION=Describe endor-attero here.
 ENDOR_ATTERO_SECTION=base
 ENDOR_ATTERO_PRIORITY=optional
 ENDOR_ATTERO_DEPENDS=postgresql, mono, xsp
 ENDOR_ATTERO_SUGGESTS=
-ENDOR_ATTERO_CONFLICTS=
+ENDOR_ATTERO_CONFLICTS=endor-attero
 
 #
-# ENDOR_IPK_VERSION should be incremented when the ipk changes.
+# ENDOR_ATTERO_IPK_VERSION should be incremented when the ipk changes.
 #
-ENDOR_ATTERO_IPK_VERSION=attero
+ENDOR_ATTERO_IPK_VERSION=$(BUILD_NUMBER)
 
 #
-# ENDOR_CONFFILES should be a list of user-editable files
-#ENDOR_CONFFILES=/opt/etc/endor.conf /opt/etc/init.d/SXXendor
+# ENDOR_ATTERO_CONFFILES should be a list of user-editable files
+#ENDOR_ATTERO_CONFFILES=/opt/etc/endor-attero.conf /opt/etc/init.d/SXXendor-attero
 
 #
-# ENDOR_PATCHES should list any patches, in the the order in
+# ENDOR_ATTERO_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-#ENDOR_PATCHES=$(ENDOR_SOURCE_DIR)/configure.patch
+#ENDOR_ATTERO_PATCHES=$(ENDOR_ATTERO_SOURCE_DIR)/configure.patch
 
 #
 # If the compilation of the package requires additional
@@ -63,28 +68,36 @@ ENDOR_ATTERO_CPPFLAGS=
 ENDOR_ATTERO_LDFLAGS=
 
 #
-# ENDOR_BUILD_DIR is the directory in which the build is done.
-# ENDOR_SOURCE_DIR is the directory which holds all the
+# ENDOR_ATTERO_BUILD_DIR is the directory in which the build is done.
+# ENDOR_ATTERO_SOURCE_DIR is the directory which holds all the
 # patches and ipkg control files.
-# ENDOR_IPK_DIR is the directory in which the ipk is built.
-# ENDOR_IPK is the name of the resulting ipk files.
+# ENDOR_ATTERO_IPK_DIR is the directory in which the ipk is built.
+# ENDOR_ATTERO_IPK is the name of the resulting ipk files.
 #
 # You should not change any of these variables.
 #
+ifdef ENDOR_ATTERO_GIT_REFERENCE_ROOT
+ENDOR_ATTERO_SPRINGBANK_GIT_REFERENCE=--reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/Springbank
+ENDOR_ATTERO_CAT_GIT_REFERENCE=--reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/CAT
+ENDOR_ATTERO_DATASTORAGE_GIT_REFERENCE=--reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/DataStorage
+ENDOR_ATTERO_DOCUMENTATION_GIT_REFERENCE=--reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/EndorDocumentation
+endif
 ENDOR_ATTERO_GIT_TAG?=HEAD
 ENDOR_ATTERO_GIT_OPTIONS?=
 ENDOR_ATTERO_TREEISH=$(ENDOR_ATTERO_GIT_TAG)
-ENDOR_ATTERO_BUILD_DIR=$(BUILD_DIR)/endor
+ENDOR_ATTERO_BUILD_DIR=$(BUILD_DIR)/endor-attero
+
+## Source dir is common for now
 ENDOR_ATTERO_SOURCE_DIR=$(SOURCE_DIR)/endor
-ENDOR_ATTERO_IPK_DIR=$(BUILD_DIR)/endor-attero-$(ENDOR_ATTERO_VERSION)-ipk
-ENDOR_ATTERO_IPK=$(BUILD_DIR)/endor_$(ENDOR_ATTERO_VERSION)-$(ENDOR_ATTERO_IPK_VERSION)_$(TARGET_ARCH).ipk
+ENDOR_ATTERO_IPK_DIR=$(BUILD_DIR)/endor-attero-ipk
+ENDOR_ATTERO_IPK=$(BUILD_DIR)/endor-attero_$(ENDOR_ATTERO_VERSION)-$(ENDOR_ATTERO_IPK_VERSION)_$(TARGET_ARCH).ipk
 ENDOR_ATTERO_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 
 ENDOR_ATTERO_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 
-ENDOR_ATTERO_GIT_REFERENCE_ROOT?=$(ENDOR_COMMON_SOURCE_REPOSITORY)
+ENDOR_ATTERO_GIT_REFERENCE_ROOT?=$(ENDOR_ATTERO_COMMON_SOURCE_REPOSITORY)
 
-.PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
+.PHONY: endor-attero-source endor-attero-unpack endor-attero endor-attero-stage endor-attero-ipk endor-attero-clean endor-attero-dirclean endor-attero-check
 
 #
 # This is the dependency on the source code.  If the source is missing,
@@ -93,11 +106,11 @@ ENDOR_ATTERO_GIT_REFERENCE_ROOT?=$(ENDOR_COMMON_SOURCE_REPOSITORY)
 $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
-		rm -rf endor && \
-		git clone $(ENDOR_ATTERO_REPOSITORY) endor $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/Springbank && \
-		cd endor && \
-		if [ ! -z "${ENDOR_COMMIT_ID}" ] ; \
-			then /usr/bin/git checkout ${ENDOR_COMMIT_ID} ; \
+		rm -rf endor-attero && \
+		git clone $(ENDOR_ATTERO_REPOSITORY) endor-attero $(ENDOR_ATTERO_GIT_OPTIONS) $(ENDOR_ATTERO_SPRINGBANK_GIT_REFERENCE) --branch ${ENDOR_ATTERO_BRANCH_PARAM} && \
+		cd endor-attero && \
+		if [ ! -z "${ENDOR_ATTERO_COMMIT_ID}" ] ; \
+			then /usr/bin/git checkout ${ENDOR_ATTERO_COMMIT_ID} ; \
 		fi ; \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
@@ -106,9 +119,9 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		fi; \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
-		git submodule update --init --remote --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/CAT && \
+		git submodule update --init --remote $(ENDOR_ATTERO_CAT_GIT_REFERENCE) && \
 		cd Calnex.Endor.DataStorage && \
-		git submodule update --init --remote --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/DataStorage && \
+		git submodule update --init --remote $(ENDOR_ATTERO_DATASTORAGE_GIT_REFERENCE) && \
 		cd .. && \
 		if [ ! -z "${CAT_TAG}" ] ; \
 			then \
@@ -116,60 +129,56 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 				/usr/bin/git checkout -b br_${CAT_TAG} ${CAT_TAG} && \
 				/usr/bin/git submodule update --recursive;           \
 		fi; \
-		/usr/bin/git log --pretty=format:'%h' -n 1 && \
 		cd $(BUILD_DIR) && \
-		if [ -e "${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT}" ] ; \
-			then /bin/sh ${NIGHTLY_BUILD_VERSION_UPDATE_SCRIPT} $(BUILD_DIR)/endor ; \
-		fi ; \
-		echo "using System.Reflection;" > endor/Server/Software/Endor/BuildInformation/Version.cs ; \
-		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
-		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
-		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
+		echo "using System.Reflection;" > endor-attero/Server/Software/Endor/BuildInformation/Version.cs ; \
+		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-attero/Server/Software/Endor/BuildInformation/Version.cs ; \
+		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-attero/Server/Software/Endor/BuildInformation/Version.cs ; \
+		git show-ref --heads > endor-attero/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
 		# \
 		# Check out EndorDocumentation \
 		# \
-		cd $(BUILD_DIR)/endor/Server/Software ; \
-		/usr/bin/git clone $(ENDOR_ATTERO_DOCUMENTATION_REPOSITORY) EndorDocumentation --reference $(ENDOR_ATTERO_GIT_REFERENCE_ROOT)/EndorDocumentation ; \
+		cd $(BUILD_DIR)/endor-attero/Server/Software ; \
+		/usr/bin/git clone $(ENDOR_ATTERO_DOCUMENTATION_REPOSITORY) EndorDocumentation $(ENDOR_ATTERO_DOCUMENTATION_GIT_REFERENCE) ; \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
-			cd $(BUILD_DIR)/endor/Server/Software/EndorDocumentation ; \
+			cd $(BUILD_DIR)/endor-attero/Server/Software/EndorDocumentation ; \
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		# Minify the Attero Javascript \
-		python3 $(BUILD_DIR)/endor/Server/Software/Endor/BuildUtilities/minify2.py \
+		# Minify the Paragon Javascript \
+		python3 $(BUILD_DIR)/endor-attero/Server/Software/Endor/BuildUtilities/minify2.py \
 			--type="js" \
-			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Attero/atteroApp.min.js" \
+			--output="${BUILD_DIR}/endor-attero/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon/atteroApp.min.js" \
 			--folder-exclusions="\\test \\Vendor \\img \\css" \
 			--file-inclusions="*.js" \
 			--file-exclusions="-spec.js" \
-			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Attero" \
+			--folder-source="${BUILD_DIR}/endor-attero/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon" \
 			--java-interpreter="/usr/bin/java" \
-			--jar-file="$(BUILD_DIR)/endor/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
+			--jar-file="$(BUILD_DIR)/endor-attero/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
 		# Minify the ngUtils Javascript \
-		python3 $(BUILD_DIR)/endor/Server/Software/Endor/BuildUtilities/minify2.py \
+		python3 $(BUILD_DIR)/endor-attero/Server/Software/Endor/BuildUtilities/minify2.py \
 			--type="js" \
-			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js" \
+			--output="${BUILD_DIR}/endor-attero/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js" \
 			--folder-exclusions="\\test \\Vendor \\img \\css" \
 			--file-inclusions="*.js" \
 			--file-exclusions="-spec.js" \
-			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils" \
+			--folder-source="${BUILD_DIR}/endor-attero/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils" \
 			--java-interpreter="/usr/bin/java" \
-			--jar-file="$(BUILD_DIR)/endor/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
-		cd $(BUILD_DIR)/endor/Server/Software && \
-		tar --transform  's,^,endor-1.0/,S' -cvz -f $@ --exclude=.git* * && \
+			--jar-file="$(BUILD_DIR)/endor-attero/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
+		cd $(BUILD_DIR)/endor-attero/Server/Software && \
+		tar --transform  "s,^,endor-attero/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
-			cd $(BUILD_DIR)/endor/Server/Software/EndorDocumentation ; \
+			cd $(BUILD_DIR)/endor-attero/Server/Software/EndorDocumentation ; \
 			/usr/bin/git checkout master ; \
 			/usr/bin/git branch -d br_doc_${TAG_NAME} ; \
-			cd $(BUILD_DIR)/endor ; \
+			cd $(BUILD_DIR)/endor-attero ; \
 			/usr/bin/git checkout master ; \
 			/usr/bin/git branch -d br_${TAG_NAME} ; \
 		fi; \
 		cd $(BUILD_DIR) ;\
-		rm -rf endor ;\
+		rm -rf endor-attero ;\
 	)
 
 
@@ -178,7 +187,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 # This target will be called by the top level Makefile to download the
 # source code's archive (.tar.gz, .bz2, etc.)
 #
-endor-attero-source: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $(ENDOR_PATCHES) 
+endor-attero-source: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $(ENDOR_ATTERO_PATCHES) 
 
 #
 # This target unpacks the source code in the build directory.
@@ -198,7 +207,7 @@ endor-attero-source: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $(ENDOR_PATCHES)
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
-$(ENDOR_ATTERO_BUILD_DIR)/.configured-attero: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $(ENDOR_ATTERO_PATCHES)  make/endor-attero.mk
+$(ENDOR_ATTERO_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $(ENDOR_ATTERO_PATCHES)  make/endor-attero.mk
 	rm -rf $(BUILD_DIR)/$(ENDOR_ATTERO_DIR) $(@D)
 	$(ENDOR_ATTERO_UNZIP) $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_ATTERO_PATCHES)" ; \
@@ -209,9 +218,9 @@ $(ENDOR_ATTERO_BUILD_DIR)/.configured-attero: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $
 		then mv $(BUILD_DIR)/$(ENDOR_ATTERO_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-		mdtool generate-makefiles EndorAttero.sln -d:release && \
+		mdtool generate-makefiles EndorParagon.sln -d:release && \
 		sed -i -e 's/PROGRAMFILES = \\/PROGRAMFILES = \\\n\t$$(ASSEMBLY) \\/g' `find $(ENDOR_ATTERO_BUILD_DIR) -name Makefile.am` && \
-		sed -i -e 's/EndorAttero/Endor/g' autogen.sh configure.ac && \
+		sed -i -e 's/EndorParagon/Endor/g' autogen.sh configure.ac && \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(ENDOR_ATTERO_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(ENDOR_ATTERO_LDFLAGS)" \
@@ -224,27 +233,32 @@ $(ENDOR_ATTERO_BUILD_DIR)/.configured-attero: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $
 #	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
-endor-attero-unpack: $(ENDOR_ATTERO_BUILD_DIR)/.configured-attero
+endor-attero-unpack: $(ENDOR_ATTERO_BUILD_DIR)/.configured
 
 #
 # This builds the actual binary.
 #
-$(ENDOR_ATTERO_BUILD_DIR)/.built-attero: $(ENDOR_ATTERO_BUILD_DIR)/.configured-attero 
+$(ENDOR_ATTERO_BUILD_DIR)/.built: $(ENDOR_ATTERO_BUILD_DIR)/.configured
 	rm -f $@
 	$(MAKE) -C $(@D)
 	touch $@
 
 
+#
+# You should change the dependency to refer directly to the main binary
+# which is built.
+#
+endor-attero: $(ENDOR_ATTERO_BUILD_DIR)/.built
 
 #
 # If you are building a library, then you need to stage it too.
 #
-$(ENDOR_ATTERO_BUILD_DIR)/.staged-attero: $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
+$(ENDOR_ATTERO_BUILD_DIR)/.staged-attero: $(ENDOR_ATTERO_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
-endor-attero-stage: $(ENDOR_BUILD_DIR)/.staged
+endor-attero-stage: $(ENDOR_ATTERO_BUILD_DIR)/.staged
 
 #
 # This rule creates a control file for ipkg.  It is no longer
@@ -253,7 +267,7 @@ endor-attero-stage: $(ENDOR_BUILD_DIR)/.staged
 $(ENDOR_ATTERO_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	@echo "Package: endor" >>$@
+	@echo "Package: endor-attero" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_ATTERO_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_ATTERO_SECTION)" >>$@
@@ -268,36 +282,36 @@ $(ENDOR_ATTERO_IPK_DIR)/CONTROL/control:
 #
 # This builds the IPK file.
 #
-# Binaries should be installed into $(ENDOR_IPK_DIR)/opt/sbin or $(ENDOR_IPK_DIR)/opt/bin
+# Binaries should be installed into $(ENDOR_ATTERO_IPK_DIR)/opt/sbin or $(ENDOR_ATTERO_IPK_DIR)/opt/bin
 # (use the location in a well-known Linux distro as a guide for choosing sbin or bin).
-# Libraries and include files should be installed into $(ENDOR_IPK_DIR)/opt/{lib,include}
-# Configuration files should be installed in $(ENDOR_IPK_DIR)/opt/etc/endor/...
-# Documentation files should be installed in $(ENDOR_IPK_DIR)/opt/doc/endor/...
-# Daemon startup scripts should be installed in $(ENDOR_IPK_DIR)/opt/etc/init.d/S??endor
+# Libraries and include files should be installed into $(ENDOR_ATTERO_IPK_DIR)/opt/{lib,include}
+# Configuration files should be installed in $(ENDOR_ATTERO_IPK_DIR)/opt/etc/endor-attero/...
+# Documentation files should be installed in $(ENDOR_ATTERO_IPK_DIR)/opt/doc/endor-attero/...
+# Daemon startup scripts should be installed in $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S??endor-attero
 #
 # You may need to patch your application to make it use these locations.
-#
-$(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
-	rm -rf $(ENDOR_ATTERO_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
+# 
+$(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
+	rm -rf $(ENDOR_ATTERO_IPK_DIR) $(BUILD_DIR)/endor-attero_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_ATTERO_BUILD_DIR) DESTDIR=$(ENDOR_ATTERO_IPK_DIR) install-strip
 	
 	# Configuration files
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrumentcontroller-supervisor   $(ENDOR_ATTERO_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-supervisor                    $(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-supervisor
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.webapp               $(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.webapp
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.translatorclui       $(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/curiosity                         $(ENDOR_ATTERO_IPK_DIR)/opt/bin/curiosity
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-redirect                      $(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-redirect
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.virtual     $(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.virtualinstrument
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.physical    $(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.physicalinstrument
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-wait-for-database        $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-instrumentcontroller     $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.cat-remotingserver             $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-webapp                   $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-webapp
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-translatorclui           $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-translator
-	install -m 755 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/WebApp.dll             $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrumentcontroller-supervisor		$(ENDOR_ATTERO_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-supervisor				$(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-supervisor
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.webapp				$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.webapp
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.translatorclui			$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/curiosity					$(ENDOR_ATTERO_IPK_DIR)/opt/bin/curiosity
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-redirect					$(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-redirect
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.virtual		$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.virtualinstrument
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.physical		$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.physicalinstrument
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-wait-for-database			$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-instrumentcontroller		$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.cat-remotingserver			$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-webapp				$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-webapp
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-translatorclui			$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-translator
+	install -m 755 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/WebApp.dll			$(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
 	
 	# Shell scripts
 	#
@@ -316,45 +330,42 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built-attero
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT/
 
+	
 	# CAT's Mask_XML files
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML
 	install -m 755 -t $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*
-
+	
 	# Various other required files
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/share/endor
 	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_ATTERO_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
 	cp -r $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema
-	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb_Attero.py $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
-	$(MAKE) $(ENDOR_ATTERO_IPK_DIR)/CONTROL/control
+	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb_Paragon.py $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
+		$(MAKE) $(ENDOR_ATTERO_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/postinst $(ENDOR_ATTERO_IPK_DIR)/CONTROL/postinst
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/prerm $(ENDOR_ATTERO_IPK_DIR)/CONTROL/prerm
 	echo $(ENDOR_ATTERO_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_ATTERO_IPK_DIR)/CONTROL/conffiles
+
+	# Some tidy-ups
+	#
+	rm -rf $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/phantomJs/phantomjs.exe
 	
 	# Help documentation
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
-	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
+	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt                 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
 
-	cd $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation/DocumentationShippedWithAttero && \
+	cd $(ENDOR_ATTERO_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithParagon && \
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/ && \
 	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/
-
-	# Some tidy-ups
-	#
-	rm -rf $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/phantomJs
-	rm -rf $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/phantomJs/phantomjs.exe
-	
 	
 	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
 	# Build any such files into a tarball that can later be purged.
 	#
 	cd $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor && \
-	tar --remove-files -cvzf long-filepaths.tar.gz \
+	tar --remove-files -czf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
-	#cd $(ENDOR_CAT_BUILD_DIR)/Release && \
-	#tar --remove-files -cvzf $(ENDOR_IPK_DIR)/opt/lib/endor/cat.tar.gz `find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	
 	# Now go and build the package
 	#
