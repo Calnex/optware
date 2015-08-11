@@ -41,7 +41,8 @@ case "$rc" in
 	echo -n "Starting PostgreSQL: "
 	if [ -e $PGPID ]
 	then
-		if ps ax | grep -v grep | grep -q $DAEMON_SUPERVISOR
+		ps ax
+		if ps ax | grep -v grep | grep $DAEMON_SUPERVISOR
 		then
 			echo "PostgreSQL is already running"
 		else
@@ -56,6 +57,7 @@ case "$rc" in
 	;;
     stop)
 	echo -n "Stopping PostgreSQL: "
+        pkill -9 -f $DAEMON_SUPERVISOR
 	$PGCTL stop -D $PGDATA -s -m fast
 	echo ok
         ;;
