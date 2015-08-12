@@ -1,0 +1,14 @@
+#! /bin/bash
+
+exitStatus=1
+while :
+do
+	if ps ax | grep -v grep | grep -q '/opt/bin/postmaster '
+	then
+		sleep 5
+	else
+		echo "starting postmaster"
+		/opt/bin/postmaster $@
+		sleep 5
+	fi
+done

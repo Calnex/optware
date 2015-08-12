@@ -13,6 +13,9 @@ PGUSER=calnex
 # Where to keep a log file
 PGLOG="$PGDATA/serverlog"
 
+# PID file location
+PGPID="$PGDATA/postmaster.pid"
+
 # What to use to shut down the postmaster
 PGCTL="$prefix/bin/pg_ctl"
 
@@ -20,6 +23,7 @@ PGCTL="$prefix/bin/pg_ctl"
 # as it adds no value and can cause the postmaster to misrecognize a stale
 # lock file)
 DAEMON="$prefix/bin/postmaster"
+DAEMON_SUPERVISOR="$prefix/bin/postmaster-supervisor"
 
 #########
 if [ -z "$1" ] ; then
@@ -35,11 +39,25 @@ fi
 case "$rc" in
     start)
 	echo -n "Starting PostgreSQL: "
-	$DAEMON -D $PGDATA >>$PGLOG 2>&1 &
-	echo ok
-        ;;
+	if [ -e $PGPID ]
+	then
+		ps ax
+		if ps ax | grep -v grep | grep $DAEMON_SUPERVISOR
+		then
+			echo "PostgreSQL is already running"
+		else
+			rm -f $PGPID
+			$DAEMON_SUPERVISOR -D $PGDATA >>$PGLOG 2>&1 &
+			echo ok
+		fi
+	else
+		$DAEMON_SUPERVISOR -D $PGDATA >>$PGLOG 2>&1 &
+		echo ok
+	fi
+	;;
     stop)
 	echo -n "Stopping PostgreSQL: "
+        pkill -9 -f $DAEMON_SUPERVISOR
 	$PGCTL stop -D $PGDATA -s -m fast
 	echo ok
         ;;

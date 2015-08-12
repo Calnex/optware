@@ -5,6 +5,7 @@ set -e
 
 # Install the endor system software
 export PATH=/opt/bin:/opt/sbin:$PATH
+
 su calnex -c '/opt/bin/ipkg update'
 su calnex -c '/opt/bin/ipkg install endor-vi'
 

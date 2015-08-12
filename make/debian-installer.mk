@@ -74,6 +74,9 @@ DEBIAN-INSTALLER_SRC_DIR=$(SOURCE_DIR)/debian-installer
 DEBIAN-INSTALLER_IPK_DIR=$(BUILD_DIR)/debian-installer-$(DEBIAN-INSTALLER_VERSION)-ipk
 DEBIAN-INSTALLER_IPK=$(BUILD_DIR)/DEBIAN-INSTALLER_$(DEBIAN-INSTALLER_VERSION)-$(DEBIAN-INSTALLER_IPK_VERSION)_$(TARGET_ARCH).ipk
 
+# Make sure product is always declared
+PRODUCT?=Paragon
+
 .PHONY: debian-installer-source debian-installer-unpack debian-installer debian-installer-stage debian-installer-ipk debian-installer-clean debian-installer-dirclean debian-installer-check
 
 #
@@ -107,9 +110,9 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 	# Configs for the installer
 	cp -ar $(DEBIAN-INSTALLER_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware
-#	cd $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware ; \
-#		wget -r --no-parent --no-host-directories --cut-dirs=2 --reject "index.html*" \
-#		http://packages.calnexsol.com/optware/$(TARGET_DISTRO)/ | true; # Don't error out.
+	cd $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware ; \
+		wget -r --no-parent --no-host-directories --cut-dirs=3 --reject "index.html*" \
+		http://packages.calnexsol.com/optware/$(TARGET_DISTRO)/$(PRODUCT)/ | true; # Don't error out.
 	if test "$(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR) $(@D) ; \
 	fi

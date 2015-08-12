@@ -13,9 +13,18 @@ fi
 
 case "$rc" in
     start)
-	    echo -n "Waiting for database to be available... "
-		sleep 5
-        echo ok
+	echo -n "Waiting for database to be available... "
+	while :
+	do
+		psql -U calnex -t  -c "select now()" postgres > /dev/null 2>&1
+		if [ "$?" -eq "0" ]
+		then
+			echo "ok"
+			exit
+		else
+			sleep 1
+		fi
+	done
         ;;
     stop)
         ;;

@@ -1,20 +1,20 @@
 ###########################################################
 #
-# endor
+# endor-paragon
 #
 ###########################################################
 
-# You must replace "endor" and "ENDOR" with the lower case name and
+# You must replace "endor-paragon" and "ENDOR_PARAGON" with the lower case name and
 # upper case name of your new package.  Some places below will say
 # "Do not change this" - that does not include this global change,
 # which must always be done to ensure we have unique names.
 
 #
-# ENDOR_VERSION, ENDOR_SITE and ENDOR_SOURCE define
+# ENDOR_PARAGON_VERSION, ENDOR_PARAGON_SITE and ENDOR_PARAGON_SOURCE define
 # the upstream location of the source code for the package.
-# ENDOR_DIR is the directory which is created when the source
+# ENDOR_PARAGON_DIR is the directory which is created when the source
 # archive is unpacked.
-# ENDOR_UNZIP is the command used to unzip the source.
+# ENDOR_PARAGON_UNZIP is the command used to unzip the source.
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
 # You should change all these variables to suit your package.
@@ -26,34 +26,39 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+BUILD_VERSION_NUMBER?=0.1.0.0
+BUILD_NUMBER?=devel
+ENDOR_PARAGON_BRANCH_PARAM?=master
+
+
 ENDOR_PARAGON_REPOSITORY=https://github.com/Calnex/Springbank
 ENDOR_PARAGON_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
-ENDOR_PARAGON_VERSION=1.0
+ENDOR_PARAGON_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
 ENDOR_PARAGON_SOURCE=endor-paragon-$(ENDOR_PARAGON_VERSION).tar.gz
-ENDOR_PARAGON_DIR=endor-$(ENDOR_PARAGON_VERSION)
+ENDOR_PARAGON_DIR=endor-paragon
 ENDOR_PARAGON_UNZIP=zcat
 ENDOR_PARAGON_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
-ENDOR_PARAGON_DESCRIPTION=Describe endor here.
+ENDOR_PARAGON_DESCRIPTION=Describe endor-paragon here.
 ENDOR_PARAGON_SECTION=base
 ENDOR_PARAGON_PRIORITY=optional
 ENDOR_PARAGON_DEPENDS=postgresql, mono, xsp
 ENDOR_PARAGON_SUGGESTS=
-ENDOR_PARAGON_CONFLICTS=
+ENDOR_PARAGON_CONFLICTS=endor-attero
 
 #
-# ENDOR_IPK_VERSION should be incremented when the ipk changes.
+# ENDOR_PARAGON_IPK_VERSION should be incremented when the ipk changes.
 #
-ENDOR_PARAGON_IPK_VERSION=paragon
+ENDOR_PARAGON_IPK_VERSION=$(BUILD_NUMBER)
 
 #
-# ENDOR_CONFFILES should be a list of user-editable files
-#ENDOR_CONFFILES=/opt/etc/endor.conf /opt/etc/init.d/SXXendor
+# ENDOR_PARAGON_CONFFILES should be a list of user-editable files
+#ENDOR_PARAGON_CONFFILES=/opt/etc/endor-paragon.conf /opt/etc/init.d/SXXendor-paragon
 
 #
-# ENDOR_PATCHES should list any patches, in the the order in
+# ENDOR_PARAGON_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-#ENDOR_PATCHES=$(ENDOR_SOURCE_DIR)/configure.patch
+#ENDOR_PARAGON_PATCHES=$(ENDOR_PARAGON_SOURCE_DIR)/configure.patch
 
 #
 # If the compilation of the package requires additional
@@ -63,28 +68,34 @@ ENDOR_PARAGON_CPPFLAGS=
 ENDOR_PARAGON_LDFLAGS=
 
 #
-# ENDOR_BUILD_DIR is the directory in which the build is done.
-# ENDOR_SOURCE_DIR is the directory which holds all the
+# ENDOR_PARAGON_BUILD_DIR is the directory in which the build is done.
+# ENDOR_PARAGON_SOURCE_DIR is the directory which holds all the
 # patches and ipkg control files.
-# ENDOR_IPK_DIR is the directory in which the ipk is built.
-# ENDOR_IPK is the name of the resulting ipk files.
+# ENDOR_PARAGON_IPK_DIR is the directory in which the ipk is built.
+# ENDOR_PARAGON_IPK is the name of the resulting ipk files.
 #
 # You should not change any of these variables.
 #
+ifdef ENDOR_COMMON_SOURCE_REPOSITORY
+ENDOR_PARAGON_SPRINGBANK_GIT_REFERENCE=--reference $(ENDOR_COMMON_SOURCE_REPOSITORY)/Springbank
+ENDOR_PARAGON_CAT_GIT_REFERENCE=--reference $(ENDOR_COMMON_SOURCE_REPOSITORY)/CAT
+ENDOR_PARAGON_DATASTORAGE_GIT_REFERENCE=--reference $(ENDOR_COMMON_SOURCE_REPOSITORY)/DataStorage
+ENDOR_PARAGON_DOCUMENTATION_GIT_REFERENCE=--reference $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation
+endif
 ENDOR_PARAGON_GIT_TAG?=HEAD
 ENDOR_PARAGON_GIT_OPTIONS?=
 ENDOR_PARAGON_TREEISH=$(ENDOR_PARAGON_GIT_TAG)
-ENDOR_PARAGON_BUILD_DIR=$(BUILD_DIR)/endor
+ENDOR_PARAGON_BUILD_DIR=$(BUILD_DIR)/endor-paragon
+
+## Source dir is common for now
 ENDOR_PARAGON_SOURCE_DIR=$(SOURCE_DIR)/endor
-ENDOR_PARAGON_IPK_DIR=$(BUILD_DIR)/endor-$(ENDOR_PARAGON_VERSION)-ipk
-ENDOR_PARAGON_IPK=$(BUILD_DIR)/endor_$(ENDOR_PARAGON_VERSION)-$(ENDOR_PARAGON_IPK_VERSION)_$(TARGET_ARCH).ipk
+ENDOR_PARAGON_IPK_DIR=$(BUILD_DIR)/endor-paragon-ipk
+ENDOR_PARAGON_IPK=$(BUILD_DIR)/endor-paragon_$(ENDOR_PARAGON_VERSION)-$(ENDOR_PARAGON_IPK_VERSION)_$(TARGET_ARCH).ipk
 ENDOR_PARAGON_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 
 ENDOR_PARAGON_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 
-ENDOR_PARAGON_GIT_REFERENCE_ROOT?=$(ENDOR_COMMON_SOURCE_REPOSITORY)
-
-.PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
+.PHONY: endor-paragon-source endor-paragon-unpack endor-paragon endor-paragon-stage endor-paragon-ipk endor-paragon-clean endor-paragon-dirclean endor-paragon-check
 
 #
 # This is the dependency on the source code.  If the source is missing,
@@ -93,11 +104,11 @@ ENDOR_PARAGON_GIT_REFERENCE_ROOT?=$(ENDOR_COMMON_SOURCE_REPOSITORY)
 $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
-		rm -rf endor && \
-		git clone $(ENDOR_PARAGON_REPOSITORY) endor $(ENDOR_GIT_OPTIONS) --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/Springbank --branch ${ENDOR_BRANCH_PARAM} && \
-		cd endor && \
-		if [ ! -z "${ENDOR_COMMIT_ID}" ] ; \
-			then /usr/bin/git checkout ${ENDOR_COMMIT_ID} ; \
+		rm -rf endor-paragon && \
+		git clone $(ENDOR_PARAGON_REPOSITORY) endor-paragon $(ENDOR_PARAGON_GIT_OPTIONS) $(ENDOR_PARAGON_SPRINGBANK_GIT_REFERENCE) --branch ${ENDOR_PARAGON_BRANCH_PARAM} && \
+		cd endor-paragon && \
+		if [ ! -z "${ENDOR_PARAGON_COMMIT_ID}" ] ; \
+			then /usr/bin/git checkout ${ENDOR_PARAGON_COMMIT_ID} ; \
 		fi ; \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
@@ -106,9 +117,9 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		fi; \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
-		git submodule update --init --remote --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/CAT && \
+		git submodule update --init --remote $(ENDOR_PARAGON_CAT_GIT_REFERENCE) && \
 		cd Calnex.Endor.DataStorage && \
-		git submodule update --init --remote --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/DataStorage && \
+		git submodule update --init --remote $(ENDOR_PARAGON_DATASTORAGE_GIT_REFERENCE) && \
 		cd .. && \
 		if [ ! -z "${CAT_TAG}" ] ; \
 			then \
@@ -117,55 +128,55 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 				/usr/bin/git submodule update --recursive;           \
 		fi; \
 		cd $(BUILD_DIR) && \
-		echo "using System.Reflection;" > endor/Server/Software/Endor/BuildInformation/Version.cs ; \
-		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
-		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor/Server/Software/Endor/BuildInformation/Version.cs ; \
-		git show-ref --heads > endor/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
+		echo "using System.Reflection;" > endor-paragon/Server/Software/Endor/BuildInformation/Version.cs ; \
+		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-paragon/Server/Software/Endor/BuildInformation/Version.cs ; \
+		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-paragon/Server/Software/Endor/BuildInformation/Version.cs ; \
+		git show-ref --heads > endor-paragon/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
 		# \
 		# Check out EndorDocumentation \
 		# \
-		cd $(BUILD_DIR)/endor/Server/Software ; \
-		/usr/bin/git clone $(ENDOR_PARAGON_DOCUMENTATION_REPOSITORY) EndorDocumentation --reference $(ENDOR_PARAGON_GIT_REFERENCE_ROOT)/EndorDocumentation ; \
+		cd $(BUILD_DIR)/endor-paragon/Server/Software ; \
+		/usr/bin/git clone $(ENDOR_PARAGON_DOCUMENTATION_REPOSITORY) EndorDocumentation $(ENDOR_PARAGON_DOCUMENTATION_GIT_REFERENCE) ; \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
-			cd $(BUILD_DIR)/endor/Server/Software/EndorDocumentation ; \
+			cd $(BUILD_DIR)/endor-paragon/Server/Software/EndorDocumentation ; \
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
 		# Minify the Paragon Javascript \
-		python3 $(BUILD_DIR)/endor/Server/Software/Endor/BuildUtilities/minify2.py \
+		python3 $(BUILD_DIR)/endor-paragon/Server/Software/Endor/BuildUtilities/minify2.py \
 			--type="js" \
-			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon/paragonApp.min.js" \
+			--output="${BUILD_DIR}/endor-paragon/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon/paragonApp.min.js" \
 			--folder-exclusions="\\test \\Vendor \\img \\css" \
 			--file-inclusions="*.js" \
 			--file-exclusions="-spec.js" \
-			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon" \
+			--folder-source="${BUILD_DIR}/endor-paragon/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon" \
 			--java-interpreter="/usr/bin/java" \
-			--jar-file="$(BUILD_DIR)/endor/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
+			--jar-file="$(BUILD_DIR)/endor-paragon/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
 		# Minify the ngUtils Javascript \
-		python3 $(BUILD_DIR)/endor/Server/Software/Endor/BuildUtilities/minify2.py \
+		python3 $(BUILD_DIR)/endor-paragon/Server/Software/Endor/BuildUtilities/minify2.py \
 			--type="js" \
-			--output="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js" \
+			--output="${BUILD_DIR}/endor-paragon/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js" \
 			--folder-exclusions="\\test \\Vendor \\img \\css" \
 			--file-inclusions="*.js" \
 			--file-exclusions="-spec.js" \
-			--folder-source="${BUILD_DIR}/endor/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils" \
+			--folder-source="${BUILD_DIR}/endor-paragon/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils" \
 			--java-interpreter="/usr/bin/java" \
-			--jar-file="$(BUILD_DIR)/endor/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
-		cd $(BUILD_DIR)/endor/Server/Software && \
-		tar --transform  's,^,endor-1.0/,S' -cz -f $@ --exclude=.git* * && \
+			--jar-file="$(BUILD_DIR)/endor-paragon/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
+		cd $(BUILD_DIR)/endor-paragon/Server/Software && \
+		tar --transform  "s,^,endor-paragon/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
-			cd $(BUILD_DIR)/endor/Server/Software/EndorDocumentation ; \
+			cd $(BUILD_DIR)/endor-paragon/Server/Software/EndorDocumentation ; \
 			/usr/bin/git checkout master ; \
 			/usr/bin/git branch -d br_doc_${TAG_NAME} ; \
-			cd $(BUILD_DIR)/endor ; \
+			cd $(BUILD_DIR)/endor-paragon ; \
 			/usr/bin/git checkout master ; \
 			/usr/bin/git branch -d br_${TAG_NAME} ; \
 		fi; \
 		cd $(BUILD_DIR) ;\
-		rm -rf endor ;\
+		rm -rf endor-paragon ;\
 	)
 
 
@@ -174,7 +185,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 # This target will be called by the top level Makefile to download the
 # source code's archive (.tar.gz, .bz2, etc.)
 #
-endor-paragon-source: $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) $(ENDOR_PATCHES) 
+endor-paragon-source: $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) $(ENDOR_PARAGON_PATCHES) 
 
 #
 # This target unpacks the source code in the build directory.
@@ -194,7 +205,7 @@ endor-paragon-source: $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) $(ENDOR_PATCHES)
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
-$(ENDOR_PARAGON_BUILD_DIR)/.configured-paragon: $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) $(ENDOR_PARAGON_PATCHES)  make/endor-paragon.mk
+$(ENDOR_PARAGON_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) $(ENDOR_PARAGON_PATCHES)  make/endor-paragon.mk
 	rm -rf $(BUILD_DIR)/$(ENDOR_PARAGON_DIR) $(@D)
 	$(ENDOR_PARAGON_UNZIP) $(DL_DIR)/$(ENDOR_PARAGON_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_PARAGON_PATCHES)" ; \
@@ -220,27 +231,32 @@ $(ENDOR_PARAGON_BUILD_DIR)/.configured-paragon: $(DL_DIR)/$(ENDOR_PARAGON_SOURCE
 #	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
-endor-paragon-unpack: $(ENDOR_PARAGON_BUILD_DIR)/.configured-paragon
+endor-paragon-unpack: $(ENDOR_PARAGON_BUILD_DIR)/.configured
 
 #
 # This builds the actual binary.
 #
-$(ENDOR_PARAGON_BUILD_DIR)/.built-paragon: $(ENDOR_PARAGON_BUILD_DIR)/.configured-paragon 
+$(ENDOR_PARAGON_BUILD_DIR)/.built: $(ENDOR_PARAGON_BUILD_DIR)/.configured
 	rm -f $@
 	$(MAKE) -C $(@D)
 	touch $@
 
 
+#
+# You should change the dependency to refer directly to the main binary
+# which is built.
+#
+endor-paragon: $(ENDOR_PARAGON_BUILD_DIR)/.built
 
 #
 # If you are building a library, then you need to stage it too.
 #
-$(ENDOR_PARAGON_BUILD_DIR)/.staged-paragon: $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
+$(ENDOR_PARAGON_BUILD_DIR)/.staged-paragon: $(ENDOR_PARAGON_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
-endor-paragon-stage: $(ENDOR_BUILD_DIR)/.staged
+endor-paragon-stage: $(ENDOR_PARAGON_BUILD_DIR)/.staged
 
 #
 # This rule creates a control file for ipkg.  It is no longer
@@ -249,7 +265,7 @@ endor-paragon-stage: $(ENDOR_BUILD_DIR)/.staged
 $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	@echo "Package: endor" >>$@
+	@echo "Package: endor-paragon" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_PARAGON_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_PARAGON_SECTION)" >>$@
@@ -264,36 +280,36 @@ $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control:
 #
 # This builds the IPK file.
 #
-# Binaries should be installed into $(ENDOR_IPK_DIR)/opt/sbin or $(ENDOR_IPK_DIR)/opt/bin
+# Binaries should be installed into $(ENDOR_PARAGON_IPK_DIR)/opt/sbin or $(ENDOR_PARAGON_IPK_DIR)/opt/bin
 # (use the location in a well-known Linux distro as a guide for choosing sbin or bin).
-# Libraries and include files should be installed into $(ENDOR_IPK_DIR)/opt/{lib,include}
-# Configuration files should be installed in $(ENDOR_IPK_DIR)/opt/etc/endor/...
-# Documentation files should be installed in $(ENDOR_IPK_DIR)/opt/doc/endor/...
-# Daemon startup scripts should be installed in $(ENDOR_IPK_DIR)/opt/etc/init.d/S??endor
+# Libraries and include files should be installed into $(ENDOR_PARAGON_IPK_DIR)/opt/{lib,include}
+# Configuration files should be installed in $(ENDOR_PARAGON_IPK_DIR)/opt/etc/endor-paragon/...
+# Documentation files should be installed in $(ENDOR_PARAGON_IPK_DIR)/opt/doc/endor-paragon/...
+# Daemon startup scripts should be installed in $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S??endor-paragon
 #
 # You may need to patch your application to make it use these locations.
 # 
-$(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built-paragon
-	rm -rf $(ENDOR_PARAGON_IPK_DIR) $(BUILD_DIR)/endor_*_$(TARGET_ARCH).ipk
+$(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
+	rm -rf $(ENDOR_PARAGON_IPK_DIR) $(BUILD_DIR)/endor-paragon_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_PARAGON_BUILD_DIR) DESTDIR=$(ENDOR_PARAGON_IPK_DIR) install-strip
 	
 	# Configuration files
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrumentcontroller-supervisor    $(ENDOR_PARAGON_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-supervisor                     $(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-supervisor
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.webapp                $(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.webapp
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.translatorclui        $(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/curiosity                          $(ENDOR_PARAGON_IPK_DIR)/opt/bin/curiosity
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-redirect                       $(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-redirect
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrument.controller.virtual      $(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.virtualinstrument
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrument.controller.physical     $(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.physicalinstrument
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-wait-for-database         $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-instrumentcontroller      $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.cat-remotingserver              $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp                    $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-translatorclui            $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-translator
-	install -m 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/WebApp.dll              $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrumentcontroller-supervisor		$(ENDOR_PARAGON_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-supervisor				$(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-supervisor
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.webapp				$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.webapp
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.translatorclui			$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/curiosity					$(ENDOR_PARAGON_IPK_DIR)/opt/bin/curiosity
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-redirect					$(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-redirect
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrument.controller.virtual		$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.virtualinstrument
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrument.controller.physical		$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.physicalinstrument
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-wait-for-database			$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-instrumentcontroller		$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.cat-remotingserver			$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp				$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-translatorclui			$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-translator
+	install -m 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/WebApp.dll			$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
 	
 	# Shell scripts
 	#

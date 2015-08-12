@@ -41,7 +41,7 @@ fi
 exitStatus=1
 while [ $exitStatus -ne 0 ]
 do
-	/opt/bin/calnex.endor.instrument.controller -r 1 1>/dev/null 2>&1
+	mono /opt/lib/endor/Calnex.Endor.Instrument.Controller.exe -a ${embeddedAddress} -r 1 1>/dev/null 2>&1
 	exitStatus=$?
 	sleep 5
 done
