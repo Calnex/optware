@@ -28,7 +28,7 @@
 #
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
-ENDOR_PARAGON_BRANCH_PARAM?=master
+ENDOR_BRANCH_PARAM?=master
 
 
 ENDOR_PARAGON_REPOSITORY=https://github.com/Calnex/Springbank
@@ -105,7 +105,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
 		rm -rf endor-paragon && \
-		git clone $(ENDOR_PARAGON_REPOSITORY) endor-paragon $(ENDOR_PARAGON_GIT_OPTIONS) $(ENDOR_PARAGON_SPRINGBANK_GIT_REFERENCE) --branch ${ENDOR_PARAGON_BRANCH_PARAM} && \
+		git clone $(ENDOR_PARAGON_REPOSITORY) endor-paragon $(ENDOR_PARAGON_GIT_OPTIONS) $(ENDOR_PARAGON_SPRINGBANK_GIT_REFERENCE) --branch $(ENDOR_BRANCH_PARAM) && \
 		cd endor-paragon && \
 		if [ ! -z "${ENDOR_PARAGON_COMMIT_ID}" ] ; \
 			then /usr/bin/git checkout ${ENDOR_PARAGON_COMMIT_ID} ; \
@@ -136,7 +136,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		# Check out EndorDocumentation \
 		# \
 		cd $(BUILD_DIR)/endor-paragon/Server/Software ; \
-		/usr/bin/git clone $(ENDOR_PARAGON_DOCUMENTATION_REPOSITORY) EndorDocumentation $(ENDOR_PARAGON_DOCUMENTATION_GIT_REFERENCE) ; \
+		/usr/bin/git clone $(ENDOR_PARAGON_DOCUMENTATION_REPOSITORY) EndorDocumentation --branch $(ENDOR_BRANCH_PARAM)  $(ENDOR_PARAGON_DOCUMENTATION_GIT_REFERENCE) ; \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
 			cd $(BUILD_DIR)/endor-paragon/Server/Software/EndorDocumentation ; \

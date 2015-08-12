@@ -28,7 +28,7 @@
 #
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
-ENDOR_ATTERO_BRANCH_PARAM?=master
+ENDOR_BRANCH_PARAM?=master
 
 
 ENDOR_ATTERO_REPOSITORY=https://github.com/Calnex/Springbank
@@ -106,7 +106,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
 		rm -rf endor-attero && \
-		git clone $(ENDOR_ATTERO_REPOSITORY) endor-attero $(ENDOR_ATTERO_GIT_OPTIONS) $(ENDOR_ATTERO_SPRINGBANK_GIT_REFERENCE) --branch ${ENDOR_ATTERO_BRANCH_PARAM} && \
+		git clone $(ENDOR_ATTERO_REPOSITORY) endor-attero $(ENDOR_ATTERO_GIT_OPTIONS) $(ENDOR_ATTERO_SPRINGBANK_GIT_REFERENCE) --branch $(ENDOR_BRANCH_PARAM)  && \
 		cd endor-attero && \
 		if [ ! -z "${ENDOR_ATTERO_COMMIT_ID}" ] ; \
 			then /usr/bin/git checkout ${ENDOR_ATTERO_COMMIT_ID} ; \
@@ -137,7 +137,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		# Check out EndorDocumentation \
 		# \
 		cd $(BUILD_DIR)/endor-attero/Server/Software ; \
-		/usr/bin/git clone $(ENDOR_ATTERO_DOCUMENTATION_REPOSITORY) EndorDocumentation $(ENDOR_ATTERO_DOCUMENTATION_GIT_REFERENCE) ; \
+		/usr/bin/git clone $(ENDOR_ATTERO_DOCUMENTATION_REPOSITORY) EndorDocumentation --branch $(ENDOR_BRANCH_PARAM) $(ENDOR_ATTERO_DOCUMENTATION_GIT_REFERENCE) ; \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
 			cd $(BUILD_DIR)/endor-attero/Server/Software/EndorDocumentation ; \
