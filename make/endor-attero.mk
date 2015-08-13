@@ -43,7 +43,7 @@ ENDOR_ATTERO_SECTION=base
 ENDOR_ATTERO_PRIORITY=optional
 ENDOR_ATTERO_DEPENDS=postgresql, mono, xsp
 ENDOR_ATTERO_SUGGESTS=
-ENDOR_ATTERO_CONFLICTS=endor-attero
+ENDOR_ATTERO_CONFLICTS=endor-paragon
 
 #
 # ENDOR_ATTERO_IPK_VERSION should be incremented when the ipk changes.
