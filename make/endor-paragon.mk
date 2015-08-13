@@ -348,9 +348,10 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 
 	# Provide PhantomJS from the packages server
 	#
-	if [ -e $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs ]; then
-		rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs
+	if [ -e "$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs" ]; \
+		then rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs; \
 	fi
+	
 	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/
 	wget http://packages.calnexsol.com/build_dependencies/1.0/binary_dependencies/phantomjs    \
 			-O $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
@@ -364,6 +365,17 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	cd $(ENDOR_PARAGON_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithParagon && \
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/ && \
 	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
+	
+	# Embedded firmware
+	#
+	if [ ${ENDOR_PARAGON_FIRMWARE_VERSION} ]; then \
+		install -d $(ENDOR_PARAGON_IPK_DIR)/opt/srv/tftp; \
+		cd $(ENDOR_PARAGON_IPK_DIR)/opt/srv/tftp; \
+		wget http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz; \
+		wget http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz.md5; \
+		cat $(ENDOR_PARAGON_SOURCE_DIR)/postinst.firmware >> $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst; \
+		sed -i -e 's/__FIRMWARE_VERSION__/${ENDOR_PARAGON_FIRMWARE_VERSION}/g' $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst; \
+	fi
 	
 	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
 	# Build any such files into a tarball that can later be purged.
