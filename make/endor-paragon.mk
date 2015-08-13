@@ -320,7 +320,8 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_subnet_mask.sh     $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_subnet_mask.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/poweroff.sh            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/poweroff.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/reboot.sh              $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/reboot.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/update_software.sh                                        $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/update_instrument.sh
+	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/update_software.sh                                        $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/update_software.sh
+	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/update_software_worker.sh                                 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/update_software_worker.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/set_time.sh                                               $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_time.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/set_date.sh                                               $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_date.sh
 	
