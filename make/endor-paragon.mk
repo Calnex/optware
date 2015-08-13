@@ -348,9 +348,10 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 
 	# Provide PhantomJS from the packages server
 	#
-	if [ -e $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs ]; then
-		rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs
+	if [ -e "$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs" ]; \
+		then rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs; \
 	fi
+	
 	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/
 	wget http://packages.calnexsol.com/build_dependencies/1.0/binary_dependencies/phantomjs    \
 			-O $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
