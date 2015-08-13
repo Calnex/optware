@@ -366,6 +366,17 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/ && \
 	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
 	
+	# Embedded firmware
+	#
+	if [ ${ENDOR_PARAGON_FIRMWARE_VERSION} ]; then \
+		install -d $(ENDOR_PARAGON_IPK_DIR)/opt/srv/tftp; \
+		cd $(ENDOR_PARAGON_IPK_DIR)/opt/srv/tftp; \
+		wget http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz; \
+		wget http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz.md5; \
+		cat $(ENDOR_PARAGON_SOURCE_DIR)/postinst.firmware >> $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst; \
+		sed -i -e 's/__FIRMWARE_VERSION__/${ENDOR_PARAGON_FIRMWARE_VERSION}/g' $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst; \
+	fi
+	
 	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
 	# Build any such files into a tarball that can later be purged.
 	#
@@ -376,7 +387,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	# Now go and build the package
 	#
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_PARAGON_IPK_DIR)
-	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_PARAGON_IPK_DIR)
+	# $(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_PARAGON_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.
