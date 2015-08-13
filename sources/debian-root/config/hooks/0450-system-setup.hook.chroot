@@ -39,3 +39,4 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDuHjD98l4Sg3jnK50rexsEHq4fYDt2rge9a9
 chown calnex ~calnex/.ssh/authorized_keys
 chmod 600 ~calnex/.ssh/authorized_keys
 
+sed -i -e 's/\b\/srv\/tftp/\/opt\/srv\/tftp/g' /etc/inetd.conf
