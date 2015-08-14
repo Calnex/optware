@@ -369,8 +369,8 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	# Embedded firmware
 	#
 	if [ ${ENDOR_PARAGON_FIRMWARE_VERSION} ]; then \
-		install -d $(ENDOR_PARAGON_IPK_DIR)/opt/srv/tftp; \
-		cd $(ENDOR_PARAGON_IPK_DIR)/opt/srv/tftp; \
+		install -d $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
+		cd $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
 		wget http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz; \
 		wget http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz.md5; \
 		cat $(ENDOR_PARAGON_SOURCE_DIR)/postinst.firmware >> $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst; \
