@@ -151,6 +151,7 @@ endif
 	# Fixup distro
 	sed -i -e 's/__TARGET_DISTRO__/$(TARGET_DISTRO)/g' $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap/bootstrap.sh
 	sed -i -e 's/__TARGET_PRODUCT__/$(TARGET_PRODUCT)/g' $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap/bootstrap.sh
+	sed -i -e 's/__TARGET_PRODUCT__/$(TARGET_PRODUCT)/g' $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap/S00SystemConfiguration
 ifneq (OPTWARE-BOOTSTRAP_REAL_OPT_DIR,)
 	sed -i -e '/^[ 	]*REAL_OPT_DIR=.*/s|=.*|=$(OPTWARE-BOOTSTRAP_REAL_OPT_DIR)|' \
 	       -e 's/$${OPTWARE_TARGET}/$(OPTWARE_TARGET)/g' \
