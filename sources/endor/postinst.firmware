@@ -1,5 +1,10 @@
+
+# We look for eth1 to decide whether we are on a physical or a virtual machine
+# (eth1 will not exist with this MAC address on a VM, or indeed anywhere 
+# except our physical machine)
+#
 /sbin/ifconfig eth1 | grep -qi 80:86:CA:FE:BA:BE
-if [ $? ]
+if [ $? == "0" ]
 then
 	# Because we need the DB to be running.
 	/opt/etc/init.d/S95postgresql start
