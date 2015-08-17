@@ -4,7 +4,7 @@
 # except our physical machine)
 #
 /sbin/ifconfig eth1 | grep -qi 80:86:CA:FE:BA:BE
-if [ $? == "0" ]
+if [ "$?" -eq "0" ]
 then
 	# Because we need the DB to be running.
 	/opt/etc/init.d/S95postgresql start
