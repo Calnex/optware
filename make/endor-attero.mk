@@ -43,7 +43,7 @@ ENDOR_ATTERO_SECTION=base
 ENDOR_ATTERO_PRIORITY=optional
 ENDOR_ATTERO_DEPENDS=postgresql, mono, xsp
 ENDOR_ATTERO_SUGGESTS=
-ENDOR_ATTERO_CONFLICTS=endor-attero
+ENDOR_ATTERO_CONFLICTS=endor-paragon
 
 #
 # ENDOR_ATTERO_IPK_VERSION should be incremented when the ipk changes.
@@ -144,14 +144,14 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		# Minify the Paragon Javascript \
+		# Minify the Attero Javascript \
 		python3 $(BUILD_DIR)/endor-attero/Server/Software/Endor/BuildUtilities/minify2.py \
 			--type="js" \
-			--output="${BUILD_DIR}/endor-attero/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon/atteroApp.min.js" \
+			--output="${BUILD_DIR}/endor-attero/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Attero/atteroApp.min.js" \
 			--folder-exclusions="\\test \\Vendor \\img \\css" \
 			--file-inclusions="*.js" \
 			--file-exclusions="-spec.js" \
-			--folder-source="${BUILD_DIR}/endor-attero/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon" \
+			--folder-source="${BUILD_DIR}/endor-attero/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Attero" \
 			--java-interpreter="/usr/bin/java" \
 			--jar-file="$(BUILD_DIR)/endor-attero/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
 		# Minify the ngUtils Javascript \
@@ -340,7 +340,7 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/share/endor
 	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_ATTERO_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
 	cp -r $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema
-	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb_Paragon.py $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
+	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb_Attero.py $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
 		$(MAKE) $(ENDOR_ATTERO_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/postinst $(ENDOR_ATTERO_IPK_DIR)/CONTROL/postinst
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/prerm $(ENDOR_ATTERO_IPK_DIR)/CONTROL/prerm
@@ -355,7 +355,7 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
 	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt                 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
 
-	cd $(ENDOR_ATTERO_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithParagon && \
+	cd $(ENDOR_ATTERO_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithAttero && \
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/ && \
 	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/
 	
