@@ -28,7 +28,7 @@
 #
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
-ENDOR_PARAGON_BRANCH_PARAM?=master
+ENDOR_BRANCH_PARAM?=master
 
 
 ENDOR_PARAGON_REPOSITORY=https://github.com/Calnex/Springbank
@@ -105,7 +105,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
 		rm -rf endor-paragon && \
-		git clone $(ENDOR_PARAGON_REPOSITORY) endor-paragon $(ENDOR_PARAGON_GIT_OPTIONS) $(ENDOR_PARAGON_SPRINGBANK_GIT_REFERENCE) --branch ${ENDOR_PARAGON_BRANCH_PARAM} && \
+		git clone $(ENDOR_PARAGON_REPOSITORY) endor-paragon $(ENDOR_PARAGON_GIT_OPTIONS) $(ENDOR_PARAGON_SPRINGBANK_GIT_REFERENCE) --branch $(ENDOR_BRANCH_PARAM) && \
 		cd endor-paragon && \
 		if [ ! -z "${ENDOR_PARAGON_COMMIT_ID}" ] ; \
 			then /usr/bin/git checkout ${ENDOR_PARAGON_COMMIT_ID} ; \
@@ -136,7 +136,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		# Check out EndorDocumentation \
 		# \
 		cd $(BUILD_DIR)/endor-paragon/Server/Software ; \
-		/usr/bin/git clone $(ENDOR_PARAGON_DOCUMENTATION_REPOSITORY) EndorDocumentation $(ENDOR_PARAGON_DOCUMENTATION_GIT_REFERENCE) ; \
+		/usr/bin/git clone $(ENDOR_PARAGON_DOCUMENTATION_REPOSITORY) EndorDocumentation --branch $(ENDOR_BRANCH_PARAM)  $(ENDOR_PARAGON_DOCUMENTATION_GIT_REFERENCE) ; \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
 			cd $(BUILD_DIR)/endor-paragon/Server/Software/EndorDocumentation ; \
@@ -320,7 +320,8 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_subnet_mask.sh     $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_subnet_mask.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/poweroff.sh            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/poweroff.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/reboot.sh              $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/reboot.sh
-#	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/update_software.sh                                        $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/update_instrument.sh
+	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/update_software.sh                                        $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/update_software.sh
+	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/update_software_worker.sh                                 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/update_software_worker.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/set_time.sh                                               $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_time.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/set_date.sh                                               $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_date.sh
 	
@@ -329,7 +330,6 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
 
-	
 	# CAT's Mask_XML files
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML
@@ -346,9 +346,16 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/prerm $(ENDOR_PARAGON_IPK_DIR)/CONTROL/prerm
 	echo $(ENDOR_PARAGON_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_PARAGON_IPK_DIR)/CONTROL/conffiles
 
-	# Some tidy-ups
+	# Provide PhantomJS from the packages server
 	#
-	rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/phantomJs/phantomjs.exe
+	if [ -e "$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs" ]; \
+		then rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs; \
+	fi
+	
+	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/
+	wget http://packages.calnexsol.com/build_dependencies/1.0/binary_dependencies/phantomjs    \
+			-O $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
+	chmod 555 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
 	
 	# Help documentation
 	#
@@ -358,6 +365,17 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	cd $(ENDOR_PARAGON_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithParagon && \
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/ && \
 	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
+	
+	# Embedded firmware
+	#
+	if [ ${ENDOR_PARAGON_FIRMWARE_VERSION} ]; then \
+		install -d $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
+		cd $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
+		wget http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz; \
+		wget http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz.md5; \
+		cat $(ENDOR_PARAGON_SOURCE_DIR)/postinst.firmware >> $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst; \
+		sed -i -e 's/__FIRMWARE_VERSION__/${ENDOR_PARAGON_FIRMWARE_VERSION}/g' $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst; \
+	fi
 	
 	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
 	# Build any such files into a tarball that can later be purged.

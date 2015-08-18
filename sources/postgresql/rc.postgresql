@@ -41,13 +41,17 @@ case "$rc" in
 	echo -n "Starting PostgreSQL: "
 	if [ -e $PGPID ]
 	then
-		ps ax
 		if ps ax | grep -v grep | grep $DAEMON_SUPERVISOR
 		then
 			echo "PostgreSQL is already running"
 		else
 			rm -f $PGPID
 			$DAEMON_SUPERVISOR -D $PGDATA >>$PGLOG 2>&1 &
+			$DAEMON_SUPERVISOR -D $PGDATA >>$PGLOG 2>&1 &
+			echo ok
+		fi
+	else
+		$DAEMON_SUPERVISOR -D $PGDATA >>$PGLOG 2>&1 &
 			echo ok
 		fi
 	else

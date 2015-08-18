@@ -1,0 +1,23 @@
+
+# We look for eth1 to decide whether we are on a physical or a virtual machine
+# (eth1 will not exist with this MAC address on a VM, or indeed anywhere 
+# except our physical machine)
+#
+/sbin/ifconfig eth1 | grep -qi 80:86:CA:FE:BA:BE
+if [ "$?" -eq "0" ]
+then
+	# Because we need the DB to be running.
+	/opt/etc/init.d/S95postgresql start
+	
+	# Copty the embedded files into the tftp folder.
+	cp /opt/var/lib/embedded/* /srv/tftp/
+	
+	# Call the IC with the update arguments in place.
+	mono /opt/lib/endor/Calnex.Endor.Instrument.Controller.exe \
+	-a 10.10.10.10 \
+	-u /srv/tftp/fw-update-__FIRMWARE_VERSION__.tar.gz \
+	-m /srv/tftp/fw-update-__FIRMWARE_VERSION__.tar.gz.md5
+	
+	# Because the DB was stopped previously.
+	/opt/etc/init.d/S95postgresql stop
+fi

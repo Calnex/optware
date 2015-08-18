@@ -83,7 +83,7 @@ then
 		
 	else
 		su - calnex -c '/opt/bin/ipkg update'
-		su - calnex -c '/opt/bin/ipkg install endor'
+		su - calnex -c '/opt/bin/ipkg install endor-__TARGET_PRODUCT__'
 		reboot
 	fi
 fi

@@ -13,6 +13,8 @@ fi
 
 ln -s  /opt/bin/calnex.endor.instrument.controller.physicalinstrument /opt/bin/calnex.endor.instrument.controller 
 
+/opt/etc/init.d/S95postgresql stop
+sleep 3
 
 /opt/lib/ipkg/info/postgresql.postinst
 echo "waiting for DB daemon to start"
