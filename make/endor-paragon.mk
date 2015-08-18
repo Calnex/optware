@@ -310,6 +310,10 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp				$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-translatorclui			$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-translator
 	install -m 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/WebApp.dll			$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
+	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility
+	install -m 644 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/save_persistent_data.py    $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility/save_persistent_data.py
+	install -m 644 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/restore_persistent_data.py $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility/restore_persistent_data.py
+    
 	
 	# Shell scripts
 	#
