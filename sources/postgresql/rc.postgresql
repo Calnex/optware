@@ -47,11 +47,6 @@ case "$rc" in
 		else
 			rm -f $PGPID
 			$DAEMON_SUPERVISOR -D $PGDATA >>$PGLOG 2>&1 &
-			$DAEMON_SUPERVISOR -D $PGDATA >>$PGLOG 2>&1 &
-			echo ok
-		fi
-	else
-		$DAEMON_SUPERVISOR -D $PGDATA >>$PGLOG 2>&1 &
 			echo ok
 		fi
 	else
