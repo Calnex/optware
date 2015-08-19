@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# Try to save any persistent data from the database
+#
+if [ -e /opt/lib/endor/utility/save_persistent_data.py ]; then
+    python3 /opt/lib/endor/utility/save_persistent_data.py > ${HOME}/endor_saved_state.txt
+fi
+
 /opt/etc/init.d/S99endor-webapp stop
 /opt/etc/init.d/S98cat-remotingserver stop
 /opt/etc/init.d/S97endor-instrumentcontroller stop
@@ -12,4 +18,6 @@ sleep 1
 
 cd /opt/lib/endor
 unlink CAT
+
+
 rm -f `tar -tzf long-filepaths.tar.gz`

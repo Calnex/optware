@@ -297,20 +297,23 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	# Configuration files
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrumentcontroller-supervisor		$(ENDOR_ATTERO_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-supervisor				$(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-supervisor
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrumentcontroller-supervisor	$(ENDOR_ATTERO_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-supervisor				    $(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-supervisor
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.webapp				$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.webapp
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.translatorclui			$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/curiosity					$(ENDOR_ATTERO_IPK_DIR)/opt/bin/curiosity
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-redirect					$(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-redirect
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.translatorclui		$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/curiosity					        $(ENDOR_ATTERO_IPK_DIR)/opt/bin/curiosity
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-redirect					    $(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-redirect
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.virtual		$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.virtualinstrument
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.physical		$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.physicalinstrument
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-wait-for-database			$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrument.controller.physical	$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.physicalinstrument
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-wait-for-database		$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-instrumentcontroller		$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.cat-remotingserver			$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-webapp				$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-webapp
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.cat-remotingserver			    $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-webapp				    $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-translatorclui			$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-translator
-	install -m 755 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/WebApp.dll			$(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
+	install -m 755 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/WebApp.dll			    $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
+	mkdir $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/utility
+	install -m 644 $(ENDOR_ATTERO_SOURCE_DIR)/save_persistent_data.py           $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/utility/save_persistent_data.py
+	install -m 644 $(ENDOR_ATTERO_SOURCE_DIR)/restore_persistent_data.py        $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/utility/restore_persistent_data.py
 	
 	# Shell scripts
 	#

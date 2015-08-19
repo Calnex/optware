@@ -20,6 +20,15 @@ sleep 3
 echo "waiting for DB daemon to start"
 sleep 3
 python3 /opt/lib/endor/schema/Baseline/RebuildDb.py --superuser calnex --path /opt/lib/endor/schema/Baseline
+
+# And if any saved data exists, put that into the database too
+#
+if [ -e /opt/lib/endor/restore_persistent_data.py ]; then
+    if [ -e ${HOME}/endor_saved_state.txt ]; then
+        python3 /opt/lib/endor/restore_persistent_data.py < ${HOME}/endor_saved_state.txt
+    fi
+fi
+
 /opt/etc/init.d/S95postgresql stop
 # /opt/etc/init.d/S96endor-virtualinstrument start
 # /opt/etc/init.d/S97endor-instrumentcontroller start

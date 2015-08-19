@@ -310,6 +310,10 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp				    $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-translatorclui			$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-translator
 	install -m 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/WebApp.dll			$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
+	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility
+	install -m 644 $(ENDOR_PARAGON_SOURCE_DIR)/save_persistent_data.py          $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility/save_persistent_data.py
+	install -m 644 $(ENDOR_PARAGON_SOURCE_DIR)/restore_persistent_data.py       $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility/restore_persistent_data.py
+    
 	
 	# Shell scripts
 	#
@@ -351,11 +355,13 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	if [ -e "$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs" ]; \
 		then rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs; \
 	fi
-	
 	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/
 	wget http://packages.calnexsol.com/build_dependencies/1.0/binary_dependencies/phantomjs    \
 			-O $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
 	chmod 555 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
+	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/RenderService.js    $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/RenderService.js
+	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/Render.js           $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/Render.js
+	 
 	
 	# Help documentation
 	#
