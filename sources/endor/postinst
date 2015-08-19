@@ -23,9 +23,9 @@ python3 /opt/lib/endor/schema/Baseline/RebuildDb.py --superuser calnex --path /o
 
 # And if any saved data exists, put that into the database too
 #
-if [ -e /opt/lib/endor/restore_persistent_data.py ]; then
+if [ -e /opt/lib/endor/utility/restore_persistent_data.py ]; then
     if [ -e ${HOME}/endor_saved_state.txt ]; then
-        python3 /opt/lib/endor/restore_persistent_data.py < ${HOME}/endor_saved_state.txt
+        python3 /opt/lib/endor/utility/restore_persistent_data.py < ${HOME}/endor_saved_state.txt
     fi
 fi
 

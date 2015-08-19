@@ -16,8 +16,6 @@ fi
 
 sleep 1
 
-cd /opt/lib/endor
-unlink CAT
-
+rm -rf /opt/lib/endor/CAT
 
 rm -f `tar -tzf long-filepaths.tar.gz`
