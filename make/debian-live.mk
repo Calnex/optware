@@ -98,14 +98,14 @@ DEBIAN-LIVE_IPK=$(BUILD_DIR)/DEBIAN-LIVE_$(DEBIAN-LIVE_VERSION)-$(DEBIAN-LIVE_IP
 #
 $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	$(MAKE) optware-bootstrap-ipk
-    
-    # Clear out the folder into which we are going to build
-    #
-    if [ -d $(DEBIAN-LIVE_BUILD_DIR) ]; then 
-        sudo umount `mount | grep $(DEBIAN-LIVE_BUILD_DIR) | awk '{ print $3}'` | true
-        rm -rf $(DEBIAN-LIVE_BUILD_DIR)
-    fi
-    
+	
+	# Clear out the folder into which we are going to build
+	#
+	if [ -d $(DEBIAN-LIVE_BUILD_DIR) ]; then 
+		sudo umount `mount | grep $(DEBIAN-LIVE_BUILD_DIR) | awk '{ print $3}'` | true
+		rm -rf $(DEBIAN-LIVE_BUILD_DIR)
+	fi
+	
 	sudo rm -rf $(BUILD_DIR)/$(DEBIAN-LIVE_DIR) $(@D)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
 	# Apply the Debian root configs such that the live demo and
