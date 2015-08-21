@@ -7,6 +7,27 @@ pgdata="$pghome/data"
 pgver="$pghome/8.2"
 pgdumpground="$pgver/dump"
 
+
+echo ""
+echo "POSTGRESQL POSTINST"
+echo "==================="
+echo "pghome:       ${pghome}"
+echo ""
+ls -l ${pghome}
+
+echo "pgdata:       ${pgdata}"
+ls -l ${pgdata}
+
+echo "pgver:        ${pgver}"
+ls -l ${pgver}
+
+echo "pgdumpground: ${pgdumpground}"
+ls -l ${pgdumpground}
+
+
+echo "Process Dump"
+ps aux
+
 if [ ! -d $pghome ]
 then
     mkdir -p $pghome
@@ -29,7 +50,16 @@ else
 fi
 
 # compatibility check and start db
+echo "Listing /opt/etc/init.d/S95postgresql start"
+cat /opt/etc/init.d/S95postgresql
+
+
+echo "Calling /opt/etc/init.d/S95postgresql start"
+
 /opt/etc/init.d/S95postgresql start
+
+echo "Returned from call" 
+
 
 if [ "$dbinited." = "1." -a -n "`pidof postmaster`" ]; then
     echo "Now database server is ready, you can test the connection by:"
@@ -38,6 +68,16 @@ if [ "$dbinited." = "1." -a -n "`pidof postmaster`" ]; then
     echo "To allow access from other user, see http://www.postgresql.org/docs/8.2/interactive/sql-createuser.html"
     echo "To allow access from network, see http://developer.postgresql.org/docs/postgres/runtime-config.html#RUNTIME-CONFIG-CONNECTION"
 fi
+
+echo "Now doing postgress running loop"
+echo "pgdata contains:"
+ls -l $pgdata
+
+echo "ls of root"
+ls -l /
+
+echo "ls of the tmp folder"
+ls -l /tmp
 
 pg_running=3
 while [ $pg_running != 0 ]
