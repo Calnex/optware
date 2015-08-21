@@ -104,8 +104,9 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	echo "Checking to see whether there is an existing debian-live folder"
 	if [ -d $(DEBIAN-LIVE_BUILD_DIR) ]; then 
 		sudo umount `mount | grep $(DEBIAN-LIVE_BUILD_DIR) | awk '{ print $3}'` | true
-		rm -rf $(DEBIAN-LIVE_BUILD_DIR)
+		sudo rm -rf $(DEBIAN-LIVE_BUILD_DIR)
 	fi
+	echo "Finished clearing existing debian-live folder"
 	
 	sudo rm -rf $(BUILD_DIR)/$(DEBIAN-LIVE_DIR) $(@D)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
