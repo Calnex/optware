@@ -57,7 +57,7 @@ cat /opt/etc/init.d/S95postgresql
 echo "Calling database start"
 
 #/opt/etc/init.d/S95postgresql start
-/opt/bin/postmaster -D /opt/var/pgsql/data
+/opt/bin/postmaster -D /opt/var/pgsql/data &
 
 
 echo "Returned from call" 
