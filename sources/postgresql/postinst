@@ -95,10 +95,16 @@ psql_status=3
 count=20
 while [ ${psql_status} -ne 0 ] && [ ${count} -ne 0 ]
 do
-    echo "Checking database connection status"
+    echo "Checking database connection status... localhost"
     psql -h localhost -U calnex -d postgres -c "SELECT * FROM pg_catalog.pg_tables;"
     psql_status = $?
     echo "    psql status ${psql_status}"
+
+    echo "Checking database connection status... 127.0.0.1"
+    psql -h 127.0.0.1 -U calnex -d postgres -c "SELECT * FROM pg_catalog.pg_tables;"
+    psql_status = $?
+    echo "    psql status ${psql_status}"
+
     ps aux
     echo ""
     echo ""
