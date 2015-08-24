@@ -25,8 +25,25 @@ ps aux | grep -i post
 
 echo ""
 
+echo "Listing the database startup script:"
+ls -l /opt/et5c/init.d/S95postgresql
+
+/opt/et5c/init.d/S95postgresql start
 echo "waiting for DB daemon to start"
-sleep 3
+
+
+pg_ctl status -D $pgdata
+pg_running=3
+while [ $pg_running != 0 ]
+do
+    echo "Not running yet, sleeping..."
+    sleep 0.5
+    pg_ctl status -D $pgdata
+    pg_running=$?
+done
+
+echo "Database reports itself running"
+
 
 # Debugging code added here.
 # 
