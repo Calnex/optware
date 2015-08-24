@@ -54,9 +54,11 @@ echo "Listing /opt/etc/init.d/S95postgresql start"
 cat /opt/etc/init.d/S95postgresql
 
 
-echo "Calling /opt/etc/init.d/S95postgresql start"
+echo "Calling database start"
 
-/opt/etc/init.d/S95postgresql start
+#/opt/etc/init.d/S95postgresql start
+/opt/bin/postmaster -D /opt/var/pgsql/data
+
 
 echo "Returned from call" 
 
@@ -90,6 +92,32 @@ done
 ps aux
 
 whoami
+
+# Now loop waiting to see if we can connect via psql
+#
+psql_status=3
+count=20
+while [ ${psql_status} -ne 0 ] && [ ${count} -ne 0 ]
+do
+    echo "${count} iterations left..."
+    echo "Checking database connection status... localhost"
+    psql -h localhost -U calnex -d postgres -c "SELECT * FROM pg_catalog.pg_tables;"
+    psql_status = $?
+    echo "    psql localhost status ${psql_status}"
+
+    echo "Checking database connection status... 127.0.0.1"
+    psql -h 127.0.0.1 -U calnex -d postgres -c "SELECT * FROM pg_catalog.pg_tables;"
+    psql_status = $?
+    echo "    psql 127.0.0.1 status ${psql_status}"
+
+    ps aux
+    echo ""
+    echo ""
+    sleep 0.5
+    count=$(expr $count - 1)
+    echo ${count}
+done
+
 
 psql -h localhost -U calnex -d postgres -c "UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';"
 psql -h localhost -U calnex -d postgres -c "DROP DATABASE template1;"
