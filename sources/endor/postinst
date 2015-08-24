@@ -17,8 +17,43 @@ ln -s  /opt/bin/calnex.endor.instrument.controller.physicalinstrument /opt/bin/c
 sleep 3
 
 /opt/lib/ipkg/info/postgresql.postinst
+
+echo "********************"
+echo "ENDOR POSTINST: Returned from postgres postinst"
+echo ""
+ps aux | grep -i post
+
+echo ""
+
 echo "waiting for DB daemon to start"
 sleep 3
+
+# Debugging code added here.
+# 
+#
+
+echo ""
+echo "We asked the database daemon to start three seconds ago"
+echo ""
+ps aux | grep -i post
+
+echo "Let's try to connect to it"
+echo "First using localhost"
+psql -h localhost -U calnex -d postgres -c "\dt"
+
+echo "**************************"
+echo "Let's try to connect to it"
+echo "Now using 127.0.0.1"
+psql -h 127.0.0.1 -U calnex -d postgres -c "\dt"
+
+echo "Finally a list of processes"
+ps aux
+
+#
+#
+# End of debugging code
+
+
 python3 /opt/lib/endor/schema/Baseline/RebuildDb.py --superuser calnex --path /opt/lib/endor/schema/Baseline
 
 # And if any saved data exists, put that into the database too
