@@ -81,6 +81,7 @@ ENDOR_ATTERO_SPRINGBANK_GIT_REFERENCE=--reference $(ENDOR_COMMON_SOURCE_REPOSITO
 ENDOR_ATTERO_CAT_GIT_REFERENCE=--reference $(ENDOR_COMMON_SOURCE_REPOSITORY)/CAT
 ENDOR_ATTERO_DATASTORAGE_GIT_REFERENCE=--reference $(ENDOR_COMMON_SOURCE_REPOSITORY)/DataStorage
 ENDOR_ATTERO_DOCUMENTATION_GIT_REFERENCE=--reference $(ENDOR_COMMON_SOURCE_REPOSITORY)/EndorDocumentation
+ENDOR_ATTERO_CALNEXCOMMON_GIT_REFERENCE=--reference $(ENDOR_COMMON_SOURCE_REPOSITORY)/CalnexCommon
 endif
 ENDOR_ATTERO_GIT_TAG?=HEAD
 ENDOR_ATTERO_GIT_OPTIONS?=
@@ -121,6 +122,8 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		git submodule update --init --remote $(ENDOR_ATTERO_CAT_GIT_REFERENCE) && \
 		cd Calnex.Endor.DataStorage && \
 		git submodule update --init --remote $(ENDOR_ATTERO_DATASTORAGE_GIT_REFERENCE) && \
+        cd Calnex.Common && \
+        git submodule update --init --remote $(ENDOR_ATTERO_CALNEXCOMMON_GIT_REFERENCE) && \
 		cd .. && \
 		if [ ! -z "${CAT_TAG}" ] ; \
 			then \
