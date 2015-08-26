@@ -2,7 +2,12 @@
 
 # Try to save any persistent data from the database
 #
+
+/opt/etc/init.d/S95postgresql start
+sleep 1
+
 if [ -e /opt/lib/endor/utility/save_persistent_data.py ]; then
+    echo "Saving persistent database settings"
     python3 /opt/lib/endor/utility/save_persistent_data.py > ${HOME}/endor_saved_state.txt
 fi
 
@@ -16,8 +21,5 @@ fi
 
 sleep 1
 
-cd /opt/lib/endor
-unlink CAT
-
-
-rm -f `tar -tzf long-filepaths.tar.gz`
+rm -rf /opt/lib/endor/CAT
+rm -f `tar -tzf /opt/lib/endor/long-filepaths.tar.gz`
