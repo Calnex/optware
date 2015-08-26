@@ -1,11 +1,16 @@
 #!/bin/sh
 
+echo ""
+echo "ENDOR POSTINST"
+echo "==================="
+
+
 cd /opt/lib/endor
 tar -xzf long-filepaths.tar.gz
 
-#
 # This block sets up the machine as a real machine,
-# that speaks to a physical embedded.
+# that speaks to a physical embedded (i.e. not a 
+# virtual machine)
 #
 if [ -e /opt/bin/calnex.endor.instrument.controller ]; then
     rm /opt/bin/calnex.endor.instrument.controller
@@ -13,66 +18,55 @@ fi
 
 ln -s  /opt/bin/calnex.endor.instrument.controller.physicalinstrument /opt/bin/calnex.endor.instrument.controller 
 
+
+# Stop the database server and wait for that to complete (it's not likely
+# to be running, but this is belt-and-braces stuff)
 /opt/etc/init.d/S95postgresql stop
 sleep 3
 
+# Now call postgres' postinst code to get the server configured, then
+# start the database server running
+#
 /opt/lib/ipkg/info/postgresql.postinst
-
-echo "********************"
-echo "ENDOR POSTINST: Returned from postgres postinst"
-echo ""
-ps aux | grep -i post
-
-echo ""
-
-echo "Listing the database startup script:"
-ls -l /opt/etc/init.d/S95postgresql
-
 /opt/etc/init.d/S95postgresql start
+
+# This loop waits for the database server to be available
+#
 echo "waiting for DB daemon to start"
 
-
 pgdata=/opt/var/pgsql/data
+wait_count=20
+
 pg_ctl status -D $pgdata
-pg_running=3
-while [ $pg_running != 0 ]
+pg_running=$?
+
+while [ ${pg_running} -ne 0 ] && [ ${wait_count} -ne 0 ]
 do
-    echo "Not running yet, sleeping..."
+    echo "Database not running, waiting..."
     sleep 0.5
     pg_ctl status -D $pgdata
     pg_running=$?
+    wait_count=$(expr $wait_count - 1)
 done
 
-echo "Database reports itself running"
-
-
-# Debugging code added here.
-# 
+# Exit if we have failed
 #
+if [ $wait_count -eq 0 ]; then
+    echo "Failed to start database in Endor Postinst"
+    exit 1
+fi
 
-echo ""
-echo "We asked the database daemon to start three seconds ago"
-echo ""
-ps aux | grep -i post
-
-echo "Let's try to connect to it"
-echo "First using localhost"
-psql -h localhost -U calnex -d postgres -c "\dt"
-
-echo "**************************"
-echo "Let's try to connect to it"
-echo "Now using 127.0.0.1"
-psql -h 127.0.0.1 -U calnex -d postgres -c "\dt"
-
-echo "Finally a list of processes"
-ps aux
-
+# Note that we have succeeded
 #
-#
-# End of debugging code
+echo "Database running"
 
-
+# Rebuild the database, exit if the script reports failure
 python3 /opt/lib/endor/schema/Baseline/RebuildDb.py --superuser calnex --path /opt/lib/endor/schema/Baseline
+
+database_build_status=$?
+if [ $database_build_status -ne 0 ]; then
+    exit $database_build_status
+fi
 
 # And if any saved data exists, put that into the database too
 #
@@ -84,8 +78,7 @@ if [ -e /opt/lib/endor/utility/restore_persistent_data.py ]; then
     fi
 fi
 
+# Stop the database and finish
+#
 /opt/etc/init.d/S95postgresql stop
-# /opt/etc/init.d/S96endor-virtualinstrument start
-# /opt/etc/init.d/S97endor-instrumentcontroller start
-# /opt/etc/init.d/S98cat-remotingserver start
-# /opt/etc/init.d/S99endor-webapp start
+exit 0

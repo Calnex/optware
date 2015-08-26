@@ -11,22 +11,6 @@ pgdumpground="$pgver/dump"
 echo ""
 echo "POSTGRESQL POSTINST"
 echo "==================="
-echo "pghome:       ${pghome}"
-echo ""
-ls -l ${pghome}
-
-echo "pgdata:       ${pgdata}"
-ls -l ${pgdata}
-
-echo "pgver:        ${pgver}"
-ls -l ${pgver}
-
-echo "pgdumpground: ${pgdumpground}"
-ls -l ${pgdumpground}
-
-
-echo "Process Dump"
-ps aux
 
 if [ ! -d $pghome ]
 then
@@ -38,6 +22,7 @@ then
 fi
 
 # initdb if not done before
+#
 dbinited=0
 if [ -d $pgdata ]; then
     echo The $pgdata directory already exists
@@ -49,17 +34,10 @@ else
     dbinited=1
 fi
 
-# compatibility check and start db
-echo "Listing /opt/etc/init.d/S95postgresql start"
-cat /opt/etc/init.d/S95postgresql
-
-
-echo "Calling database start"
-
-#/opt/etc/init.d/S95postgresql start
+# Start the database server
+#
+echo "Starting database server"
 /opt/bin/postmaster -D /opt/var/pgsql/data &
-
-echo "Returned from call" 
 
 
 if [ "$dbinited." = "1." -a -n "`pidof postmaster`" ]; then
@@ -70,53 +48,56 @@ if [ "$dbinited." = "1." -a -n "`pidof postmaster`" ]; then
     echo "To allow access from network, see http://developer.postgresql.org/docs/postgres/runtime-config.html#RUNTIME-CONFIG-CONNECTION"
 fi
 
-echo "Now doing postgress running loop"
-echo "pgdata contains:"
-ls -l $pgdata
+# Waiting for database server to be available
 
-echo "ls of root"
-ls -l /
+wait_count=20
 
-echo "ls of the tmp folder"
-ls -l /tmp
+pg_ctl status -D $pgdata
+pg_running=$?
 
-pg_running=3
-count=25
-while [ $pg_running != 0 ]
+while [ ${pg_running} -ne 0 ] && [ ${wait_count} -ne 0 ]
 do
+    echo "Database not running, waiting..."
     sleep 0.5
     pg_ctl status -D $pgdata
     pg_running=$?
+    wait_count=$(expr $wait_count - 1)
 done
+
+# Exit if we have failed
+#
+if [ $wait_count -eq 0 ]; then
+    echo "Failed to start database in Postgres Postinst"
+    exit 1
+fi
 
 # Now loop waiting to see if we can connect via psql
 #
 psql_status=3
 count=20
+echo "Waiting for database server to accept connections"
 while [ ${psql_status} -ne 0 ] && [ ${count} -ne 0 ]
 do
+    echo "${count} iterations left"
     echo "Checking database connection status... localhost"
-    psql -h localhost -U calnex -d postgres -c "SELECT * FROM pg_catalog.pg_tables;"
-    psql_status = $?
+    psql -h localhost -U calnex -d postgres -c "SELECT * FROM pg_catalog.pg_tables;" > /dev/null
+    psql_status=$?
     echo "    psql status ${psql_status}"
-
-    echo "Checking database connection status... 127.0.0.1"
-    psql -h 127.0.0.1 -U calnex -d postgres -c "SELECT * FROM pg_catalog.pg_tables;"
-    psql_status = $?
-    echo "    psql status ${psql_status}"
-
-    ps aux
-    echo ""
-    echo ""
     sleep 0.5
+
     count=$(expr $count - 1)
-    echo ${count}
 done
 
+echo "Database now accepting connections"
+
+# Tidy up the database state
+#
 psql -h localhost -U calnex -d postgres -c "UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';"
 psql -h localhost -U calnex -d postgres -c "DROP DATABASE template1;"
 psql -h localhost -U calnex -d postgres -c "CREATE DATABASE template1 WITH TEMPLATE = template0 ENCODING = 'UNICODE';"
 psql -h localhost -U calnex -d postgres -c "UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template1';"
 psql -h localhost -U calnex -d template1 -c "VACUUM FREEZE;"
 
+# And stop the server
+#
 /opt/etc/init.d/S95postgresql stop
