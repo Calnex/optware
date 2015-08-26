@@ -92,7 +92,7 @@ DEBIAN-LIVE_IPK=$(BUILD_DIR)/DEBIAN-LIVE_$(DEBIAN-LIVE_VERSION)-$(DEBIAN-LIVE_IP
 #
 # If the compilation of the package requires other packages to be staged
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
-#
+# 
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
