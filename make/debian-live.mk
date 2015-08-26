@@ -102,9 +102,9 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	# Clear out the folder into which we are going to build
 	#
 	echo "Checking to see whether there is an existing debian-live folder"
-	if [ -d $(DEBIAN-LIVE_BUILD_DIR) ]; then 
-		sudo umount `mount | grep $(DEBIAN-LIVE_BUILD_DIR) | awk '{ print $3}'` | true
-		sudo rm -rf $(DEBIAN-LIVE_BUILD_DIR)
+	if [ -d $(DEBIAN-LIVE_BUILD_DIR) ]; then \
+		sudo umount `mount | grep $(DEBIAN-LIVE_BUILD_DIR) | awk '{ print $3}'` | true; \
+		sudo rm -rf $(DEBIAN-LIVE_BUILD_DIR); \
 	fi
 	echo "Finished clearing existing debian-live folder"
 	
