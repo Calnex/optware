@@ -375,7 +375,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	# Embedded firmware
 	#
 	if [ ${ENDOR_PARAGON_FIRMWARE_VERSION} ]; then \
-        if [ "${ENDOR_PARAGON_FIRMWARE_VERSION}" -ne "(none)" ] ; then \
+        if [ "${ENDOR_PARAGON_FIRMWARE_VERSION}" != "(none)" ] ; then \
             install -d $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
             cd $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
             wget http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz; \
