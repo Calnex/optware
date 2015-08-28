@@ -364,7 +364,11 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	chmod 555 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
 	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/RenderService.js    $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/RenderService.js
 	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/Render.js           $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/Render.js
-	 
+	
+	# Swagger files
+	#
+	install -m 644 ${ENDOR_PARAGON_BUILD_DIR}/Endor/Web/WebApp/doc/images/Favicon_Spirent.png   $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/doc/images/Favicon_Spirent.png
+	install -m 644 ${ENDOR_PARAGON_BUILD_DIR}/Endor/Web/WebApp/doc/images/Favicon_calnex.png    $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/doc/images/Favicon_calnex.png
 	
 	# Help documentation
 	#
@@ -378,7 +382,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	# Embedded firmware
 	#
 	if [ ${ENDOR_PARAGON_FIRMWARE_VERSION} ]; then \
-        if [ ${ENDOR_PARAGON_FIRMWARE_VERSION} -ne "(none)" ] ; then \
+        if [ ${ENDOR_PARAGON_FIRMWARE_VERSION} != "(none)" ] ; then \
             install -d $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
             cd $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
             wget http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz; \
