@@ -46,6 +46,9 @@ echo "Removing temporary ipkg repository..."
 rm -rf $BS_DIR
 rm /tmp/ipkg
 
+echo "Installing debian..."
+/opt/bin/ipkg install debian-dummy.ipk || exit 1
+
 echo "Installing wget..."
 /opt/bin/ipkg install wget.ipk || exit 1
 

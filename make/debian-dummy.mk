@@ -27,10 +27,8 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 DEBIAN-DUMMY_VERSION=wheezy
-DEBIAN-DUMMY_SOURCE=debian-dummy-$(DEBIAN-DUMMY_VERSION).tar.gz
 DEBIAN-DUMMY_DIR=debian-dummy-$(DEBIAN-DUMMY_VERSION)
-DEBIAN-DUMMY_UNZIP=zcat
-DEBIAN-DUMMY_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
+DEBIAN-DUMMY_MAINTAINER=Calnex Solutions <www.calnexsol.com>
 DEBIAN-DUMMY_DESCRIPTION=Minimal install of the Debian GNU/Linux Operating System
 DEBIAN-DUMMY_SECTION=kernel
 DEBIAN-DUMMY_PRIORITY=optional
@@ -41,7 +39,7 @@ DEBIAN-DUMMY_CONFLICTS=
 #
 # DEBIAN-DUMMY_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN-DUMMY_IPK_VERSION=dummy
+DEBIAN-DUMMY_IPK_VERSION=$(BUILD_NUMBER)
 
 #
 # DEBIAN-DUMMY_CONFFILES should be a list of user-editable files
@@ -64,7 +62,7 @@ DEBIAN-DUMMY_CONFIG=$(DEBIAN-DUMMY_SRC_DIR)/config
 #
 DEBIAN-DUMMY_BUILD_DIR=$(BUILD_DIR)/debian-dummy
 DEBIAN-DUMMY_IPK_DIR=$(BUILD_DIR)/debian-$(DEBIAN-DUMMY_VERSION)-dummy-ipk
-DEBIAN-DUMMY_IPK=$(BUILD_DIR)/debian_$(DEBIAN-DUMMY_VERSION)-$(DEBIAN-DUMMY_IPK_VERSION)_$(TARGET_ARCH).ipk
+DEBIAN-DUMMY_IPK=$(BUILD_DIR)/debian_$(DEBIAN-DUMMY_VERSION)-$(DEBIAN-DUMMY_IPK_VERSION)-dummy_$(TARGET_ARCH).ipk
 
 .PHONY: debian-dummy-source debian-dummy-unpack debian-dummy debian-dummy-stage debian-dummy-ipk debian-dummy-clean debian-dummy-dirclean debian-dummy-check
 
@@ -100,11 +98,12 @@ $(DEBIAN-DUMMY_IPK_DIR)/CONTROL/control:
 # You may need to patch your application to make it use these locations.
 #
 $(DEBIAN-DUMMY_IPK):
-	rm -rf $(DEBIAN-DUMMY_IPK_DIR) $(BUILD_DIR)/debian-dummy_*_$(TARGET_ARCH).ipk
+	rm -rf $(DEBIAN-DUMMY_IPK_DIR) $(BUILD_DIR)/debian_*-dummy_$(TARGET_ARCH).ipk
 	$(MAKE) $(DEBIAN-DUMMY_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN-DUMMY_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN-DUMMY_IPK_DIR)/CONTROL/conffiles
 	install -d $(DEBIAN-DUMMY_IPK_DIR)/opt/var/lib/debian
-	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN-DUMMY_IPK_DIR)
+	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN-DUMMY_IPK_DIR) $(DEBIAN-DUMMY_IPK_DIR)
+	mv $(DEBIAN-DUMMY_IPK_DIR)/debian_*_$(TARGET_ARCH).ipk $(DEBIAN-DUMMY_IPK)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(DEBIAN-DUMMY_IPK_DIR)
 
 $(DEBIAN-DUMMY_BUILD_DIR)/.ipk: $(DEBIAN-DUMMY_IPK)
