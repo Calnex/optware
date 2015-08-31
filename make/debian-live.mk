@@ -113,7 +113,7 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
 	# Apply the Debian root configs such that the live demo and
 	# root FS match as closely as possible.
-	cp -ar $(DEBIAN-ROOT_CONFIG) $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
+	cp -ar $(DEBIAN_CONFIG) $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
 	# Configs for the live system *OLNY*
 	cp -ar $(DEBIAN-LIVE_CONFIG) $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
 	# Temporary hook to pull in demo files!

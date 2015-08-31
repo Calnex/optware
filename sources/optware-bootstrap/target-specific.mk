@@ -8,7 +8,7 @@ OPTWARE-BOOTSTRAP_RC=$(strip \
 	$(if $(filter Springbank, $(OPTWARE_TARGET)), /etc/rc.optware))
 
 OPTWARE-BOOTSTRAP_CONTAINS=$(strip \
-	ipkg-opt wget)
+	ipkg-opt wget debian-dummy)
 
 OPTWARE-BOOTSTRAP_UPDATE_ALTERNATIVES=$(strip \
 	$(if $(filter ipkg-opt, $(OPTWARE-BOOTSTRAP_CONTAINS)),,yes))
