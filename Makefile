@@ -61,6 +61,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			ncurses \
 			ncursesw \
 			nettle \
+			nginx \
 			openssl \
 			optware-bootstrap\
 			pcre \
@@ -77,7 +78,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			xsp \
 			zlib \
 
-CALNEX_PACKAGES =	debian-root \
+CALNEX_PACKAGES =	debian \
 			endor-paragon \
 			endor-paragon-VI
 			
