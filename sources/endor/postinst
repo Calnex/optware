@@ -81,4 +81,3 @@ fi
 # Stop the database and finish
 #
 /opt/etc/init.d/S95postgresql stop
-exit 0
