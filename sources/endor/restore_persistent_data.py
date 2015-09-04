@@ -18,6 +18,7 @@ def recallPersistentDatabaseState(user, database):
         executeSingleCommand(user, database, "UPDATE control_port_state SET gateway='{}'".format(persisted['gateway']))
     
 def main():
+    os.environ['PGPASSWORD'] = 'admin'
     recallPersistentDatabaseState("admin", "endor")
 
 if __name__ == "__main__":

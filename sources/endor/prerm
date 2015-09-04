@@ -2,13 +2,34 @@
 
 # Try to save any persistent data from the database
 #
-
 /opt/etc/init.d/S95postgresql start
-sleep 1
+
+pgdata=/opt/var/pgsql/data
+wait_count=20
+
+pg_ctl status -D $pgdata
+pg_running=$?
+
+while [ ${pg_running} -ne 0 ] && [ ${wait_count} -ne 0 ]
+do
+    echo "Database not running, waiting..."
+    sleep 0.5
+    pg_ctl status -D $pgdata
+    pg_running=$?
+    wait_count=$(expr $wait_count - 1)
+done
+
+# Exit if we have failed
+#
+if [ $wait_count -eq 0 ]; then
+    echo "Failed to start database in Endor Postinst"
+    exit 1
+fi
 
 if [ -e /opt/lib/endor/utility/save_persistent_data.py ]; then
     echo "Saving persistent database settings"
-    python3 /opt/lib/endor/utility/save_persistent_data.py > ${HOME}/endor_saved_state.txt
+    mkdir -p /opt/var/lib/endor
+    python3 /opt/lib/endor/utility/save_persistent_data.py > /opt/var/lib/endor/endor_saved_state.txt
 fi
 
 /opt/etc/init.d/S99endor-webapp stop

@@ -37,7 +37,9 @@ def savePersistentDatabaseState(user, database):
 
 
 def main():
+    os.environ['PGPASSWORD'] = 'admin'
     savePersistentDatabaseState("admin", "endor")
+    
 
 if __name__ == "__main__":
    main()
