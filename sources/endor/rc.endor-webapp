@@ -26,7 +26,8 @@ case "$rc" in
     stop)
         echo -n "Stopping Endor Webapp: "
 	pkill -9 -f '/bin/sh /opt/bin/calnex.endor.webapp'
-        pkill -f '/opt/bin/mono /opt/lib/mono/4.5/xsp4.exe'
+        pkill -9 -f '/opt/bin/mono /opt/lib/mono/4.5/xsp4.exe'
+        pkill -9 -f '/opt/bin/mono /opt/lib/mono/4.5/fastcgi-mono-server4.exe'
         echo ok
         ;;
     restart)
