@@ -41,7 +41,7 @@ ENDOR_ATTERO_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_ATTERO_DESCRIPTION=Describe endor-attero here.
 ENDOR_ATTERO_SECTION=base
 ENDOR_ATTERO_PRIORITY=optional
-ENDOR_ATTERO_DEPENDS=postgresql, mono, xsp
+ENDOR_ATTERO_DEPENDS=postgresql, mono, xsp, nginx
 ENDOR_ATTERO_SUGGESTS=
 ENDOR_ATTERO_CONFLICTS=endor-paragon
 
@@ -361,6 +361,12 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
 	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt                 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
+
+	# NGINX config
+	#
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-available
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-enabled
+	install -m 644 $(ENDOR_PARAGON_SOURCE_DIR)/endor.nginx  $(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-available/nginx
 
 	cd $(ENDOR_ATTERO_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithAttero && \
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/ && \
