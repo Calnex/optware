@@ -41,7 +41,7 @@ ENDOR_PARAGON_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_PARAGON_DESCRIPTION=Describe endor-paragon here.
 ENDOR_PARAGON_SECTION=base
 ENDOR_PARAGON_PRIORITY=optional
-ENDOR_PARAGON_DEPENDS=postgresql, mono, xsp
+ENDOR_PARAGON_DEPENDS=postgresql, mono, xsp, nginx
 ENDOR_PARAGON_SUGGESTS=
 ENDOR_PARAGON_CONFLICTS=endor-attero
 
@@ -374,6 +374,12 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/Documents
 	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt                 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
+
+	# NGINX config
+	#
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-available
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-enabled
+	install -m 644 $(ENDOR_PARAGON_SOURCE_DIR)/endor.nginx	$(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-available/endor
 
 	cd $(ENDOR_PARAGON_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithParagon && \
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/ && \
