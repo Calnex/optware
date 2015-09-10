@@ -364,9 +364,9 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 
 	# NGINX config
 	#
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-available
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-enabled
-	install -m 644 $(ENDOR_PARAGON_SOURCE_DIR)/endor.nginx  $(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-available/nginx
+	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/etc/nginx/sites-available
+	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/etc/nginx/sites-enabled
+	install -m 644 $(ENDOR_ATTERO_SOURCE_DIR)/endor.nginx  $(ENDOR_ATTERO_IPK_DIR)/opt/etc/nginx/sites-available/nginx
 
 	cd $(ENDOR_ATTERO_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithAttero && \
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/ && \
