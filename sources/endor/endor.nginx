@@ -4,6 +4,7 @@
 	listen 8000;
 
 	root /opt/lib/endor/;
+	client_max_body_size 100M;
 
 	location ~ .*\.(js|css|png|jpg|jpeg|gif|tif)?$ {
 		expires modified 7d;
