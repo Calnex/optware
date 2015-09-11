@@ -44,6 +44,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			gettext \
 			glib \
 			gnutls \
+			gnutls \.bk
 			ipkg-opt \
 			ipkg-utils \
 			ipkg-web \
@@ -63,7 +64,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			nettle \
 			nginx \
 			openssl \
-			optware-bootstrap\
+			optware-bootstrap \
 			pcre \
 			phantomjs \
 			postgresql \
@@ -71,17 +72,22 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			readline \
 			springbank \
 			sqlite \
-			tshark-1.4.9 \
+			template \
 			tshark-1.10.3 \
 			tshark-1.11.3 \
+			tshark-1.4.9 \
 			wget \
-			wget-ssl \
 			xsp \
 			zlib \
 
-CALNEX_PACKAGES =	debian-root \
+CALNEX_PACKAGES =	cat \
+			debian \
+			debian-live \
+			debian-installer \
 			endor-paragon \
-			endor-paragon-VI
+			endor-paragon-vi \
+			endor-attero \
+			endor-attero-vi \
 			
 ##############
 
