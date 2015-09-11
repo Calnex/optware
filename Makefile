@@ -61,6 +61,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			ncurses \
 			ncursesw \
 			nettle \
+			nginx \
 			openssl \
 			optware-bootstrap\
 			pcre \

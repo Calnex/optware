@@ -30,17 +30,15 @@ case "$rc" in
 	$DAEMON
         ;;
     stop)
-        if [ -n "`pidof $NAME`" ]; then
-            echo "Stopping web server: $NAME"
-            killall $NAME 2> /dev/null
-        fi
+        echo "Stopping web server: $NAME"
+        $DAEMON -s stop > /dev/null 2>&1
         ;;
     restart)
         "$0" stop
         sleep 1
         "$0" start
         ;;
-    *)  
+    *)
         echo "Usage: $0 (start|stop|restart|usage)"
         ;;
 esac

@@ -1,0 +1,17 @@
+ server {
+
+	# the port the site is listening on
+	listen 8000;
+
+	root /opt/lib/endor/;
+
+	location ~ .*\.(js|css|png|jpg|jpeg|gif|tif)?$ {
+		expires modified 7d;
+		add_header Cache-Control "public";
+	}
+
+	location / {
+		fastcgi_pass unix:/opt/tmp/mono-fcgi.sock;
+		include fastcgi_params;
+	}
+ }

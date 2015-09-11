@@ -214,10 +214,13 @@ $(NGINX_IPK_DIR)/CONTROL/control:
 $(NGINX_IPK): $(NGINX_BUILD_DIR)/.built
 	rm -rf $(NGINX_IPK_DIR) $(BUILD_DIR)/nginx_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(NGINX_BUILD_DIR) -f objs/Makefile DESTDIR=$(NGINX_IPK_DIR) install
-	sed -i -e "/^[ 	]*listen/s|listen.*80;|listen\t8082;|" $(NGINX_IPK_DIR)/opt/etc/nginx/nginx.conf
 	$(STRIP_COMMAND) $(NGINX_IPK_DIR)/opt/sbin/nginx
 	install -d $(NGINX_IPK_DIR)/opt/var/nginx/tmp
 	install -d $(NGINX_IPK_DIR)/opt/share/www
+	install -d $(NGINX_IPK_DIR)/opt/etc/nginx/sites-available
+	install -d $(NGINX_IPK_DIR)/opt/etc/nginx/sites-enabled
+	install -m 644 $(NGINX_SOURCE_DIR)/nginx.conf $(NGINX_IPK_DIR)/opt/etc/nginx/nginx.conf
+	install -m 644 $(NGINX_SOURCE_DIR)/fastcgi_params $(NGINX_IPK_DIR)/opt/etc/nginx/fastcgi_params
 	ln -s /opt/share/nginx/html $(NGINX_IPK_DIR)/opt/share/www/nginx
 	install -d $(NGINX_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(NGINX_SOURCE_DIR)/rc.nginx $(NGINX_IPK_DIR)/opt/etc/init.d/S80nginx

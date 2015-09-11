@@ -18,5 +18,6 @@ fi
 # Ensure that the DB is populated with hardware info.
 sleep 3
 
-cd /opt/lib/endor && /opt/bin/xsp4 --address 127.0.0.1 --port 8000 --nonstop 1>/dev/null 2>&1 &
+#cd /opt/lib/endor && /opt/bin/xsp4 --address 127.0.0.1 --port 8000 --nonstop 1>/dev/null 2>&1 &
+cd /opt/lib/endor && /opt/bin/fastcgi-mono-server4 --socket=unix:/opt/tmp/mono-fcgi.sock --appconfigfile=Web.Config --applications=/:. 1>/dev/null 2>&1 &
 
