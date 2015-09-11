@@ -44,7 +44,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			gettext \
 			glib \
 			gnutls \
-			gnutls \.bk
 			ipkg-opt \
 			ipkg-utils \
 			ipkg-web \
