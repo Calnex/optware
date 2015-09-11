@@ -111,7 +111,7 @@ phantomjs-source: $(DL_DIR)/$(PHANTOMJS_SOURCE) $(PHANTOMJS_PATCHES)
 # shown below to make various patches to it.
 #
 $(PHANTOMJS_BUILD_DIR)/.configured: $(DL_DIR)/$(PHANTOMJS_SOURCE) $(PHANTOMJS_PATCHES) make/phantomjs.mk
-#	$(MAKE) icu-stage libjpeg-stage
+	$(MAKE) icu-stage
 	rm -rf $(BUILD_DIR)/$(PHANTOMJS_DIR) $(@D)
 	$(PHANTOMJS_UNZIP) $(DL_DIR)/$(PHANTOMJS_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(PHANTOMJS_PATCHES)" ; \
