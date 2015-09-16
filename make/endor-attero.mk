@@ -359,6 +359,23 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	#
 	rm -rf $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/phantomJs/phantomjs.exe
 	
+	# Provide PhantomJS from the packages server
+	#
+	if [ -e "$(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/phantomJs" ]; \
+		then rm -rf $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/phantomJs; \
+	fi
+	mkdir $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/phantomJs/
+	wget http://packages.calnexsol.com/build_dependencies/1.0/binary_dependencies/phantomjs    \
+			-O $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
+	chmod 555 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
+	install -m 644 $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/Release/phantomJs/RenderService.js    $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/phantomJs/RenderService.js
+	install -m 644 $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/Release/phantomJs/Render.js           $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/phantomJs/Render.js
+	
+	# Swagger files
+	#
+	install -m 644 ${ENDOR_ATTERO_BUILD_DIR}/Endor/Web/WebApp/doc/images/Favicon_Spirent.png   $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/doc/images/Favicon_Spirent.png
+	install -m 644 ${ENDOR_ATTERO_BUILD_DIR}/Endor/Web/WebApp/doc/images/Favicon_calnex.png    $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/doc/images/Favicon_calnex.png
+
 	# Help documentation
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/Documents
