@@ -41,7 +41,7 @@ ENDOR_PARAGON_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_PARAGON_DESCRIPTION=Describe endor-paragon here.
 ENDOR_PARAGON_SECTION=base
 ENDOR_PARAGON_PRIORITY=optional
-ENDOR_PARAGON_DEPENDS=postgresql, mono, xsp, nginx
+ENDOR_PARAGON_DEPENDS=postgresql, mono, xsp, nginx, phantomjs
 ENDOR_PARAGON_SUGGESTS=
 ENDOR_PARAGON_CONFLICTS=endor-attero
 
@@ -354,15 +354,13 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/prerm $(ENDOR_PARAGON_IPK_DIR)/CONTROL/prerm
 	echo $(ENDOR_PARAGON_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_PARAGON_IPK_DIR)/CONTROL/conffiles
 
-	# Provide PhantomJS from the packages server
+	# Prepare PhantomJS directory, binary is linked from PhantomJS package in postinst
 	#
 	if [ -e "$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs" ]; \
 		then rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs; \
 	fi
 	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/
-	wget http://packages.calnexsol.com/build_dependencies/1.0/binary_dependencies/phantomjs    \
-			-O $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
-	chmod 555 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/
 	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/RenderService.js    $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/RenderService.js
 	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/Render.js           $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/Render.js
 	
