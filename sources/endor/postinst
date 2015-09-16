@@ -71,9 +71,9 @@ fi
 # And if any saved data exists, put that into the database too
 #
 if [ -e /opt/lib/endor/utility/restore_persistent_data.py ]; then
-    if [ -e ${HOME}/endor_saved_state.txt ]; then
+    if [ -e /opt/var/lib/endor/endor_saved_state.txt ]; then
         echo "Restoring saved database settings"
-        python3 /opt/lib/endor/utility/restore_persistent_data.py < ${HOME}/endor_saved_state.txt
+        python3 /opt/lib/endor/utility/restore_persistent_data.py < /opt/var/lib/endor/endor_saved_state.txt
         rm -f ${HOME}/endor_saved_state.txt
     fi
 fi
