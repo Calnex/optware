@@ -118,11 +118,11 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		fi; \
 		git submodule sync --recursive && \
 		cd Server/Software/Libs/CAT && \
-		git submodule update --init --remote $(ENDOR_PARAGON_CAT_GIT_REFERENCE) && \
+		git submodule update --init $(ENDOR_PARAGON_CAT_GIT_REFERENCE) && \
 		cd Calnex.Endor.DataStorage && \
-		git submodule update --init --remote $(ENDOR_PARAGON_DATASTORAGE_GIT_REFERENCE) && \
+		git submodule update --init $(ENDOR_PARAGON_DATASTORAGE_GIT_REFERENCE) && \
         cd Calnex.Common && \
-        git submodule update --init --remote $(ENDOR_PARAGON_CALNEXCOMMON_GIT_REFERENCE) && \
+        git submodule update --init $(ENDOR_PARAGON_CALNEXCOMMON_GIT_REFERENCE) && \
 		cd .. && \
 		if [ ! -z "${CAT_TAG}" ] ; \
 			then \
