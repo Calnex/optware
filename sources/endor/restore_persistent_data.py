@@ -8,14 +8,17 @@ def executeSingleCommand(user, database, cmd):
     return commandResponse
 
 def recallPersistentDatabaseState(user, database):
-    input = sys.stdin.read()
-    persisted = eval(input)
+    try:
+        input = sys.stdin.read()
+        persisted = eval(input)
     
-    if(persisted['saved_values'] != False):
-        executeSingleCommand(user, database, "UPDATE control_port_state SET dhcp_enabled='{}'".format(persisted['dhcp_enabled']))
-        executeSingleCommand(user, database, "UPDATE control_port_state SET ipv4_address='{}'".format(persisted['ipv4_address']))
-        executeSingleCommand(user, database, "UPDATE control_port_state SET subnet_mask='{}'".format(persisted['subnet_mask']))
-        executeSingleCommand(user, database, "UPDATE control_port_state SET gateway='{}'".format(persisted['gateway']))
+        if(persisted['saved_values'] != False):
+            executeSingleCommand(user, database, "UPDATE control_port_state SET dhcp_enabled='{}'".format(persisted['dhcp_enabled']))
+            executeSingleCommand(user, database, "UPDATE control_port_state SET ipv4_address='{}'".format(persisted['ipv4_address']))
+            executeSingleCommand(user, database, "UPDATE control_port_state SET subnet_mask='{}'".format(persisted['subnet_mask']))
+            executeSingleCommand(user, database, "UPDATE control_port_state SET gateway='{}'".format(persisted['gateway']))
+    except:
+        print ("Error restoring persisted data.  Default values will be used instead")
     
 def main():
     recallPersistentDatabaseState("admin", "endor")
