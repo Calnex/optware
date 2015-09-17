@@ -351,8 +351,10 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	cp -r $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema
 	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb_Attero.py $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
 		$(MAKE) $(ENDOR_ATTERO_IPK_DIR)/CONTROL/control
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/preinst  $(ENDOR_ATTERO_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/postinst $(ENDOR_ATTERO_IPK_DIR)/CONTROL/postinst
-	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/prerm $(ENDOR_ATTERO_IPK_DIR)/CONTROL/prerm
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/prerm    $(ENDOR_ATTERO_IPK_DIR)/CONTROL/prerm
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/postrm   $(ENDOR_ATTERO_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_ATTERO_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_ATTERO_IPK_DIR)/CONTROL/conffiles
 
 	# Some tidy-ups

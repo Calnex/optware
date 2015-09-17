@@ -350,8 +350,10 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	cp -r $(ENDOR_PARAGON_BUILD_DIR)/Endor/Data/Schema $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/schema
 	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb_Paragon.py $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
 		$(MAKE) $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/preinst  $(ENDOR_PARAGON_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/postinst $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/prerm $(ENDOR_PARAGON_IPK_DIR)/CONTROL/prerm
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/prerm    $(ENDOR_PARAGON_IPK_DIR)/CONTROL/prerm
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/postrm   $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_PARAGON_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_PARAGON_IPK_DIR)/CONTROL/conffiles
 
 	# Prepare PhantomJS directory, binary is linked from PhantomJS package in postinst

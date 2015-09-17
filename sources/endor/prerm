@@ -43,4 +43,5 @@ fi
 sleep 1
 
 rm -rf /opt/lib/endor/CAT
+cd /opt/lib/mono
 rm -f `tar -tzf /opt/lib/endor/long-filepaths.tar.gz`

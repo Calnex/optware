@@ -1,0 +1,6 @@
+#! /bin/sh
+#
+# Remove any dangling folder structure that is left by any
+# previous install
+
+rm -rf /opt/lib/endor
