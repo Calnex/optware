@@ -220,9 +220,9 @@ $(ENDOR_ATTERO_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_ATTERO_SOURCE) $(ENDOR_
 		then mv $(BUILD_DIR)/$(ENDOR_ATTERO_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-		mdtool generate-makefiles EndorParagon.sln -d:release && \
+		mdtool generate-makefiles Endor.sln -d:release && \
 		sed -i -e 's/PROGRAMFILES = \\/PROGRAMFILES = \\\n\t$$(ASSEMBLY) \\/g' `find $(ENDOR_ATTERO_BUILD_DIR) -name Makefile.am` && \
-		sed -i -e 's/EndorParagon/Endor/g' autogen.sh configure.ac && \
+		sed -i -e 's/Endor/Endor/g' autogen.sh configure.ac && \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(ENDOR_ATTERO_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(ENDOR_ATTERO_LDFLAGS)" \
