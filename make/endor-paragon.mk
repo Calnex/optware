@@ -41,8 +41,7 @@ ENDOR_PARAGON_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_PARAGON_DESCRIPTION=Describe endor-paragon here.
 ENDOR_PARAGON_SECTION=base
 ENDOR_PARAGON_PRIORITY=optional
-#ENDOR_PARAGON_DEPENDS=postgresql, mono, xsp, nginx, phantomjs
-ENDOR_PARAGON_DEPENDS=postgresql, mono, nginx, phantomjs
+ENDOR_PARAGON_DEPENDS=postgresql, mono, xsp, nginx, phantomjs
 ENDOR_PARAGON_SUGGESTS=
 ENDOR_PARAGON_CONFLICTS=endor-attero
 
