@@ -359,8 +359,10 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	if [ -e "$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs" ]; \
 		then rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs; \
 	fi
-	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/
+	wget http://packages.calnexsol.com/build_dependencies/1.0/binary_dependencies/phantomjs    \
+			-O $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
+	chmod 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
 	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/RenderService.js    $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/RenderService.js
 	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/Render.js           $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/Render.js
 	
