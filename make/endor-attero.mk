@@ -349,7 +349,7 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/share/endor
 	install -m 755 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_ATTERO_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
 	cp -r $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema
-	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb_Attero.py $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
+	install -m 444 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb.py $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
 		$(MAKE) $(ENDOR_ATTERO_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/preinst  $(ENDOR_ATTERO_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/postinst $(ENDOR_ATTERO_IPK_DIR)/CONTROL/postinst

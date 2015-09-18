@@ -348,7 +348,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
 	cp -r $(ENDOR_PARAGON_BUILD_DIR)/Endor/Data/Schema $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/schema
-	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb_Paragon.py $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
+	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb.py $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
 		$(MAKE) $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/preinst  $(ENDOR_PARAGON_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/postinst $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst
