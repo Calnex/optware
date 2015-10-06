@@ -6,7 +6,7 @@
 	root /opt/lib/endor/;
 	client_max_body_size 100M;
 
-	location ~ .*\.(js|css|png|jpg|jpeg|gif|tif)?$ {
+	location ~ .*\.(js|css|png|jpg|jpeg|gif|tif|pdf)?$ {
 		expires modified 7d;
 		add_header Cache-Control "public";
 	}
