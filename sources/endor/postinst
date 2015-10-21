@@ -84,3 +84,19 @@ fi
 
 # Install NGINX config
 ln -s /opt/etc/nginx/sites-available/endor /opt/etc/nginx/sites-enabled/endor
+
+# If there was a previously-existing /home/calnex/Paragon100G folder, rename it to
+# Calnex100G (this is to support upgrade from release 01.00 of Paragon100G)
+#
+# We check if the old folder exists.  If so we rename it.  But before doing
+# so we make sure that the target folder doesn't exist.
+
+OLD_PUBLIC_FOLDER=${HOME}/Paragon100G
+NEW_PUBLIC_FOLDER=${HOME}/Calnex100G
+
+if [ -d ${OLD_PUBLIC_FOLDER} ]; then
+    mkdir -p ${NEW_PUBLIC_FOLDER}
+    cp --recursive --preserve --no-clobber ${OLD_PUBLIC_FOLDER}/* ${NEW_PUBLIC_FOLDER}/
+    rm -rf ${OLD_PUBLIC_FOLDER}
+    rm -f ${NEW_PUBLIC_FOLDER}/Logs/Control/*.nlog
+fi
