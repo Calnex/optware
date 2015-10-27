@@ -93,4 +93,5 @@ if [ -d ${OLD_PUBLIC_FOLDER} ]; then
     mkdir -p ${NEW_PUBLIC_FOLDER}
     cp --recursive --preserve --no-clobber ${OLD_PUBLIC_FOLDER}/* ${NEW_PUBLIC_FOLDER}/
     rm -rf ${OLD_PUBLIC_FOLDER}
+    rm -f ${NEW_PUBLIC_FOLDER}/Logs/Control/*.nlog
 fi
