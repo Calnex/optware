@@ -12,6 +12,7 @@
 	}
 
 	location / {
+		fastcgi_read_timeout 1h;
 		fastcgi_pass unix:/opt/tmp/mono-fcgi.sock;
 		include fastcgi_params;
 	}

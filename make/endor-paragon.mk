@@ -91,7 +91,7 @@ ENDOR_PARAGON_BUILD_DIR=$(BUILD_DIR)/endor-paragon
 ## Source dir is common for now
 ENDOR_PARAGON_SOURCE_DIR=$(SOURCE_DIR)/endor
 ENDOR_PARAGON_IPK_DIR=$(BUILD_DIR)/endor-paragon-ipk
-ENDOR_PARAGON_IPK=$(BUILD_DIR)/endor-paragon_$(ENDOR_PARAGON_VERSION)-$(ENDOR_PARAGON_IPK_VERSION)_$(TARGET_ARCH).ipk
+ENDOR_PARAGON_IPK=$(BUILD_DIR)/endor-paragon_$(ENDOR_PARAGON_IPK_VERSION)-$(ENDOR_PARAGON_VERSION)_$(TARGET_ARCH).ipk
 ENDOR_PARAGON_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 
 ENDOR_PARAGON_CAT_BUILD_DIR = $(BUILD_DIR)/cat
@@ -121,8 +121,8 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 		git submodule update --init $(ENDOR_PARAGON_CAT_GIT_REFERENCE) && \
 		cd Calnex.Endor.DataStorage && \
 		git submodule update --init $(ENDOR_PARAGON_DATASTORAGE_GIT_REFERENCE) && \
-        cd Calnex.Common && \
-        git submodule update --init $(ENDOR_PARAGON_CALNEXCOMMON_GIT_REFERENCE) && \
+		cd Calnex.Common && \
+		git submodule update --init $(ENDOR_PARAGON_CALNEXCOMMON_GIT_REFERENCE) && \
 		cd .. && \
 		if [ ! -z "${CAT_TAG}" ] ; \
 			then \
@@ -272,7 +272,7 @@ $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_PARAGON_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_PARAGON_SECTION)" >>$@
-	@echo "Version: $(ENDOR_PARAGON_VERSION)-$(ENDOR_PARAGON_IPK_VERSION)" >>$@
+	@echo "Version: $(ENDOR_PARAGON_IPK_VERSION)-$(ENDOR_PARAGON_VERSION)" >>$@
 	@echo "Maintainer: $(ENDOR_PARAGON_MAINTAINER)" >>$@
 	@echo "Source: $(ENDOR_PARAGON_SITE)/$(ENDOR_PARAGON_SOURCE)" >>$@
 	@echo "Description: $(ENDOR_PARAGON_DESCRIPTION)" >>$@
