@@ -32,7 +32,7 @@ include $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/target-specific.mk
 
 ifneq (, $(filter $(OPTWARE-BOOTSTRAP_TARGET), $(OPTWARE-BOOTSTRAP_TARGETS)))
 
-OPTWARE-BOOTSTRAP_CONTAINS ?= ipkg-opt openssl wget-ssl
+OPTWARE-BOOTSTRAP_CONTAINS ?= ipkg-opt wget debian
 OPTWARE-BOOTSTRAP_IPKS_DONE:=$(foreach p, $(OPTWARE-BOOTSTRAP_CONTAINS), $(BUILD_DIR)/$(p)/.ipk)
 
 OPTWARE-BOOTSTRAP_BUILD_DIR=$(BUILD_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)-optware-bootstrap
@@ -128,7 +128,7 @@ endif
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 	# build optware-bootstrap.xsh next
 	rm -rf $(BUILD_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)-bootstrap_*_$(TARGET_ARCH).xsh
-	rm -rf $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap
+#	rm -rf $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap
 	install -d $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap
 	#	move the ipk, so it will not be in the feed
 	mv $(OPTWARE-BOOTSTRAP_IPK) $(OPTWARE-BOOTSTRAP_BUILD_DIR)/bootstrap/optware-bootstrap.ipk
@@ -167,7 +167,7 @@ endif
 	sed -i -e "s/NNN/`wc -c $@ | awk '{print $$1}'`/" $@
 	tar -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -czf - bootstrap >>$@
 	chmod 755 $@
-#	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPTWARE-BOOTSTRAP_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 
 optware-bootstrap-ipk: $(OPTWARE-BOOTSTRAP_XSH)
 optware-bootstrap-xsh: $(OPTWARE-BOOTSTRAP_XSH)

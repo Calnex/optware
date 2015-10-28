@@ -16,7 +16,9 @@ then
 	mono /opt/lib/endor/Calnex.Endor.Instrument.Controller.exe \
 	-a 10.10.10.10 \
 	-u /srv/tftp/fw-update-__FIRMWARE_VERSION__.tar.gz \
-	-m /srv/tftp/fw-update-__FIRMWARE_VERSION__.tar.gz.md5
+	-m /srv/tftp/fw-update-__FIRMWARE_VERSION__.tar.gz.md5 \
+	-r 30 \
+	-d 10
 	
 	# Because the DB was stopped previously.
 	/opt/etc/init.d/S95postgresql stop

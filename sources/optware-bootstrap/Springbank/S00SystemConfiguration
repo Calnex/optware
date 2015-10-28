@@ -41,6 +41,56 @@ file -s /dev/sda4 | grep ext4
 reboot
 fi
 
+# Debian self install
+if [[ -e /opt/var/lib/debian/root.img ]]
+then
+	cd /opt/var/lib/debian/
+	OLD_PARTITION=$(fdisk -l /dev/sda | awk '$2 == "*" {print $1}')
+	OLD_PARTITION="${OLD_PARTITION: -1}"
+	if [ "$OLD_PARTITION" = "1" ]
+	then
+		$NEW_PARTITION=2
+	else
+		$NEW_PARTITION=1
+	fi
+	CSUM_ROOT=$(md5sum /dev/sda$OLD_PARTITION | grep --only-matching -m 1 '^[0-9a-f]*')
+	CSUM_IMG=$(md5sum root.img | grep --only-matching -m 1 '^[0-9a-f]*')
+	if [ "$CSUM_ROOT" != "$CSUM_IMG" ]
+	then
+		gpg --verify root.img.asc root.img
+		if [ $? = 0 ]
+		then
+IMG_SIZE=$(ls -l root.img | awk '{print $5}')
+fdisk /dev/sda << EOF3
+d
+${NEW_PARTITION}
+w
+EOF3
+partprobe
+fdisk /dev/sda << EOF4
+n
+p
+2097216
++$(($IMG_SIZE/512))
+w
+EOF4
+partprobe
+dd if=root.img of=/dev/sda${NEW_PARTITION}
+sync
+fdisk /dev/sda << EOF5
+a
+${NEW_PARTITION}
+a
+${OLD_PARTITION}
+w
+EOF5
+sync
+reboot
+		else
+			echo "Debian update image keysign check failed!"
+		fi
+	fi
+# Optware self install
 /opt/bin/ipkg list_installed | grep endor >/dev/null
 if [[ $? != 0 ]]
 then

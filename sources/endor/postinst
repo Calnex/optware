@@ -2,7 +2,7 @@
 
 echo ""
 echo "ENDOR POSTINST"
-echo "==================="
+echo "=============="
 
 
 cd /opt/lib/endor

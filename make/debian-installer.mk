@@ -99,12 +99,12 @@ PRODUCT?=Paragon
 #
 $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debian-installer.mk
 #	$(MAKE) packages
-	$(MAKE) optware-bootstrap-ipk debian-root
+	$(MAKE) optware-bootstrap-ipk debian
 	sudo rm -rf $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR) $(@D)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	# Apply the Debian root configs such that the live demo and
 	# root FS match as closely as possible.
-	#cp -ar $(DEBIAN-ROOT_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
+	#cp -ar $(DEBIAN_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	# Configs for the live system *OLNY*
 	#cp -ar $(DEBIAN-LIVE_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	# Configs for the installer
@@ -142,7 +142,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
-		sudo cp $(DEBIAN-ROOT_BUILD_DIR)/live-image-amd64.hybrid.iso $(@D)/config/includes.binary/ ;\
+		sudo cp $(DEBIAN_BUILD_DIR)/live-image-amd64.hybrid.iso $(@D)/config/includes.binary/ ;\
 	)
 	touch $@
 

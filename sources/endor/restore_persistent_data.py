@@ -21,6 +21,7 @@ def recallPersistentDatabaseState(user, database):
         print ("Error restoring persisted data.  Default values will be used instead")
     
 def main():
+    os.environ['PGPASSWORD'] = 'admin'
     recallPersistentDatabaseState("admin", "endor")
 
 if __name__ == "__main__":
