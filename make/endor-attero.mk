@@ -393,6 +393,11 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/ && \
 	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/
 	
+	# Packet Field Defs - I wish they weren't in bin!
+	#
+	install -m 644 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Web/WebApp/bin/PacketFieldDefs.xml $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/PacketFieldDefs.xml
+	install -m 644 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Web/WebApp/bin/ProtocolDefs.xml    $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/ProtocolDefs.xml
+	
 	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
 	# Build any such files into a tarball that can later be purged.
 	#
