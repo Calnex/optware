@@ -366,7 +366,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 			-O $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
 	chmod 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
 	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/RenderService.js    $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/RenderService.js
-	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/Render.js           $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/Render.js
+	# install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/Render.js           $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/Render.js
 	
 	# Swagger files
 	#
