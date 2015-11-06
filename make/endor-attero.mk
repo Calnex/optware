@@ -392,6 +392,19 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	cd $(ENDOR_ATTERO_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithAttero && \
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/ && \
 	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/Help/
+
+	# Embedded firmware
+	#
+	if [ ! -z "${ENDOR_ATTERO_FIRMWARE_VERSION}" ]; then \
+        if [ "${ENDOR_ATTERO_FIRMWARE_VERSION}" != "(none)" ] ; then \
+            install -d $(ENDOR_ATTERO_IPK_DIR)/opt/var/lib/embedded; \
+            cd $(ENDOR_ATTERO_IPK_DIR)/opt/var/lib/embedded; \
+            wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_ATTERO_FIRMWARE_VERSION).tar.gz"; \
+            wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_ATTERO_FIRMWARE_VERSION).tar.gz.md5"; \
+            cat $(ENDOR_ATTERO_SOURCE_DIR)/postinst.firmware >> $(ENDOR_ATTERO_IPK_DIR)/CONTROL/postinst; \
+            sed -i -e 's/__FIRMWARE_VERSION__/${ENDOR_ATTERO_FIRMWARE_VERSION}/g' $(ENDOR_ATTERO_IPK_DIR)/CONTROL/postinst; \
+        fi; \
+	fi
 	
 	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
 	# Build any such files into a tarball that can later be purged.
