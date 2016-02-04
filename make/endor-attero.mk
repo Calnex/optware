@@ -343,6 +343,13 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML
 	install -m 755 -t $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*
+
+        # Application JavaScript
+        #
+	install -m 644 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Web/WebApp/wwwroot/ngApps/Attero/atteroApp.min.js          $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/wwwroot/ngApps/Attero/atteroApp.min.js
+	install -m 644 $(ENDOR_ATTERO_BUILD_DIR)/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js                  $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/wwwroot/ngUtils/ngUtils.min.js
+
+
 	
 	# Various other required files
 	#
