@@ -35,6 +35,7 @@ file -s /dev/sda4 | grep ext4
         mkdir -p /mnt/home
         mount /dev/sda4 /mnt/home
         echo '/home union' >> /mnt/home/persistence.conf
+        echo '/var/lib/dhcp3/dhclient.leases union' >> /mnt/home/persistence.conf
         umount /mnt/home
         rm -rf /mnt/home
     fi
