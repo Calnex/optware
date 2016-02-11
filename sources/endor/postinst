@@ -1,10 +1,5 @@
 #!/bin/sh
 
-echo ""
-echo "ENDOR POSTINST"
-echo "=============="
-
-
 cd /opt/lib/endor
 tar -xzf long-filepaths.tar.gz
 
