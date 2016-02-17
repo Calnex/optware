@@ -1,1 +1,1 @@
-/opt/var/lib/embedded           10.10.10.10(fsid=0,rw,sync,no_subtree_check,no_root_squash)
+/opt/var/lib/embedded           10.10.10.10(fsid=0,rw,sync,no_subtree_check,all_squash,anonuid=1001,anongid=1001)
