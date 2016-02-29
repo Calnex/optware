@@ -19,16 +19,14 @@ fi
 
 case "$rc" in
     start)
-        echo -n "Starting Cat RemotingServer: "
-		/opt/bin/cat-supervisor> /dev/null 2>&1 &
-		python3 /opt/bin/cat-redirect > /dev/null 2>&1 &
+        echo -n "Starting Cat Pfv RemotingServer: "
+		/opt/bin/cat-pfv-supervisor> /dev/null 2>&1 &
 		echo ok
 		;;
 	stop)
-		echo -n "Stopping Cat RemotingServer: "
-		pkill -f '/bin/sh /opt/bin/cat-supervisor'
-		pkill -f 'mono /opt/lib/endor/Calnex.Cat.RemotingServer.Cat.exe'
-		pkill -f 'python3 /opt/bin/cat-redirect'
+		echo -n "Stopping Cat Pfv RemotingServer: "
+		pkill -f '/bin/sh /opt/bin/cat-pfv-supervisor'
+		pkill -f 'mono /opt/lib/endor/Calnex.Cat.RemotingServer.Pfv.exe'
 		echo ok
 		;;
 	restart)
