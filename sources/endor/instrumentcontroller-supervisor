@@ -15,7 +15,7 @@ then
 	embeddedAddress=127.0.0.1
 fi
 
-countdown=130
+countdown=300
 embeddedReady=1
 until [ $embeddedReady -eq 0 -o $countdown -eq 0 ]
 do
