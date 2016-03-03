@@ -300,6 +300,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrumentcontroller-supervisor	$(ENDOR_PARAGON_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
+	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-pfv-supervisor				    $(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-pfv-supervisor
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-supervisor				    $(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-supervisor
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.webapp				$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.webapp
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.translatorclui		$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
