@@ -340,6 +340,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
 	cp -rv $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/index.cat.html $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/index.html
+	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV
 	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/
 	cp -rv $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/index.pfv.html $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/index.html
 
