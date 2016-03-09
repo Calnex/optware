@@ -3,5 +3,4 @@
 if [ -x /opt/etc/init.d/S98cat-remotingserver ]
 then
 	/opt/etc/init.d/S98cat-remotingserver stop
-	/opt/etc/init.d/S98cat-pfv-remotingserver stop
 fi

@@ -34,7 +34,6 @@ fi
 
 /opt/etc/init.d/S99endor-webapp stop
 /opt/etc/init.d/S98cat-remotingserver stop
-/opt/etc/init.d/S98cat-pfv-remotingserver stop
 /opt/etc/init.d/S97endor-instrumentcontroller stop
 
 if [ -e /opt/etc/init.d/S96endor-virtualinstrument ]; then
