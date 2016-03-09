@@ -1,0 +1,16 @@
+#! /bin/sh
+
+exitStatus=1
+
+export MONO_GC_PARAMS=nursery-size=32m
+
+while [ $exitStatus -ne 0 ]
+do
+	mono /opt/lib/endor/Calnex.CAT.RemotingServer.Pfv.exe > /dev/null 2>&1
+	exitStatus=$?
+	
+	if [ $exitStatus -ne 0 ]
+	then
+		psql -d endor -c "insert into ic_error (time_stamp, error_class, handled, msg) VALUES (now(), 'Error', 'f', 'CAT PFV exited with code $exitStatus and was restarted');"
+	fi
+done
