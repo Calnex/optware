@@ -20,12 +20,12 @@ fi
 case "$rc" in
     start)
         echo -n "Starting Cat Pfv RemotingServer: "
-		/opt/bin/cat-pfv-supervisor> /dev/null 2>&1 &
+		/opt/bin/cat-supervisor-pfv> /dev/null 2>&1 &
 		echo ok
 		;;
 	stop)
 		echo -n "Stopping Cat Pfv RemotingServer: "
-		pkill -f '/bin/sh /opt/bin/cat-pfv-supervisor'
+		pkill -f '/bin/sh /opt/bin/cat-supervisor-pfv'
 		pkill -f 'mono /opt/lib/endor/Calnex.CAT.RemotingServer.Pfv.exe'
 		echo ok
 		;;
