@@ -301,7 +301,6 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrumentcontroller-supervisor	$(ENDOR_PARAGON_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-supervisor				    $(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-supervisor
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-pfv-supervisor				$(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-pfv-supervisor
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.webapp				$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.webapp
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.translatorclui		$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/curiosity					    $(ENDOR_PARAGON_IPK_DIR)/opt/bin/curiosity
@@ -311,7 +310,6 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-wait-for-database		$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-instrumentcontroller	$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.cat-remotingserver			$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.cat-pfv-remotingserver		$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S98cat-pfv-remotingserver
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp				    $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-translatorclui			$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-translator
 	install -m 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/WebApp.dll			$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
