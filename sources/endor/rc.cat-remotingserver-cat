@@ -20,7 +20,7 @@ fi
 case "$rc" in
     start)
         echo -n "Starting Cat RemotingServer: "
-		/opt/bin/cat-supervisor> /dev/null 2>&1 &
+		/opt/bin/cat-supervisor-cat> /dev/null 2>&1 &
 		python3 /opt/bin/cat-redirect > /dev/null 2>&1 &
 		echo ok
 		;;
