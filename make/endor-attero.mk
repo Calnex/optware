@@ -337,7 +337,6 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT/
-	cp -rv $(ENDOR_ATTERO_BUILD_DIR)/opt/lib/endor/CAT/index.cat.html $(ENDOR_ATTERO_BUILD_DIR)/opt/lib/endor/CAT/index.html
 
 	
 	# CAT's Mask_XML files
