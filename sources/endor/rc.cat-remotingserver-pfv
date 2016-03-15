@@ -1,0 +1,42 @@
+#! /bin/sh
+
+#syslog_pipe=/tmp/$$.log.tmp
+#trap "rm -f $syslog_pipe" EXIT
+#mknod $syslog_pipe p
+
+#logger <$syslog_pipe -t $0 &
+
+#########
+if [ -z "$1" ] ; then
+	case `echo "$0" | /bin/sed 's:^.*/\(.*\):\1:g'` in
+		S??*) rc="start" ;;
+		K??*) rc="stop" ;;
+		*) rc="usage" ;;
+	esac
+else
+	rc="$1"
+fi
+
+case "$rc" in
+    start)
+        echo -n "Starting Cat Pfv RemotingServer: "
+		/opt/bin/cat-supervisor-pfv> /dev/null 2>&1 &
+		echo ok
+		;;
+	stop)
+		echo -n "Stopping Cat Pfv RemotingServer: "
+		pkill -f '/bin/sh /opt/bin/cat-supervisor-pfv'
+		pkill -f 'mono /opt/lib/endor/Calnex.CAT.RemotingServer.Pfv.exe'
+		echo ok
+		;;
+	restart)
+		"$0" stop
+		sleep 1
+		"$0" start
+		;;
+	*)
+		echo "Usage: $0 (start|stop|restart|usage)"
+		;;
+esac
+
+
