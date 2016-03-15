@@ -302,6 +302,7 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/instrumentcontroller-supervisor	$(ENDOR_ATTERO_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/cat-supervisor-cat				$(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-supervisor-cat
+	install -m 755 $(ENDOR_ATTERO_IPK_DIR)/cat-supervisor-pfv				$(ENDOR_ATTERO_IPK_DIR)/opt/bin/cat-supervisor-pfv
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.webapp				$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.webapp
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/calnex.endor.translatorclui		$(ENDOR_ATTERO_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/curiosity					        $(ENDOR_ATTERO_IPK_DIR)/opt/bin/curiosity
@@ -337,6 +338,9 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT/
+	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV
+	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/
+	cp -rv $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/index.pfv.html $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/index.html
 
 	
 	# CAT's Mask_XML files
