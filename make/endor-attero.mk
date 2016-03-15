@@ -312,6 +312,7 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-wait-for-database		$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-instrumentcontroller		$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.cat-remotingserver-cat		    $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver-cat
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.cat-remotingserver-pfv		    $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver-pfv
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-webapp				    $(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-webapp
 	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/rc.endor-translatorclui			$(ENDOR_ATTERO_IPK_DIR)/opt/etc/init.d/S99endor-translator
 	install -m 755 $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/WebApp.dll			    $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
