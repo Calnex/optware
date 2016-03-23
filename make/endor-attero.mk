@@ -339,15 +339,19 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/CAT/
-	mkdir $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/PFV
+	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/PFV
 	cp -rv $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/PFV/
 	cp -rv $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/PFV/index.pfv.html $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/PFV/index.html
-
 	
 	# CAT's Mask_XML files
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML
 	install -m 755 -t $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*
+	
+	# CAT's Mask_XML files
+	#
+	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/PAT
+	install -m 755 -t $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/PAT $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/Release/PAT/*
 
         # Application JavaScript
         #

@@ -340,7 +340,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
 	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
 	cp -rv $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/index.cat.html $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/index.html
-	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV
 	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/
 	cp -rv $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/index.pfv.html $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/index.html
 
@@ -348,6 +348,11 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML
 	install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*
+	
+	# CAT's PAT files
+	#
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT
+	install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/PAT/*
 
 	# Application JavaScript
 	#
