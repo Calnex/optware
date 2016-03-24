@@ -351,8 +351,13 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	
 	# CAT's PAT files
 	#
+	#install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT
+	#install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/PAT/*
+	
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT
-	install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/PAT/*
+	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT/Rules
+	install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT/Rules "$(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/PAT/C37.238-2011 Power Profile.xml"
+	
 
 	# Application JavaScript
 	#
