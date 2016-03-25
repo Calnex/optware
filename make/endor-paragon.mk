@@ -352,7 +352,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	# CAT's PAT files
 	#
 	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT
-	install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/PAT/*
+	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/PAT/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT
 	
 	# Application JavaScript
 	#

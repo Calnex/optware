@@ -348,10 +348,10 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML
 	install -m 755 -t $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/Mask_XML $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*
 	
-	# CAT's Mask_XML files
+	# CAT's PAT files
 	#
 	install -d $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/PAT
-	install -m 755 -t $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/PAT $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/Release/PAT/*
+	cp -rv $(ENDOR_ATTERO_BUILD_DIR)/Libs/CAT/Release/PAT/* $(ENDOR_ATTERO_IPK_DIR)/opt/lib/endor/bin/PAT
 
         # Application JavaScript
         #
