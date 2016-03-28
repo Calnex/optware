@@ -319,7 +319,6 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -m 644 $(ENDOR_PARAGON_SOURCE_DIR)/save_persistent_data.py          $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility/save_persistent_data.py
 	install -m 644 $(ENDOR_PARAGON_SOURCE_DIR)/restore_persistent_data.py       $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility/restore_persistent_data.py
     
-	
 	# Shell scripts
 	#
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_DHCP.sh   $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_ifconfig_DHCP.sh
