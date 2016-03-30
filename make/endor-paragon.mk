@@ -326,6 +326,7 @@ $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_gateway.sh         $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_gateway.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_ip.sh              $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_ip.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_subnet_mask.sh     $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_subnet_mask.sh
+	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_endor_revision.sh  $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_endor_revision.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/poweroff.sh            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/poweroff.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/reboot.sh              $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/reboot.sh
 	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Sql/attero_updates.sql       $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/attero_updates.sql
