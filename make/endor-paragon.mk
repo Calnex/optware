@@ -147,7 +147,6 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
 		include $(BUILD_DIR)/endor-paragon/Server/Software/Make/endor-paragon.mk; \
-		
 	)
 
 
@@ -232,7 +231,7 @@ endor-paragon-stage: $(ENDOR_PARAGON_BUILD_DIR)/.staged
 #
 # This is called from the top level makefile to create the IPK file.
 #
-endor-paragon-ipk: endor-paragon-source $(ENDOR_PARAGON_IPK)
+endor-paragon-ipk: endor-paragon-source
 
 #
 # This is called from the top level makefile to clean all of the built files.
