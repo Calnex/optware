@@ -149,7 +149,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 	)
 -include $(BUILD_DIR)/endor-paragon/Server/Software/Make/endor-paragon.mk ; \
 cd $(BUILD_DIR)/endor-paragon/Server/Software/Make ; \
-make endor-paragon.mk ; \
+$(MAKE) endor-paragon.mk; \
 
 
 #
