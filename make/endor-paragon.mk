@@ -231,7 +231,7 @@ endor-paragon-stage: $(ENDOR_PARAGON_BUILD_DIR)/.staged
 #
 # This is called from the top level makefile to create the IPK file.
 #
-endor-paragon-ipk: $(ENDOR_PARAGON_IPK)
+endor-paragon-ipk: endor-paragon-source $(ENDOR_PARAGON_IPK)
 
 #
 # This is called from the top level makefile to clean all of the built files.
