@@ -147,8 +147,6 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
 		-include $(BUILD_DIR)/endor-paragon/Server/Software/Make/endor-paragon.mk ; \
-		cd $(BUILD_DIR)/endor-paragon/Server/Software/Make ; \
-		$(MAKE) endor-paragon.mk ; \
 	)
 
 
