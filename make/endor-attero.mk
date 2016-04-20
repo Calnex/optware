@@ -147,7 +147,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		/bin/sh $(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero minify ; \
+		/bin/sh $(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero minify "$(BUILD_DIR)" "${TAG_NAME}"; \
 	)
 
 
