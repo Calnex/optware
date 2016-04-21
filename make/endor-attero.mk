@@ -148,22 +148,22 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
 		
-		$(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero minify "$(BUILD_DIR)"; \
+		$(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero minify "$(BUILD_DIR)" ; \
 		
-		cd ${BUILD_DIR}/endor-attero/Server/Software && \
+		cd $(BUILD_DIR)/endor-attero/Server/Software && \
 		tar --transform  "s,^,endor-attero/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
-			cd ${BUILD_DIR}/endor-attero/Server/Software/EndorDocumentation ; \
+			cd $(BUILD_DIR)/endor-attero/Server/Software/EndorDocumentation ; \
 			/usr/bin/git checkout master ; \
 			/usr/bin/git branch -d br_doc_${TAG_NAME} ; \
-			cd ${BUILD_DIR}/endor-attero ; \
+			cd $(BUILD_DIR)/endor-attero ; \
 			/usr/bin/git checkout master ; \
 			/usr/bin/git branch -d br_${TAG_NAME} ; \
 		fi; \
-		cd ${BUILD_DIR} ;\
-		rm -rf endor-attero ;
+		cd $(BUILD_DIR) ; \
+		rm -rf endor-attero ; \
 	)
 
 
