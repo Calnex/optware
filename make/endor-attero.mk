@@ -122,8 +122,8 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		git submodule update --init $(ENDOR_ATTERO_CAT_GIT_REFERENCE) && \
 		cd Calnex.Endor.DataStorage && \
 		git submodule update --init $(ENDOR_ATTERO_DATASTORAGE_GIT_REFERENCE) && \
-        cd Calnex.Common && \
-        git submodule update --init $(ENDOR_ATTERO_CALNEXCOMMON_GIT_REFERENCE) && \
+		cd Calnex.Common && \
+		git submodule update --init $(ENDOR_ATTERO_CALNEXCOMMON_GIT_REFERENCE) && \
 		cd .. && \
 		if [ ! -z "${CAT_TAG}" ] ; \
 			then \
@@ -147,7 +147,9 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		/bin/sh $(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero minify "$(BUILD_DIR)"; \
+		
+		$(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero minify "$(BUILD_DIR)"; \
+		
 		cd ${BUILD_DIR}/endor-attero/Server/Software && \
 		tar --transform  "s,^,endor-attero/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
@@ -277,8 +279,21 @@ $(ENDOR_ATTERO_IPK_DIR)/CONTROL/control:
 $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	rm -rf $(ENDOR_ATTERO_IPK_DIR) $(BUILD_DIR)/endor-attero_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_ATTERO_BUILD_DIR) DESTDIR=$(ENDOR_ATTERO_IPK_DIR) install-strip
+		$(MAKE) $(ENDOR_ATTERO_IPK_DIR)/CONTROL/control
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/preinst  $(ENDOR_ATTERO_IPK_DIR)/CONTROL/preinst
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/postinst $(ENDOR_ATTERO_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/prerm    $(ENDOR_ATTERO_IPK_DIR)/CONTROL/prerm
+	install -m 755 $(ENDOR_ATTERO_SOURCE_DIR)/postrm   $(ENDOR_ATTERO_IPK_DIR)/CONTROL/postrm
+	echo $(ENDOR_ATTERO_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_ATTERO_IPK_DIR)/CONTROL/conffiles
 	
 	$(BUILD_DIR)/endor-attero/Make/endor-attero install $(BUILD_DIR) $(SOURCE_DIR); \
+	
+	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
+	# Build any such files into a tarball that can later be purged.
+	#
+	cd ${ENDOR_ATTERO_IPK_DIR}/opt/lib/endor && \
+	tar --remove-files -czf long-filepaths.tar.gz \
+		`find . -type f -ls | awk '{ if (length($$13) > 80) { print $11}}'`
 	# Now go and build the package
 	#
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_ATTERO_IPK_DIR)
