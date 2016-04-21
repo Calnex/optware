@@ -291,7 +291,7 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	#
 	cd ${ENDOR_ATTERO_IPK_DIR}/opt/lib/endor && \
 	tar --remove-files -czf long-filepaths.tar.gz \
-		`find . -type f -ls | awk '{ if (length($$13) > 80) { print $11}}'`
+		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	# Now go and build the package
 	#
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_ATTERO_IPK_DIR)
