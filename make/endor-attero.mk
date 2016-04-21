@@ -122,8 +122,8 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 		git submodule update --init $(ENDOR_ATTERO_CAT_GIT_REFERENCE) && \
 		cd Calnex.Endor.DataStorage && \
 		git submodule update --init $(ENDOR_ATTERO_DATASTORAGE_GIT_REFERENCE) && \
-		cd Calnex.Common && \
-		git submodule update --init $(ENDOR_ATTERO_CALNEXCOMMON_GIT_REFERENCE) && \
+        cd Calnex.Common && \
+        git submodule update --init $(ENDOR_ATTERO_CALNEXCOMMON_GIT_REFERENCE) && \
 		cd .. && \
 		if [ ! -z "${CAT_TAG}" ] ; \
 			then \
@@ -147,9 +147,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		
 		$(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero minify "$(BUILD_DIR)" ; \
-		
 		cd $(BUILD_DIR)/endor-attero/Server/Software && \
 		tar --transform  "s,^,endor-attero/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
@@ -162,8 +160,8 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			/usr/bin/git checkout master ; \
 			/usr/bin/git branch -d br_${TAG_NAME} ; \
 		fi; \
-		cd $(BUILD_DIR) ; \
-		rm -rf endor-attero ; \
+		cd $(BUILD_DIR) ;\
+		rm -rf endor-attero ;\
 	)
 
 
