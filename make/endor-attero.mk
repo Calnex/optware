@@ -147,7 +147,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		/bin/sh $(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero minify $(BUILD_DIR); \
+		/bin/sh $(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero minify "$(BUILD_DIR)"; \
 		cd ${BUILD_DIR}/endor-attero/Server/Software && \
 		tar --transform  "s,^,endor-attero/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
@@ -278,7 +278,7 @@ $(ENDOR_ATTERO_IPK): $(ENDOR_ATTERO_BUILD_DIR)/.built
 	rm -rf $(ENDOR_ATTERO_IPK_DIR) $(BUILD_DIR)/endor-attero_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_ATTERO_BUILD_DIR) DESTDIR=$(ENDOR_ATTERO_IPK_DIR) install-strip
 	
-	$(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero install $(BUILD_DIR) $(SOURCE_DIR); \
+	$(BUILD_DIR)/endor-attero/Make/endor-attero install $(BUILD_DIR) $(SOURCE_DIR); \
 	# Now go and build the package
 	#
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_ATTERO_IPK_DIR)
