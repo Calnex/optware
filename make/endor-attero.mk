@@ -163,7 +163,7 @@ $(DL_DIR)/$(ENDOR_ATTERO_SOURCE):
 			/usr/bin/git branch -d br_${TAG_NAME} ; \
 		fi; \
 		cd ${BUILD_DIR} ;\
-		rm -rf endor-attero ;\
+		rm -rf endor-attero ;
 	)
 
 
