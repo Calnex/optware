@@ -146,26 +146,7 @@ $(DL_DIR)/$(ENDOR_PARAGON_SOURCE):
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		# Minify the Paragon Javascript \
-		python3 $(BUILD_DIR)/endor-paragon/Server/Software/Endor/BuildUtilities/minify2.py \
-			--type="js" \
-			--output="${BUILD_DIR}/endor-paragon/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon/paragonApp.min.js" \
-			--folder-exclusions="\\test \\Vendor \\img \\css" \
-			--file-inclusions="*.js" \
-			--file-exclusions="-spec.js" \
-			--folder-source="${BUILD_DIR}/endor-paragon/Server/Software/Endor/Web/WebApp/wwwroot/ngApps/Paragon" \
-			--java-interpreter="/usr/bin/java" \
-			--jar-file="$(BUILD_DIR)/endor-paragon/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
-		# Minify the ngUtils Javascript \
-		python3 $(BUILD_DIR)/endor-paragon/Server/Software/Endor/BuildUtilities/minify2.py \
-			--type="js" \
-			--output="${BUILD_DIR}/endor-paragon/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js" \
-			--folder-exclusions="\\test \\Vendor \\img \\css" \
-			--file-inclusions="*.js" \
-			--file-exclusions="-spec.js" \
-			--folder-source="${BUILD_DIR}/endor-paragon/Server/Software/Endor/Web/WebApp/wwwroot/ngUtils" \
-			--java-interpreter="/usr/bin/java" \
-			--jar-file="$(BUILD_DIR)/endor-paragon/Server/Software/Endor/BuildUtilities/yuicompressor-2.4.7.jar" ; \
+		$(BUILD_DIR)/endor-paragon/Server/Software/Make/endor-paragon minify "$(BUILD_DIR)" ; \
 		cd $(BUILD_DIR)/endor-paragon/Server/Software && \
 		tar --transform  "s,^,endor-paragon/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
@@ -295,129 +276,26 @@ $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control:
 $(ENDOR_PARAGON_IPK): $(ENDOR_PARAGON_BUILD_DIR)/.built
 	rm -rf $(ENDOR_PARAGON_IPK_DIR) $(BUILD_DIR)/endor-paragon_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_PARAGON_BUILD_DIR) DESTDIR=$(ENDOR_PARAGON_IPK_DIR) install-strip
-	
-	# Configuration files
-	#
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrumentcontroller-supervisor	$(ENDOR_PARAGON_IPK_DIR)/opt/bin/instrumentcontroller-supervisor
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-supervisor-cat				$(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-supervisor-cat
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-supervisor-pfv				$(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-supervisor-pfv
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.webapp				$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.webapp
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/calnex.endor.translatorclui		$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.translatorclui 
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/curiosity					    $(ENDOR_PARAGON_IPK_DIR)/opt/bin/curiosity
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/cat-redirect					    $(ENDOR_PARAGON_IPK_DIR)/opt/bin/cat-redirect
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrument.controller.virtual	$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.virtualinstrument
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/instrument.controller.physical	$(ENDOR_PARAGON_IPK_DIR)/opt/bin/calnex.endor.instrument.controller.physicalinstrument
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-wait-for-database		$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S96_pre_endor-waitfordatabase
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-instrumentcontroller	$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S97endor-instrumentcontroller
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.cat-remotingserver-cat		$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver-cat
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.cat-remotingserver-pfv		$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S98cat-remotingserver-pfv
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-webapp				    $(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-webapp
-	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/rc.endor-translatorclui			$(ENDOR_PARAGON_IPK_DIR)/opt/etc/init.d/S99endor-translator
-	install -m 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/WebApp.dll			$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/WebApp.dll
-	mkdir $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility
-	install -m 644 $(ENDOR_PARAGON_SOURCE_DIR)/save_persistent_data.py          $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility/save_persistent_data.py
-	install -m 644 $(ENDOR_PARAGON_SOURCE_DIR)/restore_persistent_data.py       $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/utility/restore_persistent_data.py
-    
-	# Shell scripts
-	#
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_DHCP.sh   $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_ifconfig_DHCP.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/set_ifconfig_static.sh $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_ifconfig_static.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_gateway.sh         $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_gateway.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_ip.sh              $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_ip.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_subnet_mask.sh     $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_subnet_mask.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/get_endor_revision.sh  $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/get_endor_revision.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/poweroff.sh            $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/poweroff.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Shell/reboot.sh              $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/reboot.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Controller/Sql/attero_updates.sql       $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/attero_updates.sql
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/update_software.sh                                        $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/update_software.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/update_software_worker.sh                                 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/update_software_worker.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/set_time.sh                                               $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_time.sh
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/Shell/set_date.sh                                               $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/set_date.sh
-	
-	# CAT HTML and Javascript
-	#
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT
-	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/
-	cp -rv $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/index.cat.html $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/CAT/index.html
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV
-	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/html/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/
-	cp -rv $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/index.pfv.html $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/PFV/index.html
-
-	# CAT's Mask_XML files
-	#
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML
-	install -m 755 -t $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/Mask_XML $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/WanderAnalysisTool/Mask_XML/*
-	
-	# CAT's PAT files
-	#
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT
-	cp -rv $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/PAT/* $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/bin/PAT
-	
-	# Application JavaScript
-	#
-	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/wwwroot/ngApps/Paragon/paragonApp.min.js        $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/wwwroot/ngApps/Paragon/paragonApp.min.js
-	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Web/WebApp/wwwroot/ngUtils/ngUtils.min.js                  $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/wwwroot/ngUtils/ngUtils.min.js
-
-	
-	# Various other required files
-	#
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor
-	install -m 755 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Instrument/Calnex.Endor.Instrument.Virtual/Files/V0.05SyncEthernetDemowander_V4_NEW.cpd $(ENDOR_PARAGON_IPK_DIR)/opt/share/endor/V0.05SyncEthernetDemowander_V4_NEW.cpd
-	cp -r $(ENDOR_PARAGON_BUILD_DIR)/Endor/Data/Schema $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/schema
-	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/Data/Schema/Baseline/RebuildDb.py $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/schema/Baseline/RebuildDb.py
 		$(MAKE) $(ENDOR_PARAGON_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/preinst  $(ENDOR_PARAGON_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/postinst $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/prerm    $(ENDOR_PARAGON_IPK_DIR)/CONTROL/prerm
 	install -m 755 $(ENDOR_PARAGON_SOURCE_DIR)/postrm   $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_PARAGON_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_PARAGON_IPK_DIR)/CONTROL/conffiles
-
-	# Prepare PhantomJS directory, binary is linked from PhantomJS package in postinst
-	#
-	if [ -e "$(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs" ]; \
-		then rm -rf $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs; \
-	fi
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/
-	wget http://packages.calnexsol.com/build_dependencies/1.0/binary_dependencies/phantomjs    \
-			-O $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
-	chmod 755 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/phantomjs
-	install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/RenderService.js    $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/RenderService.js
-	# install -m 644 $(ENDOR_PARAGON_BUILD_DIR)/Libs/CAT/Release/phantomJs/Render.js           $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/phantomJs/Render.js
 	
-	# Swagger files
-	#
-	install -m 644 ${ENDOR_PARAGON_BUILD_DIR}/Endor/Web/WebApp/doc/images/Favicon_Spirent.png   $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/doc/images/Favicon_Spirent.png
-	install -m 644 ${ENDOR_PARAGON_BUILD_DIR}/Endor/Web/WebApp/doc/images/Favicon_calnex.png    $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/doc/images/Favicon_calnex.png
-	
-	# Help documentation
-	#
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/Documents
-	install -m 444 $(ENDOR_PARAGON_BUILD_DIR)/Endor/BuildInformation/GitCommitIds.txt                 $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/GitCommitIds.txt
-
-	# NGINX config
-	#
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-available
-	install -d $(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-enabled
-	install -m 644 $(ENDOR_PARAGON_SOURCE_DIR)/endor.nginx	$(ENDOR_PARAGON_IPK_DIR)/opt/etc/nginx/sites-available/endor
-
-	cd $(ENDOR_PARAGON_BUILD_DIR)/EndorDocumentation/DocumentationShippedWithParagon && \
-	find . -name *.xml | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/ && \
-	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_PARAGON_IPK_DIR)/opt/lib/endor/Help/
-	
+	$(BUILD_DIR)/endor-paragon/Make/endor-paragon install $(BUILD_DIR) $(SOURCE_DIR); \
 	# Embedded firmware
 	#
 	if [ ! -z "${ENDOR_PARAGON_FIRMWARE_VERSION}" ]; then \
-        if [ "${ENDOR_PARAGON_FIRMWARE_VERSION}" != "(none)" ] ; then \
-            install -d $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
-            cd $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
-            wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz"; \
-            wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz.md5"; \
-            cat $(ENDOR_PARAGON_SOURCE_DIR)/postinst.firmware >> $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst; \
-            sed -i -e 's/__FIRMWARE_VERSION__/${ENDOR_PARAGON_FIRMWARE_VERSION}/g' $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst; \
-        fi; \
+	   if [ "${ENDOR_PARAGON_FIRMWARE_VERSION}" != "(none)" ] ; then \
+		  install -d $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
+		  cd $(ENDOR_PARAGON_IPK_DIR)/opt/var/lib/embedded; \
+		  wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz"; \
+		  wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_PARAGON_FIRMWARE_VERSION).tar.gz.md5"; \
+		  cat $(ENDOR_PARAGON_SOURCE_DIR)/postinst.firmware >> ${ENDOR_PARAGON_IPK_DIR}/CONTROL/postinst; \
+		  sed -i -e 's/__FIRMWARE_VERSION__/${ENDOR_PARAGON_FIRMWARE_VERSION}/g' $(ENDOR_PARAGON_IPK_DIR)/CONTROL/postinst; \
+	   fi; \
 	fi
-	
 	# The version of tar used in ipkg_build chokes at file name lengths > 100 characters.
 	# Build any such files into a tarball that can later be purged.
 	#
