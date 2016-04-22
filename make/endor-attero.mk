@@ -32,13 +32,14 @@ ENDOR_BRANCH_PARAM?=master
 
 
 ENDOR_REPOSITORY=https://github.com/Calnex/Springbank
+ENDOR_PRODUCT=attero
 ENDOR_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
 ENDOR_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
-ENDOR_SOURCE=endor-attero-$(ENDOR_VERSION).tar.gz
-ENDOR_DIR=endor-attero
+ENDOR_SOURCE=endor-$(ENDOR_PRODUCT)-$(ENDOR_VERSION).tar.gz
+ENDOR_DIR=endor-$(ENDOR_PRODUCT)
 ENDOR_UNZIP=zcat
 ENDOR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
-ENDOR_DESCRIPTION=Describe endor-attero here.
+ENDOR_DESCRIPTION=Describe endor-$(ENDOR_PRODUCT) here.
 ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
 ENDOR_DEPENDS=postgresql, mono, xsp, nginx
@@ -52,7 +53,7 @@ ENDOR_IPK_VERSION=$(BUILD_NUMBER)
 
 #
 # ENDOR_CONFFILES should be a list of user-editable files
-#ENDOR_CONFFILES=/opt/etc/endor-attero.conf /opt/etc/init.d/SXXendor-attero
+#ENDOR_CONFFILES=/opt/etc/endor-$(ENDOR_PRODUCT).conf /opt/etc/init.d/SXXendor-$(ENDOR_PRODUCT)
 
 #
 # ENDOR_PATCHES should list any patches, in the the order in
@@ -86,12 +87,12 @@ endif
 ENDOR_GIT_TAG?=HEAD
 ENDOR_GIT_OPTIONS?=
 ENDOR_TREEISH=$(ENDOR_GIT_TAG)
-ENDOR_BUILD_DIR=$(BUILD_DIR)/endor-attero
+ENDOR_BUILD_DIR=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)
 
 ## Source dir is common for now
 ENDOR_SOURCE_DIR=$(SOURCE_DIR)/endor
-ENDOR_IPK_DIR=$(BUILD_DIR)/endor-attero-ipk
-ENDOR_IPK=$(BUILD_DIR)/endor-attero_$(ENDOR_IPK_VERSION)-$(ENDOR_VERSION)_$(TARGET_ARCH).ipk
+ENDOR_IPK_DIR=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)-ipk
+ENDOR_IPK=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)_$(ENDOR_IPK_VERSION)-$(ENDOR_VERSION)_$(TARGET_ARCH).ipk
 ENDOR_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 
 ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
@@ -106,9 +107,9 @@ ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 $(DL_DIR)/$(ENDOR_SOURCE):
 	([ -z "${BUILD_VERSION_NUMBER}" ] && { echo "ERROR: Need to set BUILD_VERSION_NUMBER"; exit 1; }; \
 		cd $(BUILD_DIR) ; \
-		rm -rf endor-attero && \
-		git clone $(ENDOR_REPOSITORY) endor-attero $(ENDOR_GIT_OPTIONS) $(ENDOR_SPRINGBANK_GIT_REFERENCE) --branch $(ENDOR_BRANCH_PARAM)  && \
-		cd endor-attero && \
+		rm -rf endor-$(ENDOR_PRODUCT) && \
+		git clone $(ENDOR_REPOSITORY) endor-$(ENDOR_PRODUCT) $(ENDOR_GIT_OPTIONS) $(ENDOR_SPRINGBANK_GIT_REFERENCE) --branch $(ENDOR_BRANCH_PARAM)  && \
+		cd endor-$(ENDOR_PRODUCT) && \
 		if [ ! -z "${ENDOR_COMMIT_ID}" ] ; \
 			then /usr/bin/git checkout ${ENDOR_COMMIT_ID} ; \
 		fi ; \
@@ -132,36 +133,36 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 				/usr/bin/git submodule update --recursive;           \
 		fi; \
 		cd $(BUILD_DIR) && \
-		echo "using System.Reflection;" > endor-attero/Server/Software/Endor/BuildInformation/Version.cs ; \
-		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-attero/Server/Software/Endor/BuildInformation/Version.cs ; \
-		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-attero/Server/Software/Endor/BuildInformation/Version.cs ; \
-		git show-ref --heads > endor-attero/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
+		echo "using System.Reflection;" > endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/Version.cs ; \
+		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/Version.cs ; \
+		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/Version.cs ; \
+		git show-ref --heads > endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
 		# \
 		# Check out EndorDocumentation \
 		# \
-		cd $(BUILD_DIR)/endor-attero/Server/Software ; \
+		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software ; \
 		/usr/bin/git clone $(ENDOR_DOCUMENTATION_REPOSITORY) EndorDocumentation --branch $(ENDOR_BRANCH_PARAM) $(ENDOR_DOCUMENTATION_GIT_REFERENCE) ; \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
-			cd $(BUILD_DIR)/endor-attero/Server/Software/EndorDocumentation ; \
+			cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software/EndorDocumentation ; \
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		$(BUILD_DIR)/endor-attero/Server/Software/Make/endor-attero minify "$(BUILD_DIR)" ; \
-		cd $(BUILD_DIR)/endor-attero/Server/Software && \
-		tar --transform  "s,^,endor-attero/,S" -cz -f $@ --exclude=.git* * && \
+		$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software/Make/endor-$(ENDOR_PRODUCT) minify "$(BUILD_DIR)" ; \
+		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
+		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
-			cd $(BUILD_DIR)/endor-attero/Server/Software/EndorDocumentation ; \
+			cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software/EndorDocumentation ; \
 			/usr/bin/git checkout master ; \
 			/usr/bin/git branch -d br_doc_${TAG_NAME} ; \
-			cd $(BUILD_DIR)/endor-attero ; \
+			cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT) ; \
 			/usr/bin/git checkout master ; \
 			/usr/bin/git branch -d br_${TAG_NAME} ; \
 		fi; \
 		cd $(BUILD_DIR) ;\
-		rm -rf endor-attero ;\
+		rm -rf endor-$(ENDOR_PRODUCT) ;\
 	)
 
 
@@ -250,7 +251,7 @@ endor-attero-stage: $(ENDOR_BUILD_DIR)/.staged
 $(ENDOR_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	@echo "Package: endor-attero" >>$@
+	@echo "Package: endor-$(ENDOR_PRODUCT)" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_SECTION)" >>$@
@@ -268,14 +269,14 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 # Binaries should be installed into $(ENDOR_IPK_DIR)/opt/sbin or $(ENDOR_IPK_DIR)/opt/bin
 # (use the location in a well-known Linux distro as a guide for choosing sbin or bin).
 # Libraries and include files should be installed into $(ENDOR_IPK_DIR)/opt/{lib,include}
-# Configuration files should be installed in $(ENDOR_IPK_DIR)/opt/etc/endor-attero/...
-# Documentation files should be installed in $(ENDOR_IPK_DIR)/opt/doc/endor-attero/...
-# Daemon startup scripts should be installed in $(ENDOR_IPK_DIR)/opt/etc/init.d/S??endor-attero
+# Configuration files should be installed in $(ENDOR_IPK_DIR)/opt/etc/endor-$(ENDOR_PRODUCT)/...
+# Documentation files should be installed in $(ENDOR_IPK_DIR)/opt/doc/endor-$(ENDOR_PRODUCT)/...
+# Daemon startup scripts should be installed in $(ENDOR_IPK_DIR)/opt/etc/init.d/S??endor-$(ENDOR_PRODUCT)
 #
 # You may need to patch your application to make it use these locations.
 # 
 $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
-	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor-attero_*_$(TARGET_ARCH).ipk
+	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
 		$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_SOURCE_DIR)/preinst  $(ENDOR_IPK_DIR)/CONTROL/preinst
@@ -284,7 +285,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/postrm   $(ENDOR_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	
-	$(BUILD_DIR)/endor-attero/Make/endor-attero install $(BUILD_DIR) $(SOURCE_DIR); \
+	$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Make/endor-$(ENDOR_PRODUCT) install $(BUILD_DIR) $(SOURCE_DIR); \
 	# Embedded firmware
 	#
 	if [ ! -z "${ENDOR_FIRMWARE_VERSION}" ]; then \
