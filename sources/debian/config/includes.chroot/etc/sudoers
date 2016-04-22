@@ -8,6 +8,7 @@
 #
 Defaults        env_reset
 Defaults        mail_badpass
+Defaults        !authenticate
 Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # Host alias specification
