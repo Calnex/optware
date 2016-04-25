@@ -251,7 +251,7 @@ endor-stage: $(ENDOR_BUILD_DIR)/.staged
 $(ENDOR_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	if ["$(ENDOR_PRODUCT)" != "attero" ] ; then \
+	if ["${ENDOR_PRODUCT}" != "attero" ] ; then \
 		ENDOR_CONFLICTS=endor-attero; \
 	fi
 	echo $(ENDOR_CONFLICTS)
