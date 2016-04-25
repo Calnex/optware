@@ -194,7 +194,7 @@ endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
-$(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make/endor-attero.mk
+$(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make/endor.mk
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
 	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_PATCHES)" ; \
