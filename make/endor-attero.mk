@@ -254,6 +254,8 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 	if ["$(ENDOR_PRODUCT)" != "attero" ] ; then \
 		ENDOR_CONFLICTS=endor-attero; \
 	fi
+	echo $(ENDOR_CONFLICTS)
+	exit 100
 	@echo "Package: endor-$(ENDOR_PRODUCT)" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_PRIORITY)" >>$@
