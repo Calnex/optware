@@ -251,7 +251,7 @@ endor-stage: $(ENDOR_BUILD_DIR)/.staged
 $(ENDOR_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	ifeq ("$(ENDOR_PRODUCT)","attero")
+	ifeq "$(ENDOR_PRODUCT)","attero"
 		ENDOR_CONFLICTS=endor-paragon
 	else
 		ENDOR_CONFLICTS=endor-attero
