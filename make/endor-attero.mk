@@ -1,10 +1,10 @@
 ###########################################################
 #
-# endor-attero
+# endor
 #
 ###########################################################
 
-# You must replace "endor-attero" and "ENDOR_ATTERO" with the lower case name and
+# You must replace "endor" and "ENDOR" with the lower case name and
 # upper case name of your new package.  Some places below will say
 # "Do not change this" - that does not include this global change,
 # which must always be done to ensure we have unique names.
@@ -102,7 +102,7 @@ ENDOR_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 
 
-.PHONY: endor-attero-source endor-attero-unpack endor-attero endor-attero-stage endor-attero-ipk endor-attero-clean endor-attero-dirclean endor-attero-check
+.PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
 
 #
 # This is the dependency on the source code.  If the source is missing,
@@ -175,7 +175,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 # This target will be called by the top level Makefile to download the
 # source code's archive (.tar.gz, .bz2, etc.)
 #
-endor-attero-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) 
+endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES) 
 
 #
 # This target unpacks the source code in the build directory.
@@ -221,7 +221,7 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make
 #	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
-endor-attero-unpack: $(ENDOR_BUILD_DIR)/.configured
+endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 
 #
 # This builds the actual binary.
@@ -236,17 +236,17 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 # You should change the dependency to refer directly to the main binary
 # which is built.
 #
-endor-attero: $(ENDOR_BUILD_DIR)/.built
+endor: $(ENDOR_BUILD_DIR)/.built
 
 #
 # If you are building a library, then you need to stage it too.
 #
-$(ENDOR_BUILD_DIR)/.staged-attero: $(ENDOR_BUILD_DIR)/.built
+$(ENDOR_BUILD_DIR)/.staged: $(ENDOR_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
-endor-attero-stage: $(ENDOR_BUILD_DIR)/.staged
+endor-stage: $(ENDOR_BUILD_DIR)/.staged
 
 #
 # This rule creates a control file for ipkg.  It is no longer
@@ -259,7 +259,7 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_SECTION)" >>$@
-	@echo "Version: $(ENDOR_VERSION)-$(ENDOR_IPK_VERSION)" >>$@
+	@echo "Version: $(ENDOR_IPK_VERSION)-$(ENDOR_VERSION)" >>$@
 	@echo "Maintainer: $(ENDOR_MAINTAINER)" >>$@
 	@echo "Source: $(ENDOR_SITE)/$(ENDOR_SOURCE)" >>$@
 	@echo "Description: $(ENDOR_DESCRIPTION)" >>$@
@@ -316,12 +316,12 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 #
 # This is called from the top level makefile to create the IPK file.
 #
-endor-attero-ipk: $(ENDOR_IPK)
+endor-ipk: $(ENDOR_IPK)
 
 #
 # This is called from the top level makefile to clean all of the built files.
 #
-endor-attero-clean:
+endor-clean:
 	rm -f $(ENDOR_BUILD_DIR)/.built
 	$(MAKE) -C $(ENDOR_BUILD_DIR) clean
 
@@ -329,11 +329,11 @@ endor-attero-clean:
 # This is called from the top level makefile to clean all dynamically created
 # directories.
 #
-endor-attero-dirclean:
+endor-dirclean:
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(ENDOR_BUILD_DIR) $(ENDOR_IPK_DIR) $(ENDOR_IPK)
 #
 #
 # Some sanity check for the package.
 #
-endor-attero-check: $(ENDOR_IPK)
+endor-check: $(ENDOR_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
