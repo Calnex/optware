@@ -45,6 +45,9 @@ ENDOR_PRIORITY=optional
 ENDOR_DEPENDS=postgresql, mono, xsp, nginx
 ENDOR_SUGGESTS=
 ENDOR_CONFLICTS=endor-paragon
+ifeq "${ENDOR_PRODUCT}" "paragon"
+ENDOR_CONFLICTS=endor-attero
+endif
 
 #
 # ENDOR_IPK_VERSION should be incremented when the ipk changes.
@@ -251,11 +254,6 @@ endor-stage: $(ENDOR_BUILD_DIR)/.staged
 $(ENDOR_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	if ["${ENDOR_PRODUCT}" != "attero" ] ; then \
-		ENDOR_CONFLICTS=endor-attero; \
-	fi
-	echo $(ENDOR_CONFLICTS)
-	exit 100
 	@echo "Package: endor-$(ENDOR_PRODUCT)" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_PRIORITY)" >>$@
