@@ -44,7 +44,11 @@ ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
 ENDOR_DEPENDS=postgresql, mono, xsp, nginx
 ENDOR_SUGGESTS=
-ENDOR_CONFLICTS=endor-paragon
+ifeq ($(ENDOR_PRODUCT),"attero")
+	ENDOR_CONFLICTS=endor-paragon
+else
+	ENDOR_CONFLICTS=endor-attero
+endif
 
 #
 # ENDOR_IPK_VERSION should be incremented when the ipk changes.
