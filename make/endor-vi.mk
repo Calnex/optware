@@ -10,7 +10,7 @@
 # which must always be done to ensure we have unique names.
 
 #
-# ENDOR_PARAGON_VI_VERSION, ENDOR_PARAGON_VI_SITE and ENDOR_PARAGON_VI_SOURCE define
+# ENDOR_VI_VERSION, ENDOR_VI_SITE and ENDOR_VI_SOURCE define
 # the upstream location of the source code for the package.
 # ENDOR_DIR is the directory which is created when the source
 # archive is unpacked.
@@ -26,25 +26,25 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-ENDOR_PARAGON_VI_REPOSITORY=https://github.com/Calnex/Springbank
-ENDOR_PARAGON_VI_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
-ENDOR_PARAGON_VI_VERSION=1.0
-ENDOR_PARAGON_VI_SOURCE=endor-paragon-vi-$(ENDOR_PARAGON_VI_VERSION).tar.gz
-ENDOR_PARAGON_VI_DIR=endor-paragon-vi-$(ENDOR_PARAGON_VI_VERSION)
-ENDOR_PARAGON_VI_UNZIP=zcat
-ENDOR_PARAGON_VI_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
-ENDOR_PARAGON_VI_DESCRIPTION=Describe endor here.
-ENDOR_PARAGON_VI_SECTION=base
-ENDOR_PARAGON_VI_PRIORITY=optional
-ENDOR_PARAGON_VI_DEPENDS=endor-paragon
-ENDOR_PARAGON_VI_PACKAGE=endor-vi
-ENDOR_PARAGON_VI_SUGGESTS=
-ENDOR_PARAGON_VI_CONFLICTS=
+ENDOR_VI_REPOSITORY=https://github.com/Calnex/Springbank
+ENDOR_VI_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
+ENDOR_VI_VERSION=1.0
+ENDOR_VI_SOURCE=endor-$(PRODUCT_BUILD_TARGET)-vi-$(ENDOR_VI_VERSION).tar.gz
+ENDOR_VI_DIR=endor-$(PRODUCT_BUILD_TARGET)-vi-$(ENDOR_VI_VERSION)
+ENDOR_VI_UNZIP=zcat
+ENDOR_VI_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
+ENDOR_VI_DESCRIPTION=Describe endor here.
+ENDOR_VI_SECTION=base
+ENDOR_VI_PRIORITY=optional
+ENDOR_VI_DEPENDS=endor-$(PRODUCT_BUILD_TARGET)
+ENDOR_VI_PACKAGE=endor-vi
+ENDOR_VI_SUGGESTS=
+ENDOR_VI_CONFLICTS=
 
 #
 # ENDOR_IPK_VERSION should be incremented when the ipk changes.
 #
-ENDOR_PARAGON_VI_IPK_VERSION=paragon-vi
+ENDOR_VI_IPK_VERSION=$(PRODUCT_BUILD_TARGET)-vi
 
 #
 # ENDOR_CONFFILES should be a list of user-editable files
@@ -60,8 +60,8 @@ ENDOR_PARAGON_VI_IPK_VERSION=paragon-vi
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-ENDOR_PARAGON_VI_CPPFLAGS=
-ENDOR_PARAGON_VI_LDFLAGS=
+ENDOR_VI_CPPFLAGS=
+ENDOR_VI_LDFLAGS=
 
 #
 # ENDOR_BUILD_DIR is the directory in which the build is done.
@@ -72,18 +72,18 @@ ENDOR_PARAGON_VI_LDFLAGS=
 #
 # You should not change any of these variables.
 #
-ENDOR_PARAGON_VI_GIT_TAG?=HEAD
-ENDOR_PARAGON_VI_GIT_OPTIONS?=
-ENDOR_PARAGON_VI_TREEISH=$(ENDOR_PARAGON_VI_GIT_TAG)
-ENDOR_PARAGON_VI_BUILD_DIR=$(BUILD_DIR)/endor-paragon-vi
-ENDOR_PARAGON_VI_SOURCE_DIR=$(SOURCE_DIR)/endor-paragon-vi
-ENDOR_PARAGON_VI_IPK_DIR=$(BUILD_DIR)/endor-paragon-vi-$(ENDOR_PARAGON_VI_VERSION)-ipk
-ENDOR_PARAGON_VI_IPK=$(BUILD_DIR)/endor-paragon-vi_$(ENDOR_PARAGON_VI_VERSION)-$(ENDOR_PARAGON_VI_IPK_VERSION)_$(TARGET_ARCH).ipk
-ENDOR_PARAGON_VI_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
+ENDOR_VI_GIT_TAG?=HEAD
+ENDOR_VI_GIT_OPTIONS?=
+ENDOR_VI_TREEISH=$(ENDOR_VI_GIT_TAG)
+ENDOR_VI_BUILD_DIR=$(BUILD_DIR)/endor-$(PRODUCT_BUILD_TARGET)-vi
+ENDOR_VI_SOURCE_DIR=$(SOURCE_DIR)/endor-$(PRODUCT_BUILD_TARGET)-vi
+ENDOR_VI_IPK_DIR=$(BUILD_DIR)/endor-$(PRODUCT_BUILD_TARGET)-vi-$(ENDOR_VI_VERSION)-ipk
+ENDOR_VI_IPK=$(BUILD_DIR)/endor-$(PRODUCT_BUILD_TARGET)-vi_$(ENDOR_VI_VERSION)-$(ENDOR_VI_IPK_VERSION)_$(TARGET_ARCH).ipk
+ENDOR_VI_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 
-ENDOR_PARAGON_VI_CAT_BUILD_DIR = $(BUILD_DIR)/cat
+ENDOR_VI_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 
-ENDOR_PARAGON_VI_GIT_REFERENCE_ROOT?=$(ENDOR_COMMON_SOURCE_REPOSITORY)
+ENDOR_VI_GIT_REFERENCE_ROOT?=$(ENDOR_COMMON_SOURCE_REPOSITORY)
 
 .PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
 
@@ -93,7 +93,7 @@ ENDOR_PARAGON_VI_GIT_REFERENCE_ROOT?=$(ENDOR_COMMON_SOURCE_REPOSITORY)
 # This target will be called by the top level Makefile to download the
 # source code's archive (.tar.gz, .bz2, etc.)
 #
-endor-paragon-source: $(DL_DIR)/$(ENDOR_PARAGON_VI_SOURCE) $(ENDOR_PATCHES) 
+endor-source: $(DL_DIR)/$(ENDOR_VI_SOURCE) $(ENDOR_PATCHES) 
 
 #
 # This target unpacks the source code in the build directory.
@@ -113,16 +113,16 @@ endor-paragon-source: $(DL_DIR)/$(ENDOR_PARAGON_VI_SOURCE) $(ENDOR_PATCHES)
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
-$(ENDOR_PARAGON_VI_BUILD_DIR)/.configured-paragon-vi: make/endor-paragon-vi.mk
-	mkdir -p $(ENDOR_PARAGON_VI_BUILD_DIR)
+$(ENDOR_VI_BUILD_DIR)/.configured-vi: make/endor-vi.mk
+	mkdir -p $(ENDOR_VI_BUILD_DIR)
 	touch $@
 
-endor-paragon-unpack: $(ENDOR_PARAGON_VI_BUILD_DIR)/.configured-paragon-vi
+endor-unpack: $(ENDOR_VI_BUILD_DIR)/.configured-vi
 
 #
 # This builds the actual binary.
 #
-$(ENDOR_PARAGON_VI_BUILD_DIR)/.built-paragon-vi: $(ENDOR_PARAGON_VI_BUILD_DIR)/.configured-paragon-vi
+$(ENDOR_VI_BUILD_DIR)/.built-vi: $(ENDOR_VI_BUILD_DIR)/.configured-vi
 	rm -f $@
 	#$(MAKE) -C $(@D)
 	touch $@
@@ -130,31 +130,31 @@ $(ENDOR_PARAGON_VI_BUILD_DIR)/.built-paragon-vi: $(ENDOR_PARAGON_VI_BUILD_DIR)/.
 #
 # If you are building a library, then you need to stage it too.
 #
-$(ENDOR_PARAGON_VI_BUILD_DIR)/.staged-paragon: $(ENDOR_PARAGON_VI_BUILD_DIR)/.built-paragon-vi
+$(ENDOR_VI_BUILD_DIR)/.staged: $(ENDOR_VI_BUILD_DIR)/.built-vi
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
-endor-paragon-vi-stage: $(ENDOR_BUILD_DIR)/.staged
+endor-vi-stage: $(ENDOR_BUILD_DIR)/.staged
 
 #
 # This rule creates a control file for ipkg.  It is no longer
 # necessary to create a seperate control file under sources/endor
 #
-$(ENDOR_PARAGON_VI_IPK_DIR)/CONTROL/control:
+$(ENDOR_VI_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	@echo "Package: $(ENDOR_PARAGON_VI_PACKAGE)" >>$@
+	@echo "Package: $(ENDOR_VI_PACKAGE)" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
-	@echo "Priority: $(ENDOR_PARAGON_VI_PRIORITY)" >>$@
-	@echo "Section: $(ENDOR_PARAGON_VI_SECTION)" >>$@
-	@echo "Version: $(ENDOR_PARAGON_VI_VERSION)-$(ENDOR_PARAGON_VI_IPK_VERSION)" >>$@
-	@echo "Maintainer: $(ENDOR_PARAGON_VI_MAINTAINER)" >>$@
-	@echo "Source: $(ENDOR_PARAGON_VI_SITE)/$(ENDOR_PARAGON_VI_SOURCE)" >>$@
-	@echo "Description: $(ENDOR_PARAGON_VI_DESCRIPTION)" >>$@
-	@echo "Depends: $(ENDOR_PARAGON_VI_DEPENDS)" >>$@
-	@echo "Suggests: $(ENDOR_PARAGON_VI_SUGGESTS)" >>$@
-	@echo "Conflicts: $(ENDOR_PARAGON_VI_CONFLICTS)" >>$@
+	@echo "Priority: $(ENDOR_VI_PRIORITY)" >>$@
+	@echo "Section: $(ENDOR_VI_SECTION)" >>$@
+	@echo "Version: $(ENDOR_VI_VERSION)-$(ENDOR_VI_IPK_VERSION)" >>$@
+	@echo "Maintainer: $(ENDOR_VI_MAINTAINER)" >>$@
+	@echo "Source: $(ENDOR_VI_SITE)/$(ENDOR_VI_SOURCE)" >>$@
+	@echo "Description: $(ENDOR_VI_DESCRIPTION)" >>$@
+	@echo "Depends: $(ENDOR_VI_DEPENDS)" >>$@
+	@echo "Suggests: $(ENDOR_VI_SUGGESTS)" >>$@
+	@echo "Conflicts: $(ENDOR_VI_CONFLICTS)" >>$@
 
 #
 # This builds the IPK file.
@@ -168,47 +168,47 @@ $(ENDOR_PARAGON_VI_IPK_DIR)/CONTROL/control:
 #
 # You may need to patch your application to make it use these locations.
 #
-$(ENDOR_PARAGON_VI_IPK): $(ENDOR_PARAGON_VI_BUILD_DIR)/.built-paragon-vi
-	rm -rf $(ENDOR_PARAGON_IPK_DIR) $(BUILD_DIR)/endor_paragon_vi_*_$(TARGET_ARCH).ipk
+$(ENDOR_VI_IPK): $(ENDOR_VI_BUILD_DIR)/.built-vi
+	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_$(PRODUCT_BUILD_TARGET)_vi_*_$(TARGET_ARCH).ipk
 	
 	# Provide the Virtual Instrument startup file
 	#
-	mkdir -p $(ENDOR_PARAGON_VI_IPK_DIR)/opt/etc/init.d
-	install -m 755 $(ENDOR_PARAGON_VI_SOURCE_DIR)/rc.endor-virtualinstrument.paragon $(ENDOR_PARAGON_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
+	mkdir -p $(ENDOR_VI_IPK_DIR)/opt/etc/init.d
+	install -m 755 $(ENDOR_VI_SOURCE_DIR)/rc.endor-virtualinstrument.$(PRODUCT_BUILD_TARGET) $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
 	
 	# Provide the control information
 	#
-	mkdir -p $(ENDOR_PARAGON_VI_IPK_DIR)/CONTROL
-	$(MAKE) $(ENDOR_PARAGON_VI_IPK_DIR)/CONTROL/control
-	install -m 755 $(ENDOR_PARAGON_VI_SOURCE_DIR)/postinst $(ENDOR_PARAGON_VI_IPK_DIR)/CONTROL/postinst
-	install -m 755 $(ENDOR_PARAGON_VI_SOURCE_DIR)/prerm    $(ENDOR_PARAGON_VI_IPK_DIR)/CONTROL/prerm
+	mkdir -p $(ENDOR_VI_IPK_DIR)/CONTROL
+	$(MAKE) $(ENDOR_VI_IPK_DIR)/CONTROL/control
+	install -m 755 $(ENDOR_VI_SOURCE_DIR)/postinst $(ENDOR_VI_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(ENDOR_VI_SOURCE_DIR)/prerm    $(ENDOR_VI_IPK_DIR)/CONTROL/prerm
 
 	# Now go and build the package
 	#
-	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_PARAGON_VI_IPK_DIR)
-	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_PARAGON_VI_IPK_DIR)
+	cd $(BUILD_DIR); $(IPKG_BUILD) $(ENDOR_VI_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(ENDOR_VI_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.
 #
-endor-paragon-vi-ipk: $(ENDOR_PARAGON_VI_IPK)
+endor-vi-ipk: $(ENDOR_VI_IPK)
 
 #
 # This is called from the top level makefile to clean all of the built files.
 #
-endor-paragon-vi-clean:
-	rm -f $(ENDOR_PARAGON_VI_BUILD_DIR)/.built
-	$(MAKE) -C $(ENDOR_PARAGON_VI_BUILD_DIR) clean
+endor-vi-clean:
+	rm -f $(ENDOR_VI_BUILD_DIR)/.built
+	$(MAKE) -C $(ENDOR_VI_BUILD_DIR) clean
 
 #
 # This is called from the top level makefile to clean all dynamically created
 # directories.
 #
-endor-paragon-vi-dirclean:
-	rm -rf $(BUILD_DIR)/$(ENDOR_PARAGON_VI_DIR) $(ENDOR_PARAGON_VI_BUILD_DIR) $(ENDOR_PARAGON_VI_IPK_DIR) $(ENDOR_PARAGON_VI_IPK)
+endor-vi-dirclean:
+	rm -rf $(BUILD_DIR)/$(ENDOR_VI_DIR) $(ENDOR_VI_BUILD_DIR) $(ENDOR_VI_IPK_DIR) $(ENDOR_VI_IPK)
 #
 #
 # Some sanity check for the package.
 #
-endor-paragon-vi-check: $(ENDOR_PARAGON_VI_IPK)
+endor-vi-check: $(ENDOR_VI_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
