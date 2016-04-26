@@ -32,7 +32,7 @@ ENDOR_BRANCH_PARAM?=master
 
 
 ENDOR_REPOSITORY=https://github.com/Calnex/Springbank
-ENDOR_PRODUCT=$(PRODUCT)
+ENDOR_PRODUCT=$(PRODUCT_BUILD_TARGET)
 ENDOR_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
 ENDOR_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
 ENDOR_SOURCE=endor-$(ENDOR_PRODUCT)-$(ENDOR_VERSION).tar.gz
