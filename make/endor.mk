@@ -151,7 +151,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software/Make/endor-$(ENDOR_PRODUCT) minify "$(BUILD_DIR)" ; \
+		$(ENDOR_BUILD_DIR)/OptWare/Make/endor-$(ENDOR_PRODUCT) minify "$(BUILD_DIR)" ; \
 		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
 		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
@@ -282,13 +282,13 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
 		$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
-	install -m 755 $(ENDOR_SOURCE_DIR)/preinst  $(ENDOR_IPK_DIR)/CONTROL/preinst
-	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
-	install -m 755 $(ENDOR_SOURCE_DIR)/prerm    $(ENDOR_IPK_DIR)/CONTROL/prerm
-	install -m 755 $(ENDOR_SOURCE_DIR)/postrm   $(ENDOR_IPK_DIR)/CONTROL/postrm
+	install -m 755 $(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor/preinst  $(ENDOR_IPK_DIR)/CONTROL/preinst
+	install -m 755 $(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor/prerm    $(ENDOR_IPK_DIR)/CONTROL/prerm
+	install -m 755 $(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor/postrm   $(ENDOR_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	
-	$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Make/endor-$(ENDOR_PRODUCT) install $(BUILD_DIR) $(SOURCE_DIR); \
+	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-$(ENDOR_PRODUCT) install $(BUILD_DIR); \
 	# Embedded firmware
 	#
 	if [ ! -z "${ENDOR_FIRMWARE_VERSION}" ]; then \
@@ -297,7 +297,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 		  cd $(ENDOR_IPK_DIR)/opt/var/lib/embedded; \
 		  wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz"; \
 		  wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz.md5"; \
-		  cat $(ENDOR_SOURCE_DIR)/postinst.firmware >> $(ENDOR_IPK_DIR)/CONTROL/postinst; \
+		  cat $(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor/postinst.firmware >> $(ENDOR_IPK_DIR)/CONTROL/postinst; \
 		  sed -i -e 's/__FIRMWARE_VERSION__/${ENDOR_FIRMWARE_VERSION}/g' $(ENDOR_IPK_DIR)/CONTROL/postinst; \
 	   fi; \
 	fi
