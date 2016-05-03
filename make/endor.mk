@@ -93,7 +93,7 @@ ENDOR_TREEISH=$(ENDOR_GIT_TAG)
 ENDOR_BUILD_DIR=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)
 
 ## Source dir is common for now
-ENDOR_SOURCE_DIR=$(SOURCE_DIR)/endor
+ENDOR_SOURCE_DIR=$(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor
 ENDOR_IPK_DIR=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)-ipk
 ENDOR_IPK=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)_$(ENDOR_IPK_VERSION)-$(ENDOR_VERSION)_$(TARGET_ARCH).ipk
 ENDOR_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
@@ -282,10 +282,10 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
 		$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
-	install -m 755 $(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor/preinst  $(ENDOR_IPK_DIR)/CONTROL/preinst
-	install -m 755 $(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
-	install -m 755 $(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor/prerm    $(ENDOR_IPK_DIR)/CONTROL/prerm
-	install -m 755 $(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor/postrm   $(ENDOR_IPK_DIR)/CONTROL/postrm
+	install -m 755 $(ENDOR_SOURCE_DIR)/preinst  $(ENDOR_IPK_DIR)/CONTROL/preinst
+	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(ENDOR_SOURCE_DIR)/prerm    $(ENDOR_IPK_DIR)/CONTROL/prerm
+	install -m 755 $(ENDOR_SOURCE_DIR)/postrm   $(ENDOR_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	
 	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-$(ENDOR_PRODUCT) install $(BUILD_DIR); \
@@ -297,7 +297,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 		  cd $(ENDOR_IPK_DIR)/opt/var/lib/embedded; \
 		  wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz"; \
 		  wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz.md5"; \
-		  cat $(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor/postinst.firmware >> $(ENDOR_IPK_DIR)/CONTROL/postinst; \
+		  cat $(ENDOR_SOURCE_DIR)/postinst.firmware >> $(ENDOR_IPK_DIR)/CONTROL/postinst; \
 		  sed -i -e 's/__FIRMWARE_VERSION__/${ENDOR_FIRMWARE_VERSION}/g' $(ENDOR_IPK_DIR)/CONTROL/postinst; \
 	   fi; \
 	fi
