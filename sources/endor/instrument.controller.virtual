@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec mono "/opt/lib/endor/Calnex.Endor.Instrument.Controller.exe" "$@"

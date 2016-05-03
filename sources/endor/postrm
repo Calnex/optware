@@ -1,5 +1,0 @@
-#! /bin/sh
-#
-# Remove any dangling folder structure that is left by the rm phase
-
-rm -rf /opt/lib/endor

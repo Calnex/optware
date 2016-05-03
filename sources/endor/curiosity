@@ -1,7 +1,0 @@
-#! /bin/sh
-
-if [ -x /opt/etc/init.d/S98cat-remotingserver-cat ]
-then
-	/opt/etc/init.d/S98cat-remotingserver-cat stop
-	/opt/etc/init.d/S98cat-remotingserver-pfv stop
-fi
