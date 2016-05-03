@@ -151,7 +151,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		$(ENDOR_BUILD_DIR)/OptWare/Make/endor-$(ENDOR_PRODUCT) minify "$(BUILD_DIR)" ; \
+		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-$(ENDOR_PRODUCT) minify "$(BUILD_DIR)" ; \
 		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
 		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
