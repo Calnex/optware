@@ -93,7 +93,7 @@ ENDOR_TREEISH=$(ENDOR_GIT_TAG)
 ENDOR_BUILD_DIR=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)
 
 ## Source dir is common for now
-ENDOR_SOURCE_DIR=$(SOURCE_DIR)/endor
+ENDOR_SOURCE_DIR=$(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor
 ENDOR_IPK_DIR=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)-ipk
 ENDOR_IPK=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)_$(ENDOR_IPK_VERSION)-$(ENDOR_VERSION)_$(TARGET_ARCH).ipk
 ENDOR_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
@@ -151,7 +151,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
-		$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software/Make/endor-$(ENDOR_PRODUCT) minify "$(BUILD_DIR)" ; \
+		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-$(ENDOR_PRODUCT) minify "$(BUILD_DIR)" ; \
 		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
 		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
@@ -288,7 +288,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/postrm   $(ENDOR_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	
-	$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Make/endor-$(ENDOR_PRODUCT) install $(BUILD_DIR) $(SOURCE_DIR); \
+	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-$(ENDOR_PRODUCT) install $(BUILD_DIR); \
 	# Embedded firmware
 	#
 	if [ ! -z "${ENDOR_FIRMWARE_VERSION}" ]; then \
