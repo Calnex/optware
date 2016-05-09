@@ -26,9 +26,12 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+BUILD_VERSION_NUMBER?=0.1.0.0
+BUILD_NUMBER?=devel
+
 ENDOR_VI_REPOSITORY=https://github.com/Calnex/Springbank
 ENDOR_VI_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
-ENDOR_VI_VERSION=1.0
+ENDOR_VI_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
 ENDOR_VI_SOURCE=endor-$(PRODUCT_BUILD_TARGET)-vi-$(ENDOR_VI_VERSION).tar.gz
 ENDOR_VI_DIR=endor-$(PRODUCT_BUILD_TARGET)-vi-$(ENDOR_VI_VERSION)
 ENDOR_VI_UNZIP=zcat
@@ -37,14 +40,14 @@ ENDOR_VI_DESCRIPTION=Describe endor here.
 ENDOR_VI_SECTION=base
 ENDOR_VI_PRIORITY=optional
 ENDOR_VI_DEPENDS=endor-$(PRODUCT_BUILD_TARGET)
-ENDOR_VI_PACKAGE=endor-vi
+ENDOR_VI_PACKAGE=endor-$(PRODUCT_BUILD_TARGET)-vi
 ENDOR_VI_SUGGESTS=
 ENDOR_VI_CONFLICTS=
 
 #
 # ENDOR_IPK_VERSION should be incremented when the ipk changes.
 #
-ENDOR_VI_IPK_VERSION=$(PRODUCT_BUILD_TARGET)-vi
+ENDOR_VI_IPK_VERSION=$(BUILD_NUMBER)
 
 #
 # ENDOR_CONFFILES should be a list of user-editable files
@@ -148,7 +151,7 @@ $(ENDOR_VI_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_VI_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_VI_SECTION)" >>$@
-	@echo "Version: $(ENDOR_VI_VERSION)-$(ENDOR_VI_IPK_VERSION)" >>$@
+	@echo "Version: $(ENDOR_VI_IPK_VERSION)-$(ENDOR_VI_VERSION)" >>$@
 	@echo "Maintainer: $(ENDOR_VI_MAINTAINER)" >>$@
 	@echo "Source: $(ENDOR_VI_SITE)/$(ENDOR_VI_SOURCE)" >>$@
 	@echo "Description: $(ENDOR_VI_DESCRIPTION)" >>$@
@@ -169,7 +172,7 @@ $(ENDOR_VI_IPK_DIR)/CONTROL/control:
 # You may need to patch your application to make it use these locations.
 #
 $(ENDOR_VI_IPK): $(ENDOR_VI_BUILD_DIR)/.built-vi
-	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor_$(PRODUCT_BUILD_TARGET)_vi_*_$(TARGET_ARCH).ipk
+	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor-$(PRODUCT_BUILD_TARGET)-vi_*_$(TARGET_ARCH).ipk
 	
 	# Provide the Virtual Instrument startup file
 	#
