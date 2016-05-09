@@ -7,7 +7,7 @@ set -e
 export PATH=/opt/bin:/opt/sbin:$PATH
 
 su calnex -c '/opt/bin/ipkg update'
-su calnex -c '/opt/bin/ipkg install endor-vi'
+su calnex -c '/opt/bin/ipkg install endor-__TARGET_PRODUCT__-vi'
 
 # We need to cleanup and unmount here.
 rm -f /etc/init.d/S00SystemConfiguration
