@@ -26,12 +26,12 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-BUILD_VERSION_NUMBER?=1.0.0
+BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
 
 ENDOR_VI_REPOSITORY=https://github.com/Calnex/Springbank
 ENDOR_VI_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
-ENDOR_VI_VERSION=$(BUILD_VERSION_NUMBER)
+ENDOR_VI_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
 ENDOR_VI_SOURCE=endor-$(PRODUCT_BUILD_TARGET)-vi-$(ENDOR_VI_VERSION).tar.gz
 ENDOR_VI_DIR=endor-$(PRODUCT_BUILD_TARGET)-vi-$(ENDOR_VI_VERSION)
 ENDOR_VI_UNZIP=zcat
