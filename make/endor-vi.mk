@@ -30,17 +30,18 @@ BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
 
 ENDOR_VI_REPOSITORY=https://github.com/Calnex/Springbank
+ENDOR_VI_PRODUCT=$(TARGET_PRODUCT_LOWER)
 ENDOR_VI_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
 ENDOR_VI_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
-ENDOR_VI_SOURCE=endor-$(PRODUCT_BUILD_TARGET)-vi-$(ENDOR_VI_VERSION).tar.gz
-ENDOR_VI_DIR=endor-$(PRODUCT_BUILD_TARGET)-vi-$(ENDOR_VI_VERSION)
+ENDOR_VI_SOURCE=endor-$(ENDOR_VI_PRODUCT)-vi-$(ENDOR_VI_VERSION).tar.gz
+ENDOR_VI_DIR=endor-$(ENDOR_VI_PRODUCT)-vi-$(ENDOR_VI_VERSION)
 ENDOR_VI_UNZIP=zcat
 ENDOR_VI_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_VI_DESCRIPTION=Describe endor here.
 ENDOR_VI_SECTION=base
 ENDOR_VI_PRIORITY=optional
-ENDOR_VI_DEPENDS=endor-$(PRODUCT_BUILD_TARGET)
-ENDOR_VI_PACKAGE=endor-$(PRODUCT_BUILD_TARGET)-vi
+ENDOR_VI_DEPENDS=endor-$(ENDOR_VI_PRODUCT)
+ENDOR_VI_PACKAGE=endor-$(ENDOR_VI_PRODUCT)-vi
 ENDOR_VI_SUGGESTS=
 ENDOR_VI_CONFLICTS=
 
@@ -78,10 +79,10 @@ ENDOR_VI_LDFLAGS=
 ENDOR_VI_GIT_TAG?=HEAD
 ENDOR_VI_GIT_OPTIONS?=
 ENDOR_VI_TREEISH=$(ENDOR_VI_GIT_TAG)
-ENDOR_VI_BUILD_DIR=$(BUILD_DIR)/endor-$(PRODUCT_BUILD_TARGET)-vi
-ENDOR_VI_SOURCE_DIR=$(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor-$(PRODUCT_BUILD_TARGET)-vi
-ENDOR_VI_IPK_DIR=$(BUILD_DIR)/endor-$(PRODUCT_BUILD_TARGET)-vi-$(ENDOR_VI_VERSION)-ipk
-ENDOR_VI_IPK=$(BUILD_DIR)/endor-$(PRODUCT_BUILD_TARGET)-vi_$(ENDOR_VI_VERSION)-$(ENDOR_VI_IPK_VERSION)_$(TARGET_ARCH).ipk
+ENDOR_VI_BUILD_DIR=$(BUILD_DIR)/endor-$(ENDOR_VI_PRODUCT)-vi
+ENDOR_VI_SOURCE_DIR=$(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor-$(ENDOR_VI_PRODUCT)-vi
+ENDOR_VI_IPK_DIR=$(BUILD_DIR)/endor-$(ENDOR_VI_PRODUCT)-vi-$(ENDOR_VI_VERSION)-ipk
+ENDOR_VI_IPK=$(BUILD_DIR)/endor-$(ENDOR_VI_PRODUCT)-vi_$(ENDOR_VI_VERSION)-$(ENDOR_VI_IPK_VERSION)_$(TARGET_ARCH).ipk
 ENDOR_VI_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 
 ENDOR_VI_CAT_BUILD_DIR = $(BUILD_DIR)/cat
@@ -172,12 +173,12 @@ $(ENDOR_VI_IPK_DIR)/CONTROL/control:
 # You may need to patch your application to make it use these locations.
 #
 $(ENDOR_VI_IPK): $(ENDOR_VI_BUILD_DIR)/.built-vi
-	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor-$(PRODUCT_BUILD_TARGET)-vi_*_$(TARGET_ARCH).ipk
+	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor-$(ENDOR_VI_PRODUCT)-vi_*_$(TARGET_ARCH).ipk
 	
 	# Provide the Virtual Instrument startup file
 	#
 	mkdir -p $(ENDOR_VI_IPK_DIR)/opt/etc/init.d
-	install -m 755 $(ENDOR_VI_SOURCE_DIR)/rc.endor-virtualinstrument.$(PRODUCT_BUILD_TARGET) $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
+	install -m 755 $(ENDOR_VI_SOURCE_DIR)/rc.endor-virtualinstrument.$(ENDOR_VI_PRODUCT) $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
 	
 	# Provide the control information
 	#

@@ -117,7 +117,7 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	# Configs for the live system *OLNY*
 	cp -ar $(DEBIAN-LIVE_CONFIG) $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
 	# Inject product version into vi installation 
-	sed -i -e "s/__TARGET_PRODUCT__/${PRODUCT_BUILD_TARGET}/g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/0460-install-endor.hook.chroot
+	sed -i -e "s/__TARGET_PRODUCT__/${TARGET_PRODUCT_LOWER}/g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/0460-install-endor.hook.chroot
 	# Temporary hook to pull in demo files!
 	cd $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/includes.chroot/etc/skel ; \
 		wget -r --no-parent --no-host-directories --cut-dirs=1 --reject "index.html*" \
