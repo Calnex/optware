@@ -29,8 +29,9 @@
 MONO_CALNEX_SITE=$(PACKAGES_SERVER)
 
 MONO_SITE=http://download.mono-project.com/sources/mono
-MONO_VERSION=3.2.8
-MONO_SOURCE=mono-$(MONO_VERSION).tar.bz2
+MONO_VERSION=4.4.0
+MONO_PATCH_VERSION=148
+MONO_SOURCE=mono-$(MONO_VERSION).$(MONO_PATCH_VERSION).tar.bz2
 MONO_DIR=mono-$(MONO_VERSION)
 MONO_UNZIP=bzcat
 MONO_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
@@ -160,6 +161,8 @@ mono: $(MONO_BUILD_DIR)/.built
 $(MONO_BUILD_DIR)/.staged: $(MONO_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/dmcs
+	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/mcs
 	touch $@
 
 mono-stage: $(MONO_BUILD_DIR)/.staged
@@ -175,7 +178,7 @@ $(MONO_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(MONO_PRIORITY)" >>$@
 	@echo "Section: $(MONO_SECTION)" >>$@
-	@echo "Version: $(MONO_VERSION)-$(MONO_IPK_VERSION)" >>$@
+	@echo "Version: $(MONO_VERSION).$(MONO_PATCH_VERSION)-$(MONO_IPK_VERSION)" >>$@
 	@echo "Maintainer: $(MONO_MAINTAINER)" >>$@
 	@echo "Source: $(MONO_SITE)/$(MONO_SOURCE)" >>$@
 	@echo "Description: $(MONO_DESCRIPTION)" >>$@
