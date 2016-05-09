@@ -14,7 +14,7 @@ case "$1" in
                 mount -o bind ${REAL_OPT_DIR} /opt
             fi
         fi
-	echo "src/gz cross http://packages.calnexsol.com/optware/__TARGET_DISTRO__/__TARGET_PRODUCT__"       > /opt/etc/ipkg/cross-feed.conf
+	echo "src/gz cross http://packages.calnexsol.com/optware/__TARGET_DISTRO__"       > /opt/etc/ipkg/cross-feed.conf
 	if [ -x /etc/init.d/S00SystemConfiguration ]; then
 		/etc/init.d/S00SystemConfiguration
 	fi
