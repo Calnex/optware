@@ -1,4 +1,3 @@
 #!/bin/bash
 
-apt-get install -y build-essential zlib1g-dev pkg-config autoconf automake autogen autopoint libtool flex bison monodevelop live-build live-boot live-config libmono-system-data-datasetextensions4.0-cil libffi-dev gettext libtool-bin ruby libicu-dev gperf bison libjpeg-dev
-
+apt-get install -y build-essential zlib1g-dev pkg-config autoconf automake autogen autopoint libtool flex bison monodevelop live-build live-boot live-config libmono-system-data-datasetextensions4.0-cil libffi-dev gettext libtool-bin ruby libicu-dev gperf bison libjpeg-dev default-jre
