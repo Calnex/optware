@@ -214,7 +214,7 @@ $(MONO_IPK): $(MONO_BUILD_DIR)/.built
 #
 # This is called from the top level makefile to create the IPK file.
 #
-mono-ipk: $(MONO_IPK)
+mono-ipk: $(MONO_IPK) $(MONO_VI_IPK)
 
 #
 # This is called from the top level makefile to clean all of the built files.
