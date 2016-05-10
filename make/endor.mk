@@ -42,11 +42,11 @@ ENDOR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_DESCRIPTION=Describe endor-$(ENDOR_PRODUCT) here.
 ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
-ENDOR_DEPENDS=postgresql, mono, xsp, nginx
+ENDOR_DEPENDS=postgresql, mono, xsp, nginx, endor-$(ENDOR_PRODUCT)-doc
 ENDOR_SUGGESTS=
-ENDOR_CONFLICTS=endor-paragon
+ENDOR_CONFLICTS=endor-paragon, endor-paragon-doc
 ifeq "${ENDOR_PRODUCT}" "paragon"
-ENDOR_CONFLICTS=endor-attero
+ENDOR_CONFLICTS=endor-attero, endor-attero-doc
 endif
 
 #
@@ -315,7 +315,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 #
 # This is called from the top level makefile to create the IPK file.
 #
-endor-ipk: $(ENDOR_IPK) $(ENDOR_VI_IPK)
+endor-ipk: $(ENDOR_IPK) $(ENDOR_VI_IPK) $(ENDOR_DOC_IPK)
 
 #
 # This is called from the top level makefile to clean all of the built files.
