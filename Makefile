@@ -300,6 +300,15 @@ endif
 	}
 	@echo "ALL DONE."
 
+index_update:
+	{ \
+		cd $(PACKAGE_DIR); \
+		cp -fal $(BUILD_DIR)/*_$(TARGET_ARCH).ipk ./; \
+		$(IPKG_MAKE_INDEX) . > Packages; \
+		gzip -c Packages > Packages.gz; \
+	}
+	@echo "ALL DONE."
+
 packages: $(PACKAGES_IPKG)
 	$(MAKE) index
 
