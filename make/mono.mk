@@ -117,12 +117,12 @@ $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mon
 	$(MAKE) gettext-stage glib-stage
 	rm -rf $(BUILD_DIR)/$(MONO_DIR) $(@D)
 	$(MONO_UNZIP) $(DL_DIR)/$(MONO_SOURCE) | tar -C $(BUILD_DIR) -xf -
+	if test -n "$(MONO_PATCHES)" ; \
+		then cat $(MONO_PATCHES) | \
+        	patch -d $(BUILD_DIR)/$(MONO_DIR) -p1 ; \
+	fi
 	if test "$(BUILD_DIR)/$(MONO_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(MONO_DIR) $(@D) ; \
-	fi
-	if test -n "$(MONO_PATCHES)" ; then \
-		cat $(MONO_PATCHES) | \
-        	 patch -d $(BUILD_DIR)/$(MONO_DIR) -p1 ; \
 	fi
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
