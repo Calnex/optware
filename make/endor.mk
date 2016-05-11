@@ -140,17 +140,6 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/Version.cs ; \
 		git show-ref --heads > endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
-		# \
-		# Check out EndorDocumentation \
-		# \
-		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software ; \
-		/usr/bin/git clone $(ENDOR_DOCUMENTATION_REPOSITORY) EndorDocumentation --branch $(ENDOR_BRANCH_PARAM) $(ENDOR_DOCUMENTATION_GIT_REFERENCE) ; \
-		if [ ! -z "${TAG_NAME}" ] ; \
-			then \
-			cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software/EndorDocumentation ; \
-			echo "Checking out Documentation at TAG: ${TAG_NAME} "  ;  \
-			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
-		fi; \
 		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-$(ENDOR_PRODUCT) minify "$(BUILD_DIR)" ; \
 		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
 		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cz -f $@ --exclude=.git* * && \
