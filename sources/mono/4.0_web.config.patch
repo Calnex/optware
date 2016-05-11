@@ -1,0 +1,29 @@
+--- mono/data/net_4.0/web.config.orig	Tue Apr 26 10:25:14 2016
++++ mono/data/net_4.0/web.config	Tue Apr 26 14:26:26 2016
+@@ -87,7 +87,7 @@
+ 		</httpHandlers>
+ 		<httpModules>
+ 		  <add name="OutputCache" type="System.Web.Caching.OutputCacheModule" />
+-		  <add name="Session" type="System.Web.SessionState.SessionStateModule" />
++		  <!--<add name="Session" type="System.Web.SessionState.SessionStateModule" />-->
+ 		  <!--
+ 		  <add name="WindowsAuthentication" type="System.Web.Security.WindowsAuthenticationModule" />
+ 		  -->
+@@ -95,7 +95,7 @@
+ 		  <!--
+ 		  <add name="PassportAuthentication" type="System.Web.Security.PassportAuthenticationModule" />
+ 		  -->
+-		  <add name="RoleManager" type="System.Web.Security.RoleManagerModule" />
++		  <!--<add name="RoleManager" type="System.Web.Security.RoleManagerModule" />-->
+ 		  <add name="UrlAuthorization" type="System.Web.Security.UrlAuthorizationModule" />
+ 		  <!--
+ 		  <add name="FileAuthorization" type="System.Web.Security.FileAuthorizationModule" />
+@@ -124,7 +124,7 @@
+ 				culture="en-US"
+ 				uiculture="en-US" />
+ 		-->
+-		<sessionState mode="InProc" />
++		<!--<sessionState mode="InProc" />-->
+ 		<pages>
+         		<namespaces>
+             			<add namespace="System" />

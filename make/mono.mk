@@ -44,7 +44,7 @@ MONO_CONFLICTS=
 #
 # MONO_IPK_VERSION should be incremented when the ipk changes.
 #
-MONO_IPK_VERSION=1
+MONO_IPK_VERSION=2
 
 #
 # MONO_CONFFILES should be a list of user-editable files
@@ -54,7 +54,7 @@ MONO_IPK_VERSION=1
 # MONO_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-#MONO_PATCHES=$(MONO_SOURCE_DIR)/configure.patch
+MONO_PATCHES=$(MONO_SOURCE_DIR)/2.0_web.config.patch $(MONO_SOURCE_DIR)/4.0_web.config.patch $(MONO_SOURCE_DIR)/4.5_web.config.patch
 
 #
 # If the compilation of the package requires additional
@@ -119,6 +119,10 @@ $(MONO_BUILD_DIR)/.configured: $(DL_DIR)/$(MONO_SOURCE) $(MONO_PATCHES) make/mon
 	$(MONO_UNZIP) $(DL_DIR)/$(MONO_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test "$(BUILD_DIR)/$(MONO_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(MONO_DIR) $(@D) ; \
+	fi
+	if test -n "$(MONO_PATCHES)" ; then \
+		cat $(MONO_PATCHES) | \
+        	 patch -d $(BUILD_DIR)/$(MONO_DIR) -p1 ; \
 	fi
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
