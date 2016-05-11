@@ -65,7 +65,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			openssl \
 			optware-bootstrap \
 			pcre \
-			phantomjs \
 			postgresql \
 			python3 \
 			readline \
