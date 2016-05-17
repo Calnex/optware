@@ -38,10 +38,13 @@ ENDOR_DOC_MAINTAINER=Calnex <info@calnexsol.com>
 ENDOR_DOC_DESCRIPTION=Describe endor documentation here.
 ENDOR_DOC_SECTION=base
 ENDOR_DOC_PRIORITY=optional
-ENDOR_DOC_DEPENDS=endor-$(TARGET_PRODUCT_LOWER)
+ENDOR_DOC_DEPENDS=
 ENDOR_DOC_PACKAGE=endor-$(TARGET_PRODUCT_LOWER)-doc
 ENDOR_DOC_SUGGESTS=
-ENDOR_DOC_CONFLICTS=
+ENDOR_DOC_CONFLICTS=endor-paragon, endor-paragon-doc
+ifeq "${TARGET_PRODUCT_LOWER}" "paragon"
+ENDOR_DOC_CONFLICTS=endor-attero, endor-attero-doc
+endif
 
 #
 # ENDOR_IPK_VERSION should be incremented when the ipk changes.
