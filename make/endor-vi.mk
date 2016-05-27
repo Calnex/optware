@@ -182,7 +182,6 @@ $(ENDOR_VI_IPK): $(ENDOR_VI_BUILD_DIR)/.built-vi
 	
 	# Provide the control information
 	#
-	mkdir -p $(ENDOR_VI_IPK_DIR)/CONTROL
 	$(MAKE) $(ENDOR_VI_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_VI_SOURCE_DIR)/postinst $(ENDOR_VI_IPK_DIR)/CONTROL/postinst
 	install -m 755 $(ENDOR_VI_SOURCE_DIR)/prerm    $(ENDOR_VI_IPK_DIR)/CONTROL/prerm
