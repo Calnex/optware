@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Export common mono command switches
+export MONO_ENV_OPTIONS="--gc=sgen"
+
 # Start all init scripts in /opt/etc/init.d
 # executing them in numerical order.
 #
