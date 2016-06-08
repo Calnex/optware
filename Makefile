@@ -57,6 +57,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			libstdc++ \
 			libtasn1 \
 			libtool \
+			lua \
 			mono \
 			ncurses \
 			ncursesw \
@@ -71,9 +72,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			springbank \
 			sqlite \
 			template \
-			tshark-1.10.3 \
-			tshark-1.11.3 \
-			tshark-1.4.9 \
+			tshark \
 			wget \
 			wget-ssl \
 			xsp \
