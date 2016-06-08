@@ -5,4 +5,4 @@ tar -xzf long-filepaths.tar.gz
 tar -xzf long-symlinks.tar.gz
 
 cd /opt/lib
-ln -s /usr/lib/libgdiplus.so
+ln -sf /usr/lib/libgdiplus.so
