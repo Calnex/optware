@@ -209,7 +209,10 @@ $(GETTEXT_IPK): $(GETTEXT_BUILD_DIR)/.built
 	rm -rf $(GETTEXT_IPK_DIR) $(BUILD_DIR)/gettext_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(GETTEXT_BUILD_DIR) DESTDIR=$(GETTEXT_IPK_DIR) install
 	$(STRIP_COMMAND) $(GETTEXT_IPK_DIR)/opt/lib/*.so*
+	rm -f $(GETTEXT_IPK_DIR)/opt/share/info/dir
 	$(MAKE) $(GETTEXT_IPK_DIR)/CONTROL/control
+	install -m 755 $(GETTEXT_SOURCE_DIR)/postinst $(GETTEXT_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(GETTEXT_SOURCE_DIR)/postrm   $(GETTEXT_IPK_DIR)/CONTROL/postrm
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GETTEXT_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(GETTEXT_IPK_DIR)
 #

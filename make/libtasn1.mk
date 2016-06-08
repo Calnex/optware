@@ -198,7 +198,10 @@ $(LIBTASN1_IPK): $(LIBTASN1_BUILD_DIR)/.built
 	#install -m 644 $(LIBTASN1_SOURCE_DIR)/libtasn1.conf $(LIBTASN1_IPK_DIR)/opt/etc/libtasn1.conf
 	#install -d $(LIBTASN1_IPK_DIR)/opt/etc/init.d
 	#install -m 755 $(LIBTASN1_SOURCE_DIR)/rc.libtasn1 $(LIBTASN1_IPK_DIR)/opt/etc/init.d/SXXlibtasn1
+	rm -f $(LIBTASN1_IPK_DIR)/opt/share/info/dir
 	$(MAKE) $(LIBTASN1_IPK_DIR)/CONTROL/control
+	install -m 755 $(LIBTASN1_SOURCE_DIR)/postinst $(LIBTASN1_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(LIBTASN1_SOURCE_DIR)/postrm   $(LIBTASN1_IPK_DIR)/CONTROL/postrm
 	#install -m 755 $(LIBTASN1_SOURCE_DIR)/postinst $(LIBTASN1_IPK_DIR)/CONTROL/postinst
 	#install -m 755 $(LIBTASN1_SOURCE_DIR)/prerm $(LIBTASN1_IPK_DIR)/CONTROL/prerm
 	echo $(LIBTASN1_CONFFILES) | sed -e 's/ /\n/g' > $(LIBTASN1_IPK_DIR)/CONTROL/conffiles
