@@ -16,7 +16,7 @@ EOF1
 partprobe
 mkswap /dev/sda3
 else
-swapon -e /dev/sda3
+swapon /dev/sda3
 fi
 
 if [ ! -b /dev/sda4  ]
