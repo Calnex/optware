@@ -283,9 +283,8 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	if [ ! -z "${ENDOR_FIRMWARE_VERSION}" ]; then \
 	   if [ "${ENDOR_FIRMWARE_VERSION}" != "(none)" ] ; then \
 		  install -d $(ENDOR_IPK_DIR)/opt/var/lib/embedded; \
-		  cd $(ENDOR_IPK_DIR)/opt/var/lib/embedded; \
-		  wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz"; \
-		  wget "http://packages.calnexsol.com/firmware/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz.md5"; \
+		  install -m 755 $(BASE_DIR)/downloads/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz $(ENDOR_IPK_DIR)/opt/var/lib/embedded/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz; \
+		  install -m 755 $(BASE_DIR)/downloads/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz.md5 $(ENDOR_IPK_DIR)/opt/var/lib/embedded/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz.md5; \
 		  cat $(ENDOR_SOURCE_DIR)/postinst.firmware >> $(ENDOR_IPK_DIR)/CONTROL/postinst; \
 		  sed -i -e 's/__FIRMWARE_VERSION__/${ENDOR_FIRMWARE_VERSION}/g' $(ENDOR_IPK_DIR)/CONTROL/postinst; \
 	   fi; \
