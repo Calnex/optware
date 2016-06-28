@@ -112,7 +112,7 @@ tshark-source: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES)
 # shown below to make various patches to it.
 #
 $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) make/tshark.mk
-	$(MAKE) c-ares-stage geoip-stage glib-stage gnutls-stage libpcap-stage pcre-stage zlib-stage lua-stage
+	$(MAKE) c-ares-stage geoip-stage glib-stage gnutls-stage libpcap-stage pcre-stage zlib-stage
 	rm -rf $(BUILD_DIR)/$(TSHARK_DIR) $(@D)
 	$(TSHARK_UNZIP) $(DL_DIR)/$(TSHARK_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(TSHARK_PATCHES)" ; \
@@ -139,7 +139,6 @@ $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) ma
 		--prefix=/opt \
 		--disable-wireshark \
 		--with-glib-prefix=$(STAGING_PREFIX) \
-		--with-lua \
 		--disable-gtk2 \
 		--disable-nls \
 		--disable-static \
