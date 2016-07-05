@@ -140,7 +140,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/Version.cs ; \
 		cd endor-$(ENDOR_PRODUCT) && \
-		git show-ref --heads > endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
+		git show-ref --heads > /Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
 		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-$(ENDOR_PRODUCT) minify "$(BUILD_DIR)" ; \
 		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
 		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cz -f $@ --exclude=.git* * && \
