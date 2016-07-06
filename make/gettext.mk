@@ -105,6 +105,11 @@ gettext-host: $(GETTEXT_HOST_BUILD_DIR)/.built
 $(GETTEXT_HOST_BUILD_DIR)/.staged: $(GETTEXT_HOST_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
+	(\
+		cd $(STAGING_DIR)/opt/share/info && \
+		rm -f dir && \
+		for f in *.info ; do ginstall-info $$f dir ; done \
+	)
 	touch $@
 
 gettext-host-stage: $(GETTEXT_HOST_BUILD_DIR)/.staged
@@ -211,8 +216,8 @@ $(GETTEXT_IPK): $(GETTEXT_BUILD_DIR)/.built
 	$(STRIP_COMMAND) $(GETTEXT_IPK_DIR)/opt/lib/*.so*
 	rm -f $(GETTEXT_IPK_DIR)/opt/share/info/dir
 	$(MAKE) $(GETTEXT_IPK_DIR)/CONTROL/control
-	install -m 755 $(GETTEXT_SOURCE_DIR)/postinst $(GETTEXT_IPK_DIR)/CONTROL/postinst
-	install -m 755 $(GETTEXT_SOURCE_DIR)/postrm   $(GETTEXT_IPK_DIR)/CONTROL/postrm
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir $(GETTEXT_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir $(GETTEXT_IPK_DIR)/CONTROL/postrm
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GETTEXT_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(GETTEXT_IPK_DIR)
 #

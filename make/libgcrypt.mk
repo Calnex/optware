@@ -162,6 +162,11 @@ $(LIBGCRYPT_BUILD_DIR)/.staged: $(LIBGCRYPT_BUILD_DIR)/.built
 	       -e 's|I$$includedir|I$(STAGING_INCLUDE_DIR)|' \
 		$(STAGING_PREFIX)/bin/*libgcrypt-config
 	rm -f $(STAGING_LIB_DIR)/libgcrypt.la
+	(\
+		cd $(STAGING_DIR)/opt/share/info && \
+		rm -f dir && \
+		for f in *.info ; do ginstall-info $$f dir ; done \
+	)
 	touch $@
 
 libgcrypt-stage: $(LIBGCRYPT_BUILD_DIR)/.staged
@@ -205,6 +210,9 @@ $(LIBGCRYPT_IPK): $(LIBGCRYPT_BUILD_DIR)/.built
 	#install -d $(LIBGCRYPT_IPK_DIR)/opt/etc/init.d
 	#install -m 755 $(LIBGCRYPT_SOURCE_DIR)/rc.libgcrypt $(LIBGCRYPT_IPK_DIR)/opt/etc/init.d/SXXlibgcrypt
 	$(MAKE) $(LIBGCRYPT_IPK_DIR)/CONTROL/control
+	rm -f $(LIBGCRYPT_IPK_DIR)/opt/share/info/dir*
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBGCRYPT_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBGCRYPT_IPK_DIR)/CONTROL/postrm
 	#install -m 755 $(LIBGCRYPT_SOURCE_DIR)/postinst $(LIBGCRYPT_IPK_DIR)/CONTROL/postinst
 	#install -m 755 $(LIBGCRYPT_SOURCE_DIR)/prerm $(LIBGCRYPT_IPK_DIR)/CONTROL/prerm
 	echo $(LIBGCRYPT_CONFFILES) | sed -e 's/ /\n/g' > $(LIBGCRYPT_IPK_DIR)/CONTROL/conffiles

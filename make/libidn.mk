@@ -156,6 +156,11 @@ $(LIBIDN_BUILD_DIR)/.staged: $(LIBIDN_BUILD_DIR)/.built
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	rm -f $(STAGING_LIB_DIR)/libidn.la
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/libidn.pc
+	(\
+		cd $(STAGING_DIR)/opt/share/info && \
+		rm -f dir && \
+		for f in *.info ; do ginstall-info $$f dir ; done \
+	)
 	touch $@
 
 libidn-stage: $(LIBIDN_BUILD_DIR)/.staged
@@ -196,6 +201,9 @@ $(LIBIDN_IPK): $(LIBIDN_BUILD_DIR)/.built
 	$(MAKE) -C $(LIBIDN_BUILD_DIR) DESTDIR=$(LIBIDN_IPK_DIR) install-strip
 	rm -f $(LIBIDN_IPK_DIR)/opt/lib/libidn.a
 	$(MAKE) $(LIBIDN_IPK_DIR)/CONTROL/control
+	rm -f $(LIBIDN_IPK_DIR)/opt/share/info/dir*
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBIDN_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBIDN_IPK_DIR)/CONTROL/postrm
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBIDN_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBIDN_IPK_DIR)
 

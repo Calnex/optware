@@ -165,6 +165,11 @@ $(GNUTLS_BUILD_DIR)/.staged: $(GNUTLS_BUILD_DIR)/.built
 #	sed -i -e 's|echo $$includes $$.*_cflags|echo "-I$(STAGING_INCLUDE_DIR)"|' $(STAGING_PREFIX)/bin/*gnutls-config
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/gnutls*.pc
 	rm -f $(STAGING_LIB_DIR)/libgnutls*.la
+	(\
+		cd $(STAGING_DIR)/opt/share/info && \
+		rm -f dir && \
+		for f in *.info ; do ginstall-info $$f dir ; done \
+	)
 	touch $@
 
 gnutls-stage: $(GNUTLS_BUILD_DIR)/.staged
@@ -234,9 +239,12 @@ $(GNUTLS_IPK) $(GNUTLS-DEV_IPK): $(GNUTLS_BUILD_DIR)/.built
 	$(MAKE) $(GNUTLS_IPK_DIR)/CONTROL/control
 #	install -m 755 $(GNUTLS_SOURCE_DIR)/postinst $(GNUTLS_IPK_DIR)/CONTROL/postinst
 #	install -m 755 $(GNUTLS_SOURCE_DIR)/prerm $(GNUTLS_IPK_DIR)/CONTROL/prerm
+	rm -f $(GNUTLS-DEV_IPK_DIR)/opt/share/info/dir*
 	echo $(GNUTLS_CONFFILES) | sed -e 's/ /\n/g' > $(GNUTLS_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GNUTLS_IPK_DIR)
 	$(MAKE) $(GNUTLS-DEV_IPK_DIR)/CONTROL/control
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(GNUTLS-DEV_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(GNUTLS-DEV_IPK_DIR)/CONTROL/postrm
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GNUTLS-DEV_IPK_DIR)
 
 #

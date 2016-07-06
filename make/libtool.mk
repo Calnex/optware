@@ -105,6 +105,11 @@ libtool-host: $(LIBTOOL_HOST_BUILD_DIR)/.built
 $(LIBTOOL_HOST_BUILD_DIR)/.staged: $(LIBTOOL_HOST_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
+	(\
+		cd $(STAGING_DIR)/opt/share/info && \
+		rm -f dir && \
+		for f in *.info ; do ginstall-info $$f dir ; done \
+	)
 	touch $@
 
 libtool-host-stage: $(LIBTOOL_HOST_BUILD_DIR)/.staged
@@ -206,6 +211,9 @@ $(LIBTOOL_IPK): $(LIBTOOL_BUILD_DIR)/.built
 	$(MAKE) -C $(LIBTOOL_BUILD_DIR) DESTDIR=$(LIBTOOL_IPK_DIR) install-strip
 	rm -f $(LIBTOOL_IPK_DIR)/opt/info/dir
 	$(MAKE) $(LIBTOOL_IPK_DIR)/CONTROL/control
+	rm -f $(LIBTOOL_IPK_DIR)/opt/share/info/dir*
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBTOOL_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBTOOL_IPK_DIR)/CONTROL/postrm
 #	install -d $(LIBTOOL_IPK_DIR)/CONTROL
 #	sed -e "s/@ARCH@/$(TARGET_ARCH)/" -e "s/@VERSION@/$(LIBTOOL_VERSION)/" \
 #		-e "s/@RELEASE@/$(LIBTOOL_IPK_VERSION)/" $(LIBTOOL_SOURCE_DIR)/control > $(LIBTOOL_IPK_DIR)/CONTROL/control

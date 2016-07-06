@@ -206,6 +206,8 @@ $(READLINE_IPK): $(READLINE_BUILD_DIR)/.built
 		find . -name '*.$(SHLIB_EXT)' -exec chmod -w {} \; ; \
 	)
 	$(MAKE) $(READLINE_IPK_DIR)/CONTROL/control
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(READLINE_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(READLINE_IPK_DIR)/CONTROL/postrm
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(READLINE_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(READLINE_IPK_DIR)
 

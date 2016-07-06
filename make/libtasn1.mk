@@ -155,6 +155,12 @@ $(LIBTASN1_BUILD_DIR)/.staged: $(LIBTASN1_BUILD_DIR)/.built
 #	sed -i -e 's|echo $$includes $$tasn1_cflags|echo "-I$(STAGING_INCLUDE_DIR)"|' $(STAGING_PREFIX)/bin/libtasn1-config
 	rm -f $(STAGING_DIR)/opt/lib/libtasn1.la
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/libtasn1.pc
+	# Generate a new info/dir listing
+	(\
+		cd $(STAGING_DIR)/opt/share/info && \
+		rm -f dir && \
+		for f in *.info ; do ginstall-info $$f dir ; done \
+	)
 	touch $@
 
 libtasn1-stage: $(LIBTASN1_BUILD_DIR)/.staged
@@ -200,10 +206,8 @@ $(LIBTASN1_IPK): $(LIBTASN1_BUILD_DIR)/.built
 	#install -m 755 $(LIBTASN1_SOURCE_DIR)/rc.libtasn1 $(LIBTASN1_IPK_DIR)/opt/etc/init.d/SXXlibtasn1
 	rm -f $(LIBTASN1_IPK_DIR)/opt/share/info/dir
 	$(MAKE) $(LIBTASN1_IPK_DIR)/CONTROL/control
-	install -m 755 $(LIBTASN1_SOURCE_DIR)/postinst $(LIBTASN1_IPK_DIR)/CONTROL/postinst
-	install -m 755 $(LIBTASN1_SOURCE_DIR)/postrm   $(LIBTASN1_IPK_DIR)/CONTROL/postrm
-	#install -m 755 $(LIBTASN1_SOURCE_DIR)/postinst $(LIBTASN1_IPK_DIR)/CONTROL/postinst
-	#install -m 755 $(LIBTASN1_SOURCE_DIR)/prerm $(LIBTASN1_IPK_DIR)/CONTROL/prerm
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBTASN1_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBTASN1_IPK_DIR)/CONTROL/postrm
 	echo $(LIBTASN1_CONFFILES) | sed -e 's/ /\n/g' > $(LIBTASN1_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBTASN1_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBTASN1_IPK_DIR)

@@ -160,6 +160,11 @@ libffi: $(LIBFFI_BUILD_DIR)/.built
 $(LIBFFI_BUILD_DIR)/.staged: $(LIBFFI_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	(\
+		cd $(STAGING_DIR)/opt/share/info && \
+		rm -f dir && \
+		for f in *.info ; do ginstall-info $$f dir ; done \
+	)
 	touch $@
 
 libffi-stage: $(LIBFFI_BUILD_DIR)/.staged
@@ -199,6 +204,9 @@ $(LIBFFI_IPK): $(LIBFFI_BUILD_DIR)/.built
 	rm -rf $(LIBFFI_IPK_DIR) $(BUILD_DIR)/libffi_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(LIBFFI_BUILD_DIR) DESTDIR=$(LIBFFI_IPK_DIR) install-strip
 	$(MAKE) $(LIBFFI_IPK_DIR)/CONTROL/control
+	rm -f $(LIBFFI_IPK_DIR)/opt/share/info/dir*
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBFFI_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBFFI_IPK_DIR)/CONTROL/postrm
 	echo $(LIBFFI_CONFFILES) | sed -e 's/ /\n/g' > $(LIBFFI_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBFFI_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBFFI_IPK_DIR)

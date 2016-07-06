@@ -166,6 +166,11 @@ libgmp: $(LIBGMP_BUILD_DIR)/.built
 $(LIBGMP_BUILD_DIR)/.staged: $(LIBGMP_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	(\
+		cd $(STAGING_DIR)/opt/share/info && \
+		rm -f dir && \
+		for f in *.info ; do ginstall-info $$f dir ; done \
+	)
 	touch $@
 
 libgmp-stage: $(LIBGMP_BUILD_DIR)/.staged
@@ -228,6 +233,9 @@ $(LIBGMP_IPK): $(LIBGMP_BUILD_DIR)/.built
 #	install -d $(LIBGMP_IPK_DIR)/opt/etc/init.d
 #	install -m 755 $(LIBGMP_SOURCE_DIR)/rc.libgmp $(LIBGMP_IPK_DIR)/opt/etc/init.d/SXXlibgmp
 	$(MAKE) $(LIBGMP_IPK_DIR)/CONTROL/control
+	rm -f $(LIBGMP_IPK_DIR)/opt/share/info/dir*
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBGMP_IPK_DIR)/CONTROL/postinst
+	install -m 755 $(SOURCE_DIR)/common/gen_info_dir  $(LIBGMP_IPK_DIR)/CONTROL/postrm
 #	install -m 755 $(LIBGMP_SOURCE_DIR)/postinst $(LIBGMP_IPK_DIR)/CONTROL/postinst
 #	install -m 755 $(LIBGMP_SOURCE_DIR)/prerm $(LIBGMP_IPK_DIR)/CONTROL/prerm
 	echo $(LIBGMP_CONFFILES) | sed -e 's/ /\n/g' > $(LIBGMP_IPK_DIR)/CONTROL/conffiles

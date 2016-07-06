@@ -1,3 +1,0 @@
-cd /opt/share/info
-rm -f dir
-for f in * ; do ginstall-info $f dir ; done
