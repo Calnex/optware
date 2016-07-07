@@ -172,6 +172,7 @@ xsp: $(XSP_BUILD_DIR)/.built
 $(XSP_BUILD_DIR)/.staged: $(XSP_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/xsp*
 	touch $@
 
 xsp-stage: $(XSP_BUILD_DIR)/.staged
