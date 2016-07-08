@@ -195,21 +195,6 @@ $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make
 	if test "$(BUILD_DIR)/$(ENDOR_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(ENDOR_DIR) $(@D) ; \
 	fi
-	(cd $(@D); \
-		mdtool generate-makefiles Endor.sln -d:release && \
-		sed -i -e 's/PROGRAMFILES = \\/PROGRAMFILES = \\\n\t$$(ASSEMBLY) \\/g' `find $(ENDOR_BUILD_DIR) -name Makefile.am` && \
-		sed -i -e 's/Endor/Endor/g' autogen.sh configure.ac && \
-		$(TARGET_CONFIGURE_OPTS) \
-		DMCS="$(STAGING_DIR)/opt/bin/dmcs" \
-		CPPFLAGS="$(STAGING_CPPFLAGS) $(ENDOR_CPPFLAGS)" \
-		LDFLAGS="$(STAGING_LDFLAGS) $(ENDOR_LDFLAGS)" \
-		./autogen.sh \
-		--build=$(GNU_HOST_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--target=$(GNU_TARGET_NAME) \
-		--prefix=/opt \
-	)
-#	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
 
 endor-unpack: $(ENDOR_BUILD_DIR)/.configured
@@ -219,7 +204,9 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 #
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	(cd $(@D);\
+		$(STAGING_DIR)/opt/bin/xbuild Endor.sln /p:Configuration=Release /p:CscToolPath=$(STAGING_DIR)/opt/lib/mono/4.5;\
+	)
 	touch $@
 
 
@@ -234,7 +221,7 @@ endor: $(ENDOR_BUILD_DIR)/.built
 #
 $(ENDOR_BUILD_DIR)/.staged: $(ENDOR_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+#	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 endor-stage: $(ENDOR_BUILD_DIR)/.staged
@@ -272,8 +259,10 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 # 
 $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	rm -rf $(ENDOR_IPK_DIR) $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(ENDOR_BUILD_DIR) DESTDIR=$(ENDOR_IPK_DIR) install-strip
-		$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
+	install -d $(ENDOR_IPK_DIR)
+	cp -ar $(ENDOR_BUILD_DIR)/Endor/Build/opt $(ENDOR_IPK_DIR)
+#	find $(ENDOR_IPK_DIR)/opt/ -type f -name "*.mdb" --delete
+	$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_SOURCE_DIR)/preinst  $(ENDOR_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
 	install -m 755 $(ENDOR_SOURCE_DIR)/prerm    $(ENDOR_IPK_DIR)/CONTROL/prerm
