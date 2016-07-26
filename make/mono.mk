@@ -164,6 +164,8 @@ $(MONO_BUILD_DIR)/.staged: $(MONO_BUILD_DIR)/.built
 	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/dmcs
 	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/mcs
 	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/xbuild
+	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/gacutil
+	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/sn
 	touch $@
 
 mono-stage: $(MONO_BUILD_DIR)/.staged

@@ -119,7 +119,7 @@ xsp-source: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES)
 # shown below to make various patches to it.
 #
 $(XSP_BUILD_DIR)/.configured: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES) make/xsp.mk
-	$(MAKE) libtool-stage
+	$(MAKE) libtool-stage mono-stage
 	rm -rf $(BUILD_DIR)/$(XSP_DIR) $(@D)
 	$(XSP_UNZIP) $(DL_DIR)/$(XSP_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(XSP_PATCHES)" ; \
@@ -133,6 +133,10 @@ $(XSP_BUILD_DIR)/.configured: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES) make/xsp.mk
 	sed -i -e '/dbpage2.sqlite/d' $(@D)/test/1.1/webcontrols/Makefile.am 
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
+		DMCS="$(STAGING_DIR)/opt/bin/dmcs" \
+		MONO="$(STAGING_DIR)/opt/bin/mono" \
+		GACUTIL="$(STAGING_DIR)/opt/bin/gacutil" \
+		SN="$(STAGING_DIR)/opt/bin/sn" \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(XSP_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(XSP_LDFLAGS)" \
 		PATH="/opt/bin:/opt/sbin:$(PATH)" \
