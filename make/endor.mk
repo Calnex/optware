@@ -185,7 +185,7 @@ endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)
 # shown below to make various patches to it.
 #
 $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make/endor.mk
-	$(MAKE) mono-stage xsp-stage
+	$(MAKE) mono-stage #xsp-stage
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
 	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_PATCHES)" ; \
@@ -316,3 +316,11 @@ endor-dirclean:
 #
 endor-check: $(ENDOR_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
+
+# This builds the endor service test binaries
+#
+endor-service-tests:
+	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-$(ENDOR_PRODUCT) service-tests $(BUILD_DIR)
+
+endor-service-tests-clean:
+	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-$(ENDOR_PRODUCT) service-tests-clean $(BUILD_DIR)
