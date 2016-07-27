@@ -135,6 +135,7 @@ $(XSP_BUILD_DIR)/.configured: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES) make/xsp.mk
 		$(TARGET_CONFIGURE_OPTS) \
 		DMCS="$(STAGING_DIR)/opt/bin/dmcs" \
 		MONO="$(STAGING_DIR)/opt/bin/mono" \
+		MDOC="$(STAGING_DIR)/opt/bin/mdoc" \
 		GACUTIL="$(STAGING_DIR)/opt/bin/gacutil" \
 		SN="$(STAGING_DIR)/opt/bin/sn" \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(XSP_CPPFLAGS)" \
