@@ -42,7 +42,7 @@ ENDOR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_DESCRIPTION=Describe endor-$(ENDOR_PRODUCT) here.
 ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
-ENDOR_DEPENDS=postgresql, mono, xsp, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
+ENDOR_DEPENDS=postgresql, mono, xsp, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc, nunit
 ENDOR_SUGGESTS=
 ENDOR_CONFLICTS=endor-paragon, endor-paragon-doc
 ifeq "${ENDOR_PRODUCT}" "paragon"
@@ -185,7 +185,7 @@ endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)
 # shown below to make various patches to it.
 #
 $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make/endor.mk
-	$(MAKE) mono-stage #xsp-stage
+	$(MAKE) mono-stage xsp-stage
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
 	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_PATCHES)" ; \
