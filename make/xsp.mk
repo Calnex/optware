@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 XSP_REPOSITORY=https://github.com/mono/xsp.git
-XSP_VERSION=3.2.1
+XSP_VERSION=4.4
 XSP_SOURCE=xsp-$(XSP_VERSION).tar.gz
 XSP_DIR=xsp-$(XSP_VERSION)
 XSP_UNZIP=zcat
