@@ -222,6 +222,8 @@ $(NGINX_IPK): $(NGINX_BUILD_DIR)/.built
 	install -m 644 $(NGINX_SOURCE_DIR)/nginx.conf $(NGINX_IPK_DIR)/opt/etc/nginx/nginx.conf
 	install -m 644 $(NGINX_SOURCE_DIR)/fastcgi_params $(NGINX_IPK_DIR)/opt/etc/nginx/fastcgi_params
 	ln -s /opt/share/nginx/html $(NGINX_IPK_DIR)/opt/share/www/nginx
+	install -d $(NGINX_IPK_DIR)/opt/etc/logrotate.d
+	install -m 755 $(NGINX_SOURCE_DIR)/logrotate $(NGINX_IPK_DIR)/opt/etc/logrotate.d/nginx
 	install -d $(NGINX_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(NGINX_SOURCE_DIR)/rc.nginx $(NGINX_IPK_DIR)/opt/etc/init.d/S80nginx
 	install -d $(NGINX_IPK_DIR)/opt/etc/default
