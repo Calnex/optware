@@ -1,4 +1,4 @@
 #!/bin/sh
 
 test -x /usr/sbin/logrotate || exit 0
-/usr/sbin/logrotate -s /opt/etc/logrotate.state /opt/etc/logrotate.conf
+su - calnex -c '/usr/sbin/logrotate -s /opt/etc/logrotate.state /opt/etc/logrotate.conf'
