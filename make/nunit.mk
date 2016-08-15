@@ -153,9 +153,9 @@ nunit: $(NUNIT_BUILD_DIR)/.built
 $(NUNIT_BUILD_DIR)/.staged: $(NUNIT_BUILD_DIR)/.built
 	rm -f $@
 	cp -r $(NUNIT_BUILD_DIR)/bin/Release/* $(STAGING_DIR)/opt/bin/
-	echo "#! /bin/sh" > $(STAGING_DIR)/opt/bin/nunit-console_$(NUNIT_VERSION)
-	echo "exec $(STAGING_DIR)/opt/bin/mono --debug $$MONO_OPTIONS $(STAGING_DIR)/opt/bin/nunit-console.exe \"$$@\"" >> $(STAGING_DIR)/opt/bin/nunit-console_$(NUNIT_VERSION)
-	chmod +x $(STAGING_DIR)/opt/bin/nunit-console_$(NUNIT_VERSION)
+	echo "#! /bin/sh" > $(MONO_STAGING_DIR)/opt/bin/nunit-console_$(NUNIT_VERSION)
+	echo "exec $(MONO_STAGING_DIR)/opt/bin/mono --debug $$MONO_OPTIONS $(MONO_STAGING_DIR)/opt/bin/nunit-console.exe \"$$@\"" >> $(MONO_STAGING_DIR)/opt/bin/nunit-console_$(NUNIT_VERSION)
+	chmod +x $(MONO_STAGING_DIR)/opt/bin/nunit-console_$(NUNIT_VERSION)
 	touch $@
 
 nunit-stage: $(NUNIT_BUILD_DIR)/.staged
