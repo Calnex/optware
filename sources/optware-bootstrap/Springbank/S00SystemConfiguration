@@ -94,6 +94,9 @@ reboot
 		fi
 	fi
 # Optware self install
+cp /lib/live/mount/rootfs/filesystem.squashfs/home/.optware/lib/ipkg/info/*.control /opt/lib/ipkg/info/
+/opt/bin/ipkg_rebuild > /opt/lib/ipkg/info/status
+
 /opt/bin/ipkg list_installed | grep endor >/dev/null
 if [[ $? != 0 ]]
 then
@@ -105,9 +108,9 @@ then
 
 		CONNECTED=1
 		i=0
-		
+
 		voodoo dhclient
-		
+
 		# Wait for network
 		while [ $CONNECTED -ne "0" ]
 		do
@@ -123,22 +126,24 @@ then
 			fi
 		done
 	else
-		NETFAIL=1		
+		NETFAIL=1
 	fi
-	
+
 	if [ $NETFAIL -ne "0" ]
 	then
-		cat '#! /bin/sh'                                                             > /sbin/get-ip-address
+		cat '#! /bin/sh'                                                             >  /sbin/get-ip-address
 		cat 'echo "Please insert installation media and run the following commands"' >> /sbin/get-ip-address
 		cat 'echo "ipkg update"'                                                     >> /sbin/get-ip-address
 		cat 'echo "ipkg install endor"'                                              >> /sbin/get-ip-address
 		cat 'echo "reboot"'                                                          >> /sbin/get-ip-address
-		
+
 	else
 		su - calnex -c '/opt/bin/ipkg update'
 		su - calnex -c '/opt/bin/ipkg install endor-__TARGET_PRODUCT__'
 		reboot
 	fi
 fi
+
+cp /opt/etc/cron.d/* /etc/cron.daily/
 
 /sbin/ip_fallback &

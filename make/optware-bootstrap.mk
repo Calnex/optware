@@ -125,6 +125,10 @@ endif
 		$(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/
 	sed -i -e 's/__TARGET_DISTRO__/$(TARGET_DISTRO)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/optwareUSB
 	sed -i -e 's/__TARGET_PRODUCT__/$(TARGET_PRODUCT)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/optwareUSB
+	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/etc
+	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE_TARGET)/logrotate.conf $(OPTWARE-BOOTSTRAP_IPK_DIR)/etc/logrotate.conf
+	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/etc/cron.daily
+	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE_TARGET)/logrotate.cron $(OPTWARE-BOOTSTRAP_IPK_DIR)/etc/cron.daily/logrotate.optware
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 	# build optware-bootstrap.xsh next
 	rm -rf $(BUILD_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)-bootstrap_*_$(TARGET_ARCH).xsh
