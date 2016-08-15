@@ -1,0 +1,11 @@
+/opt/var/nginx/log/*.log {
+  daily
+  maxsize 1048576
+  missingok
+  rotate 4
+  notifempty
+  create 0640 calnex calnex
+  postrotate
+    [ -f /home/calnex/nginx.pid ] && kill -USR1 `cat /home/calnex/nginx.pid`
+  endscript
+}
