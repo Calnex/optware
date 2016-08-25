@@ -39,7 +39,7 @@ NUNIT_DEPENDS=
 NUNIT_SUGGESTS=
 NUNIT_CONFLICTS=
 
-NUNIT_XBUILD=${MONO_STAGING_DIR}/opt/bin/xbuild
+NUNIT_XBUILD=$(MONO_STAGING_DIR)/opt/bin/xbuild
 
 #
 # NUNIT_IPK_VERSION should be incremented when the ipk changes.
@@ -132,7 +132,7 @@ nunit-unpack: $(NUNIT_BUILD_DIR)/.configured
 $(NUNIT_BUILD_DIR)/.built: $(NUNIT_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D);\
-		$(NUNIT_XBUILD) /property:Configuration=Release ./src/NUnitCore/core/nunit.core.dll.csproj ;\
+		$(MONO_STAGING_DIR)$(NUNIT_XBUILD) /property:Configuration=Release ./src/NUnitCore/core/nunit.core.dll.csproj ;\
 		$(NUNIT_XBUILD) /property:Configuration=Release ./src/NUnitCore/interfaces/nunit.core.interfaces.dll.csproj ;\
 		$(NUNIT_XBUILD) /property:Configuration=Release ./src/NUnitFramework/framework/nunit.framework.dll.csproj ;\
 		$(NUNIT_XBUILD) /property:Configuration=Release ./src/NUnitMocks/mocks/nunit.mocks.csproj ;\
