@@ -57,8 +57,10 @@ MONO_IPK_VERSION=2
 #
 MONO_PATCHES=$(MONO_SOURCE_DIR)/2.0_web.config.patch\
              $(MONO_SOURCE_DIR)/4.0_web.config.patch\
-             $(MONO_SOURCE_DIR)/4.5_web.config.patch\
-             $(MONO_SOURCE_DIR)/4.4.0122-fix-timers-to-work-thru-system-time-change.patch
+             $(MONO_SOURCE_DIR)/4.5_web.config.patch
+
+#            This fixed nothing John Snow
+#            $(MONO_SOURCE_DIR)/4.4.0122-fix-timers-to-work-thru-system-time-change.patch
 
 #
 # If the compilation of the package requires additional
