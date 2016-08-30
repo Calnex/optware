@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DEBIAN_VERSION=wheezy
+DEBIAN_VERSION=$(SNAPSHOT_VERSION)
 DEBIAN_SOURCE=debian-$(DEBIAN_VERSION).tar.gz
 DEBIAN_DIR=debian-$(DEBIAN_VERSION)
 DEBIAN_UNZIP=zcat
@@ -37,12 +37,11 @@ DEBIAN_PRIORITY=optional
 DEBIAN_DEPENDS=
 DEBIAN_SUGGESTS=
 DEBIAN_CONFLICTS=
-SNAPSHOT_VERSION?=devel
 
 #
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN_IPK_VERSION=$(SNAPSHOT_VERSION)
+DEBIAN_IPK_VERSION=1
 
 #
 # DEBIAN_CONFFILES should be a list of user-editable files
