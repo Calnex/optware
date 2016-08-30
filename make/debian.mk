@@ -37,11 +37,12 @@ DEBIAN_PRIORITY=optional
 DEBIAN_DEPENDS=
 DEBIAN_SUGGESTS=
 DEBIAN_CONFLICTS=
+SNAPSHOT_VERSION?=devel
 
 #
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN_IPK_VERSION=$(BUILD_NUMBER)
+DEBIAN_IPK_VERSION=$(SNAPSHOT_VERSION)
 
 #
 # DEBIAN_CONFFILES should be a list of user-editable files
