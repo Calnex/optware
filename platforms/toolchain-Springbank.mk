@@ -32,6 +32,7 @@ else
 
 HOSTCC = gcc
 GNU_HOST_NAME = $(GNU_TARGET_NAME)
+SNAPSHOT_VERSION ?= devel
 TARGET_DISTRO ?= wheezy
 TARGET_PRODUCT ?= Paragon
 TARGET_PRODUCT_LOWER = $(shell echo $(TARGET_PRODUCT) | tr A-Z a-z)
