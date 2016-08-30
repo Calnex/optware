@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DEBIAN-DUMMY_VERSION=wheezy
+DEBIAN-DUMMY_VERSION=$(SNAPSHOT_VERSION)
 DEBIAN-DUMMY_DIR=debian-dummy-$(DEBIAN-DUMMY_VERSION)
 DEBIAN-DUMMY_MAINTAINER=Calnex Solutions <www.calnexsol.com>
 DEBIAN-DUMMY_DESCRIPTION=Minimal install of the Debian GNU/Linux Operating System
@@ -35,12 +35,11 @@ DEBIAN-DUMMY_PRIORITY=optional
 DEBIAN-DUMMY_DEPENDS=
 DEBIAN-DUMMY_SUGGESTS=
 DEBIAN-DUMMY_CONFLICTS=
-SNAPSHOT_VERSION?=devel
 
 #
 # DEBIAN-DUMMY_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN-DUMMY_IPK_VERSION=$(SNAPSHOT_VERSION)
+DEBIAN-DUMMY_IPK_VERSION=1
 
 #
 # DEBIAN-DUMMY_CONFFILES should be a list of user-editable files
