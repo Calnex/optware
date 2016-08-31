@@ -43,7 +43,7 @@ POSTGRESQL_DEPENDS=readline
 #
 # POSTGRESQL_IPK_VERSION should be incremented when the ipk changes.
 #
-POSTGRESQL_IPK_VERSION=3
+POSTGRESQL_IPK_VERSION=4
 
 #
 # POSTGRESQL_CONFFILES should be a list of user-editable files
