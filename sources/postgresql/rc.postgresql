@@ -17,7 +17,7 @@ PGLOG="$PGDATA/serverlog"
 PGPID="$PGDATA/postmaster.pid"
 
 # What to use to shut down the postmaster
-PGCTL="$prefix/bin/pg_ctl"
+PGCTL="$prefix/bin/pg_ctl -w"
 
 # What to use to start up the postmaster (we do NOT use pg_ctl for this,
 # as it adds no value and can cause the postmaster to misrecognize a stale
