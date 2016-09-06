@@ -52,15 +52,15 @@ then
 	OLD_PARTITION="${OLD_PARTITION: -1}"
 	if [ "$OLD_PARTITION" = "1" ]
 	then
-		$NEW_PARTITION=2
+		NEW_PARTITION=2
 	else
-		$NEW_PARTITION=1
+		NEW_PARTITION=1
 	fi
 	CSUM_ROOT=$(md5sum /dev/sda$OLD_PARTITION | grep --only-matching -m 1 '^[0-9a-f]*')
 	CSUM_IMG=$(md5sum root.img | grep --only-matching -m 1 '^[0-9a-f]*')
 	if [ "$CSUM_ROOT" != "$CSUM_IMG" ]
 	then
-		gpg --verify root.img.asc root.img
+		gpg --verify root.img.asc root.img 2>/dev/null
 		if [ $? = 0 ]
 		then
 IMG_SIZE=$(ls -l root.img | awk '{print $5}')
@@ -92,55 +92,6 @@ reboot
 		else
 			echo "Debian update image keysign check failed!"
 		fi
-	fi
-# Optware self install
-cp /lib/live/mount/rootfs/filesystem.squashfs/home/.optware/lib/ipkg/info/*.control /opt/lib/ipkg/info/
-/opt/bin/ipkg_rebuild > /opt/lib/ipkg/info/status
-
-/opt/bin/ipkg list_installed | grep endor >/dev/null
-if [[ $? != 0 ]]
-then
-
-	ATTCHED=`cat /sys/class/net/eth0/carrier`
-	NETFAIL=0
-	if [ $ATTCHED -ne "0" ]
-	then
-
-		CONNECTED=1
-		i=0
-
-		voodoo dhclient
-
-		# Wait for network
-		while [ $CONNECTED -ne "0" ]
-		do
-
-			ping -c 1 packages.calnexsol.com >/dev/null
-			sleep 0.1
-			CONNECTED=$?
-			((i++))
-			if [[ $i -gt 2000 ]]
-			then
-				CONNECTED=0
-				NETFAIL=1
-			fi
-		done
-	else
-		NETFAIL=1
-	fi
-
-	if [ $NETFAIL -ne "0" ]
-	then
-		cat '#! /bin/sh'                                                             >  /sbin/get-ip-address
-		cat 'echo "Please insert installation media and run the following commands"' >> /sbin/get-ip-address
-		cat 'echo "ipkg update"'                                                     >> /sbin/get-ip-address
-		cat 'echo "ipkg install endor"'                                              >> /sbin/get-ip-address
-		cat 'echo "reboot"'                                                          >> /sbin/get-ip-address
-
-	else
-		su - calnex -c '/opt/bin/ipkg update'
-		su - calnex -c '/opt/bin/ipkg install endor-__TARGET_PRODUCT__'
-		reboot
 	fi
 fi
 
