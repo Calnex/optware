@@ -144,7 +144,7 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 			of=root.img \
 			skip=`/sbin/fdisk -l live-image-amd64.hybrid.iso 2>/dev/null | awk '/Device/{getline; print $$3}'` \
 			count=`/sbin/fdisk -l live-image-amd64.hybrid.iso 2>/dev/null | awk '/Device/{getline; print $$5}'`; \
-		gpg --local-user C02125C1 --armour --detach-sign root.img; \
+		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
 		md5sum root.img > root.img.md5; \
 	)
 	touch $@
