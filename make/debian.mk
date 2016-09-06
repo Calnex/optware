@@ -142,8 +142,8 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 		dd \
 			if=live-image-amd64.hybrid.iso \
 			of=root.img \
-			skip=`/sbin/fdisk -l live-image-amd64.hybrid.iso | awk '/Device/{getline; print $$3}'` \
-			count=`/sbin/fdisk -l live-image-amd64.hybrid.iso | awk '/Device/{getline; print $$5}'`; \
+			skip=`/sbin/fdisk -l live-image-amd64.hybrid.iso 2>/dev/null | awk '/Device/{getline; print $$3}'` \
+			count=`/sbin/fdisk -l live-image-amd64.hybrid.iso 2>/dev/null | awk '/Device/{getline; print $$5}'`; \
 		gpg --local-user C02125C1 --armour --detach-sign root.img; \
 		md5sum root.img > root.img.md5; \
 	)
