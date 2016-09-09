@@ -57,6 +57,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			libstdc++ \
 			libtasn1 \
 			libtool \
+			lua \
 			mono \
 			ncurses \
 			ncursesw \
