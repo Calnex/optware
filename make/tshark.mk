@@ -35,14 +35,14 @@ TSHARK_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 TSHARK_DESCRIPTION=Terminal based wireshark to dump and analyze network traffic
 TSHARK_SECTION=net
 TSHARK_PRIORITY=optional
-TSHARK_DEPENDS=c-ares, glib, libpcap, pcre, zlib, gnutls, geoip
+TSHARK_DEPENDS=c-ares, glib, libpcap, pcre, zlib, gnutls, geoip, lua
 TSHARK_SUGGESTS=
 TSHARK_CONFLICTS=
 
 #
 # TSHARK_IPK_VERSION should be incremented when the ipk changes.
 #
-TSHARK_IPK_VERSION ?= 1
+TSHARK_IPK_VERSION ?= 2
 
 #
 # TSHARK_CONFFILES should be a list of user-editable files
@@ -112,7 +112,7 @@ tshark-source: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES)
 # shown below to make various patches to it.
 #
 $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) make/tshark.mk
-	$(MAKE) c-ares-stage geoip-stage glib-stage gnutls-stage libpcap-stage pcre-stage zlib-stage
+	$(MAKE) c-ares-stage geoip-stage glib-stage gnutls-stage libpcap-stage pcre-stage zlib-stage lua-stage
 	rm -rf $(BUILD_DIR)/$(TSHARK_DIR) $(@D)
 	$(TSHARK_UNZIP) $(DL_DIR)/$(TSHARK_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(TSHARK_PATCHES)" ; \
@@ -139,6 +139,7 @@ $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) ma
 		--prefix=/opt \
 		--disable-wireshark \
 		--with-glib-prefix=$(STAGING_PREFIX) \
+		--with-lua \
 		--disable-gtk2 \
 		--disable-nls \
 		--disable-static \
@@ -222,6 +223,8 @@ $(TSHARK_IPK): $(TSHARK_BUILD_DIR)/.built
 	$(MAKE) $(TSHARK_IPK_DIR)/CONTROL/control
 #	install -m 755 $(TSHARK_SOURCE_DIR)/postinst $(TSHARK_IPK_DIR)/CONTROL/postinst
 #	install -m 755 $(TSHARK_SOURCE_DIR)/prerm $(TSHARK_IPK_DIR)/CONTROL/prerm
+	install -m 644 $(TSHARK_SOURCE_DIR)/stcsig.lua \
+		$(TSHARK_IPK_DIR)/opt/lib/wireshark/plugins/$(TSHARK_VERSION)/stcsig.lua
 	echo $(TSHARK_CONFFILES) | sed -e 's/ /\n/g' > $(TSHARK_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(TSHARK_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(TSHARK_IPK_DIR)
