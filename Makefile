@@ -66,7 +66,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			optware-bootstrap \
 			pcre \
 			postgresql \
-			python3 \
 			readline \
 			springbank \
 			sqlite \
