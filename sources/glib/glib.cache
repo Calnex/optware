@@ -1,4 +1,5 @@
 glib_cv_stack_grows=yes
 glib_cv_uscore=no
 ac_cv_func_posix_getpwuid_r=yes
+ac_cv_func_posix_getgrgid_r=yes
 glib_cv_use_pid_surrogate=no

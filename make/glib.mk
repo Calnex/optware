@@ -15,7 +15,7 @@
 GLIB_CALNEX_SITE=$(PACKAGES_SERVER)
 
 GLIB_MAJOR_VERSION=2.40
-GLIB_MINOR_VERSION=0
+GLIB_MINOR_VERSION=2
 GLIB_VERSION=$(GLIB_MAJOR_VERSION).$(GLIB_MINOR_VERSION)
 GLIB_SITE=http://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB_MAJOR_VERSION)
 GLIB_SOURCE=glib-$(GLIB_VERSION).tar.xz
@@ -154,7 +154,7 @@ endif
 	rm -rf $(BUILD_DIR)/$(GLIB_DIR) $(@D)
 	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	mv $(BUILD_DIR)/$(GLIB_DIR) $(@D)
-	cp $(SOURCE_DIR)/glib/glib.cache $(@D)/arm.cache
+	cp $(SOURCE_DIR)/glib/glib.cache $(@D)/config.cache
 	sed -i -e 's/^ *$$as_echo_n /echo -n /' $(@D)/configure
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -164,11 +164,9 @@ endif
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
-		--cache-file=arm.cache \
+		--cache-file=config.cache \
 		--prefix=/opt \
 		$(GLIB_CONFIG_OPT) \
-		--disable-nls \
-		--disable-static \
 	)
 	sed -i -e '/#define _POSIX_SOURCE/a#include <bits/posix1_lim.h>' $(@D)/glib/giounix.c
 	$(PATCH_LIBTOOL) $(@D)/libtool
