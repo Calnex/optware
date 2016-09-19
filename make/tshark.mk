@@ -139,6 +139,7 @@ $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) ma
 		--prefix=/opt \
 		--disable-wireshark \
 		--with-glib-prefix=$(STAGING_PREFIX) \
+		--with-pcap=$(STAGING_LIB_DIR) \
 		--with-lua \
 		--disable-gtk2 \
 		--disable-nls \

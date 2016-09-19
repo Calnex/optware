@@ -177,6 +177,7 @@ endif
 		--prefix=/opt \
 		--mandir=/opt/man \
 		--enable-shared \
+		--disable-ipv6 \
 	)
 #		--without-pymalloc \
 ;
