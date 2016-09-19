@@ -60,7 +60,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			lua \
 			mono \
 			ncurses \
-			ncursesw \
 			nettle \
 			nginx \
 			openssl \

@@ -171,6 +171,7 @@ $(LIBGMP_BUILD_DIR)/.staged: $(LIBGMP_BUILD_DIR)/.built
 		rm -f dir && \
 		for f in *.info ; do ginstall-info $$f dir ; done \
 	)
+	sed -i -e "s|^libdir=.*|libdir='$(STAGING_DIR)/opt/lib'|" $(STAGING_DIR)/opt/lib/libgmp.la
 	touch $@
 
 libgmp-stage: $(LIBGMP_BUILD_DIR)/.staged
