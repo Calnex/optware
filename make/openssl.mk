@@ -5,8 +5,8 @@
 OPENSSL_CALNEX_SITE=$(PACKAGES_SERVER)
 
 OPENSSL_SITE=http://www.openssl.org/source
-OPENSSL_VERSION=1.0.1t
-OPENSSL_LIB_VERSION=1.0.0
+OPENSSL_VERSION=1.1.0
+OPENSSL_LIB_VERSION=1.1
 OPENSSL_SOURCE=openssl-$(OPENSSL_VERSION).tar.gz
 OPENSSL_DIR=openssl-$(OPENSSL_VERSION)
 OPENSSL_UNZIP=zcat
@@ -49,7 +49,7 @@ $(OPENSSL_BUILD_DIR)/.configured: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCHES)
 			--prefix=/opt \
 			$(OPENSSL_ARCH) \
 	)
-	sed -i -e 's|$$(PERL) tools/c_rehash certs||' $(@D)/apps/Makefile
+	#sed -i -e 's|$$(PERL) tools/c_rehash certs||' $(@D)/apps/Makefile
 	touch $@
 
 openssl-unpack: $(OPENSSL_BUILD_DIR)/.configured
