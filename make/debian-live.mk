@@ -116,6 +116,8 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	cp -ar $(DEBIAN_CONFIG) $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
 	# Configs for the live system *OLNY*
 	cp -ar $(DEBIAN-LIVE_CONFIG) $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)
+	# Delete the extlinux boot folder
+	rm -rf $(@D)/config/includes.binary/boot
 	# Inject product version into vi installation 
 	sed -i -e "s/__TARGET_PRODUCT__/${TARGET_PRODUCT_LOWER}/g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/0460-install-endor.hook.chroot
 	# Temporary hook to pull in demo files!
@@ -126,31 +128,31 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		then mv $(BUILD_DIR)/$(DEBIAN-LIVE_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-	# Live config recipe (no not modify unless you know 			\
-	# what you're doing!) 											\
-	sudo lb config													\
-		--architectures				amd64							\
-		--binary-images				iso-hybrid						\
-		--distribution				$(TARGET_DISTRO)				\
-		--apt-indices				false							\
-		--apt-recommends			false							\
-		--memtest					memtest86+						\
-		--checksums					sha1							\
-		--win32-loader				false							\
-		--loadlin					false							\
-		--backports					true							\
-		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/security	\
-		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-binary-security	$(TARGET_REPO_MIRROR)/security	\
-		--debootstrap-options           "--no-check-gpg" \
-		--iso-application			"Springbank demo"				\
-		--iso-publisher				"Calnex Solutions"				\
-		--iso-volume				"Springbank demo"				\
-		;															\
-		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\
-		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
+	# Live config recipe (no not modify unless you know 									\
+	# what you're doing!) 													\
+	sudo lb config														\
+		--architectures				amd64									\
+		--binary-images				iso-hybrid								\
+		--distribution				$(TARGET_DISTRO)							\
+		--apt-indices				false									\
+		--apt-recommends			false									\
+		--memtest					memtest86+							\
+		--checksums					sha1								\
+		--win32-loader				false									\
+		--loadlin					false								\
+		--backports					true								\
+		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian						\
+		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian						\
+		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/security							\
+		--mirror-binary				$(TARGET_REPO_MIRROR)/debian						\
+		--mirror-binary-security	$(TARGET_REPO_MIRROR)/security							\
+		--debootstrap-options           "--no-check-gpg" 								\
+		--iso-application			"Springbank demo"							\
+		--iso-publisher				"Calnex Solutions"							\
+		--iso-volume				"Springbank demo"							\
+		;														\
+		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 								\
+		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; 			\
 	)
 	touch $@
 

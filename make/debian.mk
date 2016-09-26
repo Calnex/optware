@@ -42,6 +42,7 @@ DEBIAN_CONFLICTS=
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
 #
 DEBIAN_IPK_VERSION=1
+DEBIAN_PARTITION_LABEL=100G_$(DEBIAN_VERSION)-$(DEBIAN_IPK_VERSION)
 
 #
 # DEBIAN_CONFFILES should be a list of user-editable files
@@ -104,11 +105,12 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		then mv $(BUILD_DIR)/$(DEBIAN_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-	# Live config recipe (no not modify unless you know 				\
-	# what you're doing!) 								\
+	# Live config recipe (no not modify unless you know what you're doing!)		\
+	# /usr/lib/live/build/config --help						\
 	sudo lb config									\
 		--architecture				amd64				\
-		--binary-image				iso-hybrid			\
+		--binary-image				hdd  				\
+		--binary-filesystem			ext4				\
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
 		--apt-recommends			false				\
@@ -119,14 +121,17 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--backports				true				\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/security	\
+		--mirror-chroot-security		$(TARGET_REPO_MIRROR)/security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-binary-security	$(TARGET_REPO_MIRROR)/security	\
-		--debootstrap-options           "--no-check-gpg" \
+		--mirror-binary-security		$(TARGET_REPO_MIRROR)/security	\
+		--debootstrap-options           	"--no-check-gpg"		\
+		--hdd-label				"$(DEBIAN_PARTITION_LABEL)"	\
+		--hdd-size				256				\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
 		#sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
+		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
 	)
 	touch $@
 
@@ -140,10 +145,10 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	(cd $(@D); \
 		sudo lb build; \
 		dd \
-			if=live-image-amd64.hybrid.iso \
+			if=live-image-amd64 \
 			of=root.img \
-			skip=`/sbin/fdisk -l live-image-amd64.hybrid.iso 2>/dev/null | awk '/Device/{getline; print $$3}'` \
-			count=`/sbin/fdisk -l live-image-amd64.hybrid.iso 2>/dev/null | awk '/Device/{getline; print $$5}'`; \
+			skip=`/sbin/fdisk -l live-image-amd64 2>/dev/null | awk '/Device/{getline; print $$3}'` \
+			count=`/sbin/fdisk -l live-image-amd64 2>/dev/null | awk '/Device/{getline; print $$5}'`; \
 		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
 		md5sum root.img > root.img.md5; \
 	)
