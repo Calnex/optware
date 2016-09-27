@@ -16,7 +16,7 @@ EOF1
 partprobe
 mkswap /dev/sda3
 else
-swapon -e /dev/sda3
+swapon /dev/sda3
 fi
 
 if [ ! -b /dev/sda4  ]
@@ -37,7 +37,7 @@ file -s /dev/sda4 | grep ext4
         mkdir -p /mnt/home
         mount /dev/sda4 /mnt/home
         echo '/home union' >> /mnt/home/persistence.conf
-        echo '/var/lib/dhcp3/dhclient.leases union' >> /mnt/home/persistence.conf
+        echo '/var/lib/dhcp3 union' >> /mnt/home/persistence.conf
         umount /mnt/home
         rm -rf /mnt/home
     fi
@@ -47,52 +47,62 @@ fi
 # Debian self install
 if [[ -e /opt/var/lib/debian/root.img ]]
 then
-	cd /opt/var/lib/debian/
-	OLD_PARTITION=$(fdisk -l /dev/sda | awk '$2 == "*" {print $1}')
-	OLD_PARTITION="${OLD_PARTITION: -1}"
-	if [ "$OLD_PARTITION" = "1" ]
-	then
-		NEW_PARTITION=2
-	else
-		NEW_PARTITION=1
-	fi
-	CSUM_ROOT=$(md5sum /dev/sda$OLD_PARTITION | grep --only-matching -m 1 '^[0-9a-f]*')
-	CSUM_IMG=$(md5sum root.img | grep --only-matching -m 1 '^[0-9a-f]*')
-	if [ "$CSUM_ROOT" != "$CSUM_IMG" ]
-	then
-		gpg --verify root.img.asc root.img 2>/dev/null
-		if [ $? = 0 ]
-		then
+        cd /opt/var/lib/debian/
+        OLD_PARTITION=$(fdisk -l /dev/sda | awk '$2 == "*" {print $1}')
+        OLD_PARTITION="${OLD_PARTITION: -1}"
+        if [ "$OLD_PARTITION" = "1" ]
+        then
+                NEW_PARTITION=2
+                NEW_PARTITION_START=2099200
+        else
+                NEW_PARTITION=1
+                NEW_PARTITION_START=2048
+        fi
+        LABEL_ROOT=$(blkid -s LABEL /dev/sda${OLD_PARTITION})
+        LABEL_ROOT=${LABEL_ROOT##*\=}
+        LABEL_IMG=$(blkid -s LABEL root.img)
+        LABEL_IMG=${LABEL_IMG##*\=}
+        if [ ${LABEL_ROOT} != ${LABEL_IMG} ]
+        then
+                gpg --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.img.asc root.img 2>/dev/null 1>&2
+                if [ $? = 0 ]
+                then
 IMG_SIZE=$(ls -l root.img | awk '{print $5}')
-fdisk /dev/sda << EOF3
-d
-${NEW_PARTITION}
-w
-EOF3
+
+echo "Old OS ${LABEL_ROOT}"
+echo "New OS ${LABEL_IMG}"
+echo "New OS Size ${IMG_SIZE}"
+
+# Delete partition, just to be sure
+parted /dev/sda --script rm ${NEW_PARTITION} -- 2>/dev/null 1>&2
+echo "Partition ${NEW_PARTITION} deleted"
+
 partprobe
-fdisk /dev/sda << EOF4
-n
-p
-2097216
-+$(($IMG_SIZE/512))
+parted /dev/sda --script mkpart primary ${NEW_PARTITION_START}s $((${NEW_PARTITION_START} + ($IMG_SIZE/512)))s  -- 2>/dev/null 1>&2
+
+
+fdisk /dev/sda << EOF4 2>/dev/null 1>&2
+t
+${NEW_PARTITION}
+83
 w
 EOF4
+echo "Partition ${NEW_PARTITION} created"
+
 partprobe
-dd if=root.img of=/dev/sda${NEW_PARTITION}
+dd if=root.img of=/dev/sda${NEW_PARTITION} 2>/dev/null 1>&2
+echo "root.img installed"
+
 sync
-fdisk /dev/sda << EOF5
-a
-${NEW_PARTITION}
-a
-${OLD_PARTITION}
-w
-EOF5
+parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2
+echo "Partition ${NEW_PARTITION} marked as boot"
+
 sync
 reboot
-		else
-			echo "Debian update image keysign check failed!"
-		fi
-	fi
+                else
+                        echo "Debian update image keysign check failed!"
+                fi
+        fi
 fi
 
 cp /opt/etc/cron.d/* /etc/cron.daily/

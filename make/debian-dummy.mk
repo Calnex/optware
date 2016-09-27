@@ -39,7 +39,7 @@ DEBIAN-DUMMY_CONFLICTS=
 #
 # DEBIAN-DUMMY_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN-DUMMY_IPK_VERSION=1
+DEBIAN-DUMMY_IPK_VERSION=$(DEBIAN_IPK_VERSION)
 
 #
 # DEBIAN-DUMMY_CONFFILES should be a list of user-editable files

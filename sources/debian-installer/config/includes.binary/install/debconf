@@ -66,7 +66,7 @@ d-i netcfg/enable boolean true
 # Any hostname and domain names assigned from dhcp take precedence over
 # values set here. However, setting the values still prevents the questions
 # from being shown, even if values come from dhcp.
-d-i netcfg/get_hostname string paragon100g
+d-i netcfg/get_hostname string Calnex100G
 d-i netcfg/get_domain string calnex
 
 # If you want to force a hostname, regardless of what either the DHCP
