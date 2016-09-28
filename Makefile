@@ -40,6 +40,7 @@ PACKAGES_THAT_NEED_TO_BE_FIXED =
 
 COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
+			debian \
 			geoip \
 			gettext \
 			glib \
@@ -77,7 +78,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			zlib \
 
 CALNEX_PACKAGES =	cat \
-			debian \
 			debian-live \
 			debian-installer \
 			endor-paragon \
