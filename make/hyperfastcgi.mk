@@ -35,7 +35,7 @@ HYPERFASTCGI_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 HYPERFASTCGI_DESCRIPTION=HyperFastCgi hosts mono web applications with nginx. It's a primary replacement of mono-server-fastcgi for linux platform.
 HYPERFASTCGI_SECTION=net
 HYPERFASTCGI_PRIORITY=optional
-HYPERFASTCGI_DEPENDS=libevent libstdc++ mono
+HYPERFASTCGI_DEPENDS=libevent, libstdc++, mono
 HYPERFASTCGI_SUGGESTS=
 HYPERFASTCGI_CONFLICTS=
 
