@@ -216,7 +216,7 @@ $(HYPERFASTCGI_IPK): $(HYPERFASTCGI_BUILD_DIR)/.built
 	$(MAKE) $(HYPERFASTCGI_IPK_DIR)/CONTROL/control
 	echo $(HYPERFASTCGI_CONFFILES) | sed -e 's/ /\n/g' > $(HYPERFASTCGI_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(HYPERFASTCGI_IPK_DIR)
-#	$(WHAT_TO_DO_WITH_IPK_DIR) $(HYPERFASTCGI_IPK_DIR)
+	$(WHAT_TO_DO_WITH_IPK_DIR) $(HYPERFASTCGI_IPK_DIR)
 
 #
 # This is called from the top level makefile to create the IPK file.
