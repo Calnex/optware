@@ -48,6 +48,7 @@ ifeq ("", $(TARGET_PRODUCT))
         $(error TARGET_PRODUCT has not been set.  Exiting.)
 endif
 
+
 toolchain: $(TARGET_CROSS_TOP)/.unpacked
 
 $(DL_DIR)/$(TOOLCHAIN_BINARY):
@@ -60,4 +61,5 @@ $(OPTWARE_TOP)/platforms/toolchain-$(OPTWARE_TARGET).mk
 	rm -rf $(@D)
 	mkdir -p $(@D)
 	tar -xz -C $(@D) -f $(DL_DIR)/$(TOOLCHAIN_BINARY)
+	sed -i -e "s|^libdir=.*|libdir='$(TOOL_BUILD_DIR)/x86_64-calnex-linux-gnu/x86_64-calnex-linux-gnu/sysroot/lib'|" $(TOOL_BUILD_DIR)/x86_64-calnex-linux-gnu/x86_64-calnex-linux-gnu/sysroot/lib/libstdc++.la
 	touch $@
