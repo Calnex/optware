@@ -1,0 +1,16 @@
+--- src/HyperFastCgi/Makefile.am.orig	2016-10-18 11:13:30.077600882 +0100
++++ src/HyperFastCgi/Makefile.am	2016-10-18 11:14:16.414421014 +0100
+@@ -160,11 +160,11 @@
+ endef
+ 
+ if NET_4_0
+-programfiles4dir=$(pkglibdir)/4.0
++programfiles4dir=$(DESTDIR)/$(pkglibdir)/4.0
+ programfiles4_DATA=$(ASSEMBLY4)
+ endif
+ if NET_2_0
+-programfiles2dir=$(pkglibdir)/2.0
++programfiles2dir=$(DESTDIR)/$(pkglibdir)/2.0
+ programfiles2_DATA=$(ASSEMBLY2)
+ endif
+ 

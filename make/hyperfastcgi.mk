@@ -52,8 +52,7 @@ HYPERFASTCGI_IPK_VERSION=1
 # HYPERFASTCGI_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-#HYPERFASTCGI_PATCHES=$(HYPERFASTCGI_SOURCE_DIR)/configure.patch
-HYPERFASTCGI_PATCHES=
+HYPERFASTCGI_PATCHES=$(HYPERFASTCGI_SOURCE_DIR)/Makefile.am.patch
 
 #
 # If the compilation of the package requires additional
