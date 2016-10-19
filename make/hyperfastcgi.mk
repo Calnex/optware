@@ -42,7 +42,7 @@ HYPERFASTCGI_CONFLICTS=
 #
 # HYPERFASTCGI_IPK_VERSION should be incremented when the ipk changes.
 #
-HYPERFASTCGI_IPK_VERSION=1
+HYPERFASTCGI_IPK_VERSION=2
 
 #
 # HYPERFASTCGI_CONFFILES should be a list of user-editable files

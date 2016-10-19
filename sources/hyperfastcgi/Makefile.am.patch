@@ -1,16 +1,20 @@
---- src/HyperFastCgi/Makefile.am.orig	2016-10-18 11:13:30.077600882 +0100
-+++ src/HyperFastCgi/Makefile.am	2016-10-18 11:14:16.414421014 +0100
-@@ -160,11 +160,11 @@
- endef
- 
- if NET_4_0
--programfiles4dir=$(pkglibdir)/4.0
-+programfiles4dir=$(DESTDIR)/$(pkglibdir)/4.0
- programfiles4_DATA=$(ASSEMBLY4)
- endif
+--- src/HyperFastCgi/Makefile.am.orig	2016-10-19 11:30:27.573950631 +0100
++++ src/HyperFastCgi/Makefile.am	2016-10-19 11:31:20.381950783 +0100
+@@ -214,13 +214,13 @@
+ install-data-local:
  if NET_2_0
--programfiles2dir=$(pkglibdir)/2.0
-+programfiles2dir=$(DESTDIR)/$(pkglibdir)/2.0
- programfiles2_DATA=$(ASSEMBLY2)
+ 	$(GACUTIL2) $(GACUTIL_FLAGS) -i $(ASSEMBLY2)
+-	mkdir -p $(programfiles2dir)
+-	cp -fv 2.0/$(ASSEMBLY_MDB) $(programfiles2dir)
++	mkdir -p $(DESTDIR)$(programfiles2dir)
++	cp -fv 2.0/$(ASSEMBLY_MDB) $(DESTDIR)$(programfiles2dir)
+ endif
+ if NET_4_0
+ 	$(GACUTIL4) $(GACUTIL_FLAGS) -i $(ASSEMBLY4)
+-	mkdir -p $(programfiles4dir)
+-	cp -fv 4.0/$(ASSEMBLY_MDB) $(programfiles4dir)
++	mkdir -p $(DESTDIR)$(programfiles4dir)
++	cp -fv 4.0/$(ASSEMBLY_MDB) $(DESTDIR)$(programfiles4dir)
  endif
  
+ uninstall-local:
