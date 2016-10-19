@@ -36,17 +36,17 @@ NGINX_CONFLICTS=
 #
 # NGINX_IPK_VERSION should be incremented when the ipk changes.
 #
-NGINX_IPK_VERSION?=3
+NGINX_IPK_VERSION?=4
 
 #
 # NGINX_CONFFILES should be a list of user-editable files
-NGINX_CONFFILES=\
-	/opt/etc/default/nginx \
-	/opt/etc/nginx/fastcgi_params \
-	/opt/etc/nginx/mime.types \
-	/opt/etc/nginx/nginx.conf \
-	/opt/share/nginx/html/index.html \
-	/opt/share/nginx/html/50x.html
+#NGINX_CONFFILES=\
+#	/opt/etc/default/nginx \
+#	/opt/etc/nginx/fastcgi_params \
+#	/opt/etc/nginx/mime.types \
+#	/opt/etc/nginx/nginx.conf \
+#	/opt/share/nginx/html/index.html \
+#	/opt/share/nginx/html/50x.html
 
 #
 # NGINX_PATCHES should list any patches, in the the order in
