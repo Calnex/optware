@@ -14,7 +14,14 @@ case "$1" in
                 mount -o bind ${REAL_OPT_DIR} /opt
             fi
         fi
+	
+	# Default repo location to network
 	echo "src/gz cross http://packages.calnexsol.com/optware/__TARGET_DISTRO__"       > /opt/etc/ipkg/cross-feed.conf
+	
+	# Call USB script, it should make no change
+	# if no USB is present
+	/bin/optwareUSB add
+	
 	if [ -x /etc/init.d/S00SystemConfiguration ]; then
 		/etc/init.d/S00SystemConfiguration
 	fi
