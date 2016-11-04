@@ -1,0 +1,7 @@
+#
+# Endor specific
+#
+
+# Home folder - choose one or the other
+fastcgi_param  CALNEX_HOME_DIR    "/users/calnex";
+#fastcgi_param  CALNEX_HOME_DIR    "/home/rui";

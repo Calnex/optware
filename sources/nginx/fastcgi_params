@@ -26,4 +26,4 @@ fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
 
 # PHP only, required if PHP was built with --enable-force-cgi-redirect
 fastcgi_param  REDIRECT_STATUS    200;
-fastcgi_param  PHP_VALUE          "upload_max_filesize=2G \n post_max_size=2G";
+fastcgi_param  PHP_VALUE          "upload_max_filesize=10G \n post_max_size=10G";
