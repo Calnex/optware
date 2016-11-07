@@ -6,6 +6,9 @@ set -e
 # Install the endor system software
 export PATH=/opt/bin:/opt/sbin:$PATH
 
+#Update the cross-feed file with the Packages repo URL
+su calnex -c 'echo "src/gz cross __TARGET_PACKAGES__"       > /opt/etc/ipkg/cross-feed.conf'
+
 su calnex -c '/opt/bin/ipkg update'
 su calnex -c '/opt/bin/ipkg install endor-__TARGET_PRODUCT__-vi'
 

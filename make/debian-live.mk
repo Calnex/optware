@@ -76,6 +76,9 @@ DEBIAN-LIVE_SRC_DIR=$(SOURCE_DIR)/debian-live
 DEBIAN-LIVE_IPK_DIR=$(BUILD_DIR)/debian-live-$(DEBIAN-LIVE_VERSION)-ipk
 DEBIAN-LIVE_IPK=$(BUILD_DIR)/DEBIAN-LIVE_$(DEBIAN-LIVE_VERSION)-$(DEBIAN-LIVE_IPK_VERSION)_$(TARGET_ARCH).ipk
 
+# If not defined, point to the Default Packages server
+TARGET_PACKAGES_MIRROR?=http://packages.calnexsol.com/optware/$(TARGET_DISTRO)/
+
 .PHONY: debian-live-source debian-live-unpack debian-live debian-live-stage debian-live-ipk debian-live-clean debian-live-dirclean debian-live-check
 
 #
@@ -120,6 +123,8 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	rm -rf $(@D)/config/includes.binary/boot
 	# Inject product version into vi installation 
 	sed -i -e "s/__TARGET_PRODUCT__/${TARGET_PRODUCT_LOWER}/g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/0460-install-endor.hook.chroot
+	# Inject the target packages server into the cross feed file
+	sed -i -e "s|__TARGET_PACKAGES__|${TARGET_PACKAGES_MIRROR}|g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/0460-install-endor.hook.chroot
 	# Temporary hook to pull in demo files!
 	cd $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/includes.chroot/etc/skel ; \
 		wget -r --no-parent --no-host-directories --cut-dirs=1 --reject "index.html*" \
