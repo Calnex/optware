@@ -153,6 +153,10 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 			of=root.img \
 			skip=`/sbin/fdisk -l live-image-amd64 2>/dev/null | awk '/Device/{getline; print $$3}'` \
 			count=`/sbin/fdisk -l live-image-amd64 2>/dev/null | awk '/Device/{getline; print $$5}'`; \
+		dd \
+			if=live-image-amd64 \
+			of=boot.img \
+			bs=512 count=1; \
 		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
 		md5sum root.img > root.img.md5; \
 	)
@@ -209,6 +213,7 @@ $(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.built
 	$(MAKE) $(DEBIAN_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN_IPK_DIR)/CONTROL/conffiles
 	install -d $(DEBIAN_IPK_DIR)/opt/var/lib/debian
+	install -m 755 $(DEBIAN_BUILD_DIR)/boot.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
