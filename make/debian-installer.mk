@@ -102,7 +102,7 @@ TARGET_PACKAGES_MIRROR?=http://packages.calnexsol.com/optware/$(TARGET_DISTRO)/
 #
 $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debian-installer.mk
 #	$(MAKE) packages
-	$(MAKE) optware-bootstrap-ipk debian
+	$(MAKE) optware-bootstrap-ipk
 	sudo rm -rf $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR) $(@D)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	# Apply the Debian root configs such that the live demo and
@@ -145,7 +145,6 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		;										\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 				\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
-		sudo cp $(DEBIAN_BUILD_DIR)/live-image-amd64 $(@D)/config/includes.binary/ ;\
 	)
 	touch $@
 

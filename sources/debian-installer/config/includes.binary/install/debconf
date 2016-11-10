@@ -409,8 +409,9 @@ d-i cdrom-detect/eject boolean false
 # This first command is run as early as possible, just after
 # preseeding is read.
 d-i preseed/early_command string \
-	dd if=/cdrom/live-image-amd64 of=/dev/sda bs=8M && \
-	sync && reboot
+        mkdir /os-install && cd /os-install && tar zxvf /cdrom/optware/debian* && \
+	tar zxvf data.tar.gz && cd opt/var/lib/debian && dd if=boot.img of=/dev/sda && \
+	blockdev --rereadpt /dev/sda && dd if=root.img of=/dev/sda1 bs=8M && sync && reboot
 # This command is run immediately before the partitioner starts. It may be
 # useful to apply dynamic partitioner preseeding that depends on the state
 # of the disks (which may not be visible when preseed/early_command runs).
