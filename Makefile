@@ -41,6 +41,7 @@ PACKAGES_THAT_NEED_TO_BE_FIXED =
 COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
 			debian \
+			gdbm \
 			geoip \
 			gettext \
 			glib \
@@ -66,6 +67,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			openssl \
 			optware-bootstrap \
 			pcre \
+			php \
 			postgresql \
 			readline \
 			springbank \
