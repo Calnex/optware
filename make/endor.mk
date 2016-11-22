@@ -31,7 +31,7 @@ BUILD_NUMBER?=devel
 ENDOR_BRANCH_PARAM?=master
 
 
-ENDOR_REPOSITORY=https://github.com/Calnex/Springbank
+ENDOR_REPOSITORY?=https://github.com/Calnex/Springbank
 ENDOR_PRODUCT=$(TARGET_PRODUCT_LOWER)
 ENDOR_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
 ENDOR_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
