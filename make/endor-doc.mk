@@ -30,7 +30,7 @@ BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
 ENDOR_BRANCH_PARAM?=master
 
-ENDOR_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/Springbank
+ENDOR_DOCUMENTATION_REPOSITORY?=https://github.com/Calnex/Springbank
 ENDOR_DOC_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
 ENDOR_DOC_SOURCE=endor-$(TARGET_PRODUCT_LOWER)-doc-$(ENDOR_DOC_VERSION).tar.gz
 ENDOR_UNZIP=zcat
