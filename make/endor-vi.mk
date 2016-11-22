@@ -29,7 +29,7 @@
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
 
-ENDOR_VI_REPOSITORY=https://github.com/Calnex/Springbank
+ENDOR_VI_REPOSITORY?=https://github.com/Calnex/Springbank
 ENDOR_VI_PRODUCT=$(TARGET_PRODUCT_LOWER)
 ENDOR_VI_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
 ENDOR_VI_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
