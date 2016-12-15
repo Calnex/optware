@@ -65,7 +65,7 @@ then
         LABEL_IMG=${LABEL_IMG##*\=}
         if [ ${LABEL_ROOT} != ${LABEL_IMG} ]
         then
-                gpg --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.img.asc root.img 2>/dev/null 1>&2
+                gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.img.asc root.img 2>/dev/null 1>&2
                 if [ $? = 0 ]
                 then
 IMG_SIZE=$(ls -l root.img | awk '{print $5}')
