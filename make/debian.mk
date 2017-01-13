@@ -49,6 +49,11 @@ DEBIAN_PARTITION_LABEL=100G_$(DEBIAN_VERSION)-$(DEBIAN_IPK_VERSION)
 #DEBIAN_CONFFILES=/opt/etc/debian.conf /opt/etc/init.d/SXXdebian
 
 #
+# If not defined, set the default SMD URL
+#
+TARGET_SMD?=http://packages.calnexsol.com/SMD/
+
+#
 # DEBIAN_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
@@ -134,7 +139,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
 		sudo mkdir -p $(@D)/config/packages.chroot;                             \
                 cd $(@D)/config/packages.chroot;                                        \
-                sudo wget -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' http://packages.calnexsol.com/SMD/; \
+                sudo wget -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD); \
                 sudo dpkg-name SysMgmtDaemon_*.deb;                                 \
 	)
 	touch $@
