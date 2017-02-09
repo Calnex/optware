@@ -100,6 +100,8 @@ ENDOR_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 
 ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 
+MONO_STAGING_DIR?=$(STAGING_DIR)
+
 
 .PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
 
@@ -185,7 +187,9 @@ endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)
 # shown below to make various patches to it.
 #
 $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make/endor.mk
-	#$(MAKE) mono-stage xsp-stage
+	if [ "$(MONO_STAGING_DIR)" = "$(STAGING_DIR)" ] ; \
+		then $(MAKE) mono-stage xsp-stage ; \
+	fi
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
 	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_PATCHES)" ; \
