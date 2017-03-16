@@ -38,7 +38,7 @@ file -s /dev/sda4 | grep ext4
         mount /dev/sda4 /mnt/home
         echo '/home union' >> /mnt/home/persistence.conf
         echo '/var/log union' >> /mnt/home/persistence.conf
-        echo '/var/lib/dhcp3 union' >> /mnt/home/persistence.conf
+        echo '/var/lib/dhcp union' >> /mnt/home/persistence.conf
         umount /mnt/home
         rm -rf /mnt/home
     fi
