@@ -151,10 +151,10 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 			then \
 			cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software/EndorDocumentation ; \
 			/usr/bin/git checkout master ; \
-			/usr/bin/git branch -d br_doc_${TAG_NAME} ; \
+			/usr/bin/git branch -D br_doc_${TAG_NAME} ; \
 			cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT) ; \
 			/usr/bin/git checkout master ; \
-			/usr/bin/git branch -d br_${TAG_NAME} ; \
+			/usr/bin/git branch -D br_${TAG_NAME} ; \
 		fi; \
 		cd $(BUILD_DIR) ;\
 		rm -rf endor-$(ENDOR_PRODUCT) ;\
