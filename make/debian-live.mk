@@ -125,10 +125,6 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	sed -i -e "s/__TARGET_PRODUCT__/${TARGET_PRODUCT_LOWER}/g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/0460-install-endor.hook.chroot
 	# Inject the target packages server into the cross feed file
 	sed -i -e "s|__TARGET_PACKAGES__|${TARGET_PACKAGES_MIRROR}|g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/0460-install-endor.hook.chroot
-	# Temporary hook to pull in demo files!
-	cd $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/includes.chroot/etc/skel ; \
-		wget -r --no-parent --no-host-directories --cut-dirs=1 --reject "index.html*" \
-		http://packages.calnexsol.com/demo_files/ | true; # Don't error out.
 	if test "$(BUILD_DIR)/$(DEBIAN-LIVE_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-LIVE_DIR) $(@D) ; \
 	fi
