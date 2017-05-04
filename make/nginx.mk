@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 NGINX_SITE=http://nginx.org/download
-NGINX_VERSION?=1.10.0
+NGINX_VERSION?=1.13.0
 NGINX_SOURCE=nginx-$(NGINX_VERSION).tar.gz
 NGINX_DIR=nginx-$(NGINX_VERSION)
 NGINX_UNZIP=zcat
@@ -36,7 +36,7 @@ NGINX_CONFLICTS=
 #
 # NGINX_IPK_VERSION should be incremented when the ipk changes.
 #
-NGINX_IPK_VERSION?=4
+NGINX_IPK_VERSION?=5
 
 #
 # NGINX_CONFFILES should be a list of user-editable files
@@ -148,6 +148,7 @@ $(NGINX_BUILD_DIR)/.configured: $(DL_DIR)/$(NGINX_SOURCE) $(NGINX_PATCHES) make/
 		--http-client-body-temp-path=/opt/var/nginx/tmp/client_body_temp \
 		--http-proxy-temp-path=/opt/var/nginx/tmp/proxy_temp \
 		--http-fastcgi-temp-path=/opt/var/nginx/tmp/fastcgi_temp \
+		--with-http_stub_status_module \
                 --with-cc=$(TARGET_CC) \
                 --with-cpp=$(TARGET_CPP) \
                 --with-cc-opt="$(STAGING_CPPFLAGS) $(NGINX_CPPFLAGS)" \
