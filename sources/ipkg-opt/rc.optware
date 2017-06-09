@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# Make sure root is not running this script
+if [ `id -u` = 0 ]
+then
+   echo "This script must not be run as root" 1>&2
+   exit 1
+fi
+
 # Export common mono command switches
 export MONO_ENV_OPTIONS="--gc=sgen"
 
