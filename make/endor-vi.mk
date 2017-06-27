@@ -180,7 +180,7 @@ $(ENDOR_VI_IPK): $(ENDOR_VI_BUILD_DIR)/.built-vi
 	#
 	mkdir -p $(ENDOR_VI_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_VI_SOURCE_DIR)/rc.endor-virtualinstrument.$(ENDOR_VI_PRODUCT) $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
-	sed -i -e 's/__VARIANT__/${TARGET_BOARD_OPT}/g' $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument;
+	sed -i -e 's/__VARIANT__/${TARGET_BOARD_OPT}/g' $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
 
 	# Provide the control information
 	#
