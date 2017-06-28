@@ -31,7 +31,7 @@ BUILD_NUMBER?=devel
 
 ENDOR_VI_REPOSITORY?=https://github.com/Calnex/Springbank
 ENDOR_VI_PRODUCT=$(TARGET_PRODUCT_LOWER)
-TARGET_BOARD_OPT?=$(TARGET_PRODUCT)
+TARGET_BOARD_OPT?=.$(TARGET_PRODUCT)
 ENDOR_VI_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
 ENDOR_VI_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
 ENDOR_VI_SOURCE=endor-$(ENDOR_VI_PRODUCT)-vi-$(ENDOR_VI_VERSION).tar.gz
