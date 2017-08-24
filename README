@@ -10,7 +10,10 @@ To build tshark, cd into the top level and execute:
 'make tshark-1.10.3-ipk' for version 1.10.3
 'make tshark-1.4.9-ipk' for version 1.4.9
 
-For detailed instructions on how to build packages using this build system, see:
+make/template.mk can be used to start a new package, simply copy & edit as necessary.
 
-  http://www.nslu2-linux.org/wiki/Optware/AddAPackageToOptware
+Most projects which already use the GNU toolchain will be simple enough to add using the template, for more information on the GNU toolchain see the following links.
+  https://www.gnu.org/software/autoconf/autoconf.html
+  https://www.gnu.org/software/automake/automake.html
+  https://www.gnu.org/software/libtool/libtool.html
 
