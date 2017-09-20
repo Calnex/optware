@@ -149,6 +149,7 @@ $(NGINX_BUILD_DIR)/.configured: $(DL_DIR)/$(NGINX_SOURCE) $(NGINX_PATCHES) make/
 		--http-proxy-temp-path=/opt/var/nginx/tmp/proxy_temp \
 		--http-fastcgi-temp-path=/opt/var/nginx/tmp/fastcgi_temp \
 		--with-http_auth_request_module \
+		--with-debug \
 		--with-http_stub_status_module \
                 --with-cc=$(TARGET_CC) \
                 --with-cpp=$(TARGET_CPP) \
