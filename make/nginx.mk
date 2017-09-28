@@ -36,7 +36,7 @@ NGINX_CONFLICTS=
 #
 # NGINX_IPK_VERSION should be incremented when the ipk changes.
 #
-NGINX_IPK_VERSION?=5
+NGINX_IPK_VERSION?=6
 
 #
 # NGINX_CONFFILES should be a list of user-editable files
@@ -113,6 +113,16 @@ nginx-source: $(DL_DIR)/$(NGINX_SOURCE) $(NGINX_PATCHES)
 # If the package uses  GNU libtool, you should invoke $(PATCH_LIBTOOL) as
 # shown below to make various patches to it.
 #
+# Nginx cfg includes --with-debug, this allows us to include debug level 
+# information in our nginx logs (error_log directive) if we include the 
+# debug level specifier, very useful for server diagnosis.
+#
+# Nginx cfg includes --with-http_auth_request_module, this almost solved
+# our disk space check problem (PL100G-579), unfortunately Chrome and 
+# Firefox browsers do not implement W3 standard 8.2.3 so although nginx 
+# can properly reject a POST that is too big the client sends it all anyway.
+# Leaving option in cfg; we can perhaps still use this for compliant browsers.
+#
 $(NGINX_BUILD_DIR)/.configured: $(DL_DIR)/$(NGINX_SOURCE) $(NGINX_PATCHES) make/nginx.mk
 	$(MAKE) openssl-stage pcre-stage zlib-stage
 	rm -rf $(BUILD_DIR)/$(NGINX_DIR) $(@D)
@@ -148,6 +158,8 @@ $(NGINX_BUILD_DIR)/.configured: $(DL_DIR)/$(NGINX_SOURCE) $(NGINX_PATCHES) make/
 		--http-client-body-temp-path=/opt/var/nginx/tmp/client_body_temp \
 		--http-proxy-temp-path=/opt/var/nginx/tmp/proxy_temp \
 		--http-fastcgi-temp-path=/opt/var/nginx/tmp/fastcgi_temp \
+		--with-http_auth_request_module \
+		--with-debug \
 		--with-http_stub_status_module \
                 --with-cc=$(TARGET_CC) \
                 --with-cpp=$(TARGET_CPP) \
