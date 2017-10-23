@@ -31,7 +31,7 @@ PHP_IPK_VERSION=3
 #
 # PHP_CONFFILES should be a list of user-editable files
 #
-PHP_CONFFILES=/opt/etc/php.ini
+#PHP_CONFFILES=/opt/etc/php.ini
 
 #
 # PHP_LOCALES defines which locales get installed
