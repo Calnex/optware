@@ -46,6 +46,8 @@
 
 #
 # <FOO>_CONFFILES should be a list of user-editable files
+# Adding user editable files will cause the GUI install to 
+# hang waiting for user input DO NOT DO THIS!
 #<FOO>_CONFFILES=/opt/etc/<foo>.conf /opt/etc/init.d/SXX<foo>
 
 #
