@@ -275,8 +275,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/postrm   $(ENDOR_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	
-	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile install $(BUILD_DIR) $(ENDOR_PRODUCT);
-
+	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile install $(BUILD_DIR) $(ENDOR_PRODUCT); \
 	# Embedded firmware
 	#
 	if [ ! -z "${ENDOR_FIRMWARE_VERSION}" ]; then \
