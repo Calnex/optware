@@ -45,7 +45,7 @@ ENDOR_DOC_CONFLICTS=endor-paragon, endor-paragon-doc, endor-paragon-neo, endor-p
 ifeq "${TARGET_PRODUCT_LOWER}" "paragon"
 	ENDOR_DOC_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon-neo, endor-paragon-neo-doc
 else ifeq "${TARGET_PRODUCT_LOWER}" "paragon-neo"
-	ENDOR_DOC_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon, endor-paragon-neo
+	ENDOR_DOC_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon, endor-paragon-doc
 endif
 
 #
