@@ -42,6 +42,9 @@ DEBIAN_CONFLICTS=
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
 #
 DEBIAN_IPK_VERSION=8
+#
+# DEBIAN_PARTITION_LABEL CANNOT be longer than 10 Characters, it will cause boot failure. 
+#
 DEBIAN_PARTITION_LABEL=100G_$(DEBIAN_VERSION)-$(DEBIAN_IPK_VERSION)
 
 #
