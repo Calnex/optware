@@ -1,10 +1,10 @@
 ###########################################################
 #
-# endor
+# endor-doc
 #
 ###########################################################
 
-# You must replace "endor" and "ENDOR" with the lower case name and
+# You must replace "endor-doc" and "ENDOR-DOC" with the lower case name and
 # upper case name of your new package.  Some places below will say
 # "Do not change this" - that does not include this global change,
 # which must always be done to ensure we have unique names.
@@ -41,9 +41,11 @@ ENDOR_DOC_PRIORITY=optional
 ENDOR_DOC_DEPENDS=
 ENDOR_DOC_PACKAGE=endor-$(TARGET_PRODUCT_LOWER)-doc
 ENDOR_DOC_SUGGESTS=
-ENDOR_DOC_CONFLICTS=endor-paragon, endor-paragon-doc
+ENDOR_DOC_CONFLICTS=endor-paragon, endor-paragon-doc, endor-paragon-neo, endor-paragon-neo-doc
 ifeq "${TARGET_PRODUCT_LOWER}" "paragon"
-ENDOR_DOC_CONFLICTS=endor-attero, endor-attero-doc
+	ENDOR_DOC_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon-neo, endor-paragon-neo-doc
+else ifeq "${TARGET_PRODUCT_LOWER}" "paragon-neo"
+	ENDOR_DOC_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon, endor-paragon-doc
 endif
 
 #

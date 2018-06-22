@@ -44,9 +44,11 @@ ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
 ENDOR_DEPENDS=postgresql, mono, xsp, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
 ENDOR_SUGGESTS=
-ENDOR_CONFLICTS=endor-paragon, endor-paragon-doc
+ENDOR_CONFLICTS=endor-paragon, endor-paragon-doc, endor-paragon-neo, endor-paragon-neo-doc
 ifeq "${ENDOR_PRODUCT}" "paragon"
-ENDOR_CONFLICTS=endor-attero, endor-attero-doc
+	ENDOR_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon-neo, endor-paragon-neo-doc
+else ifeq "${ENDOR_PRODUCT}" "paragon-neo"
+	ENDOR_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon, endor-paragon-doc
 endif
 
 #
@@ -93,7 +95,7 @@ ENDOR_TREEISH=$(ENDOR_GIT_TAG)
 ENDOR_BUILD_DIR=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)
 
 ## Source dir is common for now
-ENDOR_SOURCE_DIR=$(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor
+ENDOR_SOURCE_DIR=$(ENDOR_BUILD_DIR)/OptWare/sources/endor
 ENDOR_IPK_DIR=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)-ipk
 ENDOR_IPK=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)_$(ENDOR_IPK_VERSION)-$(ENDOR_VERSION)_$(TARGET_ARCH).ipk
 ENDOR_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
@@ -143,7 +145,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/Version.cs ; \
 		cd endor-$(ENDOR_PRODUCT) && \
 		git show-ref --heads > Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
-		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-$(ENDOR_PRODUCT) minify "$(BUILD_DIR)" ; \
+		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-makefile minify "$(BUILD_DIR)" "$(ENDOR_PRODUCT)" ; \
 		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
 		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
@@ -273,7 +275,8 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/postrm   $(ENDOR_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
 	
-	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-$(ENDOR_PRODUCT) install $(BUILD_DIR); \
+	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile install $(BUILD_DIR) $(ENDOR_PRODUCT);
+
 	# Embedded firmware
 	#
 	if [ ! -z "${ENDOR_FIRMWARE_VERSION}" ]; then \
@@ -324,7 +327,7 @@ endor-check: $(ENDOR_IPK)
 # This builds the endor service test binaries
 #
 endor-service-tests:
-	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-$(ENDOR_PRODUCT) service-tests $(BUILD_DIR)
+	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile service-tests $(BUILD_DIR) $(ENDOR_PRODUCT)
 
 endor-service-tests-clean:
-	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-$(ENDOR_PRODUCT) service-tests-clean $(BUILD_DIR)
+	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile service-tests-clean $(BUILD_DIR) $(ENDOR_PRODUCT)

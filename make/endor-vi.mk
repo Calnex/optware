@@ -1,10 +1,10 @@
 ###########################################################
 #
-# endor
+# endor-vi
 #
 ###########################################################
 
-# You must replace "endor" and "ENDOR" with the lower case name and
+# You must replace "endor-vi" and "ENDOR-VI" with the lower case name and
 # upper case name of your new package.  Some places below will say
 # "Do not change this" - that does not include this global change,
 # which must always be done to ensure we have unique names.
@@ -81,7 +81,7 @@ ENDOR_VI_GIT_TAG?=HEAD
 ENDOR_VI_GIT_OPTIONS?=
 ENDOR_VI_TREEISH=$(ENDOR_VI_GIT_TAG)
 ENDOR_VI_BUILD_DIR=$(BUILD_DIR)/endor-$(ENDOR_VI_PRODUCT)-vi
-ENDOR_VI_SOURCE_DIR=$(ENDOR_BUILD_DIR)/OptWare/$(ENDOR_PRODUCT)/sources/endor-$(ENDOR_VI_PRODUCT)-vi
+ENDOR_VI_SOURCE_DIR=$(ENDOR_BUILD_DIR)/OptWare/sources/endor-vi
 ENDOR_VI_IPK_DIR=$(BUILD_DIR)/endor-$(ENDOR_VI_PRODUCT)-vi-$(ENDOR_VI_VERSION)-ipk
 ENDOR_VI_IPK=$(BUILD_DIR)/endor-$(ENDOR_VI_PRODUCT)-vi_$(ENDOR_VI_VERSION)-$(ENDOR_VI_IPK_VERSION)_$(TARGET_ARCH).ipk
 ENDOR_VI_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
@@ -179,7 +179,7 @@ $(ENDOR_VI_IPK): $(ENDOR_VI_BUILD_DIR)/.built-vi
 	# Provide the Virtual Instrument startup file
 	#
 	mkdir -p $(ENDOR_VI_IPK_DIR)/opt/etc/init.d
-	install -m 755 $(ENDOR_VI_SOURCE_DIR)/rc.endor-virtualinstrument.$(ENDOR_VI_PRODUCT) $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
+	install -m 755 $(ENDOR_VI_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
 	sed -i -e 's/__VARIANT__/${TARGET_BOARD_OPT}/g' $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
 
 	# Provide the control information
