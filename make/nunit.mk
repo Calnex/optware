@@ -154,7 +154,7 @@ $(NUNIT_BUILD_DIR)/.staged: $(NUNIT_BUILD_DIR)/.built
 	rm -f $@
 	cp -r $(NUNIT_BUILD_DIR)/bin/Release/* $(MONO_STAGING_DIR)/opt/bin/
 	echo "#! /bin/sh" > $(MONO_STAGING_DIR)/opt/bin/nunit-console_$(NUNIT_VERSION)
-	echo "exec $(MONO_STAGING_DIR)/opt/bin/mono --debug $$MONO_OPTIONS $(MONO_STAGING_DIR)/opt/bin/nunit-console.exe \"$$@\"" >> $(MONO_STAGING_DIR)/opt/bin/nunit-console_$(NUNIT_VERSION)
+	echo "exec $${MONO_STAGING_DIR}/opt/bin/mono --debug $$MONO_OPTIONS $${MONO_STAGING_DIR}/opt/bin/nunit-console.exe \"$$@\"" >> $(MONO_STAGING_DIR)/opt/bin/nunit-console_$(NUNIT_VERSION)
 	chmod +x $(MONO_STAGING_DIR)/opt/bin/nunit-console_$(NUNIT_VERSION)
 	touch $@
 

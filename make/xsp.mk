@@ -78,6 +78,7 @@ XSP_SOURCE_DIR=$(SOURCE_DIR)/xsp
 XSP_IPK_DIR=$(BUILD_DIR)/xsp-$(XSP_VERSION)-ipk
 XSP_IPK=$(BUILD_DIR)/xsp_$(XSP_VERSION)-$(XSP_IPK_VERSION)_$(TARGET_ARCH).ipk
 
+
 .PHONY: xsp-source xsp-unpack xsp xsp-stage xsp-ipk xsp-clean xsp-dirclean xsp-check
 
 #
@@ -177,7 +178,7 @@ xsp: $(XSP_BUILD_DIR)/.built
 $(XSP_BUILD_DIR)/.staged: $(XSP_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
-	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/xsp*
+	sed -i -e 's|/opt|\$$\{MONO_STAGING_DIR\}/opt|g' $(STAGING_DIR)/opt/bin/xsp*
 	touch $@
 
 xsp-stage: $(XSP_BUILD_DIR)/.staged

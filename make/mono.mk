@@ -166,12 +166,12 @@ mono: $(MONO_BUILD_DIR)/.built
 $(MONO_BUILD_DIR)/.staged: $(MONO_BUILD_DIR)/.built
 	rm -f $@
 	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
-	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/dmcs
-	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/mcs
-	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/mdoc
-	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/xbuild
-	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/gacutil
-	sed -i -e "s|/opt|${STAGING_DIR}/opt|g" $(STAGING_DIR)/opt/bin/sn
+	sed -i -e "s|/opt|$$\{MONO_STAGING_DIR\}/opt|g" $(STAGING_DIR)/opt/bin/dmcs
+	sed -i -e "s|/opt|$$\{MONO_STAGING_DIR\}/opt|g" $(STAGING_DIR)/opt/bin/mcs
+	sed -i -e "s|/opt|$$\{MONO_STAGING_DIR\}/opt|g" $(STAGING_DIR)/opt/bin/mdoc
+	sed -i -e "s|/opt|$$\{MONO_STAGING_DIR\}/opt|g" $(STAGING_DIR)/opt/bin/xbuild
+	sed -i -e "s|/opt|$$\{MONO_STAGING_DIR\}/opt|g" $(STAGING_DIR)/opt/bin/gacutil
+	sed -i -e "s|/opt|$$\{MONO_STAGING_DIR\}/opt|g" $(STAGING_DIR)/opt/bin/sn
 	touch $@
 
 mono-stage: $(MONO_BUILD_DIR)/.staged
