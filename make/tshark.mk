@@ -42,7 +42,7 @@ TSHARK_CONFLICTS=
 #
 # TSHARK_IPK_VERSION should be incremented when the ipk changes.
 #
-TSHARK_IPK_VERSION ?= 2
+TSHARK_IPK_VERSION ?= 3
 
 #
 # TSHARK_CONFFILES should be a list of user-editable files
@@ -226,6 +226,8 @@ $(TSHARK_IPK): $(TSHARK_BUILD_DIR)/.built
 #	install -m 755 $(TSHARK_SOURCE_DIR)/prerm $(TSHARK_IPK_DIR)/CONTROL/prerm
 	install -m 644 $(TSHARK_SOURCE_DIR)/stcsig.lua \
 		$(TSHARK_IPK_DIR)/opt/lib/wireshark/plugins/$(TSHARK_VERSION)/stcsig.lua
+	install -m 644 $(TSHARK_SOURCE_DIR)/ecpri.lua \
+		$(TSHARK_IPK_DIR)/opt/lib/wireshark/plugins/$(TSHARK_VERSION)/ecpri.lua
 	echo $(TSHARK_CONFFILES) | sed -e 's/ /\n/g' > $(TSHARK_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(TSHARK_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(TSHARK_IPK_DIR)
