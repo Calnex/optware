@@ -89,7 +89,6 @@ ecpri_proto.fields.length = ProtoField.uint16("ecpri.length", "Length", base.DEC
 ecpri_proto.fields.measurement_id = ProtoField.uint8("epri.measurement_id", "Measurement ID", base.HEX)
 ecpri_proto.fields.action_type = ProtoField.uint8("epri.action_type", "Action Type", base.HEX)
 ecpri_proto.fields.timestamp = ProtoField.bytes("epri.timestamp", "TimeStamp")
---BOB: uint48() not supported!! ecpri_proto.fields.timestamp_sec = ProtoField.uint48("ecpri.sec", "Seconds", base.DEC)
 ecpri_proto.fields.timestamp_sec = ProtoField.bytes("ecpri.sec", "Seconds")
 ecpri_proto.fields.timestamp_nanosec = ProtoField.uint32("ecpri.nanosec", "Seconds", base.DEC)
 ecpri_proto.fields.compensation_value = ProtoField.uint64("epri.compensation_value", "Compensation Value", base.DEC)
@@ -164,11 +163,7 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
         if (payload_size + ECPRI_HEADER_LENGTH <= reported_length) then
             ecpri_subtree = tree:add(ecpri_proto, buffer(), buffer(offset, payload_size + ECPRI_HEADER_LENGTH))            
         else
-            ecpri_subtree = tree:add(ecpri_proto, buffer(), buffer(offset, -1))
-            --BOB: https://www.wireshark.org/docs/wsdg_html_chunked/lua_module_Tree.html 
-            --BOB: This function is provided for backwards compatibility only, and should not be used in new Lua code. 
-            -- It may be removed in the future. You should only use TreeItem.add_proto_expert_info().
-            --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                  "eCPRI frame length "..reported_length.." is too small, should be minimum of " ..payload_size + ECPRI_HEADER_LENGTH)         
+            ecpri_subtree = tree:add(ecpri_proto, buffer(), buffer(offset, -1))      
             ecpri_subtree:add_proto_expert_info(ecpri_proto_frame_length_too_small, "eCPRI frame length "..reported_length.." is too small, should be minimum of " ..payload_size + ECPRI_HEADER_LENGTH)                   
         end
        
@@ -196,7 +191,6 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
         if (reported_length >= ECPRI_HEADER_LENGTH + payload_size) then
             payload_subtree = ecpri_subtree:add(ecpri_proto.fields.payload, buffer(offset, payload_size))             
         else
-            --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                "Payload Size "..payload_size.." is too big, should be maximum of "..reported_length - ECPRI_HEADER_LENGTH.. " is possible")
             ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_big, "Payload Size "..payload_size.." is too big, should be maximum of "..reported_length - ECPRI_HEADER_LENGTH)             
             payload_subtree = ecpri_subtree:add(ecpri_proto.fields.payload, buffer(offset, -1))                         
         end
@@ -221,7 +215,6 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                     end
                 end
             else
-                --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                   "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_0_1_PAYLOAD_MIN_LENGTH)
  		ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_small,  "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_0_1_PAYLOAD_MIN_LENGTH)                                      
             end         
         elseif message_type == 0x02 then -- Real-Time Control Data
@@ -238,7 +231,6 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                     end
                 end
             else
-                --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                   "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_2_PAYLOAD_MIN_LENGTH)
                 ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_small,  "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_2_PAYLOAD_MIN_LENGTH)                                                      
             end                      
         elseif message_type == 0x03 then -- Generic Data Transfer
@@ -254,8 +246,7 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                         offset = offset + payload_size - ECPRI_MSG_TYPE_3_PAYLOAD_MIN_LENGTH
                     end
                 end
-            else
-                --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                   "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_3_PAYLOAD_MIN_LENGTH)               
+            else            
                 ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_small,  "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_3_PAYLOAD_MIN_LENGTH)                                                                      
             end
         elseif message_type == 0x04 then -- Remote Memory Access 
@@ -279,16 +270,13 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                             payload_subtree:add(ecpri_proto.fields.data, buffer(offset, payload_size - ECPRI_MSG_TYPE_4_PAYLOAD_MIN_LENGTH))                            
                             offset = offset + payload_size - ECPRI_MSG_TYPE_4_PAYLOAD_MIN_LENGTH
                         elseif data_length < (payload_size - ECPRI_MSG_TYPE_4_PAYLOAD_MIN_LENGTH) then
-                            --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                 "Data Length  "..data_length.." is too small, should be "..payload_size - ECPRI_MSG_TYPE_4_PAYLOAD_MIN_LENGTH)
                             ecpri_subtree:add_proto_expert_info(ecpri_proto_data_length_too_small, "Data Length  "..data_length.." is too small, should be "..payload_size - ECPRI_MSG_TYPE_4_PAYLOAD_MIN_LENGTH)                                                                                  
                         else
-                            --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,               "Data Length  "..data_length.." is too big, should be "..payload_size - ECPRI_MSG_TYPE_4_PAYLOAD_MIN_LENGTH)
                             ecpri_subtree:add_proto_expert_info(ecpri_proto_data_length_too_big, "Data Length  "..data_length.." is too big, should be "..payload_size - ECPRI_MSG_TYPE_4_PAYLOAD_MIN_LENGTH)                            
                         end
                     end
                 end
-            else
-                --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                  "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_4_PAYLOAD_MIN_LENGTH)                              
+            else                            
                 ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_small, "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_4_PAYLOAD_MIN_LENGTH)              
             end             
         elseif message_type == 0x05 then
@@ -308,26 +296,21 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                     local timestamp_nanosec = buffer(offset,4):uint()                     
                     timestamp_subtree:add( ecpri_proto.fields.timestamp_nanosec, buffer(offset,4))  
                     offset = offset + 4
-                    if (action_type >= ECPRI_MSG_TYPE_5_RESERVED_MIN) then
-                        --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                 "Time stamp is not defined for Action Type "..action_type)                              
+                    if (action_type >= ECPRI_MSG_TYPE_5_RESERVED_MIN) then                              
                         ecpri_subtree:add_proto_expert_info(ecpri_proto_timestamp_not_defined, "Time stamp is not defined for Action Type "..action_type)                                                                            
                     elseif ( (action_type ~= ECPRI_MSG_TYPE_5_REQ) and (action_type ~= ECPRI_MSG_TYPE_5_RESPONSE) and (action_type ~= ECPRI_MSG_TYPE_5_FOLLOWUP) and
-                            (timestamp_sec ~= 0x0000000000000000) and (timestamp_nanosec ~= 0x00000000) ) then
-                        --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                 "Time stamp is not defined for Action Type "..action_type..", should be 0")                         
-			ecpri_subtree:add_proto_expert_info(ecpri_proto_timestamp_not_defined, "Time stamp is not defined for Action Type "..action_type..", should be 0")                         
+                            (timestamp_sec ~= 0x0000000000000000) and (timestamp_nanosec ~= 0x00000000) ) then                      
+			            ecpri_subtree:add_proto_expert_info(ecpri_proto_timestamp_not_defined, "Time stamp is not defined for Action Type "..action_type..", should be 0")                         
                     end
 
                     local compensation_value = buffer(offset,8):uint64() 
                     payload_subtree:add( ecpri_proto.fields.compensation_value, buffer(offset,8))--:append_text(" = "):append_text(buffer(offset,8):float())
-                    ---BOB: ??? proto_item_append_text(ti_comp_val, " = %fns", comp_val / 65536.0);
                     offset = offset + 8
-                    if (action_type >= ECPRI_MSG_TYPE_5_RESERVED_MIN) then
-                        --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                          "Compensation Value is not defined for Action Type "..action_type)                          
-			ecpri_subtree:add_proto_expert_info(ecpri_proto_compensation_value_not_defined, "Compensation Value is not defined for Action Type "..action_type)                        
+                    if (action_type >= ECPRI_MSG_TYPE_5_RESERVED_MIN) then                          
+			            ecpri_subtree:add_proto_expert_info(ecpri_proto_compensation_value_not_defined, "Compensation Value is not defined for Action Type "..action_type)                        
                     elseif ( (action_type ~= ECPRI_MSG_TYPE_5_REQ) and (action_type ~= ECPRI_MSG_TYPE_5_RESPONSE) and (action_type ~= ECPRI_MSG_TYPE_5_FOLLOWUP) and 
-                              (compensation_value ~= 0x0000000000000000) ) then
-                        --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                          "Compensation Value is not defined for Action Type "..action_type..", should be 0")                         
-			ecpri_subtree:add_proto_expert_info(ecpri_proto_compensation_value_not_defined, "Compensation Value is not defined for Action Type "..action_type..", should be 0")                          
+                              (compensation_value ~= 0x0000000000000000) ) then                       
+			            ecpri_subtree:add_proto_expert_info(ecpri_proto_compensation_value_not_defined, "Compensation Value is not defined for Action Type "..action_type..", should be 0")                          
                     end
 
                     remaining_length = remaining_length - ECPRI_MSG_TYPE_5_PAYLOAD_MIN_LENGTH
@@ -336,8 +319,7 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                         offset = offset + payload_size - ECPRI_MSG_TYPE_5_PAYLOAD_MIN_LENGTH
                     end
                 end
-                else
-                    --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                  "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_5_PAYLOAD_MIN_LENGTH)                              
+                else                            
                     ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_small, "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_5_PAYLOAD_MIN_LENGTH)                                      
                 end            
         elseif message_type == 0x06 then
@@ -354,7 +336,6 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                     end
                 end
             else
-               --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                  "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_6_PAYLOAD_MIN_LENGTH)
                ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_small, "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_6_PAYLOAD_MIN_LENGTH)                               
             end              
         elseif message_type == 0x07 then
@@ -380,7 +361,6 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                                 for i = 0,num_faults_notifs-1,1 
                                 do 
                                     element_subtree = payload_subtree:add(ecpri_proto.fields.element, buffer(offset, ECPRI_MSG_TYPE_7_ELEMENT_SIZE))                                    
-                                    --BOB: ?? proto_item_prepend_text(element_item, "#%d: ", i + 1);
                                     element_subtree:add( ecpri_proto.fields.element_id2, buffer(offset,2)) 
                                     offset = offset + 2
                                     element_subtree:add( ecpri_proto.fields.raise_cease, buffer(offset,1)) 
@@ -398,30 +378,25 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                                 ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_big, "Payload size maybe too big")    
                             end
                         else                         
-                            --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,             "Number of Faults/Notifications "..num_faults_notifs.." should be > 0" )
-			    ecpri_subtree:add_proto_expert_info(ecpri_proto_num_faults_notifs, "Number of Faults/Notifications "..num_faults_notifs.." should be > 0")                            
+			                ecpri_subtree:add_proto_expert_info(ecpri_proto_num_faults_notifs, "Number of Faults/Notifications "..num_faults_notifs.." should be > 0")                            
                         end
                     elseif ( (event_type == ECPRI_MSG_TYPE_7_FAULT_INDICATION_ACK) or (event_type == ECPRI_MSG_TYPE_7_SYNC_REQUEST) or (event_type == ECPRI_MSG_TYPE_7_SYNC_ACK) or (event_type == ECPRI_MSG_TYPE_7_SYNC_END_INDICATION) ) then
                         -- Number of Faults/Notifs should be 0, only 4 Byte possible*/
                         if (payload_size > 4) then
-                            --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                "Payload Size "..payload_size.." should be 4" )                             
-			    ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_big, "Payload Size "..payload_size.." should be 4")                            
+                           ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_big, "Payload Size "..payload_size.." should be 4")                            
                         end
                         -- These Event Types shouldn't have faults or notifications
                         if (num_faults_notifs ~= 0) then
-                            --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,             "Number of Faults/Notifications "..num_faults_notifs.." should be 0" )
-			    ecpri_subtree:add_proto_expert_info(ecpri_proto_num_faults_notifs, "Number of Faults/Notifications "..num_faults_notifs.." should be 0" )                             
+			                ecpri_subtree:add_proto_expert_info(ecpri_proto_num_faults_notifs, "Number of Faults/Notifications "..num_faults_notifs.." should be 0" )                             
                         end
                     else
                         -- These Event Types are reserved, don't know how to decode 
-                        if (num_faults_notifs ~= 0) then
-                            --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,             "Number of Faults/Notifications "..num_faults_notifs..", but no knowledge about encoding, because Event Type is reserved." )                              
+                        if (num_faults_notifs ~= 0) then                           
                             ecpri_subtree:add_proto_expert_info(ecpri_proto_num_faults_notifs, "Number of Faults/Notifications "..num_faults_notifs..", but no knowledge about encoding, because Event Type is reserved." )                                                     
                         end
                     end
                 end
-            else               
-                --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,                  "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_7_PAYLOAD_MIN_LENGTH)                              
+            else                                       
                 ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_small, "Payload Size "..payload_size.." is too small for encoding Message Type " ..message_type..", should be minimum of "..ECPRI_MSG_TYPE_7_PAYLOAD_MIN_LENGTH)                               
             end                 
         elseif message_type <=63 then
@@ -433,8 +408,7 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
     -- end    
 until not(concatenation ~= 0 and reported_length - offset >= ECPRI_HEADER_LENGTH)   
 if (concatenation ~= 0) then
---ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,             "Concatenation Bit is 1, should be 0")
-ecpri_subtree:add_proto_expert_info(ecpri_proto_concatenation_bit, "Concatenation Bit is 1, should be 0") 
+    ecpri_subtree:add_proto_expert_info(ecpri_proto_concatenation_bit, "Concatenation Bit is 1, should be 0") 
 end
 
 if offset ~=0 then
