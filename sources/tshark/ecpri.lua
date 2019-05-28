@@ -1,5 +1,5 @@
 -- ecpri.lua
--- version 1.14
+-- version 1.15
 -- written by Bob Chalmers
 -- 
 -- Wireshark dissector routine for ecpri protocol
@@ -297,7 +297,8 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                     payload_subtree:add( ecpri_proto.fields.measurement_id, buffer(offset,1))                     
                     offset = offset + 1
                     local action_type = buffer(offset,1):uint()                     
-                    payload_subtree:add( ecpri_proto.fields.action_type, action_type)                   
+                    -- if I use action_type no "value" field appears in the pdml!!                                       
+                    payload_subtree:add( ecpri_proto.fields.action_type, buffer(offset,1))                   
                     offset = offset + 1
                     -- Time Stamp for seconds and nano-seconds
                     timestamp_subtree = payload_subtree:add(ecpri_proto.fields.timestamp, buffer(offset, 10))  
@@ -390,9 +391,11 @@ function ecpri_proto.dissector(buffer,pinfo,tree)
                                     offset = offset + 4
                                 end
                             elseif ( payload_size < ECPRI_MSG_TYPE_7_PAYLOAD_MIN_LENGTH + (num_faults_notifs * ECPRI_MSG_TYPE_7_ELEMENT_SIZE) ) then
-
+                                ecpri_subtree:add_proto_expert_info(ecpri_proto_num_faults_notifs, "Number of Faults/Notifications "..num_faults_notifs.." maybe too big") 
+                                ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_big, "Payload size maybe too big") 
                             else
-
+                                ecpri_subtree:add_proto_expert_info(ecpri_proto_num_faults_notifs, "Number of Faults/Notifications "..num_faults_notifs.." maybe too small") 
+                                ecpri_subtree:add_proto_expert_info(ecpri_proto_payload_size_too_big, "Payload size maybe too big")    
                             end
                         else                         
                             --ecpri_subtree:add_expert_info(PI_PROTOCOL, PI_ERROR,             "Number of Faults/Notifications "..num_faults_notifs.." should be > 0" )
