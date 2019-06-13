@@ -228,6 +228,8 @@ $(TSHARK_IPK): $(TSHARK_BUILD_DIR)/.built
 		$(TSHARK_IPK_DIR)/opt/lib/wireshark/plugins/$(TSHARK_VERSION)/stcsig.lua
 	install -m 644 $(TSHARK_SOURCE_DIR)/ecpri.lua \
 		$(TSHARK_IPK_DIR)/opt/lib/wireshark/plugins/$(TSHARK_VERSION)/ecpri.lua
+	install -m 644 $(TSHARK_SOURCE_DIR)/roe.lua \
+		$(TSHARK_IPK_DIR)/opt/lib/wireshark/plugins/$(TSHARK_VERSION)/roe.lua
 	echo $(TSHARK_CONFFILES) | sed -e 's/ /\n/g' > $(TSHARK_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(TSHARK_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(TSHARK_IPK_DIR)
