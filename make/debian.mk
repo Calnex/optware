@@ -41,7 +41,7 @@ DEBIAN_CONFLICTS=
 #
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN_IPK_VERSION=9
+DEBIAN_IPK_VERSION=1
 #
 # DEBIAN_PARTITION_LABEL CANNOT be longer than 10 Characters, it will cause boot failure. 
 #
@@ -155,7 +155,7 @@ debian-unpack: $(DEBIAN_BUILD_DIR)/.configured
 $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
-		sudo lb build; \
+		sudo DEBOOTSTRAP_OPTIONS="--keyring=/home/jenkins/.gnupg/pubring.gpg" lb build; \
 		dd \
 			if=live-image-amd64 \
 			of=root.img \
