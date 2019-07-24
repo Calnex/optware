@@ -135,7 +135,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--debootstrap-options           	"--no-check-gpg"		\
 		--hdd-label				"$(DEBIAN_PARTITION_LABEL)"	\
 		--hdd-size				256				\
-		--bootloader				syslinux			\
+		--bootloader				extlinux			\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
