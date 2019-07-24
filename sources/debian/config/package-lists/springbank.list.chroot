@@ -1,1 +1,1 @@
-nfs-kernel-server nfs-common openssh-server sudo samba wget tftpd parted python3 file screen libgdiplus usbmount ethtool ifrename libicu48 avahi-autoipd acpi-support-base dhcpcd hdparm
+nfs-kernel-server nfs-common openssh-server sudo samba wget tftpd parted python3 file screen libgdiplus pmount ethtool ifrename libicu57 avahi-autoipd acpi-support-base dhcpcd5 hdparm
