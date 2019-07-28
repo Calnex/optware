@@ -125,7 +125,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 	sudo lb config										\
 		--architectures				amd64					\
 		--binary-images				iso-hybrid				\
-		--distribution				jessie					\
+		--distribution				stretch					\
 		--memtest				memtest86+				\
 		--checksums				sha1					\
 		--debian-installer			live					\

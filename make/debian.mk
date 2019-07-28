@@ -1,4 +1,4 @@
-###########################################################
+#########################################################
 #
 # debian
 #
@@ -115,13 +115,14 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 	(cd $(@D); \
 	# Live config recipe (no not modify unless you know what you're doing!)		\
 	# /usr/lib/live/build/config --help						\
-	sudo lb config									\
+	sudo lb config noauto								\
 		--architecture				amd64				\
-		--binary-image				hdd  				\
+		--binary-image				hdd				\
 		--binary-filesystem			ext4				\
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
-		--apt-recommends			false				\
+		\#--apt-recommends			false				\
+		--ignore-system-defaults		true				\
 		--memtest				memtest86+			\
 		--checksums				sha1				\
 		--win32-loader				false				\
@@ -132,17 +133,17 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--mirror-chroot-security		$(TARGET_REPO_MIRROR)/security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-binary-security		$(TARGET_REPO_MIRROR)/security	\
-		--debootstrap-options           	"--no-check-gpg"		\
+		--debootstrap-options			"--keyring=/root/.gnupg/pubring.kbx"		\
 		--hdd-label				"$(DEBIAN_PARTITION_LABEL)"	\
 		--hdd-size				256				\
-		--bootloader				extlinux			\
+		--bootloader				syslinux			\
 		;									\
-		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 			\
+		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
 		#sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
-		sudo mkdir -p $(DEBIAN_SOURCE_DIR)/config/packages;                             \
-                cd $(DEBIAN_SOURCE_DIR)/config/packages;                                        \
+		sudo mkdir -p $(BUILD_DIR)/$(DEBIAN_DIR)/config/packages;                             \
+                cd $(BUILD_DIR)/$(DEBIAN_DIR)/config/packages;                                        \
                 sudo wget -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD); \
                 sudo dpkg-name SysMgmtDaemon_*.deb;                                 \
 	)
@@ -156,12 +157,12 @@ debian-unpack: $(DEBIAN_BUILD_DIR)/.configured
 $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
-		sudo DEBOOTSTRAP_OPTIONS="--keyring=/home/jenkins/.gnupg/pubring.gpg" lb build; \
+		sudo lb build; \
 		dd \
 			if=live-image-amd64.img \
 			of=root.img \
-			skip=`/sbin/fdisk -l live-image-amd64.img 2>/dev/null | awk '/Device/{getline; print $$3}'` \
-			count=`/sbin/fdisk -l live-image-amd64.img 2>/dev/null | awk '/Device/{getline; print $$5}'`; \
+			skip=`/sbin/fdisk -l live-image-amd64.img | awk '/Device/ {getline; print $$3}'` \
+			count=`/sbin/fdisk -l live-image-amd64.img | awk '/Device/{getline; print $$5}'`; \
 		dd \
 			if=live-image-amd64.img \
 			of=boot.img \

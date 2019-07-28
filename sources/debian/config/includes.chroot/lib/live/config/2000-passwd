@@ -4,7 +4,7 @@ set -e
 
 # Install the optware system
 #echo 'root:$5$Hikksh95jH2sPpr$hScRAk6ZdfAsAjmrhqVGJSGF.86J6XYoXJgb1.L3Lu1' | /usr/sbin/chpasswd -e
-echo 'calnex:c4ln3X' | /usr/sbin/chpasswd
+#echo 'calnex:c4ln3X' | /usr/sbin/chpasswd
+useradd -m calnex -s /bin/bash -k /etc/skel -p '$1$mo36plQY$ajxPaQumb5zLpiVmFRu81.'
 #(echo c4ln3X; echo c4ln3X) | smbpasswd -s -a calnex
-mv /usr/bin/sudo /usr/bin/voodoo
-
+#mv /usr/bin/sudo /usr/bin/voodoo

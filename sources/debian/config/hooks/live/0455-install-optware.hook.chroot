@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+# Install the optware system
+sh /bin/Springbank-bootstrap_1.2-7_x86_64.xsh
+rm -f /bin/Springbank-bootstrap_1.2-7_x86_64.xsh
+
+# TFTP server folder
+mkdir -p /opt/srv/tftp
+
+# Install our public key
+wget http://debian/meta/calnex_signing_key.key
+gpg --import ./calnex_signing_key.key
+rm -f ./calnex_signing_key.key
