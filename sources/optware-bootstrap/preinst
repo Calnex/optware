@@ -22,5 +22,5 @@ chmod 1777 /opt/tmp
 [ -d /opt/lib ] || mkdir -p /opt/lib
 chmod 755 /opt/lib
 
-apt-get -y install usbmount
+apt-get -y install pmount
 
