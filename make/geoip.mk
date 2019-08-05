@@ -23,9 +23,12 @@
 
 GEOIP_CALNEX_SITE=$(PACKAGES_SERVER)
 
-GEOIP_SITE=http://www.maxmind.com/download/geoip/api/c
+#GEOIP_SITE=http://www.maxmind.com/download/geoip/api/c
 GEOIP_VERSION=1.4.8
 GEOIP_SOURCE=GeoIP-$(GEOIP_VERSION).tar.gz
+GEOIP_SITE=http://debian/debian/pool/main/g/geoip
+#GEOIP_VERSION=1.6.9
+#GEOIP_SOURCE=geoip_$(GEOIP_VERSION)-4.debian.tar.gz
 GEOIP_DIR=GeoIP-$(GEOIP_VERSION)
 GEOIP_UNZIP=zcat
 GEOIP_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
@@ -79,9 +82,9 @@ GEOIP_IPK=$(BUILD_DIR)/geoip_$(GEOIP_VERSION)-$(GEOIP_IPK_VERSION)_$(TARGET_ARCH
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GEOIP_SOURCE):
-	$(WGET) -P $(@D) $(GEOIP_CALNEX_SITE)/$(@F) || \
+#	$(WGET) -P $(@D) $(GEOIP_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(GEOIP_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+#	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

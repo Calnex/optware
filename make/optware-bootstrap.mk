@@ -119,7 +119,7 @@ endif
 		$(OPTWARE-BOOTSTRAP_IPK_DIR)/etc/usbmount/
 	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/lib/udev/rules.d
 	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/usbmount.rules \
-		$(OPTWARE-BOOTSTRAP_IPK_DIR)/lib/udev/rules.d/
+		$(OPTWARE-BOOTSTRAP_IPK_DIR)/lib/udev/rules.d/99-usbmount.rules
 	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin
 	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/optwareUSB \
 		$(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/
