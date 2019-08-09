@@ -6,10 +6,10 @@ up)
         /opt/bin/psql -U calnex -d endor -Atc "SELECT dhcp_enabled FROM control_port_state" | grep -qe '^f$'
         if [ $? -eq 1 ]
         then
-                su - calnex -c 'voodoo /sbin/dhcpcd -n eth0'
+                su - calnex -c 'voodoo /sbin/dhcpcd -n enp0s3'
         fi
         ;;
 down)
-        su - calnex -c 'voodoo /sbin/dhcpcd -x eth0'
+        su - calnex -c 'voodoo /sbin/dhcpcd -x enp0s3'
         ;;
 esac
