@@ -1,2 +1,2 @@
-eth0 businfo 0000:00:19.0
-eth1 businfo 0000:07:00.0
+enp0s3 businfo 0000:00:19.0
+enp0s4 businfo 0000:07:00.0

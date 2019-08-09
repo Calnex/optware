@@ -1,3 +1,2 @@
 #! /bin/sh
-/sbin/ifconfig eth0 | grep "inet addr" | awk '{ print $2 }' | awk -F: '{ print $2 }'
-
+ip -br -f inet address | awk '/enp0s3/ {getline; print $3}' | awk -F/ '{ print $1}'

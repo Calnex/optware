@@ -2,10 +2,10 @@ auto lo
 iface lo inet loopback
 
 allow-hotplug eth0
-iface eth0 inet manual
+iface enp0s3 inet manual
 
 allow-hotplug eth1
-iface eth1 inet static
+iface enp0s4 inet static
 	address 10.10.10.11
 	netmask 255.255.255.254
 	
