@@ -2,7 +2,7 @@
 
 sleep 300
 
-ifconfig | grep eth0 > /dev/null
+ifconfig | grep enp0s3 > /dev/null
 if [[ $? != 0 ]]
 then
   dhclient
