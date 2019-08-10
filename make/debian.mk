@@ -121,7 +121,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--binary-filesystem			ext4				\
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
-		\#--apt-recommends			false				\
+		--apt-recommends			false				\
 		--ignore-system-defaults		true				\
 		--memtest				memtest86+			\
 		--checksums				sha1				\

@@ -1,1 +1,2 @@
-live-boot live-boot-doc live-boot-initramfs-tools live-config live-config-doc live-tools
+live-boot live-boot-doc live-boot-initramfs-tools live-tools rsync uuid-runtime iproute2 iproute keyboard-configuration locales locales-all sudo passwd adduser
+
