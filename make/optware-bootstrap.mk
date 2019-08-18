@@ -114,9 +114,6 @@ ifneq ($(OPTWARE-BOOTSTRAP_REAL_OPT_DIR),)
 endif
 	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/postinst \
 		$(OPTWARE-BOOTSTRAP_IPK_DIR)/CONTROL/
-	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/etc/usbmount/
-	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/usbmount.conf \
-		$(OPTWARE-BOOTSTRAP_IPK_DIR)/etc/usbmount/
 	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/lib/udev/rules.d
 	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/usbmount.rules \
 		$(OPTWARE-BOOTSTRAP_IPK_DIR)/lib/udev/rules.d/99-usbmount.rules
