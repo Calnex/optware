@@ -141,7 +141,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--bootappend-live			"boot=live config username=calnex"	\
 		--iso-application			"Springbank installer"			\
 		--iso-publisher				"Calnex Solutions"			\
-		--iso-volume				"Calnex installer"			\
+		--iso-volume				"Calnex Installer"			\
 		;										\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 				\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
