@@ -4,8 +4,8 @@ iface lo inet loopback
 allow-hotplug enp0s3
 iface enp0s3 inet manual
 
-allow-hotplug enp0s4
-iface enp0s4 inet static
+allow-hotplug enp6s0
+iface enp6s0 inet static
 	address 10.10.10.11
 	netmask 255.255.255.254
 	
