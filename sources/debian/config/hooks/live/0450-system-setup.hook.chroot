@@ -45,6 +45,11 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDuVEpXVovPZIrpy4zuo/2pk3VcKGZ73/FaXW
 chown calnex ~calnex/.ssh/authorized_keys
 chmod 600 ~calnex/.ssh/authorized_keys
 
+# Disable ipv6
+echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
+echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
+echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
+
 # Change the default DHCP setting to use MAC
 sed -i -e 's/^#clientid$/clientid/' /etc/dhcpcd.conf
 sed -i -e 's/^duid$/#duid/' /etc/dhcpcd.conf
