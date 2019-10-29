@@ -14,7 +14,7 @@
 #
 GLIB_CALNEX_SITE=$(PACKAGES_SERVER)
 
-GLIB_MAJOR_VERSION=2.40
+GLIB_MAJOR_VERSION=2.48
 GLIB_MINOR_VERSION=2
 GLIB_VERSION=$(GLIB_MAJOR_VERSION).$(GLIB_MINOR_VERSION)
 GLIB_SITE=http://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB_MAJOR_VERSION)
@@ -165,6 +165,7 @@ endif
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--cache-file=config.cache \
+		--with-pcre \
 		--prefix=/opt \
 		$(GLIB_CONFIG_OPT) \
 	)
