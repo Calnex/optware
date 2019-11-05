@@ -110,7 +110,6 @@ if [ -d /run/live/persistence/sda4/home/calnex ]; then
 	rm -rf /run/live/persistence/sda4/home/rw/.optware
 	mv /run/live/persistence/sda4/home/calnex /run/live/persistence/sda4/home/rw
 	mv /run/live/persistence/sda4/home/.optware /run/live/persistence/sda4/home/rw
-	mv /run/live/persistence/sda4/var/lib/dhpc/dhclient* /run/live/persistence/sda4/var/lib/dhpc/rw/
 	reboot
 fi
 
