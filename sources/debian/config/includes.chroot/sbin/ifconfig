@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ip link show dev $1
