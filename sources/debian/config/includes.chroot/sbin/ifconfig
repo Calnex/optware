@@ -1,3 +1,11 @@
 #!/bin/bash
 
-ip link show dev $1
+if [ "$1" = "eth1" ]
+then 
+	ip link show dev enp6s0
+elif [ "$1" = "eth0" ]
+then
+	ip link show dev enp0s3
+else
+	ip link show dev $1
+fi
