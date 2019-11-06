@@ -1,7 +1,9 @@
 #! /bin/bash
-
+echo 'Starting SystemConfig' >> /var/log/SystemConfig
+echo 'Current PATH is $PATH' >> /var/log/SystemConfig
 if [ ! -b /dev/sda3  ]
 then
+echo 'dev/sda3 not present' >> /var/log/SystemConfig
 fdisk /dev/sda <<EOF1
 n
 p
@@ -16,11 +18,14 @@ EOF1
 partprobe
 mkswap /dev/sda3
 else
+echo 'dev/sda3 present' >> /var/log/SystemConfig
+echo 'current PATH is $PATH ' >> /var/log/SystemConfig
 swapon /dev/sda3
 fi
 
 if [ ! -b /dev/sda4  ]
 then
+echo 'dev/sda4 not present' >> /var/log/SystemConfig
 fdisk /dev/sda <<EOF2
 n
 p
@@ -33,6 +38,7 @@ partprobe
 file -s /dev/sda4 | grep ext4
     if [[ $? != 0 ]]
     then
+	echo 'On persistence detected' >> /var/log/SystemConfig
         mkfs.ext4 -L persistence /dev/sda4
         mkdir -p /mnt/home
         mount /dev/sda4 /mnt/home
@@ -44,7 +50,7 @@ file -s /dev/sda4 | grep ext4
     fi
 reboot
 fi
-
+echo 'Installing Debian' >> /var/log/SystemConfig
 # Debian self install
 if [[ -e /opt/var/lib/debian/root.img ]]
 then
