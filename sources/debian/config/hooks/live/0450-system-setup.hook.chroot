@@ -41,7 +41,10 @@ echo "Make ssh folder"
 mkdir -p ~calnex/.ssh
 chown calnex ~calnex/.ssh
 chmod 700 ~calnex/.ssh
-chmod g+w ~calnex/Calnex100G
+if [ -d ~calnex/Calnex100G ]
+then
+    chmod g+w ~calnex/Calnex100G
+fi
 
 echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDuVEpXVovPZIrpy4zuo/2pk3VcKGZ73/FaXWKWZ7/fLU33KWAcNzTIXBr22k8Wy7wRRgIaNdTgxo74vrFx4hcgD37C7lQNMxr4heVb3Dve0mXOD7mGTYgmriN+WLK0goGnZcyjdlW7QIW9zzL52ZQcgp7UTI9tsyx1+M5TIRJeOrPQdrqZ1Kc+On4zmEpsvbISm6JpITVYucqCpbwUqlXIawFwGXJIB12l1ah6WmSeXvyHUfIq1aMK476pfyWzwpe5NztXajcE+1VM4601Fq4VZBm394LO4Yx8Wl+Mv5vMoPhG0espzTpWqUEBi100oKyvUZlolSgLJ4dV3rASQ9NV jenkins@jenkins" > ~calnex/.ssh/authorized_keys
 chown calnex ~calnex/.ssh/authorized_keys
