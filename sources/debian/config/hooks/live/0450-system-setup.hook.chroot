@@ -9,7 +9,7 @@ usermod -p '$1$p5idBRtn$4olM0uQUxiQ01namDZmAF.' root
 # Create calnex user and setup passwords.
 echo "creating calnex user"
 useradd -m calnex -s /bin/bash -k /etc/skel -p '$1$mo36plQY$ajxPaQumb5zLpiVmFRu81.'
-useradd smbuser -g calnex -s /bin/bash -p '$6$39omB6xP$LiJsvW.ZVYrTxfT.X0ZX5nF87tiY7vHpeOkaxteTd.P7SRWryNBX/xijmBHrvyHf1KcFXG/u5ZuOWe7HVdJOL0'
+useradd calnex_user -g calnex -s /bin/bash -p '$6$WcohUnCp$uv6/BvndlMcRqNEvywoQUFB3.PCcBSlL7nFLPKPsER1BT9IiAiQwAILav7WSPxSgU2jmOvyNK301RmSZNIZsB.'
 
 # Give them very limited sudo (voodoo) access
 echo "configuring voodoo"
