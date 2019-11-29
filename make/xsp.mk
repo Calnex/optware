@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 XSP_REPOSITORY=https://github.com/mono/xsp.git
-XSP_VERSION=4.4
+XSP_VERSION=4.5
 XSP_SOURCE=xsp-$(XSP_VERSION).tar.gz
 XSP_DIR=xsp-$(XSP_VERSION)
 XSP_UNZIP=zcat
@@ -78,6 +78,7 @@ XSP_SOURCE_DIR=$(SOURCE_DIR)/xsp
 XSP_IPK_DIR=$(BUILD_DIR)/xsp-$(XSP_VERSION)-ipk
 XSP_IPK=$(BUILD_DIR)/xsp_$(XSP_VERSION)-$(XSP_IPK_VERSION)_$(TARGET_ARCH).ipk
 
+MONO_STAGING_DIR?=${STAGING_DIR}
 
 .PHONY: xsp-source xsp-unpack xsp xsp-stage xsp-ipk xsp-clean xsp-dirclean xsp-check
 
@@ -132,6 +133,7 @@ $(XSP_BUILD_DIR)/.configured: $(DL_DIR)/$(XSP_SOURCE) $(XSP_PATCHES) make/xsp.mk
 	fi
 	sed -i -e 's/dbpage1.sqlite \\//g' $(@D)/test/1.1/webcontrols/Makefile.am 
 	sed -i -e '/dbpage2.sqlite/d' $(@D)/test/1.1/webcontrols/Makefile.am 
+	echo "Ready to Configure"
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		DMCS="$(STAGING_DIR)/opt/bin/dmcs" \
