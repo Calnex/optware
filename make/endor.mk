@@ -192,7 +192,7 @@ endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)
 #
 $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make/endor.mk
 	if [ "$(MONO_STAGING_DIR)" = "$(STAGING_DIR)" ] ; \
-		then $(MAKE) mono-stage xsp-stage ; \
+		then $(MAKE) mono-stage ; \
 	fi
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
 	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xf -
@@ -212,8 +212,9 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 #
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	rm -f $@
+	#ABSOLUTE_PATH=$(@D);
 	(cd $(@D);\
-		$(MONO_STAGING_DIR)/opt/bin/xbuild Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CUSTOMCONSTANTS)" /p:Configuration=Release /p:CscToolPath=$(MONO_STAGING_DIR)/opt/lib/mono/4.5;\
+	msbuild Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CUSTOMCONSTANTS)" /p:Configuration=Release;\
 	)
 	touch $@
 
