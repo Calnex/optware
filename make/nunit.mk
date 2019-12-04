@@ -26,8 +26,8 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-NUNIT_SITE=https://launchpad.net/nunitv2/trunk/2.6.3/+download/
-NUNIT_VERSION=2.6.3
+NUNIT_SITE=https://github.com/nunit-legacy/nunitv2/archive/2.6.5.zip
+NUNIT_VERSION=2.6.5
 NUNIT_SOURCE=NUnit-$(NUNIT_VERSION)-src.zip
 NUNIT_DIR=NUnit-$(NUNIT_VERSION)
 NUNIT_UNZIP=unzip
@@ -39,7 +39,7 @@ NUNIT_DEPENDS=
 NUNIT_SUGGESTS=
 NUNIT_CONFLICTS=
 
-NUNIT_MSBUILD=msbuild #$(MONO_STAGING_DIR)/opt/bin/xbuild
+NUNIT_MSBUILD=msbuild#$(MONO_STAGING_DIR)/opt/bin/xbuild
 
 #
 # NUNIT_IPK_VERSION should be incremented when the ipk changes.
@@ -84,8 +84,7 @@ NUNIT_IPK=$(BUILD_DIR)/nunit_$(NUNIT_VERSION)-$(NUNIT_IPK_VERSION)_$(TARGET_ARCH
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(NUNIT_SOURCE):
-	$(WGET) -P $(@D) $(NUNIT_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	wget $(NUNIT_SITE) -O  $(@D)/${NUNIT_SOURCE}
 
 #
 # The source code depends on it existing within the download directory.
@@ -114,13 +113,13 @@ nunit-source: $(DL_DIR)/$(NUNIT_SOURCE) $(NUNIT_PATCHES)
 #
 $(NUNIT_BUILD_DIR)/.configured: $(DL_DIR)/$(NUNIT_SOURCE) $(NUNIT_PATCHES) make/nunit.mk
 	rm -rf $(BUILD_DIR)/$(NUNIT_DIR) $(@D)
-	$(NUNIT_UNZIP) $(DL_DIR)/$(NUNIT_SOURCE) -d $(BUILD_DIR)
+	$(NUNIT_UNZIP) $(DL_DIR)/$(NUNIT_SOURCE) -d $(BUILD_DIR)/$(NUNIT_DIR)
 	if test -n "$(NUNIT_PATCHES)" ; \
 		then cat $(NUNIT_PATCHES) | \
 		patch -d $(BUILD_DIR)/$(NUNIT_DIR) -p0 ; \
 	fi
 	if test "$(BUILD_DIR)/$(NUNIT_DIR)" != "$(@D)" ; \
-		then mv $(BUILD_DIR)/$(NUNIT_DIR) $(@D) ; \
+		then mv $(BUILD_DIR)/$(NUNIT_DIR)/* $(@D) ; \
 	fi
 	touch $@
 
