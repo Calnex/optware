@@ -39,7 +39,7 @@ NUNIT_DEPENDS=
 NUNIT_SUGGESTS=
 NUNIT_CONFLICTS=
 
-NUNIT_MSBUILD=msbuild#$(MONO_STAGING_DIR)/opt/bin/xbuild
+NUNIT_MSBUILD=msbuild #$(MONO_STAGING_DIR)/opt/bin/xbuild
 
 #
 # NUNIT_IPK_VERSION should be incremented when the ipk changes.
