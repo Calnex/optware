@@ -60,6 +60,14 @@ case "$rc" in
 	echo -n "Stopping PostgreSQL: "
         pkill -9 -f $DAEMON_SUPERVISOR
 	$PGCTL stop -D $PGDATA -s -m fast
+	numRetries=10
+	while [ ! -z "${portUse}" ]  && [ ${numRetries} -gt 0 ] ; do
+	    numRetries=`expr $numRetries - 1`
+	    echo "Trying to Kill proccess on port 5432"
+	    voodoo kill `voodoo ss -tulpn | grep 5432 | grep -o -P "(?<=pid=).*(?=,)" | head -1`
+	    sleep 0.2
+	    portUse=`ss -tulpn | grep 5432`
+	done
 	echo ok
         ;;
     restart)
