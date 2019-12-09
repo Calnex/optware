@@ -103,6 +103,8 @@ ENDOR_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 
 MONO_STAGING_DIR?=$(STAGING_DIR)
+BUILD_TOOL?=$(MONO_STAGING_DIR)/opt/bin/xbuild
+TOOL_PATH?=/p:CscToolPath=$(MONO_STAGING_DIR)/opt/lib/mono/4.5;\
 
 ENDOR_BUILD_CONSTANTS?=
 
@@ -213,7 +215,7 @@ endor-unpack: $(ENDOR_BUILD_DIR)/.configured
 $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D);\
-		$(MONO_STAGING_DIR)/opt/bin/xbuild Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)" /p:Configuration=Release /p:CscToolPath=$(MONO_STAGING_DIR)/opt/lib/mono/4.5;\
+		$(BUILD_TOOL) Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)" /p:Configuration=Release $(TOOL_PATH)
 	)
 	touch $@
 
