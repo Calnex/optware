@@ -69,7 +69,11 @@ case "$rc" in
 	    sleep 0.2
 	    portUse=`ss -tulpn | grep 5432`
 	done
-	echo ok
+	if [ ! -z "${portUse}" ]; then
+		echo " Failed to stop process on port 5432"
+	else
+		echo ok
+	fi
         ;;
     restart)
         "$0" stop
