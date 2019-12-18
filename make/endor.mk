@@ -193,9 +193,6 @@ endor-source: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)
 # shown below to make various patches to it.
 #
 $(ENDOR_BUILD_DIR)/.configured: $(DL_DIR)/$(ENDOR_SOURCE) $(ENDOR_PATCHES)  make/endor.mk
-	if [ "$(MONO_STAGING_DIR)" = "$(STAGING_DIR)" ] ; \
-		then $(MAKE) mono-stage ; \
-	fi
 	rm -rf $(BUILD_DIR)/$(ENDOR_DIR) $(@D)
 	$(ENDOR_UNZIP) $(DL_DIR)/$(ENDOR_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(ENDOR_PATCHES)" ; \
