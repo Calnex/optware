@@ -10,7 +10,7 @@ NCURSES_DIR=$(BUILD_DIR)/ncurses
 
 NCURSES_VERSION=5.9
 NCURSES=ncurses-$(NCURSES_VERSION)
-NCURSES_SITE=ftp://invisible-island.net/ncurses
+NCURSES_SITE=ftp://ftp.invisible-island.net/ncurses
 NCURSES_SOURCE=$(NCURSES).tar.gz
 NCURSES_UNZIP=zcat
 NCURSES_MAINTAINER=Christopher Blunck <christopher.blunck@gmail.com>

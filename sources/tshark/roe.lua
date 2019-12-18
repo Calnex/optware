@@ -1,5 +1,5 @@
 -- roe.lua
--- version 1.1
+-- version 1.2
 -- written by Bob Chalmers
 -- 
 -- Wireshark dissector routine for roe protocol
@@ -65,7 +65,7 @@ function roe_proto.dissector(buffer,pinfo,tree)
 
     local offset = 0
   
-    repeat
+    -- repeat
         -- Read payload length
         local payload_length = buffer(offset+2,2):uint()
 
@@ -107,14 +107,13 @@ function roe_proto.dissector(buffer,pinfo,tree)
 
         -- DECODE THE PAYLOAD
         offset = offset + payload_length
-    
-    -- end    
-until (reported_length - offset >= ROE_HEADER_LENGTH)   
+        
+    -- until (reported_length - offset >= ROE_HEADER_LENGTH)   
 
--- message ("offset "..offset)
-if offset ~=0 then
-    original_dissector:call(buffer(offset):tvb(), pinfo, tree) 
-end
+    -- message ("offset "..offset)
+    if offset ~=0 then
+        original_dissector:call(buffer(offset):tvb(), pinfo, tree) 
+    end
 
 end
 
