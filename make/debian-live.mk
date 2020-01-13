@@ -122,9 +122,9 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	# Delete the extlinux boot folder
 	rm -rf $(@D)/config/includes.binary/boot
 	# Inject product version into vi installation 
-	sed -i -e "s/__TARGET_PRODUCT__/${TARGET_PRODUCT_LOWER}/g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/0460-install-endor.hook.chroot
+	sed -i -e "s/__TARGET_PRODUCT__/${TARGET_PRODUCT_LOWER}/g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/live/0460-install-endor.hook.chroot
 	# Inject the target packages server into the cross feed file
-	sed -i -e "s|__TARGET_PACKAGES__|${TARGET_PACKAGES_MIRROR}|g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/0460-install-endor.hook.chroot
+	sed -i -e "s|__TARGET_PACKAGES__|${TARGET_PACKAGES_MIRROR}|g" $(BUILD_DIR)/$(DEBIAN-LIVE_DIR)/config/hooks/live/0460-install-endor.hook.chroot
 	if test "$(BUILD_DIR)/$(DEBIAN-LIVE_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-LIVE_DIR) $(@D) ; \
 	fi
