@@ -14,4 +14,5 @@ mesg n
 
 # Calnex additions
 #
+umask 002
 HOSTALIASES=/opt/etc/hostaliases
