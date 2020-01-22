@@ -26,7 +26,7 @@ PHP_DEPENDS=bzip2, zlib, gdbm, libdb, pcre
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=4
+PHP_IPK_VERSION=5
 
 #
 # PHP_CONFFILES should be a list of user-editable files
