@@ -12,7 +12,7 @@
 # PHP_UNZIP is the command used to unzip the source.
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
-PHP_SITE=http://static.php.net/www.php.net/distributions/
+PHP_SITE=http://www.php.net/distributions/
 PHP_VERSION=5.6.27
 PHP_SOURCE=php-$(PHP_VERSION).tar.bz2
 PHP_DIR=php-$(PHP_VERSION)
@@ -232,6 +232,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--disable-static \
 		--disable-all \
 		--enable-fpm \
+		--enable-session=shared \
 		--enable-bcmath=shared \
 		--enable-calendar=shared \
 		--enable-dba=shared \
