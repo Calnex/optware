@@ -105,7 +105,12 @@ reboot
                 fi
         fi
 fi
+## check if we're just been reverted to from Stretch 
 
+if [ -d /lib/live/mount/persistence/sda4/home/calnex ]; then
+	cp -rp /lib/live/mount/persistence/sda4/home/rw/.optware/* /opt/
+	reboot
+fi
 cp /opt/etc/cron.d/* /etc/cron.daily/
 
 /sbin/ip_fallback &
