@@ -1,9 +1,8 @@
 #! /bin/bash
-echo 'Starting SystemConfig' >> /var/log/SystemConfig
-echo 'Current PATH is $PATH' >> /var/log/SystemConfig
+echo "Check SDA3 Present"
 if [ ! -b /dev/sda3  ]
 then
-echo 'dev/sda3 not present' >> /var/log/SystemConfig
+echo "SDA3 Not Present"
 fdisk /dev/sda <<EOF1
 n
 p
@@ -18,14 +17,13 @@ EOF1
 partprobe
 mkswap /dev/sda3
 else
-echo 'dev/sda3 present' >> /var/log/SystemConfig
-echo 'current PATH is $PATH ' >> /var/log/SystemConfig
+echo "SDA3 Present"
 swapon /dev/sda3
 fi
-
+echo "Chech SDA4 Present"
 if [ ! -b /dev/sda4  ]
 then
-echo 'dev/sda4 not present' >> /var/log/SystemConfig
+echo "SDA4 Not Present"
 fdisk /dev/sda <<EOF2
 n
 p
@@ -35,10 +33,11 @@ p
 w
 EOF2
 partprobe
+echo "Check SDA4 for Filesystem"
 file -s /dev/sda4 | grep ext4
     if [[ $? != 0 ]]
     then
-	echo 'On persistence detected' >> /var/log/SystemConfig
+	echo "No Filesystem Present, build"
         mkfs.ext4 -L persistence /dev/sda4
         mkdir -p /mnt/home
         mount /dev/sda4 /mnt/home
@@ -50,8 +49,9 @@ file -s /dev/sda4 | grep ext4
     fi
 reboot
 fi
-echo 'Installing Debian' >> /var/log/SystemConfig
+
 # Debian self install
+echo "Debian Self Install"
 if [[ -e /opt/var/lib/debian/root.img ]]
 then
         cd /opt/var/lib/debian/
@@ -111,14 +111,13 @@ reboot
                 fi
         fi
 fi
-if [ -d /run/live/persistence/sda4/home/calnex ]; then
-	rm -rf /run/live/persistence/sda4/home/rw/calnex
-	rm -rf /run/live/persistence/sda4/home/rw/.optware
-	mv /run/live/persistence/sda4/home/calnex /run/live/persistence/sda4/home/rw
-	mv /run/live/persistence/sda4/home/.optware /run/live/persistence/sda4/home/rw
+## check if we're just been reverted to from Stretch 
+echo "Check for Stretch Filesystem"
+cmp -s /opt/lib/ipkg/lists/local /lib/live/mount/persistence/sda4/home/.optware/lib/ipkg/lists/local
+if [ $? != 0 ]; then
+	cp -rp /lib/live/mount/persistence/sda4/home/rw/.optware/* /opt/
 	reboot
 fi
-
 cp /opt/etc/cron.d/* /etc/cron.daily/
 
 /sbin/ip_fallback &
