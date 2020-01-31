@@ -14,22 +14,18 @@ case "$1" in
                 mount -o bind ${REAL_OPT_DIR} /opt
             fi
         fi
-
+	
 	# Default repo location to network
-	echo "Set Optware Repo Location"
 	echo "src/gz local file://srv/tftp/optware"       > /opt/etc/ipkg/cross-feed.conf
-
+	
 	# Call USB script, it should make no change
 	# if no USB is present
-	echo "Check if USB is present"
 	/bin/optwareUSB add
-
+	
 	if [ -x /etc/init.d/S00SystemConfiguration ]; then
-		echo "Starting System Configuration"
 		/etc/init.d/S00SystemConfiguration
 	fi
 	if [ -x /etc/init.d/S00SystemLoading ]; then
-		echo "Loading System"
 		/etc/init.d/S00SystemLoading start
 	fi
 	[ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
