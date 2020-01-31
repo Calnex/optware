@@ -1,7 +1,8 @@
 #! /bin/bash
-
+echo "Check SDA3 Present"
 if [ ! -b /dev/sda3  ]
 then
+echo "SDA3 Not Present"
 fdisk /dev/sda <<EOF1
 n
 p
@@ -16,11 +17,13 @@ EOF1
 partprobe
 mkswap /dev/sda3
 else
+echo "SDA3 Present"
 swapon /dev/sda3
 fi
-
+echo "Chech SDA4 Present"
 if [ ! -b /dev/sda4  ]
 then
+echo "SDA4 Not Present"
 fdisk /dev/sda <<EOF2
 n
 p
@@ -30,9 +33,11 @@ p
 w
 EOF2
 partprobe
+echo "Check SDA4 for Filesystem"
 file -s /dev/sda4 | grep ext4
     if [[ $? != 0 ]]
     then
+	echo "No Filesystem Present, build"
         mkfs.ext4 -L persistence /dev/sda4
         mkdir -p /mnt/home
         mount /dev/sda4 /mnt/home
@@ -46,6 +51,7 @@ reboot
 fi
 
 # Debian self install
+echo "Debian Self Install"
 if [[ -e /opt/var/lib/debian/root.img ]]
 then
         cd /opt/var/lib/debian/
@@ -106,8 +112,9 @@ reboot
         fi
 fi
 ## check if we're just been reverted to from Stretch 
-
-if [ -d /lib/live/mount/persistence/sda4/home/calnex ]; then
+echo "Check for Stretch Filesystem"
+cmp -s /opt/lib/ipkg/lists/local /lib/live/mount/persistence/sda4/home/.optware/lib/ipkg/lists/local
+if [ $? != 0 ]; then
 	cp -rp /lib/live/mount/persistence/sda4/home/rw/.optware/* /opt/
 	reboot
 fi
