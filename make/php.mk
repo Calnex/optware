@@ -21,7 +21,7 @@ PHP_MAINTAINER=Josh Parsons <jbparsons@ucdavis.edu>
 PHP_DESCRIPTION=The php scripting language
 PHP_SECTION=net
 PHP_PRIORITY=optional
-PHP_DEPENDS=bzip2, zlib, gdbm, libdb, pcre
+PHP_DEPENDS=bzip2, zlib, gdbm, libdb, pcre, debian (>= 9.0)
 
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
