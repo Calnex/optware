@@ -26,7 +26,7 @@ PHP_DEPENDS=bzip2, zlib, gdbm, libdb, pcre, debian (>= 9.0)
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=5
+PHP_IPK_VERSION=6
 
 #
 # PHP_CONFFILES should be a list of user-editable files
@@ -233,6 +233,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--disable-all \
 		--enable-fpm \
 		--enable-session=shared \
+                --enable-zip=shared \
 		--enable-bcmath=shared \
 		--enable-calendar=shared \
 		--enable-dba=shared \
