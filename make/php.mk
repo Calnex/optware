@@ -12,7 +12,7 @@
 # PHP_UNZIP is the command used to unzip the source.
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
-PHP_SITE=http://static.php.net/www.php.net/distributions/
+PHP_SITE=http://www.php.net/distributions/
 PHP_VERSION=5.6.27
 PHP_SOURCE=php-$(PHP_VERSION).tar.bz2
 PHP_DIR=php-$(PHP_VERSION)
@@ -21,12 +21,12 @@ PHP_MAINTAINER=Josh Parsons <jbparsons@ucdavis.edu>
 PHP_DESCRIPTION=The php scripting language
 PHP_SECTION=net
 PHP_PRIORITY=optional
-PHP_DEPENDS=bzip2, zlib, gdbm, libdb, pcre
+PHP_DEPENDS=bzip2, zlib, gdbm, libdb, pcre, debian (<= 9.0)
 
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=4
+PHP_IPK_VERSION=6
 
 #
 # PHP_CONFFILES should be a list of user-editable files
@@ -244,6 +244,8 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--enable-sysvmsg=shared \
 		--enable-sysvshm=shared \
 		--enable-sysvsem=shared \
+		--enable-zip=shared \
+		--enable-session=shared \
 		--with-bz2=shared,$(STAGING_PREFIX) \
 		--with-db4=$(STAGING_PREFIX) \
 		--with-gdbm=$(STAGING_PREFIX) \
