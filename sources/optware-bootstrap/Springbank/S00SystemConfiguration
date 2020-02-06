@@ -113,10 +113,12 @@ reboot
 fi
 ## check if we're just been reverted to from Stretch 
 echo "Check for Stretch Filesystem"
-cmp -s /opt/lib/ipkg/lists/local /lib/live/mount/persistence/sda4/home/.optware/lib/ipkg/lists/local
-if [ $? != 0 ]; then
-	cp -rp /lib/live/mount/persistence/sda4/home/rw/.optware/* /opt/
-	reboot
+if [[ -f /opt/lib/ipkg/status && -f /lib/live/mount/persistence/sda4/home/rw/.optware/lib/ipkg/status ]]; then
+	cmp -s /opt/lib/ipkg/status /lib/live/mount/persistence/sda4/home/rw/.optware/lib/ipkg/status
+	if [ $? != 0 ]; then
+		cp -rp /lib/live/mount/persistence/sda4/home/rw/.optware/* /opt/
+		reboot
+	fi
 fi
 cp /opt/etc/cron.d/* /etc/cron.daily/
 
