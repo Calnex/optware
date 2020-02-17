@@ -50,6 +50,16 @@ file -s /dev/sda4 | grep ext4
     fi
 reboot
 fi
+
+## Check for previous Wheezy Install
+if [ -d /run/live/persistence/sda4/home/calnex ]; then
+        rm -rf /run/live/persistence/sda4/home/rw/calnex
+        rm -rf /run/live/persistence/sda4/home/rw/.optware
+        mv /run/live/persistence/sda4/home/calnex /run/live/persistence/sda4/home/rw
+        mv /run/live/persistence/sda4/home/.optware /run/live/persistence/sda4/home/rw
+        reboot
+fi
+
 echo 'Installing Debian' >> /var/log/SystemConfig
 # Debian self install
 if [[ -e /opt/var/lib/debian/root.img ]]
@@ -110,13 +120,6 @@ reboot
                         echo "Debian update image keysign check failed!"
                 fi
         fi
-fi
-if [ -d /run/live/persistence/sda4/home/calnex ]; then
-	rm -rf /run/live/persistence/sda4/home/rw/calnex
-	rm -rf /run/live/persistence/sda4/home/rw/.optware
-	mv /run/live/persistence/sda4/home/calnex /run/live/persistence/sda4/home/rw
-	mv /run/live/persistence/sda4/home/.optware /run/live/persistence/sda4/home/rw
-	reboot
 fi
 
 cp /opt/etc/cron.d/* /etc/cron.daily/
