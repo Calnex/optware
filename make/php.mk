@@ -21,12 +21,13 @@ PHP_MAINTAINER=Josh Parsons <jbparsons@ucdavis.edu>
 PHP_DESCRIPTION=The php scripting language
 PHP_SECTION=net
 PHP_PRIORITY=optional
-PHP_DEPENDS=bzip2, zlib, gdbm, libdb, pcre, debian (>= 9.0)
+PHP_DEPENDS=bzip2, zlib, gdbm, libdb, pcre
+PHP_CONFLICTS=debian (<= 9.0)
 
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=6
+PHP_IPK_VERSION=7
 
 #
 # PHP_CONFFILES should be a list of user-editable files
@@ -115,6 +116,7 @@ $(PHP_IPK_DIR)/CONTROL/control:
 	@echo "Source: $(PHP_SITE)/$(PHP_SOURCE)" >>$@
 	@echo "Description: $(PHP_DESCRIPTION)" >>$@
 	@echo "Depends: $(PHP_DEPENDS)" >>$@
+	@echo "Conflicts: ${PHP_CONFLICTS}" >>$@
 
 $(PHP_DEV_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
