@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DEBIAN_VERSION=$(SNAPSHOT_VERSION)
+DEBIAN_VERSION=09.00
 DEBIAN_SOURCE=debian-$(DEBIAN_VERSION).tar.gz
 DEBIAN_DIR=debian-$(DEBIAN_VERSION)
 DEBIAN_UNZIP=zcat
@@ -41,11 +41,11 @@ DEBIAN_CONFLICTS=
 #
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN_IPK_VERSION=1
+DEBIAN_IPK_VERSION=0001
 #
 # DEBIAN_PARTITION_LABEL CANNOT be longer than 10 Characters, it will cause boot failure. 
 #
-DEBIAN_PARTITION_LABEL=100G_$(DEBIAN_VERSION)-$(DEBIAN_IPK_VERSION)
+DEBIAN_PARTITION_LABEL=OS_$(DEBIAN_VERSION).$(DEBIAN_IPK_VERSION)
 
 #
 # DEBIAN_CONFFILES should be a list of user-editable files
@@ -81,7 +81,7 @@ DEBIAN_LDFLAGS=
 DEBIAN_BUILD_DIR=$(BUILD_DIR)/debian
 DEBIAN_SRC_DIR=$(SOURCE_DIR)/debian
 DEBIAN_IPK_DIR=$(BUILD_DIR)/debian-$(DEBIAN_VERSION)-ipk
-DEBIAN_IPK=$(BUILD_DIR)/debian_$(DEBIAN_VERSION)-$(DEBIAN_IPK_VERSION)_$(TARGET_ARCH).ipk
+DEBIAN_IPK=$(BUILD_DIR)/debian_$(DEBIAN_VERSION).$(DEBIAN_IPK_VERSION)_$(TARGET_ARCH).ipk
 
 .PHONY: debian-source debian-unpack debian debian-stage debian-ipk debian-clean debian-dirclean debian-check
 
@@ -198,7 +198,7 @@ $(DEBIAN_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(DEBIAN_PRIORITY)" >>$@
 	@echo "Section: $(DEBIAN_SECTION)" >>$@
-	@echo "Version: $(DEBIAN_VERSION)-$(DEBIAN_IPK_VERSION)" >>$@
+	@echo "Version: $(DEBIAN_VERSION).$(DEBIAN_IPK_VERSION)" >>$@
 	@echo "Maintainer: $(DEBIAN_MAINTAINER)" >>$@
 	@echo "Source: $(DEBIAN_SITE)/$(DEBIAN_SOURCE)" >>$@
 	@echo "Description: $(DEBIAN_DESCRIPTION)" >>$@
