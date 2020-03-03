@@ -21,12 +21,12 @@ PHP_MAINTAINER=Josh Parsons <jbparsons@ucdavis.edu>
 PHP_DESCRIPTION=The php scripting language
 PHP_SECTION=net
 PHP_PRIORITY=optional
-PHP_DEPENDS=bzip2, zlib, gdbm, libdb, pcre, debian (<= 9.0)
+PHP_DEPENDS=bzip2, zlib, gdbm, pcre, debian (<= 9.0)
 
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=6
+PHP_IPK_VERSION=7
 
 #
 # PHP_CONFFILES should be a list of user-editable files
@@ -234,7 +234,6 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--enable-fpm \
 		--enable-bcmath=shared \
 		--enable-calendar=shared \
-		--enable-dba=shared \
 		--enable-embed=shared \
 		--enable-exif=shared \
 		--enable-ftp=shared \
