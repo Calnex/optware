@@ -21,7 +21,7 @@ PHP_MAINTAINER=Josh Parsons <jbparsons@ucdavis.edu>
 PHP_DESCRIPTION=The php scripting language
 PHP_SECTION=net
 PHP_PRIORITY=optional
-PHP_DEPENDS=bzip2, zlib, gdbm, libdb, pcre
+PHP_DEPENDS=bzip2, zlib, gdbm, pcre
 PHP_CONFLICTS=debian (<= 9.0)
 
 #
@@ -238,7 +238,6 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
                 --enable-zip=shared \
 		--enable-bcmath=shared \
 		--enable-calendar=shared \
-		--enable-dba=shared \
 		--enable-embed=shared \
 		--enable-exif=shared \
 		--enable-ftp=shared \

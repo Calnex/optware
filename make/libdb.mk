@@ -39,14 +39,13 @@
 
 LIBDB_CALNEX_SITE=$(PACKAGES_SERVER)
 
-LIBDB_SITE=http://download.oracle.com/berkeley-db
 LIBDB_VERSION=5.3.21
 LIBDB_LIB_VERSION=5.3
 LIBDB_SOURCE=db-$(LIBDB_VERSION).tar.gz
 LIBDB_DIR=db-$(LIBDB_VERSION)
 LIBDB_UNZIP=zcat
 LIBDB_MAINTAINER=ka6sox <ka6sox@gmail.com>
-LIBDB_DESCRIPTION=Berkeley DB Libraries
+LIBDB_DESCRIPTION=Blank Placeholder of libdb
 LIBDB_SECTION=lib
 LIBDB_PRIORITY=optional
 LIBDB_DEPENDS=
@@ -55,7 +54,7 @@ LIBDB_CONFLICTS=
 #
 # <FOO>_IPK_VERSION should be incremented when the ipk changes.
 #
-LIBDB_IPK_VERSION=3
+LIBDB_IPK_VERSION=4
 
 #
 # <FOO>_PATCHES should list any patches, in the the order in
@@ -89,9 +88,6 @@ LIBDB_IPK=$(BUILD_DIR)/libdb_$(LIBDB_VERSION)-$(LIBDB_IPK_VERSION)_$(TARGET_ARCH
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBDB_SOURCE):
-	$(WGET) -P $(DL_DIR) $(LIBDB_CALNEX_SITE)/$(LIBDB_SOURCE) || \
-	$(WGET) -P $(DL_DIR) $(LIBDB_SITE)/$(LIBDB_SOURCE) || \
-	$(WGET) -P $(DL_DIR) $(SOURCES_NLO_SITE)/$(LIBDB_SOURCE)
 
 #
 # The source code depends on it existing within the download directory.
@@ -117,19 +113,7 @@ libdb-source: $(DL_DIR)/$(LIBDB_SOURCE) $(LIBDB_PATCHES)
 #
 $(LIBDB_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBDB_SOURCE) $(LIBDB_PATCHES)
 	rm -rf $(BUILD_DIR)/$(LIBDB_DIR) $(LIBDB_BUILD_DIR)
-	$(LIBDB_UNZIP) $(DL_DIR)/$(LIBDB_SOURCE) | tar -C $(BUILD_DIR) -xf -
-	#cat $(LIBDB_PATCHES) | patch -d $(BUILD_DIR)/$(LIBDB_DIR) -p1
-	mv $(BUILD_DIR)/$(LIBDB_DIR) $(LIBDB_BUILD_DIR)
-	(cd $(LIBDB_BUILD_DIR)/build_unix; \
-		$(TARGET_CONFIGURE_OPTS) \
-		CPPFLAGS="$(STAGING_CPPFLAGS) $(LIBDB_CPPFLAGS)" \
-		LDFLAGS="$(STAGING_LDFLAGS) $(LIBDB_LDFLAGS)" \
-		../dist/configure \
-		--build=$(GNU_HOST_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--target=$(GNU_TARGET_NAME) \
-		--prefix=/opt \
-	)
+	mkdir $(LIBDB_BUILD_DIR)
 	touch $(LIBDB_BUILD_DIR)/.configured
 
 libdb-unpack: $(LIBDB_BUILD_DIR)/.configured
@@ -139,7 +123,6 @@ libdb-unpack: $(LIBDB_BUILD_DIR)/.configured
 # directly to the main binary which is built.
 #
 $(LIBDB_BUILD_DIR)/build_unix/.libs/libdb-$(LIBDB_LIB_VERSION).a: $(LIBDB_BUILD_DIR)/.configured
-	$(MAKE) -C $(LIBDB_BUILD_DIR)/build_unix
 
 #
 # You should change the dependency to refer directly to the main binary
@@ -153,8 +136,6 @@ libdb: $(LIBDB_BUILD_DIR)/build_unix/.libs/libdb-$(LIBDB_LIB_VERSION).a
 #
 $(LIBDB_BUILD_DIR)/.staged: $(LIBDB_BUILD_DIR)/build_unix/.libs/libdb-$(LIBDB_LIB_VERSION).a
 	rm -f $@
-	$(MAKE) -C $(LIBDB_BUILD_DIR)/build_unix DESTDIR=$(STAGING_DIR) install_setup install_include install_lib
-	rm -f $(STAGING_LIB_DIR)/libdb-$(LIBDB_LIB_VERSION).la
 	touch $@
 
 libdb-stage: $(LIBDB_BUILD_DIR)/.staged
@@ -190,9 +171,6 @@ $(LIBDB_IPK_DIR)/CONTROL/control:
 #
 $(LIBDB_IPK): $(LIBDB_BUILD_DIR)/build_unix/.libs/libdb-$(LIBDB_LIB_VERSION).a
 	rm -rf $(LIBDB_IPK_DIR) $(LIBDB_IPK)
-	$(MAKE) -C $(LIBDB_BUILD_DIR)/build_unix DESTDIR=$(LIBDB_IPK_DIR) install_setup install_include install_lib
-	-$(STRIP_COMMAND) $(LIBDB_IPK_DIR)/opt/lib/*.so
-	rm -f $(LIBDB_IPK_DIR)/opt/lib/*.{la,a}
 	$(MAKE) $(LIBDB_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBDB_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(LIBDB_IPK_DIR)
