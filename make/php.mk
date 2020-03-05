@@ -204,7 +204,6 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 	$(MAKE) bzip2-stage 
 	$(MAKE) zlib-stage 
 	$(MAKE) gdbm-stage 
-	$(MAKE) libdb-stage
 	$(MAKE) pcre-stage
 	rm -rf $(BUILD_DIR)/$(PHP_DIR) $(@D)
 	$(PHP_UNZIP) $(DL_DIR)/$(PHP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
@@ -248,7 +247,6 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--enable-sysvshm=shared \
 		--enable-sysvsem=shared \
 		--with-bz2=shared,$(STAGING_PREFIX) \
-		--with-db4=$(STAGING_PREFIX) \
 		--with-gdbm=$(STAGING_PREFIX) \
 		--with-zlib=shared,$(STAGING_PREFIX) \
 		--with-freetype-dir=$(STAGING_PREFIX) \
