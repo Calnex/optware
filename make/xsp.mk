@@ -78,6 +78,7 @@ XSP_SOURCE_DIR=$(SOURCE_DIR)/xsp
 XSP_IPK_DIR=$(BUILD_DIR)/xsp-$(XSP_VERSION)-ipk
 XSP_IPK=$(BUILD_DIR)/xsp_$(XSP_VERSION)-$(XSP_IPK_VERSION)_$(TARGET_ARCH).ipk
 
+MONO_STAGING_DIR?=${STAGING_DIR}
 
 .PHONY: xsp-source xsp-unpack xsp xsp-stage xsp-ipk xsp-clean xsp-dirclean xsp-check
 
