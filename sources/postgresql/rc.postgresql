@@ -38,42 +38,49 @@ fi
 
 case "$rc" in
     start)
-	echo -n "Starting PostgreSQL: "
-	if [ -e $PGPID ]
-	then
-		if ps ax | grep -v grep | grep $DAEMON_SUPERVISOR
+		echo -n "Starting PostgreSQL: "
+		if [ -e $PGPID ]
 		then
-			echo "PostgreSQL is already running"
+			if ps ax | grep -v grep | grep $DAEMON_SUPERVISOR
+			then
+				echo "PostgreSQL is already running"
+			else
+				rm -f $PGPID
+				$PGCTL start -D $PGDATA -l $PGLOG -s
+				$DAEMON_SUPERVISOR -D $PGDATA -l $PGLOG -s 2>&1 &
+				echo ok
+			fi
 		else
-			rm -f $PGPID
 			$PGCTL start -D $PGDATA -l $PGLOG -s
 			$DAEMON_SUPERVISOR -D $PGDATA -l $PGLOG -s 2>&1 &
 			echo ok
 		fi
-	else
-		$PGCTL start -D $PGDATA -l $PGLOG -s
-		$DAEMON_SUPERVISOR -D $PGDATA -l $PGLOG -s 2>&1 &
-		echo ok
-	fi
-	;;
+		;;
     stop)
-	echo -n "Stopping PostgreSQL: "
-        pkill -9 -f $DAEMON_SUPERVISOR
-	$PGCTL stop -D $PGDATA -s -m fast
-	portUse=`ss -tulpn | grep 5432`
-	numRetries=10
-	while [ ! -z "${portUse}" ]  && [ ${numRetries} -gt 0 ] ; do
-	    numRetries=`expr $numRetries - 1`
-	    echo "Trying to Kill proccess on port 5432"
-	    voodoo kill `voodoo ss -tulpn | grep 5432 | grep -o -P "(?<=pid=).*(?=,)" | head -1`
-	    sleep 0.2
-	    portUse=`ss -tulpn | grep 5432`
-	done
-	if [ ! -z "${portUse}" ]; then
-		echo " Failed to stop process on port 5432"
-	else
-		echo ok
-	fi
+		echo -n "Stopping PostgreSQL: "
+		pkill -9 -f $DAEMON_SUPERVISOR
+		$PGCTL stop -D $PGDATA -s -m fast
+		portUse=`ss -tulpn | grep 5432`
+		numRetries=10
+		while [ ! -z "${portUse}" ]  && [ ${numRetries} -gt 0 ] ; do
+			numRetries=`expr $numRetries - 1`
+			echo "Trying to Kill proccess on port 5432"
+			pidUse=`voodoo ss -tulpn | grep 5432 | grep -o -P "(?<=pid=).*(?=,)" | head -1`
+			if [ -z "${pidUse}" ]; then
+				echo "Killing process pid=$pidUse"
+				voodoo kill $pidUse
+			else
+				echo "Killing socket port=5432"
+				voodoo ss -K dst 127.0.0.1 dport = 5432
+			fi
+			sleep 0.2
+			portUse=`ss -tulpn | grep 5432`
+		done
+		if [ ! -z "${portUse}" ]; then
+			echo " Failed to stop process on port 5432"
+		else
+			echo ok
+		fi
         ;;
     restart)
         "$0" stop
@@ -90,7 +97,7 @@ case "$rc" in
             echo -n "PostgreSQL pg_dumpall to $PG_DUMP_FILE "
             $prefix/bin/pg_dumpall > $PG_DUMP_FILE
         fi
-	echo ok
+		echo ok
         ;;
     *)  
         echo "Usage: $0 (start|stop|restart|dumpall|usage)"
