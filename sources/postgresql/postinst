@@ -55,10 +55,12 @@ wait_count=20
 pg_ctl status -D $pgdata
 pg_running=$?
 
+echo "Processes:"
+echo `ps aux | grep -v grep`
+
 while [ ${pg_running} -ne 0 ] && [ ${wait_count} -ne 0 ]
 do
     echo "Database not running, waiting..."
-    echo `ps ax | grep pos | grep -v grep`
     sleep 0.5
     pg_ctl status -D $pgdata
     pg_running=$?
