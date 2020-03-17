@@ -66,13 +66,12 @@ case "$rc" in
 			numRetries=`expr $numRetries - 1`
 			echo "Trying to Kill proccess on port 5432"
 			pidUse=`voodoo ss -tulpn | grep 5432 | grep -o -P "(?<=pid=).*(?=,)" | head -1`
-			if [ -z "${pidUse}" ]; then
-				echo "Killing process pid=$pidUse"
-				voodoo kill $pidUse
-			else
-				echo "Killing socket port=5432"
-				voodoo ss -K dst 127.0.0.1 dport = 5432
-			fi
+			
+			echo "Killing process pid=$pidUse"
+			voodoo kill -9 $pidUse
+			echo "Killing socket port=5432"
+			voodoo ss -K dst 127.0.0.1 dport = 5432
+			
 			sleep 0.2
 			portUse=`ss -tulpn | grep 5432`
 		done
