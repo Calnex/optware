@@ -56,7 +56,7 @@ pg_ctl status -D $pgdata
 pg_running=$?
 
 echo "Processes:"
-echo `ps aux | grep -v grep`
+echo `ps aux | grep -v grep | awk '{print $NF}'`
 
 while [ ${pg_running} -ne 0 ] && [ ${wait_count} -ne 0 ]
 do
