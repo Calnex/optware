@@ -213,6 +213,7 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	rm -f $@
 	#ABSOLUTE_PATH=$(@D);
 	(cd $(@D);\
+		msbuild -t:restore;\
 		$(BUILD_TOOL) Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)" /p:Configuration=Release $(TOOL_PATH))
 	touch $@
 
