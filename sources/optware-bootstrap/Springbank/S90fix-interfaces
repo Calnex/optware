@@ -1,0 +1,3 @@
+#! /bin/sh
+
+echo "Fix-Interfaces was run" >> /home/calnex/debug.txt

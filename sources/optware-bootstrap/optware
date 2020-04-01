@@ -28,6 +28,9 @@ case "$1" in
 	if [ -x /etc/init.d/S00SystemLoading ]; then
 		/etc/init.d/S00SystemLoading start
 	fi
+    if [ -x /etc/init.d/S90fix-interfaces ]; then
+        cp /etc/init.d/S90fix-interfaces /opt/etc/init.d/
+    fi
 	[ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
     ;;
     reconfig)
