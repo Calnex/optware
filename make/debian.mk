@@ -41,7 +41,8 @@ DEBIAN_CONFLICTS=
 #
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN_IPK_VERSION=0003
+DEBIAN_BUILD_NO?=DEVEL
+DEBIAN_IPK_VERSION=$(DEBIAN_BUILD_NO)
 #
 # DEBIAN_PARTITION_LABEL CANNOT be longer than 10 Characters, it will cause boot failure. 
 #
