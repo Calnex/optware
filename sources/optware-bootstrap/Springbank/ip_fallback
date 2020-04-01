@@ -2,9 +2,12 @@
 
 sleep 300
 
-ip -br -f inet address | grep enp0s3 > /dev/null
+NET_IFACE_NAME=$(ls /sys/class/net | sed 's/lo//')
+
+ip -br -f inet address | grep $NET_IFACE_NAME > /dev/null
 if [[ $? != 0 ]]
 then
   #ip addr add 192.168.10.10 dev enp0s3
+  echo "Executing dhclient $NET_IFACE_NAME" >> /home/calnex/debug.txt
   dhclient
 fi

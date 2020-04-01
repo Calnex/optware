@@ -1,3 +1,9 @@
 #! /bin/sh
 
-echo "Fix-Interfaces was run" >> /home/calnex/debug.txt
+echo "### Output of /etc/network/interfaces"
+
+if [ -x /etc/network/interfaces ]; then
+    cat /etc/network/interfaces >> /home/calnex/debug.txt
+else
+    echo "*** No Interfaces file found" >> /home/calnex/debug.txt
+fi
