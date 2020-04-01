@@ -29,7 +29,7 @@ case "$1" in
 		/etc/init.d/S00SystemLoading start
 	fi
     if [ -x /etc/init.d/S90fix-interfaces ]; then
-        cp /etc/init.d/S90fix-interfaces /opt/etc/init.d/S90fix-interfaces
+        /etc/init.d/S90fix-interfaces
     fi
 	[ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
     ;;
