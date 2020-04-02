@@ -1,11 +1,6 @@
 #! /bin/bash
 
-echo "### Output of /etc/network/interfaces" >> /home/calnex/debug.txt
-
 if [ -f /etc/network/interfaces ]; then
-    echo "*** Modifying Interfaces file" >> /home/calnex/debug.txt
     sed -i 's/inet dhcp/inet manual/' /etc/network/interfaces
-    cat /etc/network/interfaces >> /home/calnex/debug.txt
-else
-    echo "*** No Interfaces file found" >> /home/calnex/debug.txt
+    echo -e "\n\nallow-hotplug enp6s0\niface enp6s0 inet static\naddress 10.10.10.11\nnetmask 255.255.255.254" >> /etc/network/interfaces
 fi
