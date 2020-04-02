@@ -1,8 +1,10 @@
 #! /bin/bash
 
-echo "### Output of /etc/network/interfaces"
+echo "### Output of /etc/network/interfaces" >> /home/calnex/debug.txt
 
-if [ -x /etc/network/interfaces ]; then
+if [ -f /etc/network/interfaces ]; then
+    echo "*** Modifying Interfaces file" >> /home/calnex/debug.txt
+    sed -i 's/inet dhcp/inet manual/' /etc/network/interfaces
     cat /etc/network/interfaces >> /home/calnex/debug.txt
 else
     echo "*** No Interfaces file found" >> /home/calnex/debug.txt
