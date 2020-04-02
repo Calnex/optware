@@ -29,7 +29,6 @@ case "$1" in
 		/etc/init.d/S00SystemLoading start
 	fi
 
-    #[ -x /etc/init.d/S90fix-interfaces ] && /etc/init.d/S90fix-interfaces
 	[ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
     ;;
     reconfig)
