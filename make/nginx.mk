@@ -36,7 +36,7 @@ NGINX_CONFLICTS=
 #
 # NGINX_IPK_VERSION should be incremented when the ipk changes.
 #
-NGINX_IPK_VERSION?=6
+NGINX_IPK_VERSION?=Dev_BARRY
 
 #
 # NGINX_CONFFILES should be a list of user-editable files
@@ -165,6 +165,8 @@ $(NGINX_BUILD_DIR)/.configured: $(DL_DIR)/$(NGINX_SOURCE) $(NGINX_PATCHES) make/
                 --with-cpp=$(TARGET_CPP) \
                 --with-cc-opt="$(STAGING_CPPFLAGS) $(NGINX_CPPFLAGS)" \
                 --with-ld-opt="$(STAGING_LDFLAGS) $(NGINX_LDFLAGS)" \
+		--with-http_ssl_module \
+		--with-openssl="$(BUILD_DIR)/openssl" \
 	)
 	touch $@
 

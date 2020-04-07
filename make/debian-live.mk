@@ -129,6 +129,7 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		then mv $(BUILD_DIR)/$(DEBIAN-LIVE_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
+	# export LD_LIBRARY_PATH=/home/jenkins/optware/staging/opt/lib/:$LD_LIBRARY_PATH								\
 	# Live config recipe (no not modify unless you know 									\
 	# what you're doing!) 													\
 	sudo lb config														\
