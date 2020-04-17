@@ -1,0 +1,6 @@
+#! /bin/bash
+
+if [ -f /etc/network/interfaces ]; then
+    sed -i 's/inet dhcp/inet manual/' /etc/network/interfaces
+    echo -e "\n\nallow-hotplug enp6s0\niface enp6s0 inet static\naddress 10.10.10.11\nnetmask 255.255.255.254" >> /etc/network/interfaces
+fi
