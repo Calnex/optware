@@ -30,9 +30,13 @@ case "$1" in
         fi
 
         [ -x /etc/init.d/S90fix-interfaces ] && /etc/init.d/S90fix-interfaces
-        mkdir -p /home/calnex/Calnex100G/Persist
-        chown calnex:calnex /home/calnex/Calnex100G/Persist
-        echo "/dev/vda1	/home/calnex/Calnex100G/Persist	ext4	defaults	0	2" >> /etc/fstab;
+
+        if test -b /dev/vda; then 
+            mkdir -p /home/calnex/Calnex100G/Persist; 
+            chown calnex:calnex /home/calnex/Calnex100G/Persist
+            echo "Mounting persistent log directory /dev/vda1"
+            mount /dev/vda1 /home/calnex/Calnex100G/Persist; 
+        fi
 
         [ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
         ;;
