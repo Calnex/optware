@@ -31,7 +31,7 @@ case "$1" in
 
         [ -x /etc/init.d/S90fix-interfaces ] && /etc/init.d/S90fix-interfaces
 
-        if test -b /dev/vda; then 
+        if test -b /dev/vda && ! test -d /home/calnex/Calnex100G/Persist; then 
             echo "Mounting persistent log directory /dev/vda1"
             mkdir -p /home/calnex/Calnex100G/Persist; 
             chown calnex:calnex /home/calnex/Calnex100G/Persist
@@ -42,6 +42,7 @@ case "$1" in
                 rm -rf /home/calnex/Calnex100G/Logs/LogFiles
             fi
             su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Persist/LogFiles'
+            su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Logs'
             su - calnex -c 'ln -s /home/calnex/Calnex100G/Persist/LogFiles /home/calnex/Calnex100G/Logs/LogFiles'
         fi
 
