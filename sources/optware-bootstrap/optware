@@ -36,6 +36,12 @@ case "$1" in
             chown calnex:calnex /home/calnex/Calnex100G/Persist
             echo "Mounting persistent log directory /dev/vda1"
             mount /dev/vda1 /home/calnex/Calnex100G/Persist; 
+            if test -d /home/calnex/Calnex100G/Logs/LogFiles/; then
+                mv /home/calnex/Calnex100G/Logs/LogFiles /home/calnex/Calnex100G/Persist
+            else
+                mkdir -p /home/calnex/Calnex100G/Persist/LogFiles
+            fi
+            su - calnex -c 'ln -s /home/calnex/Calnex100G/Persist/LogFiles /home/calnex/Calnex100G/Logs/LogFiles'
         fi
 
         [ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
