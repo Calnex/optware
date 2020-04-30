@@ -38,12 +38,12 @@ case "$1" in
             mount /dev/vda1 /home/calnex/Calnex100G/Persist; 
 
             echo "Linking LogFiles directory to persistent log directory"
-            if test -d /home/calnex/Calnex100G/Logs/LogFiles/; then
-                rm -rf /home/calnex/Calnex100G/Logs/LogFiles
+            if test -d /home/calnex/Calnex100G/Logs/; then
+                rm -rf /home/calnex/Calnex100G/Logs
             fi
-            su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Persist/LogFiles'
-            su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Logs'
-            su - calnex -c 'ln -s /home/calnex/Calnex100G/Persist/LogFiles /home/calnex/Calnex100G/Logs/LogFiles'
+            #su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Persist'
+            #su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Logs'
+            su - calnex -c 'ln -s /home/calnex/Calnex100G/Persist /home/calnex/Calnex100G/Logs'
         fi
 
         [ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
