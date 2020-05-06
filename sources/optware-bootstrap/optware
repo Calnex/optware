@@ -15,29 +15,45 @@ case "$1" in
             fi
         fi
 	
-	# Default repo location to network
-	echo "src/gz local file://srv/tftp/optware"       > /opt/etc/ipkg/cross-feed.conf
-	
-	# Call USB script, it should make no change
-	# if no USB is present
-	/bin/optwareUSB add
-	
-	if [ -x /etc/init.d/S00SystemConfiguration ]; then
-		/etc/init.d/S00SystemConfiguration
-	fi
-	if [ -x /etc/init.d/S00SystemLoading ]; then
-		/etc/init.d/S00SystemLoading start
-	fi
+        # Default repo location to network
+        echo "src/gz local file://srv/tftp/optware"       > /opt/etc/ipkg/cross-feed.conf
+        
+        # Call USB script, it should make no change
+        # if no USB is present
+        /bin/optwareUSB add
+        
+        if [ -x /etc/init.d/S00SystemConfiguration ]; then
+            /etc/init.d/S00SystemConfiguration
+        fi
+        if [ -x /etc/init.d/S00SystemLoading ]; then
+            /etc/init.d/S00SystemLoading start
+        fi
 
-	[ -x /etc/init.d/S90fix-interfaces ] && /etc/init.d/S90fix-interfaces
-	[ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
-    ;;
+        [ -x /etc/init.d/S90fix-interfaces ] && /etc/init.d/S90fix-interfaces
+
+        if test -b /dev/vda && ! test -d /home/calnex/Calnex100G/Persist; then 
+            echo "Mounting persistent log directory /dev/vda1"
+            mkdir -p /home/calnex/Calnex100G/Persist; 
+            chown calnex:calnex /home/calnex/Calnex100G/Persist
+            mount /dev/vda1 /home/calnex/Calnex100G/Persist; 
+
+            echo "Linking LogFiles directory to persistent log directory"
+            if test -d /home/calnex/Calnex100G/Logs/; then
+                rm -rf /home/calnex/Calnex100G/Logs
+            fi
+            #su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Persist'
+            #su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Logs'
+            su - calnex -c 'ln -s /home/calnex/Calnex100G/Persist /home/calnex/Calnex100G/Logs'
+        fi
+
+        [ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
+        ;;
     reconfig)
-	true
+        true
     ;;
     stop)
         echo "Shutting down Optware."
-	true
+	    true
     ;;
     *)
         echo "Usage: $0 {start|stop|reconfig}"
