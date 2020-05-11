@@ -41,8 +41,7 @@ case "$1" in
             if test -d /home/calnex/Calnex100G/Logs/; then
                 rm -rf /home/calnex/Calnex100G/Logs
             fi
-            #su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Persist'
-            #su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Logs'
+            su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Logs'
             su - calnex -c 'ln -s /home/calnex/Calnex100G/Persist /home/calnex/Calnex100G/Logs'
         fi
 
