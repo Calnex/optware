@@ -34,14 +34,13 @@ case "$1" in
         if test -b /dev/vda && ! test -d /home/calnex/Calnex100G/Persist; then 
             echo "Mounting persistent log directory /dev/vda1"
             mkdir -p /home/calnex/Calnex100G/Persist; 
-            chown calnex:calnex /home/calnex/Calnex100G/Persist
+            chown -R calnex:calnex /home/calnex/Calnex100G
             mount /dev/vda1 /home/calnex/Calnex100G/Persist; 
 
             echo "Linking LogFiles directory to persistent log directory"
             if test -d /home/calnex/Calnex100G/Logs/; then
                 rm -rf /home/calnex/Calnex100G/Logs
             fi
-            su - calnex -c 'mkdir -p /home/calnex/Calnex100G/Logs'
             su - calnex -c 'ln -s /home/calnex/Calnex100G/Persist /home/calnex/Calnex100G/Logs'
         fi
 
