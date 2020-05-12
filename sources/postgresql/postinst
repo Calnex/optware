@@ -100,4 +100,4 @@ psql -h localhost -U calnex -d template1 -c "VACUUM FREEZE;"
 
 # And stop the server
 #
-/opt/etc/init.d/S95postgresql stop
+/opt/etc/init.d/S91postgresql stop

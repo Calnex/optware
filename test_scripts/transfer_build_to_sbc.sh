@@ -24,11 +24,11 @@ fi
 # Relies on SSH keys being correctly set up
 #
 echo "Stopping services on $1"
-ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S99endor-webapp stop"
-ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S98cat-remotingserver stop"
-ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S97endor-instrumentcontroller stop"
-ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S96endor-virtualinstrument stop"
-ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S95postgresql stop"
+ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S96endor-webapp stop"
+ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S94cat-remotingserver stop"
+ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S93endor-instrumentcontroller stop"
+ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S97endor-virtualinstrument stop"
+ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S91postgresql stop"
 
 # Delete the entire old application folder
 #
@@ -56,7 +56,7 @@ scp ${SSH_OPTIONS} -r /tmp/endor_staging ${TARGETHOST}:/opt/lib/endor
 
 # Restart operations on test machine
 echo "Restarting services"
-ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S95postgresql start"
+ssh ${TARGETHOST} ${SSH_OPTIONS} "/opt/etc/init.d/S91postgresql start"
 ssh ${TARGETHOST} ${SSH_OPTIONS} "cd /opt/lib/endor/schema/Baseline; python3 RebuildDb.py --superuser=calnex"
 
 ssh ${TARGETHOST} ${SSH_OPTIONS} "voodoo reboot"
