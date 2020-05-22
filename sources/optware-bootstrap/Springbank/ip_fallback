@@ -2,8 +2,12 @@
 
 sleep 300
 
+NET_IFACE_NAME=$(ls /sys/class/net)
+echo "Detected interface: $NET_IFACE_NAME" >> /home/calnex/debug.txt
+
 ip -br -f inet address | grep enp0s3 > /dev/null
 if [[ $? != 0 ]]
 then
-  ip addr add 192.168.10.10 dev enp0s3
+  #ip addr add 192.168.10.10 dev enp0s3
+  dhclient
 fi

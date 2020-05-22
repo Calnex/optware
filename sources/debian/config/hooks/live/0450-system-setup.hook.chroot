@@ -31,6 +31,10 @@ fi
 mkdir /srv/tftp
 chown calnex /srv/tftp
 
+# Create a folder for the logs from the memlog script
+mkdir -p /var/log/characterisation
+chmod a+w /var/log/characterisation
+
 # Provide an SSH key for the calnex account
 
 if [ -d ~calnex/.ssh ]

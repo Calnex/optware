@@ -148,6 +148,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		echo "[assembly: AssemblyVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/Version.cs ; \
 		echo "[assembly: AssemblyFileVersion(\"${BUILD_VERSION_NUMBER}\")]" >> endor-$(ENDOR_PRODUCT)/Server/Software/Endor/BuildInformation/Version.cs ; \
 		cd endor-$(ENDOR_PRODUCT) && \
+		cp -R Tools ../../tmp; \
 		git show-ref --heads > Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
 		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-makefile minify "$(BUILD_DIR)" "$(ENDOR_PRODUCT)" ; \
 		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
@@ -283,7 +284,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	#
 	if [ ! -z "${ENDOR_FIRMWARE_VERSION}" ]; then \
 	   if [ "${ENDOR_FIRMWARE_VERSION}" != "(none)" ] ; then \
-		  install -d $(ENDOR_IPK_DIR)/opt/var/lib/embedded; \
+		  install -d -m 775 $(ENDOR_IPK_DIR)/opt/var/lib/embedded; \
 		  install -m 755 $(BASE_DIR)/downloads/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz $(ENDOR_IPK_DIR)/opt/var/lib/embedded/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz; \
 		  install -m 755 $(BASE_DIR)/downloads/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz.md5 $(ENDOR_IPK_DIR)/opt/var/lib/embedded/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz.md5; \
 		  cat $(ENDOR_SOURCE_DIR)/postinst.firmware >> $(ENDOR_IPK_DIR)/CONTROL/postinst; \

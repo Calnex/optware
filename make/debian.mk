@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DEBIAN_VERSION=09.00
+DEBIAN_VERSION?=09.xx
 DEBIAN_SOURCE=debian-$(DEBIAN_VERSION).tar.gz
 DEBIAN_DIR=debian-$(DEBIAN_VERSION)
 DEBIAN_UNZIP=zcat
@@ -41,7 +41,8 @@ DEBIAN_CONFLICTS=
 #
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN_IPK_VERSION=0003
+DEBIAN_BUILD_NO?=DEVEL
+DEBIAN_IPK_VERSION=$(DEBIAN_BUILD_NO)
 #
 # DEBIAN_PARTITION_LABEL CANNOT be longer than 10 Characters, it will cause boot failure. 
 #

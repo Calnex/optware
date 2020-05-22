@@ -27,7 +27,7 @@ PHP_CONFLICTS=debian (<= 9.0)
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=8
+PHP_IPK_VERSION=9
 
 #
 # PHP_CONFFILES should be a list of user-editable files
@@ -315,7 +315,7 @@ $(PHP_TARGET_IPKS): $(PHP_BUILD_DIR)/.built
 	install -m 644 $(PHP_SOURCE_DIR)/php.ini $(PHP_IPK_DIR)/opt/etc/php.ini
 	install -m 644 $(PHP_SOURCE_DIR)/php-fpm.conf $(PHP_IPK_DIR)/opt/etc/php-fpm.conf
 	install -d $(PHP_IPK_DIR)/opt/etc/init.d
-	install -m 755 $(PHP_SOURCE_DIR)/rc.php-fpm $(PHP_IPK_DIR)/opt/etc/init.d/S99php-fpm
+	install -m 755 $(PHP_SOURCE_DIR)/rc.php-fpm $(PHP_IPK_DIR)/opt/etc/init.d/S98php-fpm
 	### now make php-dev
 	rm -rf $(PHP_DEV_IPK_DIR) $(BUILD_DIR)/php-dev_*_$(TARGET_ARCH).ipk
 	$(MAKE) $(PHP_DEV_IPK_DIR)/CONTROL/control

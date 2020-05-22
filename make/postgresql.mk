@@ -43,7 +43,7 @@ POSTGRESQL_DEPENDS=readline
 #
 # POSTGRESQL_IPK_VERSION should be incremented when the ipk changes.
 #
-POSTGRESQL_IPK_VERSION=4
+POSTGRESQL_IPK_VERSION=5
 
 #
 # POSTGRESQL_CONFFILES should be a list of user-editable files
@@ -206,7 +206,7 @@ $(POSTGRESQL_IPK): $(POSTGRESQL_BUILD_DIR)/.built
 #	install -m 644 $(POSTGRESQL_SOURCE_DIR)/postgresql.conf $(POSTGRESQL_IPK_DIR)/opt/etc/postgresql.conf
 	install -d $(POSTGRESQL_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(POSTGRESQL_SOURCE_DIR)/postmaster-supervisor $(POSTGRESQL_IPK_DIR)/opt/bin/postmaster-supervisor
-	install -m 755 $(POSTGRESQL_SOURCE_DIR)/rc.postgresql $(POSTGRESQL_IPK_DIR)/opt/etc/init.d/S95postgresql
+	install -m 755 $(POSTGRESQL_SOURCE_DIR)/rc.postgresql $(POSTGRESQL_IPK_DIR)/opt/etc/init.d/S91postgresql
 	sed \
 	    -e '/^#max_connections = /{s|^#||;s|= [0-9]*|= 8|}' \
 	    -e '/^#shared_buffers = /{s|^#||;s|= [0-9]*MB|= 128kB|}' \
