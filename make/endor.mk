@@ -214,6 +214,7 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	rm -f $@
 	#ABSOLUTE_PATH=$(@D);
 	(cd $(@D);\
+		msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endor.DataStorage/Calnex.Common/Libraries; \
 		$(BUILD_TOOL) Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)" /p:Configuration=Release $(TOOL_PATH))
 	touch $@
 
@@ -329,6 +330,7 @@ endor-check: $(ENDOR_IPK)
 # This builds the endor service test binaries
 #
 endor-service-tests:
+	(cd $(ENDOR_BUILD_DIR)/Tests/ServiceTests; msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endor.DataStorage/Calnex.Common/Libraries)
 	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile service-tests $(BUILD_DIR) $(ENDOR_PRODUCT)
 
 endor-service-tests-clean:
