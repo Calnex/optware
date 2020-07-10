@@ -9,6 +9,7 @@ case "$1" in
     start)
         if [ ! -d /tmp/embedded ]; then
             mkdir -p /tmp/embedded
+            chown calnex:calnex /tmp/embedded
             service nfs-kernel-server restart
         fi
 
