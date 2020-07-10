@@ -7,6 +7,11 @@ fi
 
 case "$1" in
     start)
+        if [ ! -d /tmp/embedded ]; then
+            mkdir -p /tmp/embedded
+            service nfs-kernel-server restart
+        fi
+
         echo "Starting Optware."
         if test -n "${REAL_OPT_DIR}"; then
             if ! grep ' /opt ' /proc/mounts >/dev/null 2>&1 ; then
