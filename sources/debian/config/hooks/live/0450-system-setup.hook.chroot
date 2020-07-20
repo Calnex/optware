@@ -9,7 +9,17 @@ usermod -p '$1$p5idBRtn$4olM0uQUxiQ01namDZmAF.' root
 # Create calnex user and setup passwords.
 echo "creating calnex user"
 useradd -m calnex -s /bin/bash -k /etc/skel -p '$1$mo36plQY$ajxPaQumb5zLpiVmFRu81.'
+# Add calnex to adm group
+usermod -aG adm calnex
+
 useradd calnex_user -g calnex  -s /usr/sbin/nologin -p '$6$WcohUnCp$uv6/BvndlMcRqNEvywoQUFB3.PCcBSlL7nFLPKPsER1BT9IiAiQwAILav7WSPxSgU2jmOvyNK301RmSZNIZsB.'
+# Give calnex_user embedded log rights
+if ! [ -d /opt/var/lib/embedded/embedded_logs ]
+then
+    mkdir -p /opt/var/lib/embedded/embedded_logs
+fi
+chown calnex_user:calnex /opt/var/lib/embedded/embedded_logs
+chmod u+w+r+x /opt/var/lib/embedded/embedded_logs
 
 # Give them very limited sudo (voodoo) access
 echo "configuring voodoo"
@@ -62,3 +72,6 @@ echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
 # Change the default DHCP setting to use MAC
 sed -i -e 's/^#clientid$/clientid/' /etc/dhcpcd.conf
 sed -i -e 's/^duid$/#duid/' /etc/dhcpcd.conf
+
+# Allow Calnex user to access dmesg
+echo "kernel.dmesg_restrict = 0" > etc/sysctl.d/10-local.conf
