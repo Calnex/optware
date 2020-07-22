@@ -40,6 +40,13 @@ fi
 
 mkdir /srv/tftp
 chown calnex /srv/tftp
+#if [ -d /home/.optware/srv/tftp ]
+#then
+#    rm -rf /home/.optware/srv/tftp
+#fi
+
+#mkdir -p /home/.optware/srv/tftp
+#chown calnex /home/.optware/srv/tftp
 
 # Create a folder for the logs from the memlog script
 mkdir -p /var/log/characterisation
