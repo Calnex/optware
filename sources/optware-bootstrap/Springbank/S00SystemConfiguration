@@ -124,4 +124,8 @@ fi
 
 cp /opt/etc/cron.d/* /etc/cron.daily/
 
+rm -rf /home/.optware/srv/tftp/optware
+mkdir -p /home/.optware/srv/tftp
+chown calnex /home/.optware/srv/tftp
+
 /sbin/ip_fallback &

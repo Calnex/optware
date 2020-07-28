@@ -56,7 +56,7 @@ echo "Installing wget..."
 if [ ! -e /opt/etc/ipkg/cross-feed.conf ]
 then
 	echo "Creating /opt/etc/ipkg/cross-feed.conf..."
-	echo "src/gz local file://srv/tftp/optware"	> /opt/etc/ipkg/cross-feed.conf
+	echo "src/gz local file://home/.optware/srv/tftp/optware"	> /opt/etc/ipkg/cross-feed.conf
 fi
 
 chmod -R 0777 /opt
