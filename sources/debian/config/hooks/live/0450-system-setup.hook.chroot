@@ -19,7 +19,7 @@ then
     mkdir -p /opt/var/lib/embedded/embedded_logs
 fi
 chmod u+rwx,g+rwx,o+rx /opt/var/lib/embedded/embedded_logs
-chown calnex_user:calnex /opt/var/lib/embedded/embedded_logs
+chown calnex_user:calnex -R /opt/var/lib/embedded/embedded_logs
 
 # Give them very limited sudo (voodoo) access
 echo "configuring voodoo"
