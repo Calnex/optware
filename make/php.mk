@@ -233,6 +233,8 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--disable-static \
 		--disable-all \
 		--enable-fpm \
+		--enable-session=shared \
+		--enable-zip=shared \
 		--enable-curl=shared \
 		--enable-bcmath=shared \
 		--enable-calendar=shared \
