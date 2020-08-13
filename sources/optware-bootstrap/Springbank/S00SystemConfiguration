@@ -128,10 +128,4 @@ rm -rf /home/.optware/srv/tftp/optware
 mkdir -p /home/.optware/srv/tftp
 chown calnex /home/.optware/srv/tftp
 
-# Update permissions for contents of embedded_logs
-#if [ -d /opt/var/lib/embedded/embedded_logs ]; then
-#        chmod u+rw,g+rw,o+r -R /opt/var/lib/embedded/embedded_logs
-#        chown calnex_user:calnex -R /opt/var/lib/embedded/embedded_logs
-#fi
-
 /sbin/ip_fallback &
