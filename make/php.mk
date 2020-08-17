@@ -13,7 +13,7 @@
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
 PHP_SITE=http://www.php.net/distributions/
-PHP_VERSION=5.4.45
+PHP_VERSION=7.0.33
 PHP_SOURCE=php-$(PHP_VERSION).tar.bz2
 PHP_DIR=php-$(PHP_VERSION)
 PHP_UNZIP=bzcat
@@ -256,8 +256,8 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--without-pear \
 		; \
 		cd $(DL_DIR); \
-		wget http://debian/debian/pool/main/p/php5/php5-curl_5.4.45-0%2Bdeb7u2_amd64.deb; \
-		dpkg-deb -R php5-curl_5.4.45-0+deb7u2_amd64.deb ./; \
+		wget http://debian.calnexsolutions.local/debian/pool/main/p/php7.0/php7.0-curl_7.0.33-0%2Bdeb9u3_amd64.deb; \
+		dpkg-deb -R php7.0-curl_7.0.33-0+deb9u3_amd64.deb ./; \
 		chmod 777 `find ./ -name curl.so`; \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
@@ -357,7 +357,7 @@ $(PHP_TARGET_IPKS): $(PHP_BUILD_DIR)/.built
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(PHP_PEAR_IPK_DIR)
 	
 	### add curl.so to php/extensions
-	install -m 644 $(DL_DIR)/usr/lib/php5/20100525/curl.so $(PHP_IPK_DIR)/opt/lib/php/extensions/curl.so
+	install -m 644 $(DL_DIR)/usr/lib/php/20151012/curl.so $(PHP_IPK_DIR)/opt/lib/php/extensions/curl.so
 	cd $(BUILD_DIR);
 
 	### finally the main ipkg
