@@ -83,5 +83,9 @@ sed -i -e 's/^duid$/#duid/' /etc/dhcpcd.conf
 # Change the default permissions for Systemd's log directory
 sed -i 's/\/var\/log\/private 0700/\/var\/log\/private 0755/' /usr/lib/tmpfiles.d/systemd.conf
 
+if [ -d /var/log/samba/cores ]; then
+    chmod 755 -R /var/log/samba/cores
+fi
+
 # Allow Calnex user to access dmesg
 echo "kernel.dmesg_restrict = 0" > etc/sysctl.d/10-local.conf
