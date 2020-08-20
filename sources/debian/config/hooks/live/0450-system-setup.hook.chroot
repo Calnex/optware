@@ -54,7 +54,6 @@ mkdir -p /var/log/characterisation
 chmod a+w /var/log/characterisation
 
 # Provide an SSH key for the calnex account
-
 if [ -d ~calnex/.ssh ]
 then
     rm -rf ~calnex/.ssh
@@ -80,6 +79,9 @@ echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
 # Change the default DHCP setting to use MAC
 sed -i -e 's/^#clientid$/clientid/' /etc/dhcpcd.conf
 sed -i -e 's/^duid$/#duid/' /etc/dhcpcd.conf
+
+# Change the default permissions for Systemd's log directory
+sed -i 's/\/var\/log\/private 0700/\/var\/log\/private 0755/' /usr/lib/tmpfiles.d/systemd.conf
 
 # Allow Calnex user to access dmesg
 echo "kernel.dmesg_restrict = 0" > etc/sysctl.d/10-local.conf
