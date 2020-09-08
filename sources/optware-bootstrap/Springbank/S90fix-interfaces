@@ -3,12 +3,18 @@
 IFACECFG=/etc/network/interfaces
 if [ -f $IFACECFG ]; then
     
-	#Make sure the first interface is manual
-	sed -i 's/inet dhcp/inet manual/' $IFACECFG
-	
-	# Make sure embedded link is there, if its missing add it
-	search_string="iface enp6s0 inet static"
-	if ! grep -q "$search_string" "$IFACECFG"; then
-		echo -e "\n\nallow-hotplug enp6s0\niface enp6s0 inet static\naddress 10.10.10.11\nnetmask 255.255.255.254" >> $IFACECFG
-	fi
+    #Make sure the first interface is manual
+    sed -i 's/inet dhcp/inet manual/' $IFACECFG
+    
+    # Make sure embedded link is there, if its missing add it
+    search_string="iface enp6s0 inet static"
+    if ! grep -q "$search_string" "$IFACECFG"; then
+        echo -e "\n\nallow-hotplug enp6s0\niface enp6s0 inet static\naddress 10.10.10.11\nnetmask 255.255.255.254" >> $IFACECFG
+    fi
 fi
+
+# If not running on a VM, its expected that there is a hard connection
+# to embedded on enp6s0, so call ifup to ensure it has been brought up
+# this is required due to a bug where sometimes embedded link fails to be
+# brought up during kernel boot
+dmesg | grep -q "Hypervisor" || ifup enp6s0
