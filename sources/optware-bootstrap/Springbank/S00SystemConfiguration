@@ -124,8 +124,16 @@ fi
 
 cp /opt/etc/cron.d/* /etc/cron.daily/
 
+# Create tftp directory for ipkg installation
 rm -rf /home/.optware/srv/tftp/optware
 mkdir -p /home/.optware/srv/tftp
 chown calnex /home/.optware/srv/tftp
+
+# Create embedded log folder and ensure it is owned by the calnex user
+if ! [ -d /home/.optware/var/lib/embedded/embedded_logs ]
+then
+    mkdir -p /home/.optware/var/lib/embedded/embedded_logs
+fi
+chown calnex:calnex -R /home/.optware/var/lib/embedded/embedded_logs
 
 /sbin/ip_fallback &
