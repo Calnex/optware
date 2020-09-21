@@ -11,3 +11,4 @@ rm -f downloads/fw*
 USER=`whoami`
 sudo chown -R $USER ./*
 git clean -df
+exit 0
