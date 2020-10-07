@@ -31,7 +31,7 @@ BUILD_NUMBER?=devel
 
 ENDOR_VI_REPOSITORY?=https://github.com/Calnex/Springbank
 ENDOR_VI_PRODUCT=$(TARGET_PRODUCT_LOWER)
-TARGET_BOARD_OPT?=.$(TARGET_PRODUCT)
+#TARGET_BOARD_OPT?=.$(TARGET_PRODUCT)
 ENDOR_VI_DOCUMENTATION_REPOSITORY=https://github.com/Calnex/EndorDocumentation
 ENDOR_VI_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
 ENDOR_VI_SOURCE=endor-$(ENDOR_VI_PRODUCT)-vi-$(ENDOR_VI_VERSION).tar.gz
@@ -180,7 +180,7 @@ $(ENDOR_VI_IPK): $(ENDOR_VI_BUILD_DIR)/.built-vi
 	#
 	mkdir -p $(ENDOR_VI_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(ENDOR_VI_SOURCE_DIR)/rc.endor-virtualinstrument $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
-	sed -i -e 's/__VARIANT__/${TARGET_BOARD_OPT}/g' $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
+	sed -i -e 's/__VARIANT__/.$(TARGET_PRODUCT)$(TARGET_BOARD_OPT)/g' $(ENDOR_VI_IPK_DIR)/opt/etc/init.d/S96endor-virtualinstrument
 
 	# Provide the control information
 	#
