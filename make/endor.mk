@@ -28,6 +28,8 @@
 #
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
+BUILD_DATE?=dd.mm.yyy
+
 ENDOR_BRANCH_PARAM?=master
 
 
@@ -246,7 +248,7 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_SECTION)" >>$@
-	@echo "Version: $(ENDOR_IPK_VERSION)-$(ENDOR_VERSION)" >>$@
+	@echo "Version: $(ENDOR_IPK_VERSION)_${BUILD_DATE}_$(ENDOR_VERSION)" >>$@
 	@echo "Maintainer: $(ENDOR_MAINTAINER)" >>$@
 	@echo "Source: $(ENDOR_SITE)/$(ENDOR_SOURCE)" >>$@
 	@echo "Description: $(ENDOR_DESCRIPTION)" >>$@
