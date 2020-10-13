@@ -28,7 +28,7 @@
 #
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
-BUILD_DATE?=dd.mm.yyy
+BUILD_DATE?=dd.mm.yyyy
 
 ENDOR_BRANCH_PARAM?=master
 
