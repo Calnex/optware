@@ -28,6 +28,8 @@
 #
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
+BUILD_DATE?=dd.mm.yyyy
+
 ENDOR_BRANCH_PARAM?=master
 
 ENDOR_DOCUMENTATION_REPOSITORY?=https://github.com/Calnex/EndorDocumentation
@@ -179,7 +181,7 @@ $(ENDOR_DOC_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_DOC_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_DOC_SECTION)" >>$@
-	@echo "Version: $(ENDOR_DOC_IPK_VERSION)-$(ENDOR_DOC_VERSION)" >>$@
+	@echo "Version: $(ENDOR_DOC_IPK_VERSION)_$(BUILD_DATE)_$(ENDOR_DOC_VERSION)" >>$@
 	@echo "Maintainer: $(ENDOR_DOC_MAINTAINER)" >>$@
 	@echo "Source: $(ENDOR_DOC_SITE)/$(ENDOR_DOC_SOURCE)" >>$@
 	@echo "Description: $(ENDOR_DOC_DESCRIPTION)" >>$@
