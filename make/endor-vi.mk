@@ -28,7 +28,7 @@
 #
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
-BUILD_DATE?=dd.mm.yyyy
+BUILD_DATE?=dd.mm.2019
 
 ENDOR_VI_REPOSITORY?=https://github.com/Calnex/Springbank
 ENDOR_VI_PRODUCT=$(TARGET_PRODUCT_LOWER)
