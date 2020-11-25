@@ -28,6 +28,7 @@
 #
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
+BUILD_DATE?=2020.11.11
 
 ENDOR_VI_REPOSITORY?=https://github.com/Calnex/Springbank
 ENDOR_VI_PRODUCT=$(TARGET_PRODUCT_LOWER)
@@ -153,7 +154,7 @@ $(ENDOR_VI_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ENDOR_VI_PRIORITY)" >>$@
 	@echo "Section: $(ENDOR_VI_SECTION)" >>$@
-	@echo "Version: $(ENDOR_VI_IPK_VERSION)-$(ENDOR_VI_VERSION)" >>$@
+	@echo "Version: $(ENDOR_VI_IPK_VERSION)_$(BUILD_DATE)_$(ENDOR_VI_VERSION)" >>$@
 	@echo "Maintainer: $(ENDOR_VI_MAINTAINER)" >>$@
 	@echo "Source: $(ENDOR_VI_SITE)/$(ENDOR_VI_SOURCE)" >>$@
 	@echo "Description: $(ENDOR_VI_DESCRIPTION)" >>$@
