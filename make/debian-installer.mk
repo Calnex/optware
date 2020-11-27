@@ -128,6 +128,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--distribution				stretch					\
 		--memtest				memtest86+				\
 		--checksums				sha1					\
+		--bootloaders                           syslinux                                \
 		--debian-installer			live					\
 		--debian-installer-preseedfile		debconf					\
 		--win32-loader				false					\
