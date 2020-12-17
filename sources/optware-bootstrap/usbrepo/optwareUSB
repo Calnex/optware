@@ -13,6 +13,7 @@ fi
 
 case "$rc" in
     add)
+        voodoo mount /dev/sdb /media/usb
         REPO=`find /media -type f -name Packages -exec grep -l "\bendor\b" {} \; | sed 's/Packages//g' | sed s'/^\///'`
 	if [ "$REPO" != "" ]
 	then
@@ -20,6 +21,7 @@ case "$rc" in
 	fi
         ;;
     remove)
+        voodoo umount /media/usb
 	su calnex -c "echo 'src/gz local file://home/.optware/srv/tftp/optware'	> /opt/etc/ipkg/cross-feed.conf"
         ;;
     *)
