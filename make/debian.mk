@@ -160,16 +160,16 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	(cd $(@D); \
 		sudo lb build; \
 		dd \
-			if=live-image-amd64.img \
-			of=root.img \
-			skip=`/sbin/fdisk -l live-image-amd64.img | awk '/Device/ {getline; print $$3}'` \
-			count=`/sbin/fdisk -l live-image-amd64.img | awk '/Device/{getline; print $$5}'`; \
+			if=live-image-amd64.hybrid.iso \
+			of=root.iso \
+			skip=`/sbin/fdisk -l live-image-amd64.hybrid.iso | awk '/Device/ {getline; print $$3}'` \
+			count=`/sbin/fdisk -l live-image-amd64.hybrid.iso | awk '/Device/{getline; print $$5}'`; \
 		dd \
-			if=live-image-amd64.img \
-			of=boot.img \
+			if=live-image-amd64.hybrid.iso \
+			of=boot.iso \
 			bs=512 count=1; \
-		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
-		md5sum root.img > root.img.md5; \
+		gpg --local-user 64F48DD3 --armour --detach-sign root.iso; \
+		md5sum root.iso > root.iso.md5; \
 	)
 	touch $@
 
@@ -224,10 +224,10 @@ $(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.built
 	$(MAKE) $(DEBIAN_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN_IPK_DIR)/CONTROL/conffiles
 	install -d $(DEBIAN_IPK_DIR)/opt/var/lib/debian
-	install -m 755 $(DEBIAN_BUILD_DIR)/boot.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
-	install -m 755 $(DEBIAN_BUILD_DIR)/root.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
-	install -m 755 $(DEBIAN_BUILD_DIR)/root.img.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
-	install -m 755 $(DEBIAN_BUILD_DIR)/root.img.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN_BUILD_DIR)/boot.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN_BUILD_DIR)/root.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN_BUILD_DIR)/root.iso.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN_BUILD_DIR)/root.iso.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(DEBIAN_IPK_DIR)
 
