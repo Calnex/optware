@@ -62,7 +62,7 @@ fi
 
 echo 'Installing Debian' >> /var/log/SystemConfig
 # Debian self install
-if [[ -e /opt/var/lib/debian/root.img ]]
+if [[ -e /opt/var/lib/debian/root.iso ]]
 then
         cd /opt/var/lib/debian/
         OLD_PARTITION=$(fdisk -l /dev/sda | awk '$2 == "*" {print $1}')
@@ -77,14 +77,14 @@ then
         fi
         LABEL_ROOT=$(blkid -s LABEL /dev/sda${OLD_PARTITION})
         LABEL_ROOT=${LABEL_ROOT##*\=}
-        LABEL_IMG=$(blkid -s LABEL root.img)
+        LABEL_IMG=$(blkid -s LABEL root.iso)
         LABEL_IMG=${LABEL_IMG##*\=}
         if [ ${LABEL_ROOT} != ${LABEL_IMG} ]
         then
-                gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.img.asc root.img 2>/dev/null 1>&2
+                gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.iso.asc root.iso 2>/dev/null 1>&2
                 if [ $? = 0 ]
                 then
-IMG_SIZE=$(ls -l root.img | awk '{print $5}')
+IMG_SIZE=$(ls -l root.iso | awk '{print $5}')
 
 echo "Old OS ${LABEL_ROOT}"
 echo "New OS ${LABEL_IMG}"
@@ -107,8 +107,8 @@ EOF4
 echo "Partition ${NEW_PARTITION} created"
 
 partprobe
-dd if=root.img of=/dev/sda${NEW_PARTITION} 2>/dev/null 1>&2
-echo "root.img installed"
+dd if=root.iso of=/dev/sda${NEW_PARTITION} 2>/dev/null 1>&2
+echo "root.iso installed"
 
 sync
 parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2

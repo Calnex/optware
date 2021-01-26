@@ -10,7 +10,7 @@ tar zxvf data.tar.gz
 cd opt/var/lib/debian
 
 # write bootloader
-dd if=boot.img of=/dev/sda
+dd if=boot.iso of=/dev/sda
 sleep 0.2
 sync
 sleep 0.2
@@ -18,7 +18,7 @@ sleep 0.2
 # write root partition
 blockdev --rereadpt /dev/sda
 sleep 1
-dd if=root.img of=/dev/sda1 bs=8M
+dd if=root.iso of=/dev/sda1 bs=8M
 sync
 
 reboot
