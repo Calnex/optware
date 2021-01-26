@@ -119,7 +119,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 	sudo lb config noauto								\
 		--architecture				amd64				\
 		--binary-image				iso-hybrid				\
-		--binary-filesystem			ext4				\
+		--binary-filesystem			fat32				\
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
 		--apt-recommends			false				\
