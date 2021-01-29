@@ -161,9 +161,10 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 		sudo lb build; \
 		dd \
 			if=live-image-amd64.hybrid.iso \
-			of=root.iso \
-			skip=`/sbin/fdisk -l live-image-amd64.hybrid.iso | awk '/Device/ {getline; print $$3}'` \
-			count=`/sbin/fdisk -l live-image-amd64.hybrid.iso | awk '/Device/{getline; print $$5}'`; \
+            of=root.iso
+			#of=root.iso \
+			#skip=`/sbin/fdisk -l live-image-amd64.hybrid.iso | awk '/Device/ {getline; print $$3}'` \
+			#count=`/sbin/fdisk -l live-image-amd64.hybrid.iso | awk '/Device/{getline; print $$5}'`; \
 		dd \
 			if=live-image-amd64.hybrid.iso \
 			of=boot.iso \
