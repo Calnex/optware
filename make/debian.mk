@@ -137,7 +137,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--debootstrap-options			"--keyring=/root/.gnupg/pubring.kbx"		\
 		--hdd-label				"$(DEBIAN_PARTITION_LABEL)"	\
 		--hdd-size				320				\
-		--bootloaders				syslinux|grub-efi			\
+		--bootloaders				syslinux,grub-efi			\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
