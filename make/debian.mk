@@ -118,8 +118,8 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 	# /usr/lib/live/build/config --help						\
 	sudo lb config noauto								\
 		--architecture				amd64				\
-		--binary-image				hdd				\
-		--binary-filesystem			iso-hybrid				\
+		--binary-image				iso-hybrid				\
+		--binary-filesystem			ext4				\
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
 		--apt-recommends			false				\
