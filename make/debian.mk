@@ -119,7 +119,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 	sudo lb config noauto								\
 		--architecture				amd64				\
 		--binary-image				hdd				\
-		--binary-filesystem			ext4				\
+		--binary-filesystem			iso-hybrid				\
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
 		--apt-recommends			false				\
@@ -161,12 +161,12 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	(cd $(@D); \
 		sudo lb build; \
 		dd \
-			if=live-image-amd64.img \
+			if=live-image-amd64.hybrid.iso \
 			of=root.img \
-			skip=`/sbin/fdisk -l live-image-amd64.img | awk '/Device/ {getline; print $$3}'` \
-			count=`/sbin/fdisk -l live-image-amd64.img | awk '/Device/{getline; print $$5}'`; \
+			skip=`/sbin/fdisk -l live-image-amd64.hybrid.iso | awk '/Device/ {getline; print $$3}'` \
+			count=`/sbin/fdisk -l live-image-amd64.hybrid.iso | awk '/Device/{getline; print $$5}'`; \
 		dd \
-			if=live-image-amd64.img \
+			if=live-image-amd64.hybrid.iso \
 			of=boot.img \
 			bs=512 count=1; \
 		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
