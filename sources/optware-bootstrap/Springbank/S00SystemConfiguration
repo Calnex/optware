@@ -1,4 +1,5 @@
 # #! /bin/bash
+# Test 1
 # echo 'Starting SystemConfig' >> /var/log/SystemConfig
 # echo 'Current PATH is $PATH' >> /var/log/SystemConfig
 # if [ ! -b /dev/sda3  ]
