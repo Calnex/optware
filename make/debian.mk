@@ -160,10 +160,8 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
 		sudo lb build; \
-        sudo su root; \
         mkdir tmp; \
-        mount live-image-amd64.hybrid.iso tmp; \
-        sudo su jenkins; \
+        fuseiso9660 live-image-amd64.hybrid.iso tmp; \
         cp tmp/boot/grub/efi.img ./efi.img; \
         xorriso -as genisoimage \
             -r -V 'debian_efi' \
@@ -176,6 +174,8 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
             -partition_offset 16 \
             -no-pad \
             tmp; \
+        fusermount -u tmp; \
+        rm -rf tmp; \
 		dd \
 			if=repackaged.iso \
 			of=root.iso \
