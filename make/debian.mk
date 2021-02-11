@@ -161,7 +161,7 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	(cd $(@D); \
 		sudo lb build; \
         mkdir tmp; \
-        fuseiso9660 live-image-amd64.hybrid.iso tmp; \
+        fuseiso live-image-amd64.hybrid.iso tmp; \
         cp tmp/boot/grub/efi.img ./efi.img; \
         xorriso -as genisoimage \
             -r -V 'debian_efi' \
