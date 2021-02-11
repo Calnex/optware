@@ -179,13 +179,13 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 		dd \
 			if=repackaged.iso \
 			of=root.iso \
-			skip=`/sbin/fdisk -l repackaged.iso | awk '/basic data/ {getline; print $$2}'` \
-			count=`/sbin/fdisk -l repackaged.iso | awk '/basic data/ {getline; print $$4}'`; \
+			skip=`/sbin/fdisk -l repackaged.iso | awk '/basic data/ {print $$2}'` \
+			count=`/sbin/fdisk -l repackaged.iso | awk '/basic data/ {print $$4}'`; \
 		dd \
 			if=repackaged.iso \
 			of=boot.iso \
-			skip=`/sbin/fdisk -l repackaged.iso | awk '/EFI/ {getline; print $$2}'` \
-			count=`/sbin/fdisk -l repackaged.iso | awk '/EFI/ {getline; print $$4}'`; \
+			skip=`/sbin/fdisk -l repackaged.iso | awk '/EFI/ {print $$2}'` \
+			count=`/sbin/fdisk -l repackaged.iso | awk '/EFI/ {print $$4}'`; \
 		gpg --local-user 64F48DD3 --armour --detach-sign root.iso; \
 		md5sum root.iso > root.iso.md5; \
 	)
