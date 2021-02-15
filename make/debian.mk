@@ -219,7 +219,7 @@ $(DEBIAN_IPK_DIR)/CONTROL/control:
 #
 # You may need to patch your application to make it use these locations.
 #
-$(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.builtgit
+$(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.built
 	rm -rf $(DEBIAN_IPK_DIR) $(BUILD_DIR)/debian_*_$(TARGET_ARCH).ipk
 	$(MAKE) $(DEBIAN_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN_IPK_DIR)/CONTROL/conffiles
