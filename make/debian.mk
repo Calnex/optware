@@ -118,32 +118,31 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 	# /usr/lib/live/build/config --help						\
 	sudo lb config noauto								\
 		--architecture				amd64				\
-		--binary-image				iso-hybrid				\
+		--binary-image				hdd				\
 		--binary-filesystem			ext4				\
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
 		--apt-recommends			false				\
-		--ignore-system-defaults		true				\
-		--memtest				memtest86+			\
-		--checksums				sha1				\
+		--ignore-system-defaults	true				\
+		--memtest					memtest86+			\
+		--checksums					sha1				\
 		--win32-loader				false				\
-		--loadlin				false				\
-		--backports				true				\
+		--loadlin					false				\
+		--backports					true				\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-chroot-security		$(TARGET_REPO_MIRROR)/security	\
+		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-binary-security		$(TARGET_REPO_MIRROR)/security	\
-		--debootstrap-options			"--keyring=/root/.gnupg/pubring.kbx"		\
-		--hdd-label				"$(DEBIAN_PARTITION_LABEL)"	\
-		--hdd-size				320				\
-		--bootloader				grub-efi			\
+		--mirror-binary-security	$(TARGET_REPO_MIRROR)/security	\
+		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"		\
+		--hdd-label					"$(DEBIAN_PARTITION_LABEL)"	\
+		--hdd-size					320				\
+		--bootloader				syslinux			\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
 		#sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
-        sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/grub/grub.cfg; \
 		sudo mkdir -p $(@D)/config/packages.chroot;\
 		cd $(@D)/config/packages.chroot; \
 		sudo wget -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
@@ -160,34 +159,17 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
 		sudo lb build; \
-        mkdir tmp; \
-        fuseiso live-image-amd64.hybrid.iso tmp; \
-        cp tmp/boot/grub/efi.img ./efi.img; \
-        xorriso -as genisoimage \
-            -r -V 'debian_efi' \
-            -o repackaged.iso \
-            -J -joliet-long -cache-inodes \
-            -append_partition 2 0xef ./efi.img \
-            -appended_part_as_gpt \
-            -e --interval:appended_partition_2:all:: \
-            -no-emul-boot \
-            -partition_offset 16 \
-            -no-pad \
-            tmp; \
-        fusermount -u tmp; \
-        rm -rf tmp; \
 		dd \
-			if=repackaged.iso \
-			of=root.iso \
-			skip=`/sbin/fdisk -l repackaged.iso | awk '/basic data/ {print $$2}'` \
-			count=`/sbin/fdisk -l repackaged.iso | awk '/basic data/ {print $$4}'`; \
+			if=live-image-amd64.img \
+			of=root.img \
+			skip=`/sbin/fdisk -l live-image-amd64.img | awk '/Device/ {getline; print $$3}'` \
+			count=`/sbin/fdisk -l live-image-amd64.img | awk '/Device/{getline; print $$5}'`; \
 		dd \
-			if=repackaged.iso \
-			of=boot.iso \
-			skip=`/sbin/fdisk -l repackaged.iso | awk '/EFI/ {print $$2}'` \
-			count=`/sbin/fdisk -l repackaged.iso | awk '/EFI/ {print $$4}'`; \
-		gpg --local-user 64F48DD3 --armour --detach-sign root.iso; \
-		md5sum root.iso > root.iso.md5; \
+			if=live-image-amd64.img \
+			of=boot.img \
+			bs=512 count=1; \
+		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
+		md5sum root.img > root.img.md5; \
 	)
 	touch $@
 
@@ -237,15 +219,15 @@ $(DEBIAN_IPK_DIR)/CONTROL/control:
 #
 # You may need to patch your application to make it use these locations.
 #
-$(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.built
+$(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.builtgit
 	rm -rf $(DEBIAN_IPK_DIR) $(BUILD_DIR)/debian_*_$(TARGET_ARCH).ipk
 	$(MAKE) $(DEBIAN_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN_IPK_DIR)/CONTROL/conffiles
 	install -d $(DEBIAN_IPK_DIR)/opt/var/lib/debian
-	install -m 755 $(DEBIAN_BUILD_DIR)/boot.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
-	install -m 755 $(DEBIAN_BUILD_DIR)/root.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
-	install -m 755 $(DEBIAN_BUILD_DIR)/root.iso.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
-	install -m 755 $(DEBIAN_BUILD_DIR)/root.iso.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN_BUILD_DIR)/boot.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN_BUILD_DIR)/root.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN_BUILD_DIR)/root.img.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN_BUILD_DIR)/root.img.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(DEBIAN_IPK_DIR)
 
