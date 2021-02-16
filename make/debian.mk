@@ -224,10 +224,16 @@ $(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.built
 	$(MAKE) $(DEBIAN_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN_IPK_DIR)/CONTROL/conffiles
 	install -d $(DEBIAN_IPK_DIR)/opt/var/lib/debian
+	# Newly created boot paritions
 	install -m 755 $(DEBIAN_BUILD_DIR)/boot.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	# EFI created boot partitions
+	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/boot.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/root.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/root.iso.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/root.iso.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(DEBIAN_IPK_DIR)
 
