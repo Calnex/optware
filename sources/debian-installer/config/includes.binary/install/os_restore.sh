@@ -8,8 +8,7 @@ cd /os-install
 # tar zxvf /cdrom/optware/debian*
 # tar zxvf data.tar.gz
 # cd opt/var/lib/debian
-cp /cdrom/test/boot.iso .
-cp /cdrom/test/root.iso .
+cp /cdrom/test/bootable.iso .
 
 if [ -e /sys/firmware/efi ]
 then
