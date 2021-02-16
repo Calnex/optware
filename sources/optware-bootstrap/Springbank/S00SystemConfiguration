@@ -1,7 +1,92 @@
-# #! /bin/bash
-# Test 1
-# echo 'Starting SystemConfig' >> /var/log/SystemConfig
-# echo 'Current PATH is $PATH' >> /var/log/SystemConfig
+#! /bin/bash
+echo 'Starting SystemConfig' >> /var/log/SystemConfig
+echo 'Current PATH is $PATH' >> /var/log/SystemConfig
+
+if [ -e /sys/firmware/efi ]
+then
+  echo "EFI system"
+  
+  if [ -b /dev/sda2 ]
+  then
+    # Initial install EFI partition still present - tells us that the code in this block, to partition disk, has not yet run
+  
+    # Fix the GPT to use all of the available space (after initial install the GPT will be sized for the installation iso)
+    parted /dev/sda print Fix
+  
+    if [ ! -b /dev/sda3 ]
+    then
+      echo "Creating partition 3 - EFI - 512Mb"
+      parted /dev/sda mkpart EFI 2097152s 3145727s
+    fi
+  
+    if [ ! -b /dev/sda4 ]
+    then
+      echo "Creating partition 4 - persistence - 1Gb (initially)"
+      parted /dev/sda mkpart persistence 28311552s 30408703s
+    fi
+  
+    if [ ! -b /dev/sda5 ]
+    then
+      echo "Creating partition 5 - rootfs(1) - 2Gb"
+      parted /dev/sda mkpart rootfs1 3145728s 7340031s
+    fi
+  
+    if [ ! -b /dev/sda6 ]
+    then
+      echo "Creating partition 6 - rootfs(2) - 2Gb"
+      parted /dev/sda mkpart rootfs2 7340032s 11534335s
+    fi
+  
+    if [ ! -b /dev/sda7 ]
+    then
+      echo "Creating partition 7 - swap - 8Gb"
+      parted /dev/sda mkpart swap 11534336s 28311551s
+      mkswap /dev/sda7
+      swapon /dev/sda7
+    fi
+  
+    echo "Resizing sda4 to use all remaining space"
+    parted /dev/sda resizepart 4 100%
+    
+    file -s /dev/sda4 | grep ext4
+    if [[ $? != 0 ]]
+    then
+	  echo 'On persistence detected' >> /var/log/SystemConfig
+      mkfs.ext4 -L persistence /dev/sda4
+      mkdir -p /mnt/home
+      mount /dev/sda4 /mnt/home
+      echo '/home union' >> /mnt/home/persistence.conf
+      echo '/var/log union' >> /mnt/home/persistence.conf
+      echo '/var/lib/dhcp union' >> /mnt/home/persistence.conf
+      umount /mnt/home
+      rm -rf /mnt/home
+    fi
+  
+    echo "Copying initial install EFI to new partition"
+    dd if=/dev/sda2 of=/dev/sda3
+    
+    echo "Removing initial install EFI partition"
+    parted /dev/sda rm 2
+  
+    echo "Copying initial install rootfs to new partition"
+    dd if=/dev/sda1 of=/dev/sda5 bs=8M
+    parted /dev/sda set 5 boot on
+    
+    echo "Zero-ing content of initial install rootfs partition"
+    dd if=/dev/zero of=/dev/sda1 bs=8M
+    
+    reboot
+  fi
+  
+  if [ -b /dev/sda1 ]
+  then
+    echo "Removing initial install rootfs partition"
+    parted /dev/sda rm 1
+  fi
+else
+  echo "BIOS system"
+fi
+
 # if [ ! -b /dev/sda3  ]
 # then
 # echo 'dev/sda3 not present' >> /var/log/SystemConfig
