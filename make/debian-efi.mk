@@ -213,7 +213,7 @@ debian-efi-stage: $(DEBIAN-EFI_BUILD_DIR)/.staged
 $(DEBIAN-EFI_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	@echo "Package: debian" >>$@
+	@echo "Package: debian-efi" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(DEBIAN-EFI_PRIORITY)" >>$@
 	@echo "Section: $(DEBIAN-EFI_SECTION)" >>$@
