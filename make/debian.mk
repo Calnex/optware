@@ -164,7 +164,7 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
         fuseiso live-image-amd64.hybrid.iso tmp; \
         cp tmp/boot/grub/efi.img ./efi.img; \
         xorriso -as genisoimage \
-            -r -V 'debian_efi' \
+            -r -V '$(DEBIAN_PARTITION_LABEL)' \
             -o bootable.iso \
             -J -joliet-long -cache-inodes \
             -append_partition 2 0xef ./efi.img \
