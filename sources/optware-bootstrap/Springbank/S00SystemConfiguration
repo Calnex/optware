@@ -19,7 +19,7 @@ then
     # First boot after initial install - EFI partition still present - tells us that the code in this block, to partition disk, has not yet run
   
     # Fix the GPT to use all of the available space (after initial install the GPT will be sized for the installation iso)
-    parted /dev/sda print Fix
+    parted /dev/sda ---pretend-input-tty print Fix
     partprobe
   
     if [ ! -b /dev/sda3 ]
