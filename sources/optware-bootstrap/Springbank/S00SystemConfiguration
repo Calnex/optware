@@ -19,7 +19,8 @@ then
     # First boot after initial install - EFI partition still present - tells us that the code in this block, to partition disk, has not yet run
   
     # Fix the GPT to use all of the available space (after initial install the GPT will be sized for the installation iso)
-    parted /dev/sda print Fix
+    parted /dev/sda ---pretend-input-tty print Fix
+    partprobe
   
     if [ ! -b /dev/sda3 ]
     then
@@ -59,25 +60,27 @@ then
     file -s /dev/sda4 | grep ext4
     if [[ $? != 0 ]]
     then
-	  echo 'Making file system of sda4' | tee -a /var/log/SystemConfig
+	  echo 'Making file system on sda4' | tee -a /var/log/SystemConfig
       mkfs.ext4 -L persistence /dev/sda4
       mkdir -p /mnt/home
       mount /dev/sda4 /mnt/home
-      echo '/home union' | tee -a /var/log/SystemConfig
-      echo '/var/log union' | tee -a /var/log/SystemConfig
-      echo '/var/lib/dhcp union' | tee -a /var/log/SystemConfig
+      echo '/home union' >> /mnt/home/persistence.conf
+      echo '/var/log union' >> /mnt/home/persistence.conf
+      echo '/var/lib/dhcp union' >> /mnt/home/persistence.conf
       umount /mnt/home
       rm -rf /mnt/home
     fi
   
     echo 'Copying initial install EFI to new partition' | tee -a /var/log/SystemConfig
     dd if=/dev/sda2 of=/dev/sda3
+    sync
     
     echo 'Removing initial install EFI partition' | tee -a /var/log/SystemConfig
     parted /dev/sda rm 2
   
     echo 'Copying initial install rootfs to new partition' | tee -a /var/log/SystemConfig
     dd if=/dev/sda1 of=/dev/sda5 bs=8M
+    sync
     parted /dev/sda set 5 boot on
     
     echo 'Zero-ing content of initial install rootfs partition' | tee -a /var/log/SystemConfig
