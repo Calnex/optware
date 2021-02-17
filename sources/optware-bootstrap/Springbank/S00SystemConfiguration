@@ -60,7 +60,7 @@ then
     file -s /dev/sda4 | grep ext4
     if [[ $? != 0 ]]
     then
-	  echo 'Making file system of sda4' | tee -a /var/log/SystemConfig
+	  echo 'Making file system on sda4' | tee -a /var/log/SystemConfig
       mkfs.ext4 -L persistence /dev/sda4
       mkdir -p /mnt/home
       mount /dev/sda4 /mnt/home
