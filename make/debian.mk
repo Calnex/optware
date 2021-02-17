@@ -164,8 +164,8 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
         fuseiso live-image-amd64.hybrid.iso tmp; \
         cp tmp/boot/grub/efi.img ./efi.img; \
         xorriso -as genisoimage \
-            -r -V 'debian_efi' \
-            -o repackaged.iso \
+            -r -V '$(DEBIAN_PARTITION_LABEL)' \
+            -o bootable.iso \
             -J -joliet-long -cache-inodes \
             -append_partition 2 0xef ./efi.img \
             -appended_part_as_gpt \
@@ -177,15 +177,15 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
         fusermount -u tmp; \
         rm -rf tmp; \
 		dd \
-			if=repackaged.iso \
+			if=bootable.iso \
 			of=root.iso \
-			skip=`/sbin/fdisk -l repackaged.iso | awk '/basic data/ {print $$2}'` \
-			count=`/sbin/fdisk -l repackaged.iso | awk '/basic data/ {print $$4}'`; \
+			skip=`/sbin/fdisk -l bootable.iso | awk '/basic data/ {print $$2}'` \
+			count=`/sbin/fdisk -l bootable.iso | awk '/basic data/ {print $$4}'`; \
 		dd \
-			if=repackaged.iso \
+			if=bootable.iso \
 			of=boot.iso \
-			skip=`/sbin/fdisk -l repackaged.iso | awk '/EFI/ {print $$2}'` \
-			count=`/sbin/fdisk -l repackaged.iso | awk '/EFI/ {print $$4}'`; \
+			skip=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$2}'` \
+			count=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$4}'`; \
 		gpg --local-user 64F48DD3 --armour --detach-sign root.iso; \
 		md5sum root.iso > root.iso.md5; \
 	)
@@ -246,6 +246,7 @@ $(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.built
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.iso.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.iso.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN_BUILD_DIR)/bootable.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(DEBIAN_IPK_DIR)
 
