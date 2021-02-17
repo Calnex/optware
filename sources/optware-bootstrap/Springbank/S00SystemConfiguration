@@ -20,6 +20,7 @@ then
   
     # Fix the GPT to use all of the available space (after initial install the GPT will be sized for the installation iso)
     parted /dev/sda print Fix
+    partprobe
   
     if [ ! -b /dev/sda3 ]
     then
@@ -72,12 +73,14 @@ then
   
     echo 'Copying initial install EFI to new partition' | tee -a /var/log/SystemConfig
     dd if=/dev/sda2 of=/dev/sda3
+    sync
     
     echo 'Removing initial install EFI partition' | tee -a /var/log/SystemConfig
     parted /dev/sda rm 2
   
     echo 'Copying initial install rootfs to new partition' | tee -a /var/log/SystemConfig
     dd if=/dev/sda1 of=/dev/sda5 bs=8M
+    sync
     parted /dev/sda set 5 boot on
     
     echo 'Zero-ing content of initial install rootfs partition' | tee -a /var/log/SystemConfig
