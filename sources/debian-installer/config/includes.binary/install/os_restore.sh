@@ -5,10 +5,9 @@ set -e
 # unpack OS files
 mkdir /os-install
 cd /os-install
-# tar zxvf /cdrom/optware/debian*
-# tar zxvf data.tar.gz
-# cd opt/var/lib/debian
-cp /cdrom/test/bootable.iso .
+tar zxvf /cdrom/optware/debian*
+tar zxvf data.tar.gz
+cd opt/var/lib/debian
 
 if [ -e /sys/firmware/efi ]
 then
