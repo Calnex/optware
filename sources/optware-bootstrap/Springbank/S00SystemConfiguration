@@ -134,7 +134,7 @@ then
         
         parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2
         parted /dev/sda --script toggle ${OLD_PARTITION} boot -- 2>/dev/null 1>&2        
-        echo 'Partition ${NEW_PARTITION} marked as boot' | tee -a /var/log/SystemConfig
+        echo "Partition ${NEW_PARTITION} marked as boot" | tee -a /var/log/SystemConfig
         
         sync
         
