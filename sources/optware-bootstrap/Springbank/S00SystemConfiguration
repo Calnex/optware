@@ -128,10 +128,15 @@ then
     then
       gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.iso.asc root.iso 2>/dev/null 1>&2
       if [ $? = 0 ]
-      then      
+      then
         echo 'Installing new Debian image' | tee -a /var/log/SystemConfig
         dd if=root.iso of=/dev/sda${NEW_PARTITION} bs=8M 2>/dev/null 1>&2
         echo 'root.iso installed' | tee -a /var/log/SystemConfig
+        
+        sync
+        echo 'Installing new EFI image' | tee -a /var/log/SystemConfig
+        dd if=boot.iso of=/dev/sda3 2>/dev/null 1>&2
+        echo 'boot.iso installed' | tee -a /var/log/SystemConfig
         
         sync
         
