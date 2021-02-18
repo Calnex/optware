@@ -234,6 +234,7 @@ $(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.built
 	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/root.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/root.iso.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/root.iso.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/bootable.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(DEBIAN_IPK_DIR)
 
