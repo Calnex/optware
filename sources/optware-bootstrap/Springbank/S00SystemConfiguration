@@ -1,139 +1,307 @@
-# #! /bin/bash
-# Test 1
-# echo 'Starting SystemConfig' >> /var/log/SystemConfig
-# echo 'Current PATH is $PATH' >> /var/log/SystemConfig
-# if [ ! -b /dev/sda3  ]
-# then
-# echo 'dev/sda3 not present' >> /var/log/SystemConfig
-# fdisk /dev/sda <<EOF1
-# n
-# p
-# 3
-# 4194368
-# 20971583
-# t
-# 3
-# 82
-# w
-# EOF1
-# partprobe
-# mkswap /dev/sda3
-# else
-# echo 'dev/sda3 present' >> /var/log/SystemConfig
-# echo 'current PATH is $PATH ' >> /var/log/SystemConfig
-# swapon /dev/sda3
-# fi
+#! /bin/bash
+echo 'Starting SystemConfig' | tee -a /var/log/SystemConfig
+echo "Current PATH is $PATH" | tee -a /var/log/SystemConfig
 
-# if [ ! -b /dev/sda4  ]
-# then
-# echo 'dev/sda4 not present' >> /var/log/SystemConfig
-# fdisk /dev/sda <<EOF2
-# n
-# p
-# 4
-# 20971584
+if [ -e /sys/firmware/efi ]
+then
+  ################################################################################
+  # EFI
+  ################################################################################
 
-# w
-# EOF2
-# partprobe
-# file -s /dev/sda4 | grep ext4
-    # if [[ $? != 0 ]]
-    # then
-	# echo 'On persistence detected' >> /var/log/SystemConfig
-        # mkfs.ext4 -L persistence /dev/sda4
-        # mkdir -p /mnt/home
-        # mount /dev/sda4 /mnt/home
-        # echo '/home union' >> /mnt/home/persistence.conf
-        # echo '/var/log union' >> /mnt/home/persistence.conf
-        # echo '/var/lib/dhcp union' >> /mnt/home/persistence.conf
-        # umount /mnt/home
-        # rm -rf /mnt/home
-    # fi
-# reboot
-# fi
+  echo 'EFI system' | tee -a /var/log/SystemConfig
+  
+  #################
+  # Partition disk
+  #################
+    
+  if [ -b /dev/sda2 ]
+  then
+    # First boot after initial install - EFI partition still present - tells us that the code in this block, to partition disk, has not yet run
+  
+    # Fix the GPT to use all of the available space (after initial install the GPT will be sized for the installation iso)
+    parted /dev/sda ---pretend-input-tty print Fix
+    partprobe
+  
+    if [ ! -b /dev/sda3 ]
+    then
+      echo 'Creating partition 3 - EFI - 512Mb' | tee -a /var/log/SystemConfig
+      parted /dev/sda mkpart EFI 4194304s 5242879s
+    fi
+  
+    if [ ! -b /dev/sda4 ]
+    then
+      echo 'Creating partition 4 - persistence - 1Gb (initially)' | tee -a /var/log/SystemConfig
+      parted /dev/sda mkpart persistence 30408704s 32505855s
+    fi
+  
+    if [ ! -b /dev/sda5 ]
+    then
+      echo 'Creating partition 5 - rootfs(1) - 2Gb' | tee -a /var/log/SystemConfig
+      parted /dev/sda mkpart rootfs1 5242880s 9437183s
+    fi
+  
+    if [ ! -b /dev/sda6 ]
+    then
+      echo 'Creating partition 6 - rootfs(2) - 2Gb' | tee -a /var/log/SystemConfig
+      parted /dev/sda mkpart rootfs2 9437184s 13631487s
+    fi
+  
+    if [ ! -b /dev/sda7 ]
+    then
+      echo 'Creating partition 7 - swap - 8Gb' | tee -a /var/log/SystemConfig
+      parted /dev/sda mkpart swap 13631488s 30408703s
+      mkswap /dev/sda7
+      swapon /dev/sda7
+    fi
+  
+    echo 'Resizing sda4 to use all remaining space' | tee -a /var/log/SystemConfig
+    parted /dev/sda resizepart 4 100%
+    
+    file -s /dev/sda4 | grep ext4
+    if [[ $? != 0 ]]
+    then
+	  echo 'Making file system on sda4' | tee -a /var/log/SystemConfig
+      mkfs.ext4 -L persistence /dev/sda4
+      mkdir -p /mnt/home
+      mount /dev/sda4 /mnt/home
+      echo '/home union' >> /mnt/home/persistence.conf
+      echo '/var/log union' >> /mnt/home/persistence.conf
+      echo '/var/lib/dhcp union' >> /mnt/home/persistence.conf
+      umount /mnt/home
+      rm -rf /mnt/home
+    fi
+  
+    echo 'Copying initial install EFI to new partition' | tee -a /var/log/SystemConfig
+    dd if=/dev/sda2 of=/dev/sda3
+    sync
+    
+    echo 'Removing initial install EFI partition' | tee -a /var/log/SystemConfig
+    parted /dev/sda rm 2
+  
+    echo 'Copying initial install rootfs to new partition' | tee -a /var/log/SystemConfig
+    dd if=/dev/sda1 of=/dev/sda5 bs=8M
+    sync
+    parted /dev/sda set 5 boot on
+    
+    echo 'Zero-ing content of initial install rootfs partition' | tee -a /var/log/SystemConfig
+    dd if=/dev/zero of=/dev/sda1 bs=8M
+    
+    reboot
+  fi
+  
+  if [ -b /dev/sda1 ]
+  then
+    echo 'Removing initial install rootfs partition' | tee -a /var/log/SystemConfig
+    parted /dev/sda rm 1
+  fi  
+  
+  
+  ################
+  # Update Debian
+  ################
+  
+  if [[ -e /opt/var/lib/debian/root.iso ]]
+  then
+    echo 'Updating Debian' | tee -a /var/log/SystemConfig
+    
+    cd /opt/var/lib/debian/
+    
+    OLD_PARTITION=$(parted /dev/sda print | grep boot | awk '{print $1}')
+    OLD_PARTITION="${OLD_PARTITION: -1}"
+    if [ "$OLD_PARTITION" = "5" ]
+    then
+      NEW_PARTITION=6
+    else
+      NEW_PARTITION=5
+    fi
+    
+    LABEL_ROOT=$(blkid -s LABEL /dev/sda${OLD_PARTITION})
+    LABEL_ROOT=${LABEL_ROOT##*\=}
+    
+    LABEL_IMG=$(blkid -s LABEL root.iso)
+    LABEL_IMG=${LABEL_IMG##*\=}
+    
+    echo "Old OS ${LABEL_ROOT}" | tee -a /var/log/SystemConfig
+    echo "New OS ${LABEL_IMG}" | tee -a /var/log/SystemConfig
+    
+    if [ ${LABEL_ROOT} != ${LABEL_IMG} ]
+    then
+      gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.iso.asc root.iso 2>/dev/null 1>&2
+      if [ $? = 0 ]
+      then      
+        echo 'Installing new Debian image' | tee -a /var/log/SystemConfig
+        dd if=root.iso of=/dev/sda${NEW_PARTITION} bs=8M 2>/dev/null 1>&2
+        echo 'root.iso installed' | tee -a /var/log/SystemConfig
+        
+        sync
+        
+        parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2
+        parted /dev/sda --script toggle ${OLD_PARTITION} boot -- 2>/dev/null 1>&2        
+        echo "Partition ${NEW_PARTITION} marked as boot" | tee -a /var/log/SystemConfig
+        
+        sync
+        
+        echo 'Overwriting old partition with zeros' | tee -a /var/log/SystemConfig
+        dd if=/dev/zero of=/dev/sda${OLD_PARTITION} bs=8M 2>/dev/null 1>&2
+        reboot
+      else
+        echo 'Debian update image keysign check failed!' | tee -a /var/log/SystemConfig
+      fi
+    fi
+  fi
+else
+  ################################################################################
+  # BIOS
+  ################################################################################
+  
+  echo 'BIOS system' | tee -a /var/log/SystemConfig
+  
+  
+  #################
+  # Partition disk
+  #################
+  
+  if [ ! -b /dev/sda3  ]
+  then
+    echo 'dev/sda3 not present' >> /var/log/SystemConfig
+fdisk /dev/sda <<EOF1
+n
+p
+3
+4194368
+20971583
+t
+3
+82
+w
+EOF1
+    partprobe
+    mkswap /dev/sda3
+  else
+    echo 'dev/sda3 present' >> /var/log/SystemConfig
+    echo 'current PATH is $PATH ' >> /var/log/SystemConfig
+    swapon /dev/sda3
+  fi
+  
+  if [ ! -b /dev/sda4  ]
+  then
+    echo 'dev/sda4 not present' >> /var/log/SystemConfig
+fdisk /dev/sda <<EOF2
+n
+p
+4
+20971584
 
-# ## Check for previous Wheezy Install
-# if [ -d /run/live/persistence/sda4/home/calnex ]; then
-        # rm -rf /run/live/persistence/sda4/home/rw/calnex
-        # rm -rf /run/live/persistence/sda4/home/rw/.optware
-        # mv /run/live/persistence/sda4/home/calnex /run/live/persistence/sda4/home/rw
-        # mv /run/live/persistence/sda4/home/.optware /run/live/persistence/sda4/home/rw
-        # reboot
-# fi
+w
+EOF2
+    partprobe
+    file -s /dev/sda4 | grep ext4
+      if [[ $? != 0 ]]
+      then
+    	  echo 'On persistence detected' >> /var/log/SystemConfig
+        mkfs.ext4 -L persistence /dev/sda4
+        mkdir -p /mnt/home
+        mount /dev/sda4 /mnt/home
+        echo '/home union' >> /mnt/home/persistence.conf
+        echo '/var/log union' >> /mnt/home/persistence.conf
+        echo '/var/lib/dhcp union' >> /mnt/home/persistence.conf
+        umount /mnt/home
+        rm -rf /mnt/home
+      fi
+    reboot
+  fi
+  
+  ## Check for previous Wheezy Install
+  if [ -d /run/live/persistence/sda4/home/calnex ]; then
+    rm -rf /run/live/persistence/sda4/home/rw/calnex
+    rm -rf /run/live/persistence/sda4/home/rw/.optware
+    mv /run/live/persistence/sda4/home/calnex /run/live/persistence/sda4/home/rw
+    mv /run/live/persistence/sda4/home/.optware /run/live/persistence/sda4/home/rw
+    reboot
+  fi
+  
+  
+  ################
+  # Update Debian
+  ################
+  
+  if [[ -e /opt/var/lib/debian/root.img ]]
+  then
+    echo 'Updating Debian' >> /var/log/SystemConfig
+    cd /opt/var/lib/debian/
+    OLD_PARTITION=$(fdisk -l /dev/sda | awk '$2 == "*" {print $1}')
+    OLD_PARTITION="${OLD_PARTITION: -1}"
+    if [ "$OLD_PARTITION" = "1" ]
+    then
+      NEW_PARTITION=2
+      NEW_PARTITION_START=2099200
+    else
+      NEW_PARTITION=1
+      NEW_PARTITION_START=2048
+    fi
+    LABEL_ROOT=$(blkid -s LABEL /dev/sda${OLD_PARTITION})
+    LABEL_ROOT=${LABEL_ROOT##*\=}
+    LABEL_IMG=$(blkid -s LABEL root.img)
+    LABEL_IMG=${LABEL_IMG##*\=}
+    if [ ${LABEL_ROOT} != ${LABEL_IMG} ]
+    then
+      gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.img.asc root.img 2>/dev/null 1>&2
+      if [ $? = 0 ]
+      then
+        IMG_SIZE=$(ls -l root.img | awk '{print $5}')
+  
+        echo "Old OS ${LABEL_ROOT}"
+        echo "New OS ${LABEL_IMG}"
+        echo "New OS Size ${IMG_SIZE}"
+        
+        # Delete partition, just to be sure
+        parted /dev/sda --script rm ${NEW_PARTITION} -- 2>/dev/null 1>&2
+        echo "Partition ${NEW_PARTITION} deleted"
+        
+        partprobe
+        parted /dev/sda --script mkpart primary ${NEW_PARTITION_START}s $((${NEW_PARTITION_START} + ($IMG_SIZE/512)))s  -- 2>/dev/null 1>&2
+        
+fdisk /dev/sda << EOF4 2>/dev/null 1>&2
+t
+${NEW_PARTITION}
+83
+w
+EOF4
+        echo "Partition ${NEW_PARTITION} created"
+        
+        partprobe
+        dd if=root.img of=/dev/sda${NEW_PARTITION} 2>/dev/null 1>&2
+        echo "root.img installed"
+        
+        sync
+        parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2
+        echo "Partition ${NEW_PARTITION} marked as boot"
+        
+        sync
+        reboot
+      else
+        echo "Debian update image keysign check failed!"
+      fi
+    fi
+  fi
+fi
 
-# echo 'Installing Debian' >> /var/log/SystemConfig
-# # Debian self install
-# if [[ -e /opt/var/lib/debian/root.img ]]
-# then
-        # cd /opt/var/lib/debian/
-        # OLD_PARTITION=$(fdisk -l /dev/sda | awk '$2 == "*" {print $1}')
-        # OLD_PARTITION="${OLD_PARTITION: -1}"
-        # if [ "$OLD_PARTITION" = "1" ]
-        # then
-                # NEW_PARTITION=2
-                # NEW_PARTITION_START=2099200
-        # else
-                # NEW_PARTITION=1
-                # NEW_PARTITION_START=2048
-        # fi
-        # LABEL_ROOT=$(blkid -s LABEL /dev/sda${OLD_PARTITION})
-        # LABEL_ROOT=${LABEL_ROOT##*\=}
-        # LABEL_IMG=$(blkid -s LABEL root.img)
-        # LABEL_IMG=${LABEL_IMG##*\=}
-        # if [ ${LABEL_ROOT} != ${LABEL_IMG} ]
-        # then
-                # gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.img.asc root.img 2>/dev/null 1>&2
-                # if [ $? = 0 ]
-                # then
-# IMG_SIZE=$(ls -l root.img | awk '{print $5}')
 
-# echo "Old OS ${LABEL_ROOT}"
-# echo "New OS ${LABEL_IMG}"
-# echo "New OS Size ${IMG_SIZE}"
+################################################################################
+# EFI and BIOS
+################################################################################
+  
+cp /opt/etc/cron.d/* /etc/cron.daily/
 
-# # Delete partition, just to be sure
-# parted /dev/sda --script rm ${NEW_PARTITION} -- 2>/dev/null 1>&2
-# echo "Partition ${NEW_PARTITION} deleted"
+rm -rf /home/.optware/srv/tftp/optware
+mkdir -p /home/.optware/srv/tftp
+chown calnex /home/.optware/srv/tftp
 
-# partprobe
-# parted /dev/sda --script mkpart primary ${NEW_PARTITION_START}s $((${NEW_PARTITION_START} + ($IMG_SIZE/512)))s  -- 2>/dev/null 1>&2
+# Create embedded log folder and ensure it is owned by the calnex user
+if ! [ -d /home/.optware/var/lib/embedded/embedded_logs ]
+then
+  mkdir -p /home/.optware/var/lib/embedded/embedded_logs
+fi
+chown calnex:calnex -R /home/.optware/var/lib/embedded
 
-
-# fdisk /dev/sda << EOF4 2>/dev/null 1>&2
-# t
-# ${NEW_PARTITION}
-# 83
-# w
-# EOF4
-# echo "Partition ${NEW_PARTITION} created"
-
-# partprobe
-# dd if=root.img of=/dev/sda${NEW_PARTITION} 2>/dev/null 1>&2
-# echo "root.img installed"
-
-# sync
-# parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2
-# echo "Partition ${NEW_PARTITION} marked as boot"
-
-# sync
-# reboot
-                # else
-                        # echo "Debian update image keysign check failed!"
-                # fi
-        # fi
-# fi
-
-# cp /opt/etc/cron.d/* /etc/cron.daily/
-
-# rm -rf /home/.optware/srv/tftp/optware
-# mkdir -p /home/.optware/srv/tftp
-# chown calnex /home/.optware/srv/tftp
-
-# # Create embedded log folder and ensure it is owned by the calnex user
-# if ! [ -d /home/.optware/var/lib/embedded/embedded_logs ]
-# then
-    # mkdir -p /home/.optware/var/lib/embedded/embedded_logs
-# fi
-# chown calnex:calnex -R /home/.optware/var/lib/embedded
-
-# /sbin/ip_fallback &
+/sbin/ip_fallback &
