@@ -77,6 +77,9 @@ DEBIAN-INSTALLER_IPK=$(BUILD_DIR)/DEBIAN-INSTALLER_$(DEBIAN-INSTALLER_VERSION)-$
 # Make sure product is always declared
 PRODUCT?=Paragon
 
+# Default bootloader to syslinux, can be overridden with grub-efi
+INSTALLER_BOOTLOADER?=syslinux
+
 # If not defined, point to the Default Packages server
 TARGET_PACKAGES_MIRROR?=http://packages.calnexsol.com/optware/$(TARGET_DISTRO)/
 
@@ -128,7 +131,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--distribution				stretch					\
 		--memtest				memtest86+				\
 		--checksums				sha1					\
-		--bootloaders                           syslinux                                \
+		--bootloaders			$(INSTALLER_BOOTLOADER)		\
 		--debian-installer			live					\
 		--debian-installer-preseedfile		debconf					\
 		--win32-loader				false					\
