@@ -272,4 +272,4 @@ debian-efi-dirclean:
 # Some sanity check for the package.
 #
 debian-efi-check: $(DEBIAN-EFI_IPK)
-	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
+
