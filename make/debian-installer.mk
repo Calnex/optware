@@ -127,7 +127,8 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 	# # /usr/lib/live/build/config --help							\
 	sudo lb config										\
 		--architectures				amd64					\
-		--binary-images				iso-hybrid				\
+		--binary-images				hdd				\
+		--binary-filesystem			ext4				\
 		--distribution				stretch					\
 		--memtest				memtest86+				\
 		--checksums				sha1					\
