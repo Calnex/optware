@@ -166,7 +166,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
         sed -e 's|.disk/info|.disk/1234|' efi_temp.img > efi.img; \
         xorriso -as genisoimage \
             -r -V '$(DEBIAN-EFI_PARTITION_LABEL)' \
-            -o bootable.iso \
+            -o bootable_temp.iso \
             -J -joliet-long -cache-inodes \
             -append_partition 2 0xef ./efi.img \
             -appended_part_as_gpt \
@@ -177,6 +177,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
             tmp; \
         fusermount -u tmp; \
         rm -rf tmp; \
+        sed -e 's|root /.disk/info|root /.disk/1234|' bootable_temp.iso > bootable2.iso; \
 		dd \
 			if=bootable.iso \
 			of=root.iso \
