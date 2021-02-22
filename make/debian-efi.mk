@@ -162,8 +162,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 		sudo lb build; \
         mkdir tmp; \
         fuseiso live-image-amd64.hybrid.iso tmp; \
-        cp tmp/boot/grub/efi.img ./efi_temp.img; \
-        sed -e 's|.disk/info|.disk/1234|' efi_temp.img > efi.img; \
+        cp tmp/boot/grub/efi.img ./efi.img; \
         xorriso -as genisoimage \
             -r -V '$(DEBIAN-EFI_PARTITION_LABEL)' \
             -o bootable_temp.iso \
@@ -177,7 +176,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
             tmp; \
         fusermount -u tmp; \
         rm -rf tmp; \
-        sed -e 's|root /.disk/info|root /.disk/1234|' bootable_temp.iso > bootable2.iso; \
+        sed -e 's|root /.disk/info|root /.disk/1234|' bootable_temp.iso > bootable.iso; \
 		dd \
 			if=bootable.iso \
 			of=root.iso \
