@@ -86,7 +86,8 @@ then
     echo 'Zero-ing content of initial install rootfs partition' | tee -a /var/log/SystemConfig
     dd if=/dev/zero of=/dev/sda1 bs=8M
     
-    reboot
+    # Reboot the system - during the step above, we destroyed the running file system and 'reboot' may depend on it, so use this method instead (that does not rely on the filesystem)
+    echo b > /proc/sysrq-trigger
   fi
   
   if [ -b /dev/sda1 ]
@@ -148,7 +149,9 @@ then
         
         echo 'Overwriting old partition with zeros' | tee -a /var/log/SystemConfig
         dd if=/dev/zero of=/dev/sda${OLD_PARTITION} bs=8M 2>/dev/null 1>&2
-        reboot
+
+        # Reboot the system - during the step above, we destroyed the running file system and 'reboot' may depend on it, so use this method instead (that does not rely on the filesystem)
+        echo b > /proc/sysrq-trigger
       else
         echo 'Debian update image keysign check failed!' | tee -a /var/log/SystemConfig
       fi
