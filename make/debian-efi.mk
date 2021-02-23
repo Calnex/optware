@@ -39,14 +39,14 @@ DEBIAN-EFI_SUGGESTS=
 DEBIAN-EFI_CONFLICTS=
 
 #
-# DEBIAN-EFI_IPK_VERSION should be incremented when the ipk changes.
+# DEBIAN_IPK_VERSION should be incremented when the ipk changes.
 #
 DEBIAN_BUILD_NO?=DEVEL
-DEBIAN-EFI_IPK_VERSION=$(DEBIAN_BUILD_NO)
+DEBIAN_IPK_VERSION=$(DEBIAN_BUILD_NO)
 #
 # DEBIAN-EFI_PARTITION_LABEL CANNOT be longer than 10 Characters, it will cause boot failure. 
 #
-DEBIAN-EFI_PARTITION_LABEL=OS_$(DEBIAN_VERSION).$(DEBIAN-EFI_IPK_VERSION)
+DEBIAN-EFI_PARTITION_LABEL=OS_$(DEBIAN_VERSION).$(DEBIAN_IPK_VERSION)
 
 #
 # DEBIAN-EFI_CONFFILES should be a list of user-editable files
@@ -82,7 +82,7 @@ DEBIAN-EFI_LDFLAGS=
 DEBIAN-EFI_BUILD_DIR=$(BUILD_DIR)/debian-efi
 DEBIAN-EFI_SRC_DIR=$(SOURCE_DIR)/debian
 DEBIAN-EFI_IPK_DIR=$(BUILD_DIR)/debian-efi-$(DEBIAN_VERSION)-ipk
-DEBIAN-EFI_IPK=$(BUILD_DIR)/debian-efi_$(DEBIAN_VERSION).$(DEBIAN-EFI_IPK_VERSION)_$(TARGET_ARCH).ipk
+DEBIAN-EFI_IPK=$(BUILD_DIR)/debian-efi_$(DEBIAN_VERSION).$(DEBIAN_IPK_VERSION)_$(TARGET_ARCH).ipk
 
 .PHONY: debian-efi-source debian-efi-unpack debian-efi debian-efi-stage debian-efi-ipk debian-efi-clean debian-efi-dirclean debian-efi-check
 
@@ -218,7 +218,7 @@ $(DEBIAN-EFI_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(DEBIAN-EFI_PRIORITY)" >>$@
 	@echo "Section: $(DEBIAN-EFI_SECTION)" >>$@
-	@echo "Version: $(DEBIAN_VERSION).$(DEBIAN-EFI_IPK_VERSION)" >>$@
+	@echo "Version: $(DEBIAN_VERSION).$(DEBIAN_IPK_VERSION)" >>$@
 	@echo "Maintainer: $(DEBIAN-EFI_MAINTAINER)" >>$@
 	@echo "Source: $(DEBIAN-EFI_SITE)/$(DEBIAN-EFI_SOURCE)" >>$@
 	@echo "Description: $(DEBIAN-EFI_DESCRIPTION)" >>$@
