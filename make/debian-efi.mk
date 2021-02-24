@@ -82,7 +82,7 @@ DEBIAN-EFI_LDFLAGS=
 DEBIAN-EFI_BUILD_DIR=$(BUILD_DIR)/debian-efi
 DEBIAN-EFI_SRC_DIR=$(SOURCE_DIR)/debian
 DEBIAN-EFI_IPK_DIR=$(BUILD_DIR)/debian-efi-$(DEBIAN_VERSION)-ipk
-DEBIAN-EFI_IPK=$(BUILD_DIR)/debian-efi_$(DEBIAN_VERSION).$(DEBIAN_IPK_VERSION)_$(TARGET_ARCH).ipk
+DEBIAN-EFI_IPK=$(BUILD_DIR)/debian_$(DEBIAN_VERSION).$(DEBIAN_IPK_VERSION)-efi_$(TARGET_ARCH).ipk
 
 .PHONY: debian-efi-source debian-efi-unpack debian-efi debian-efi-stage debian-efi-ipk debian-efi-clean debian-efi-dirclean debian-efi-check
 
