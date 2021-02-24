@@ -239,7 +239,7 @@ $(DEBIAN-EFI_IPK_DIR)/CONTROL/control:
 # You may need to patch your application to make it use these locations.
 #
 $(DEBIAN-EFI_IPK): $(DEBIAN-EFI_BUILD_DIR)/.built
-	rm -rf $(DEBIAN-EFI_IPK_DIR) $(BUILD_DIR)/debian-efi_*_$(TARGET_ARCH).ipk
+	rm -rf $(DEBIAN-EFI_IPK_DIR) $(BUILD_DIR)/debian_*_$(TARGET_ARCH).ipk
 	$(MAKE) $(DEBIAN-EFI_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN-EFI_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN-EFI_IPK_DIR)/CONTROL/conffiles
 	install -d $(DEBIAN-EFI_IPK_DIR)/opt/var/lib/debian
