@@ -9,14 +9,14 @@ then
   ################################################################################
 
   echo 'EFI system' | tee -a /var/log/SystemConfig
-  
-  #################
-  # Partition disk
-  #################
     
   if [ -b /dev/sda2 ]
   then
-    # First boot after initial install - EFI partition still present - tells us that the code in this block, to partition disk, has not yet run
+    ################################################################################
+    # First ever boot - partition disk
+    ################################################################################
+  
+    # Initial EFI partition still present - tells us that the code in this block, to partition disk, has not yet run
   
     # Fix the GPT to use all of the available space (after initial install the GPT will be sized for the installation iso)
     parted /dev/sda ---pretend-input-tty print Fix
@@ -56,20 +56,6 @@ then
   
     echo 'Resizing sda4 to use all remaining space' | tee -a /var/log/SystemConfig
     parted /dev/sda resizepart 4 100%
-    
-    file -s /dev/sda4 | grep ext4
-    if [[ $? != 0 ]]
-    then
-	  echo 'Making file system on sda4' | tee -a /var/log/SystemConfig
-      mkfs.ext4 -L persistence /dev/sda4
-      mkdir -p /mnt/home
-      mount /dev/sda4 /mnt/home
-      echo '/home union' >> /mnt/home/persistence.conf
-      echo '/var/log union' >> /mnt/home/persistence.conf
-      echo '/var/lib/dhcp union' >> /mnt/home/persistence.conf
-      umount /mnt/home
-      rm -rf /mnt/home
-    fi
   
     echo 'Copying initial install EFI to new partition' | tee -a /var/log/SystemConfig
     dd if=/dev/sda2 of=/dev/sda3
@@ -89,13 +75,79 @@ then
     
     # Reboot the system - during the step above, we destroyed the running file system and 'reboot' may depend on it, so use this method instead (that does not rely on the filesystem)
     echo b > /proc/sysrq-trigger
+  
+  else
+    ################################################################################
+    # Any boot apart from first boot
+    ################################################################################
+    
+    if [ -b /dev/sda1 ]
+    then
+      echo 'Removing initial install rootfs partition' | tee -a /var/log/SystemConfig
+      parted /dev/sda rm 1
+    fi  
+  
+    # Check for persistence partition and recreate if necessary (post factory reset)
+    if [ ! -b /dev/sda4 ]
+    then          
+      ################################################################################
+      # Post factory reset
+      ################################################################################
+    
+      if [ -b /dev/sda3 ]
+      then
+      
+        if [ ! -b /dev/sda1 ]
+        then
+          echo 'Creating dummy partition 1, to force persistence to partition #4' | tee -a /var/log/SystemConfig
+          parted /dev/sda mkpart dummy1 2048s 4095s
+        fi
+
+        if [ ! -b /dev/sda2 ]
+        then
+          echo 'Creating dummy partition 2, to force persistence to partition #4' | tee -a /var/log/SystemConfig
+          parted /dev/sda mkpart dummy1 4096s 6143s
+        fi
+        
+        echo 'Creating partition 4 - persistence - 1Gb (initially)' | tee -a /var/log/SystemConfig
+        parted /dev/sda mkpart persistence 30408704s 32505855s
+        
+        echo 'Removing dummy partition 1' | tee -a /var/log/SystemConfig
+        parted /dev/sda rm 1
+        
+        echo 'Removing dummy partition 2' | tee -a /var/log/SystemConfig
+        parted /dev/sda rm 2
+        
+        echo 'Resizing sda4 to use all remaining space' | tee -a /var/log/SystemConfig
+        parted /dev/sda resizepart 4 100%
+      else
+        echo '*** No pesistence partition (sda4) AND no EFI parition (sda3), unexpected configuration ****' | tee -a /var/log/SystemConfig        
+      fi
+    fi
   fi
   
-  if [ -b /dev/sda1 ]
+  ################################################################################
+  # Any boot
+  ################################################################################
+    
+  file -s /dev/sda4 | grep ext4
+  if [[ $? != 0 ]]
   then
-    echo 'Removing initial install rootfs partition' | tee -a /var/log/SystemConfig
-    parted /dev/sda rm 1
-  fi  
+	echo 'Making file system on sda4' | tee -a /var/log/SystemConfig
+    mkfs.ext4 -L persistence /dev/sda4
+    mkdir -p /mnt/home
+    mount /dev/sda4 /mnt/home
+    echo '/home union' >> /mnt/home/persistence.conf
+    echo '/var/log union' >> /mnt/home/persistence.conf
+    echo '/var/lib/dhcp union' >> /mnt/home/persistence.conf
+    umount /mnt/home
+    rm -rf /mnt/home
+
+    #reboot
+    exit
+  else
+    echo 'sda4 file system OK' | tee -a /var/log/SystemConfig
+  fi
   
   
   ################
