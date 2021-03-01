@@ -1,0 +1,18 @@
+#! /bin/bash
+echo 'Starting S01SystemConfig' | tee -a /var/log/SystemConfig
+echo "Current PATH is $PATH" | tee -a /var/log/SystemConfig
+  
+cp /opt/etc/cron.d/* /etc/cron.daily/
+
+rm -rf /home/.optware/srv/tftp/optware
+mkdir -p /home/.optware/srv/tftp
+chown calnex /home/.optware/srv/tftp
+
+# Create embedded log folder and ensure it is owned by the calnex user
+if ! [ -d /home/.optware/var/lib/embedded/embedded_logs ]
+then
+  mkdir -p /home/.optware/var/lib/embedded/embedded_logs
+fi
+chown calnex:calnex -R /home/.optware/var/lib/embedded
+
+/sbin/ip_fallback &

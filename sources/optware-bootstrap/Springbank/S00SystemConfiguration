@@ -89,42 +89,49 @@ then
   
     # Check for persistence partition and recreate if necessary (post factory reset)
     if [ ! -b /dev/sda4 ]
-    then          
+    then
       ################################################################################
-      # Post factory reset
+      # Post factory reset - recreate persistence partition of sda4
       ################################################################################
     
-      if [ -b /dev/sda3 ]
+      if [ -b /dev/sda1 ]
       then
-      
-        if [ ! -b /dev/sda1 ]
-        then
-          echo 'Creating dummy partition 1, to force persistence to partition #4' | tee -a /var/log/SystemConfig
-          parted /dev/sda mkpart dummy1 2048s 4095s
-        fi
-
-        if [ ! -b /dev/sda2 ]
-        then
-          echo 'Creating dummy partition 2, to force persistence to partition #4' | tee -a /var/log/SystemConfig
-          parted /dev/sda mkpart dummy1 4096s 6143s
-        fi
-        
-        echo 'Creating partition 4 - persistence - 1Gb (initially)' | tee -a /var/log/SystemConfig
-        parted /dev/sda mkpart persistence 30408704s 32505855s
-        
-        echo 'Removing dummy partition 1' | tee -a /var/log/SystemConfig
-        parted /dev/sda rm 1
-        
-        echo 'Removing dummy partition 2' | tee -a /var/log/SystemConfig
-        parted /dev/sda rm 2
-        
-        echo 'Resizing sda4 to use all remaining space' | tee -a /var/log/SystemConfig
-        parted /dev/sda resizepart 4 100%
-      else
-        echo '*** No pesistence partition (sda4) AND no EFI parition (sda3), unexpected configuration ****' | tee -a /var/log/SystemConfig        
+        echo '*** Unexpected configuration when attempting to recreate persistence partition: sda1 already exists ***' | tee -a /var/log/SystemConfig              
+        exit 1
       fi
+    
+      if [ -b /dev/sda2 ]
+      then
+        echo '*** Unexpected configuration when attempting to recreate persistence partition: sda2 already exists ***' | tee -a /var/log/SystemConfig              
+        exit 1
+      fi
+    
+      if [ ! -b /dev/sda3 ]
+      then
+        echo '*** Unexpected configuration when attempting to recreate persistence partition: sda3 not found ***' | tee -a /var/log/SystemConfig              
+        exit 1
+      fi      
+
+      echo 'Creating dummy partition 1, to force persistence to partition #4' | tee -a /var/log/SystemConfig
+      parted /dev/sda mkpart dummy1 2048s 4095s
+
+      echo 'Creating dummy partition 2, to force persistence to partition #4' | tee -a /var/log/SystemConfig
+      parted /dev/sda mkpart dummy1 4096s 6143s
+      
+      echo 'Creating partition 4 - persistence - 1Gb (initially)' | tee -a /var/log/SystemConfig
+      parted /dev/sda mkpart persistence 30408704s 32505855s
+      
+      echo 'Removing dummy partition 1' | tee -a /var/log/SystemConfig
+      parted /dev/sda rm 1
+      
+      echo 'Removing dummy partition 2' | tee -a /var/log/SystemConfig
+      parted /dev/sda rm 2
+      
+      echo 'Resizing sda4 to use all remaining space' | tee -a /var/log/SystemConfig
+      parted /dev/sda resizepart 4 100%
     fi
   fi
+
   
   ################################################################################
   # Any boot
@@ -143,12 +150,10 @@ then
     umount /mnt/home
     rm -rf /mnt/home
 
-    #reboot
-    exit
+    reboot
   else
     echo 'sda4 file system OK' | tee -a /var/log/SystemConfig
-  fi
-  
+  fi  
   
   ################
   # Update Debian
@@ -348,23 +353,3 @@ EOF4
     fi
   fi
 fi
-
-
-################################################################################
-# EFI and BIOS
-################################################################################
-  
-cp /opt/etc/cron.d/* /etc/cron.daily/
-
-rm -rf /home/.optware/srv/tftp/optware
-mkdir -p /home/.optware/srv/tftp
-chown calnex /home/.optware/srv/tftp
-
-# Create embedded log folder and ensure it is owned by the calnex user
-if ! [ -d /home/.optware/var/lib/embedded/embedded_logs ]
-then
-  mkdir -p /home/.optware/var/lib/embedded/embedded_logs
-fi
-chown calnex:calnex -R /home/.optware/var/lib/embedded
-
-/sbin/ip_fallback &
