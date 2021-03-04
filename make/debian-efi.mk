@@ -143,7 +143,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
 		#sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN-EFI_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
-        sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN-EFI_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/grub/grub.cfg; \
+		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN-EFI_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/grub/grub.cfg; \
 		sudo mkdir -p $(@D)/config/packages.chroot;\
 		cd $(@D)/config/packages.chroot; \
 		sudo wget -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
@@ -160,23 +160,29 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
 		sudo lb build; \
-        mkdir tmp; \
-        fuseiso live-image-amd64.hybrid.iso tmp; \
-        cp tmp/boot/grub/efi.img ./efi.img; \
-        xorriso -as genisoimage \
-            -r -V '$(DEBIAN-EFI_PARTITION_LABEL)' \
-            -o bootable_temp.iso \
-            -J -joliet-long -cache-inodes \
-            -append_partition 2 0xef ./efi.img \
-            -appended_part_as_gpt \
-            -e --interval:appended_partition_2:all:: \
-            -no-emul-boot \
-            -partition_offset 16 \
-            -no-pad \
-            tmp; \
-        fusermount -u tmp; \
-        rm -rf tmp; \
-        sed -e 's|root /.disk/info|root /.disk/1234|' bootable_temp.iso > bootable.iso; \
+
+		# Extract EFI partition that is 'embedded' into rootfs partition and place at the end where it can easily be extracted
+		mkdir tmp; \
+		fuseiso live-image-amd64.hybrid.iso tmp; \
+		cp tmp/boot/grub/efi.img ./efi.img; \
+		xorriso -as genisoimage \
+			-r -V '$(DEBIAN-EFI_PARTITION_LABEL)' \
+			-o bootable_temp.iso \
+			-J -joliet-long -cache-inodes \
+			-append_partition 2 0xef ./efi.img \
+			-appended_part_as_gpt \
+			-e --interval:appended_partition_2:all:: \
+			-no-emul-boot \
+			-partition_offset 16 \
+			-no-pad \
+			tmp; \
+		fusermount -u tmp; \
+		rm -rf tmp; \
+
+		# Ensure that the rule that is used by the installed EFI image to find the installed rootfs partition, defined in its embedded grub.cfg, is distinct from that which will be used by the initial installer's EFI image, preventing any boot conflicts between the two (e.g. after installation when USB stick is still connected)
+		sed -e 's|root /.disk/info|root /.disk/1234|' bootable_temp.iso > bootable.iso; \
+
+		# Extract EFI (boot) and rootfs (root) partitions into individual images
 		dd \
 			if=bootable.iso \
 			of=root.iso \
@@ -188,6 +194,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 			skip=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$2}'` \
 			count=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$4}'`; \
 		gpg --local-user 64F48DD3 --armour --detach-sign root.iso; \
+
 		md5sum root.iso > root.iso.md5; \
 	)
 	touch $@
