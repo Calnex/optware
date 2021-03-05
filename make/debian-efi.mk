@@ -160,8 +160,8 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
 		sudo lb build; \
-
-		# Extract EFI partition that is 'embedded' into rootfs partition and place at the end where it can easily be extracted
+		\
+		# Extract EFI partition that is 'embedded' into rootfs partition and place at the end where it can easily be extracted \
 		mkdir tmp; \
 		fuseiso live-image-amd64.hybrid.iso tmp; \
 		cp tmp/boot/grub/efi.img ./efi.img; \
@@ -178,11 +178,11 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 			tmp; \
 		fusermount -u tmp; \
 		rm -rf tmp; \
-
-		# Ensure that the rule that is used by the installed EFI image to find the installed rootfs partition, defined in its embedded grub.cfg, is distinct from that which will be used by the initial installer's EFI image, preventing any boot conflicts between the two (e.g. after installation when USB stick is still connected)
+		\
+		# Ensure that the rule that is used by the installed EFI image to find the installed rootfs partition, defined in its embedded grub.cfg, is distinct from that which will be used by the initial installer's EFI image, preventing any boot conflicts between the two (e.g. after installation when USB stick is still connected) \
 		sed -e 's|root /.disk/info|root /.disk/1234|' bootable_temp.iso > bootable.iso; \
-
-		# Extract EFI (boot) and rootfs (root) partitions into individual images
+		\
+		# Extract EFI (boot) and rootfs (root) partitions into individual images \
 		dd \
 			if=bootable.iso \
 			of=root.iso \
@@ -194,7 +194,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 			skip=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$2}'` \
 			count=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$4}'`; \
 		gpg --local-user 64F48DD3 --armour --detach-sign root.iso; \
-
+		\
 		md5sum root.iso > root.iso.md5; \
 	)
 	touch $@
