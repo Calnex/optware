@@ -123,20 +123,20 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--distribution				$(TARGET_DISTRO)		\
 		--apt-indices				false				\
 		--apt-recommends			false				\
-		--ignore-system-defaults		true				\
-		--memtest				memtest86+			\
-		--checksums				sha1				\
+		--ignore-system-defaults	true				\
+		--memtest					memtest86+			\
+		--checksums					sha1				\
 		--win32-loader				false				\
-		--loadlin				false				\
-		--backports				true				\
+		--loadlin					false				\
+		--backports					true				\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-chroot-security		$(TARGET_REPO_MIRROR)/security	\
+		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-binary-security		$(TARGET_REPO_MIRROR)/security	\
-		--debootstrap-options			"--keyring=/root/.gnupg/pubring.kbx"		\
-		--hdd-label				"$(DEBIAN_PARTITION_LABEL)"	\
-		--hdd-size				320				\
+		--mirror-binary-security	$(TARGET_REPO_MIRROR)/security	\
+		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"		\
+		--hdd-label					"$(DEBIAN_PARTITION_LABEL)"	\
+		--hdd-size					320				\
 		--bootloader				syslinux			\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
@@ -224,10 +224,17 @@ $(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.built
 	$(MAKE) $(DEBIAN_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN_IPK_DIR)/CONTROL/conffiles
 	install -d $(DEBIAN_IPK_DIR)/opt/var/lib/debian
+	# Newly created boot paritions
 	install -m 755 $(DEBIAN_BUILD_DIR)/boot.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	# EFI created boot partitions
+	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/boot.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/root.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/root.iso.asc	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/root.iso.md5	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
+	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/bootable.iso	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(DEBIAN_IPK_DIR)
 

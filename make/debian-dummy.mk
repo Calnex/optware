@@ -62,7 +62,7 @@ DEBIAN-DUMMY_CONFIG=$(DEBIAN-DUMMY_SRC_DIR)/config
 #
 DEBIAN-DUMMY_BUILD_DIR=$(BUILD_DIR)/debian-dummy
 DEBIAN-DUMMY_IPK_DIR=$(BUILD_DIR)/debian-$(DEBIAN-DUMMY_VERSION)-dummy-ipk
-DEBIAN-DUMMY_IPK=$(BUILD_DIR)/debian_$(DEBIAN-DUMMY_VERSION)-$(DEBIAN-DUMMY_IPK_VERSION)-dummy_$(TARGET_ARCH).ipk
+DEBIAN-DUMMY_IPK=$(BUILD_DIR)/debian_$(DEBIAN-DUMMY_VERSION).$(DEBIAN-DUMMY_IPK_VERSION)-dummy_$(TARGET_ARCH).ipk
 
 .PHONY: debian-dummy-source debian-dummy-unpack debian-dummy debian-dummy-stage debian-dummy-ipk debian-dummy-clean debian-dummy-dirclean debian-dummy-check
 
@@ -77,7 +77,7 @@ $(DEBIAN-DUMMY_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(DEBIAN-DUMMY_PRIORITY)" >>$@
 	@echo "Section: $(DEBIAN-DUMMY_SECTION)" >>$@
-	@echo "Version: $(DEBIAN-DUMMY_VERSION)-$(DEBIAN-DUMMY_IPK_VERSION)" >>$@
+	@echo "Version: $(DEBIAN-DUMMY_VERSION).$(DEBIAN-DUMMY_IPK_VERSION)" >>$@
 	@echo "Maintainer: $(DEBIAN-DUMMY_MAINTAINER)" >>$@
 	@echo "Source: $(DEBIAN-DUMMY_SITE)/$(DEBIAN-DUMMY_SOURCE)" >>$@
 	@echo "Description: $(DEBIAN-DUMMY_DESCRIPTION)" >>$@

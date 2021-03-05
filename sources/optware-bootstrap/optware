@@ -30,6 +30,9 @@ case "$1" in
         
         if [ -x /etc/init.d/S00SystemConfiguration ]; then
             /etc/init.d/S00SystemConfiguration
+        fi        
+        if [ -x /etc/init.d/S01SystemConfiguration ]; then
+            /etc/init.d/S01SystemConfiguration
         fi
         if [ -x /etc/init.d/S00SystemLoading ]; then
             /etc/init.d/S00SystemLoading start
