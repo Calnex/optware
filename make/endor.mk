@@ -152,7 +152,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		cd endor-$(ENDOR_PRODUCT) && \
 		cp -R Tools ../../tmp; \
 		git show-ref --heads > Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
-		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-makefile minify "$(BUILD_DIR)" "$(ENDOR_PRODUCT)" ; \
+		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-makefile minify "$(BUILD_DIR)" "$(ENDOR_PRODUCT)" || exit 1 ; \
 		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
 		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
