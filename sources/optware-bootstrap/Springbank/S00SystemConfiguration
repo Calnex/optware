@@ -166,4 +166,9 @@ else
   echo 12884901888 > /dev/cgroups/limited/memory.limit_in_bytes
 fi
 
+# Setup a low swappiness control group
+mkdir -p /dev/cgroups/ic
+chmod go+w /dev/cgroups/ic/tasks
+echo 1 > /dev/cgroups/ic/memory.swappiness
+
 /sbin/ip_fallback &
