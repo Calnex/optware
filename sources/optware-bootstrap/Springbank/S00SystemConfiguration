@@ -135,4 +135,35 @@ then
 fi
 chown calnex:calnex -R /home/.optware/var/lib/embedded
 
+# Setup persistant disk for logging on VM using liveCD
+if test -b /dev/vda && ! test -d /home/calnex/Calnex100G/Persist; then 
+  echo "Mounting persistent log directory /dev/vda1"
+  mkdir -p /home/calnex/Calnex100G/Persist; 
+  chown -R calnex:calnex /home/calnex/Calnex100G
+  mount /dev/vda1 /home/calnex/Calnex100G/Persist; 
+
+  echo "Linking LogFiles directory to persistent log directory"
+  if test -d /home/calnex/Calnex100G/Logs/; then
+    rm -rf /home/calnex/Calnex100G/Logs
+  fi
+  su - calnex -c 'ln -s /home/calnex/Calnex100G/Persist /home/calnex/Calnex100G/Logs'
+fi
+
+## Setup cGroups
+mkdir -p /dev/cgroups
+mount -t cgroup -omemory memory /dev/cgroups
+
+# Setup a limited memory control group
+mkdir -p /dev/cgroups/limited
+chmod go+w /dev/cgroups/limited/tasks
+
+total_mem=$(awk '/MemTotal/{print $2}' /proc/meminfo)
+if [ "$total_mem" -lt 5242880 ]; then
+  # Assuming a 4GB memory setup, so assign 2GB to limited group
+  echo 2147483648 > /dev/cgroups/limited/memory.limit_in_bytes
+else
+  # Assuming a 16GB setup, so assign 12GB to limited group
+  echo 12884901888 > /dev/cgroups/limited/memory.limit_in_bytes
+fi
+
 /sbin/ip_fallback &
