@@ -143,6 +143,7 @@ endif
 	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/bootstrap.sh \
 	   $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/S00SystemConfiguration \
 	   $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/S00SystemLoading \
+	   $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/S01OSConfiguration \
 	   $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/S90fix-interfaces \
 	   $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/loading_server \
 	   $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)/loading_server.py \
@@ -164,7 +165,7 @@ endif
 	echo 'echo "Optware Bootstrap for $(OPTWARE-BOOTSTRAP_TARGET)."' >>$@
 	echo 'echo "Extracting archive to $PWD... please wait"' >>$@
 	echo 'dd if=$$0 bs=NNN skip=1 | tar xzv' >>$@
-	echo "cd bootstrap && sh bootstrap.sh && mv S00SystemConfiguration /etc/init.d && mv S00SystemLoading /etc/init.d && mv S90fix-interfaces /etc/init.d && mv loading_server /sbin &&  mv loading_server.py /sbin && mv ip_fallback /sbin && cd .. && rm -r bootstrap && exit 0" >>$@
+	echo "cd bootstrap && sh bootstrap.sh && mv S00SystemConfiguration /etc/init.d && mv S00SystemLoading /etc/init.d && mv S01OSConfiguration /etc/init.d && mv S90fix-interfaces /etc/init.d && mv loading_server /sbin &&  mv loading_server.py /sbin && mv ip_fallback /sbin && cd .. && rm -r bootstrap && exit 0" >>$@
 #	echo 'exec /bin/sh -l' >>$@ # No logon shell after install
 	sed -i -e "s/NNN/`wc -c $@ | awk '{print $$1}'`/" $@
 	tar -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -czf - bootstrap >>$@

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Fix network interface configuration
+# During bootup network config is modified by the OS, to keep it
+# consistent across enviroments for scripts we need to ensure the
+# config is as we expect it to be
 IFACECFG=/etc/network/interfaces
 if [ -f $IFACECFG ]; then
     

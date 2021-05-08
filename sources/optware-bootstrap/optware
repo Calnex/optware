@@ -29,6 +29,9 @@ case "$1" in
             /etc/init.d/S00SystemLoading start
         fi
 
+        # Configure the OS (cgroups, VM specific script etc..)
+        [ -x /etc/init.d/S01OSConfiguration ] && /etc/init.d/S01OSConfiguration
+
         # Fix the network interfaces config which is prone to being incorrect on VM's
         [ -x /etc/init.d/S90fix-interfaces ] && /etc/init.d/S90fix-interfaces
 
