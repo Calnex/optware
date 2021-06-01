@@ -7,12 +7,6 @@ fi
 
 case "$1" in
     start)
-        if [ ! -d /tmp/embedded ]; then
-            mkdir -p /tmp/embedded
-            chown calnex:calnex /tmp/embedded
-            service nfs-kernel-server restart
-        fi
-
         echo "Starting Optware."
         if test -n "${REAL_OPT_DIR}"; then
             if ! grep ' /opt ' /proc/mounts >/dev/null 2>&1 ; then
@@ -38,21 +32,10 @@ case "$1" in
             /etc/init.d/S00SystemLoading start
         fi
 
+        # Fix the network interfaces config which is prone to being incorrect on VM's
         [ -x /etc/init.d/S90fix-interfaces ] && /etc/init.d/S90fix-interfaces
 
-        if test -b /dev/vda && ! test -d /home/calnex/Calnex100G/Persist; then 
-            echo "Mounting persistent log directory /dev/vda1"
-            mkdir -p /home/calnex/Calnex100G/Persist; 
-            chown -R calnex:calnex /home/calnex/Calnex100G
-            mount /dev/vda1 /home/calnex/Calnex100G/Persist; 
-
-            echo "Linking LogFiles directory to persistent log directory"
-            if test -d /home/calnex/Calnex100G/Logs/; then
-                rm -rf /home/calnex/Calnex100G/Logs
-            fi
-            su - calnex -c 'ln -s /home/calnex/Calnex100G/Persist /home/calnex/Calnex100G/Logs'
-        fi
-
+        # Start all optware packages
         [ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
         ;;
     reconfig)
