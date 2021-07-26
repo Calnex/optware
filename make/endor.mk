@@ -216,8 +216,8 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	rm -f $@
 	#ABSOLUTE_PATH=$(@D);
 	(cd $(@D);\
-		dotnet restore
-		dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)"
+		dotnet restore;\
+		dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)")
 	touch $@
 
 
