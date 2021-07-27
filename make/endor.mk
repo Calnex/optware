@@ -332,7 +332,6 @@ endor-check: $(ENDOR_IPK)
 # This builds the endor service test binaries
 #
 endor-service-tests:
-	(cd $(ENDOR_BUILD_DIR)/Tests/ServiceTests; msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endor.DataStorage/Calnex.Common/Libraries)
 	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile service-tests $(BUILD_DIR) $(ENDOR_PRODUCT)
 
 endor-service-tests-clean:
