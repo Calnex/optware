@@ -169,7 +169,6 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		rm -rf endor-$(ENDOR_PRODUCT) ;\
 	)
 
-
 #
 # The source code depends on it existing within the download directory.
 # This target will be called by the top level Makefile to download the
@@ -255,6 +254,8 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 	@echo "Depends: $(ENDOR_DEPENDS)" >>$@
 	@echo "Suggests: $(ENDOR_SUGGESTS)" >>$@
 	@echo "Conflicts: $(ENDOR_CONFLICTS)" >>$@
+	@echo "AllowFrom: $(ENDOR_ALLOW_FROM)" >>$@
+	@echo "RestrictFrom: $(ENDOR_RESTRICT_FROM)" >>$@
 
 #
 # This builds the IPK file.
@@ -273,6 +274,8 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -d $(ENDOR_IPK_DIR)
 	cp -ar $(ENDOR_BUILD_DIR)/Endor/Build/opt $(ENDOR_IPK_DIR)
 #	find $(ENDOR_IPK_DIR)/opt/ -type f -name "*.mdb" --delete
+	ENDOR_ALLOW_FROM=$(cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex)
+	ENDOR_RESTRICT_FROM=$(cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex)
 	$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_SOURCE_DIR)/preinst  $(ENDOR_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
