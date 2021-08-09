@@ -169,7 +169,6 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		rm -rf endor-$(ENDOR_PRODUCT) ;\
 	)
 
-
 #
 # The source code depends on it existing within the download directory.
 # This target will be called by the top level Makefile to download the
@@ -255,6 +254,8 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 	@echo "Depends: $(ENDOR_DEPENDS)" >>$@
 	@echo "Suggests: $(ENDOR_SUGGESTS)" >>$@
 	@echo "Conflicts: $(ENDOR_CONFLICTS)" >>$@
+	@echo "AllowFrom: $(shell cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex)" >>$@
+	@echo "RestrictFrom: $(shell cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex)" >>$@
 
 #
 # This builds the IPK file.
@@ -279,7 +280,6 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/prerm    $(ENDOR_IPK_DIR)/CONTROL/prerm
 	install -m 755 $(ENDOR_SOURCE_DIR)/postrm   $(ENDOR_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
-	
 	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile install $(BUILD_DIR) $(ENDOR_PRODUCT);
 
 	# Embedded firmware
