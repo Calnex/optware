@@ -274,8 +274,8 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -d $(ENDOR_IPK_DIR)
 	cp -ar $(ENDOR_BUILD_DIR)/Endor/Build/opt $(ENDOR_IPK_DIR)
 #	find $(ENDOR_IPK_DIR)/opt/ -type f -name "*.mdb" --delete
-	ENDOR_ALLOW_FROM=$(cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex)
-	ENDOR_RESTRICT_FROM=$(cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex)
+	ENDOR_ALLOW_FROM=`cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex 2>/dev/null`
+	ENDOR_RESTRICT_FROM=`cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex 2>/dev/null`
 	$(MAKE) $(ENDOR_IPK_DIR)/CONTROL/control
 	install -m 755 $(ENDOR_SOURCE_DIR)/preinst  $(ENDOR_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(ENDOR_SOURCE_DIR)/postinst $(ENDOR_IPK_DIR)/CONTROL/postinst
