@@ -29,7 +29,7 @@
 
 IPKG-UTILS_CALNEX_SITE=$(PACKAGES_SERVER)
 
-IPKG-UTILS_VERSION:=1.7
+IPKG-UTILS_VERSION:=1.7.1
 IPKG-UTILS_SITE:=http://nslu.sf.net/downloads
 #IPKG-UTILS_SITE:=http://handhelds.org/packages/ipkg-utils/
 IPKG-UTILS_SOURCE:=ipkg-utils-$(IPKG-UTILS_VERSION).tar.gz
@@ -40,11 +40,11 @@ IPKG-UTILS_DIR:=$(TOOL_BUILD_DIR)/ipkg-utils-$(IPKG-UTILS_VERSION)
 # IPKG-UTILS_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-IPKG-UTILS_PATCHES=$(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7-ipkg_buildpackage.patch \
-		$(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7-ipkg_build_clean.patch \
-		$(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7-ipkg_tar_invocation.patch
+IPKG-UTILS_PATCHES=$(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7.1-ipkg_buildpackage.patch \
+		$(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7.1-ipkg_build_clean.patch \
+		$(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7.1-ipkg_tar_invocation.patch
 ifeq ($(HOSTCC), $(TARGET_CC))
-IPKG-UTILS_PATCHES += $(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7-ipkg_native_shell.patch
+IPKG-UTILS_PATCHES += $(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7.1-ipkg_native_shell.patch
 endif
 
 

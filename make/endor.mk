@@ -241,8 +241,6 @@ endor-stage: $(ENDOR_BUILD_DIR)/.staged
 # necessary to create a seperate control file under sources/endor
 #
 $(ENDOR_IPK_DIR)/CONTROL/control:
-#ENDOR_ALLOW_FROM=$(shell cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex)
-#ENDOR_RESTRICT_FROM=$(shell cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex)
 	@install -d $(@D)
 	@rm -f $@
 	@echo "Package: endor-$(ENDOR_PRODUCT)" >>$@
