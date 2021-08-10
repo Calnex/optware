@@ -254,8 +254,8 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 	@echo "Depends: $(ENDOR_DEPENDS)" >>$@
 	@echo "Suggests: $(ENDOR_SUGGESTS)" >>$@
 	@echo "Conflicts: $(ENDOR_CONFLICTS)" >>$@
-	@echo "AllowFrom: $(shell cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex)" >>$@
-	@echo "RestrictFrom: $(shell cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex)" >>$@
+	@echo "AllowedFrom: $(shell cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex)" >>$@
+	@echo "RestrictedFrom: $(shell cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex)" >>$@
 
 #
 # This builds the IPK file.

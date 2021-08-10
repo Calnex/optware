@@ -13,8 +13,8 @@
          if self.filename: out = out + "Filename: %s\n" % (self.filename)
          if self.source: out = out + "Source: %s\n" % (self.source)
          if self.description: out = out + "Description: %s\n" % (self.description)
-+        if self.allowfrom: out = out + "AllowFrom: %s\n" % (self.allowfrom)
-+        if self.restrictfrom: out = out + "RestrictFrom: %s\n" % (self.restrictfrom)
++        if self.allowfrom: out = out + "AllowedFrom: %s\n" % (self.allowfrom)
++        if self.restrictfrom: out = out + "RestrictedFrom: %s\n" % (self.restrictfrom)
  	out = out + "\n"
  
  	return out
