@@ -241,8 +241,8 @@ endor-stage: $(ENDOR_BUILD_DIR)/.staged
 # necessary to create a seperate control file under sources/endor
 #
 $(ENDOR_IPK_DIR)/CONTROL/control:
-	ENDOR_ALLOW_FROM=$(shell cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex)
-	ENDOR_RESTRICT_FROM=$(shell cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex)
+#ENDOR_ALLOW_FROM=$(shell cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex)
+#ENDOR_RESTRICT_FROM=$(shell cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex)
 	@install -d $(@D)
 	@rm -f $@
 	@echo "Package: endor-$(ENDOR_PRODUCT)" >>$@
@@ -256,8 +256,8 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 	@echo "Depends: $(ENDOR_DEPENDS)" >>$@
 	@echo "Suggests: $(ENDOR_SUGGESTS)" >>$@
 	@echo "Conflicts: $(ENDOR_CONFLICTS)" >>$@
-	@echo "AllowFrom: $(ENDOR_ALLOW_FROM)" >>$@
-	@echo "RestrictFrom: $(ENDOR_RESTRICT_FROM)" >>$@
+	@echo "AllowFrom: $(shell cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex)" >>$@
+	@echo "RestrictFrom: $(shell cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex)" >>$@
 
 #
 # This builds the IPK file.
