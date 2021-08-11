@@ -1,5 +1,5 @@
 --- ipkg-utils-1.7/ipkg.py.old	2003-09-05 08:49:48.000000000 +0100
-+++ ipkg-utils-1.7/ipkg.py	2021-08-10 11:09:05.616902900 +0100
++++ ipkg-utils-1.7/ipkg.py	2021-08-11 09:36:42.736341500 +0100
 @@ -55,6 +55,8 @@
  	self.depends = None
  	self.provides = None
