@@ -4,8 +4,8 @@
  	self.depends = None
  	self.provides = None
  	self.replaces = None
-+	self.allowfrom = None
-+	self.restrictfrom = None
++	self.allowedfrom = None
++	self.restrictedfrom = None
  	self.conflicts = None
          self.recommends = None
  	self.suggests = None
@@ -13,8 +13,8 @@
          if self.filename: out = out + "Filename: %s\n" % (self.filename)
          if self.source: out = out + "Source: %s\n" % (self.source)
          if self.description: out = out + "Description: %s\n" % (self.description)
-+        if self.allowfrom: out = out + "AllowedFrom: %s\n" % (self.allowfrom)
-+        if self.restrictfrom: out = out + "RestrictedFrom: %s\n" % (self.restrictfrom)
++        if self.allowedfrom: out = out + "AllowedFrom: %s\n" % (self.allowedfrom)
++        if self.restrictedfrom: out = out + "RestrictedFrom: %s\n" % (self.restrictedfrom)
  	out = out + "\n"
  
  	return out
