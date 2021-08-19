@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "Unlinking symlinks in /opt/bin"
+unlink /opt/bin/dotnet
