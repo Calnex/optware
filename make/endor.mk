@@ -44,7 +44,7 @@ ENDOR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_DESCRIPTION=Describe endor-$(ENDOR_PRODUCT) here.
 ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
-ENDOR_DEPENDS=postgresql, mono, xsp, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
+ENDOR_DEPENDS=postgresql, dotnet-runtimes, xsp, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
 ENDOR_SUGGESTS=
 ENDOR_CONFLICTS=endor-paragon, endor-paragon-doc, endor-paragon-neo, endor-paragon-neo-doc
 ifeq "${ENDOR_PRODUCT}" "paragon"
