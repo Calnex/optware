@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# Unsafe library name keeps being mangled, change it so that dotnet can find it
-DOTNET_DLL_DIR=/opt/usr/share/dotnet/shared/Microsoft.NETCore.App
-ASPNET_DLL_DIR=/opt/usr/share/dotnet/shared/Microsoft.AspNetCore.App
-
-echo "Unmangling dll names"
-rename 's/dll0000777/dll/' $DOTNET_DLL_DIR/*/* 2> /dev/null
-rename 's/dll0000777/dll/' $ASPNET_DLL_DIR/*/* 2> /dev/null
+cd /opt/usr/share/dotnet
+tar -xzf long-filepaths.tar.gz
+tar -xzf long-symlinks.tar.gz
