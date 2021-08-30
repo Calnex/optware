@@ -2,4 +2,3 @@
 
 cd /opt/usr/share/dotnet
 tar -xzf long-filepaths.tar.gz
-tar -xzf long-symlinks.tar.gz
