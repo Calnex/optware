@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd /opt/usr/share/dotnet
+rm -f `tar -tzf long-filepaths.tar.gz`

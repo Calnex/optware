@@ -152,7 +152,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		cd endor-$(ENDOR_PRODUCT) && \
 		cp -R Tools ../../tmp; \
 		git show-ref --heads > Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
-		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-makefile minify "$(BUILD_DIR)" "$(ENDOR_PRODUCT)" ; \
+		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-makefile minify "$(BUILD_DIR)" "$(ENDOR_PRODUCT)" || exit 1 ; \
 		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
 		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cz -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
@@ -168,7 +168,6 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		cd $(BUILD_DIR) ;\
 		rm -rf endor-$(ENDOR_PRODUCT) ;\
 	)
-
 
 #
 # The source code depends on it existing within the download directory.
@@ -255,6 +254,8 @@ $(ENDOR_IPK_DIR)/CONTROL/control:
 	@echo "Depends: $(ENDOR_DEPENDS)" >>$@
 	@echo "Suggests: $(ENDOR_SUGGESTS)" >>$@
 	@echo "Conflicts: $(ENDOR_CONFLICTS)" >>$@
+	@echo "AllowedFrom: $(shell cat $(ENDOR_SOURCE_DIR)/allow-upgrade-from.regex)" >>$@
+	@echo "RestrictedFrom: $(shell cat $(ENDOR_SOURCE_DIR)/restrict-upgrade-from.regex)" >>$@
 
 #
 # This builds the IPK file.
@@ -279,7 +280,6 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	install -m 755 $(ENDOR_SOURCE_DIR)/prerm    $(ENDOR_IPK_DIR)/CONTROL/prerm
 	install -m 755 $(ENDOR_SOURCE_DIR)/postrm   $(ENDOR_IPK_DIR)/CONTROL/postrm
 	echo $(ENDOR_CONFFILES) | sed -e 's/ /\n/g' > $(ENDOR_IPK_DIR)/CONTROL/conffiles
-	
 	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile install $(BUILD_DIR) $(ENDOR_PRODUCT);
 
 	# Embedded firmware

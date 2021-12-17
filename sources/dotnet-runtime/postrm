@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "Cleaning up orphaned dll's"
+rm -rf /opt/usr/share/dotnet

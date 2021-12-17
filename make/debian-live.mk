@@ -74,7 +74,7 @@ DEBIAN-LIVE_LDFLAGS=
 DEBIAN-LIVE_BUILD_DIR=$(BUILD_DIR)/debian-live
 DEBIAN-LIVE_SRC_DIR=$(SOURCE_DIR)/debian-live
 DEBIAN-LIVE_IPK_DIR=$(BUILD_DIR)/debian-live-$(DEBIAN-LIVE_VERSION)-ipk
-DEBIAN-LIVE_IPK=$(BUILD_DIR)/DEBIAN-LIVE_$(DEBIAN-LIVE_VERSION)-$(DEBIAN-LIVE_IPK_VERSION)_$(TARGET_ARCH).ipk
+DEBIAN-LIVE_IPK=$(BUILD_DIR)/DEBIAN-LIVE_$(DEBIAN-LIVE_VERSION).$(DEBIAN-LIVE_IPK_VERSION)_$(TARGET_ARCH).ipk
 
 # If not defined, point to the Default Packages server
 TARGET_PACKAGES_MIRROR?=http://packages.calnexsol.com/optware/$(TARGET_DISTRO)/
@@ -201,7 +201,7 @@ $(DEBIAN-LIVE_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(DEBIAN-LIVE_PRIORITY)" >>$@
 	@echo "Section: $(DEBIAN-LIVE_SECTION)" >>$@
-	@echo "Version: $(DEBIAN-LIVE_VERSION)-$(DEBIAN-LIVE_IPK_VERSION)" >>$@
+	@echo "Version: $(DEBIAN-LIVE_VERSION).$(DEBIAN-LIVE_IPK_VERSION)" >>$@
 	@echo "Maintainer: $(DEBIAN-LIVE_MAINTAINER)" >>$@
 	@echo "Source: $(DEBIAN-LIVE_SITE)/$(DEBIAN-LIVE_SOURCE)" >>$@
 	@echo "Description: $(DEBIAN-LIVE_DESCRIPTION)" >>$@

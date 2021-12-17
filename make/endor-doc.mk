@@ -31,6 +31,7 @@ BUILD_NUMBER?=devel
 BUILD_DATE?=2020.11.11
 
 ENDOR_BRANCH_PARAM?=master
+ENDOR_DOC_BRANCH_PARAM?=$(ENDOR_BRANCH_PARAM)
 
 ENDOR_DOCUMENTATION_REPOSITORY?=https://github.com/Calnex/EndorDocumentation
 ENDOR_DOC_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --output-delimiter "." -f2,3,4)
@@ -97,7 +98,7 @@ $(DL_DIR)/$(ENDOR_DOC_SOURCE):
 		# \
 		mkdir -p $(ENDOR_DOC_BUILD_DIR) ; \
 		cd $(ENDOR_DOC_BUILD_DIR) ; \
-		/usr/bin/git clone $(ENDOR_DOCUMENTATION_REPOSITORY) EndorDocumentation $(ENDOR_GIT_OPTIONS) --branch $(ENDOR_BRANCH_PARAM) $(ENDOR_DOCUMENTATION_GIT_REFERENCE) ; \
+		/usr/bin/git clone $(ENDOR_DOCUMENTATION_REPOSITORY) EndorDocumentation $(ENDOR_GIT_OPTIONS) --branch $(ENDOR_DOC_BRANCH_PARAM) $(ENDOR_DOCUMENTATION_GIT_REFERENCE) ; \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
 			cd $(ENDOR_DOC_BUILD_DIR)/EndorDocumentation ; \

@@ -1,0 +1,20 @@
+--- ipkg-utils-1.7/ipkg.py.old	2003-09-05 08:49:48.000000000 +0100
++++ ipkg-utils-1.7/ipkg.py	2021-08-11 09:36:42.736341500 +0100
+@@ -55,6 +55,8 @@
+ 	self.depends = None
+ 	self.provides = None
+ 	self.replaces = None
++	self.allowedfrom = None
++	self.restrictedfrom = None
+ 	self.conflicts = None
+         self.recommends = None
+ 	self.suggests = None
+@@ -318,6 +320,8 @@
+         if self.filename: out = out + "Filename: %s\n" % (self.filename)
+         if self.source: out = out + "Source: %s\n" % (self.source)
+         if self.description: out = out + "Description: %s\n" % (self.description)
++        if self.allowedfrom: out = out + "AllowedFrom: %s\n" % (self.allowedfrom)
++        if self.restrictedfrom: out = out + "RestrictedFrom: %s\n" % (self.restrictedfrom)
+ 	out = out + "\n"
+ 
+ 	return out

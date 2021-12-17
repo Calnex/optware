@@ -72,10 +72,13 @@ DEBIAN-INSTALLER_LDFLAGS=
 DEBIAN-INSTALLER_BUILD_DIR=$(BUILD_DIR)/debian-installer
 DEBIAN-INSTALLER_SRC_DIR=$(SOURCE_DIR)/debian-installer
 DEBIAN-INSTALLER_IPK_DIR=$(BUILD_DIR)/debian-installer-$(DEBIAN-INSTALLER_VERSION)-ipk
-DEBIAN-INSTALLER_IPK=$(BUILD_DIR)/DEBIAN-INSTALLER_$(DEBIAN-INSTALLER_VERSION)-$(DEBIAN-INSTALLER_IPK_VERSION)_$(TARGET_ARCH).ipk
+DEBIAN-INSTALLER_IPK=$(BUILD_DIR)/DEBIAN-INSTALLER_$(DEBIAN-INSTALLER_VERSION).$(DEBIAN-INSTALLER_IPK_VERSION)_$(TARGET_ARCH).ipk
 
 # Make sure product is always declared
 PRODUCT?=Paragon
+
+# Default bootloader to syslinux, can be overridden with grub-efi
+INSTALLER_BOOTLOADER?=syslinux
 
 # If not defined, point to the Default Packages server
 TARGET_PACKAGES_MIRROR?=http://packages.calnexsol.com/optware/$(TARGET_DISTRO)/
@@ -128,7 +131,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--distribution				stretch					\
 		--memtest				memtest86+				\
 		--checksums				sha1					\
-		--bootloaders                           syslinux                                \
+		--bootloaders			$(INSTALLER_BOOTLOADER)		\
 		--debian-installer			live					\
 		--debian-installer-preseedfile		debconf					\
 		--win32-loader				false					\
@@ -187,7 +190,7 @@ $(DEBIAN-INSTALLER_IPK_DIR)/CONTROL/control:
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(DEBIAN-INSTALLER_PRIORITY)" >>$@
 	@echo "Section: $(DEBIAN-INSTALLER_SECTION)" >>$@
-	@echo "Version: $(DEBIAN-INSTALLER_VERSION)-$(DEBIAN-INSTALLER_IPK_VERSION)" >>$@
+	@echo "Version: $(DEBIAN-INSTALLER_VERSION).$(DEBIAN-INSTALLER_IPK_VERSION)" >>$@
 	@echo "Maintainer: $(DEBIAN-INSTALLER_MAINTAINER)" >>$@
 	@echo "Source: $(DEBIAN-INSTALLER_SITE)/$(DEBIAN-INSTALLER_SOURCE)" >>$@
 	@echo "Description: $(DEBIAN-INSTALLER_DESCRIPTION)" >>$@
