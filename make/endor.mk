@@ -44,7 +44,7 @@ ENDOR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_DESCRIPTION=Describe endor-$(ENDOR_PRODUCT) here.
 ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
-ENDOR_DEPENDS=postgresql, mono, xsp, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
+ENDOR_DEPENDS=postgresql, dotnet-runtimes, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
 ENDOR_SUGGESTS=
 ENDOR_CONFLICTS=endor-paragon, endor-paragon-doc, endor-paragon-neo, endor-paragon-neo-doc
 ifeq "${ENDOR_PRODUCT}" "paragon"
@@ -215,8 +215,8 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	rm -f $@
 	#ABSOLUTE_PATH=$(@D);
 	(cd $(@D);\
-		msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endor.DataStorage/Calnex.Common/Libraries; \
-		$(BUILD_TOOL) Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)" /p:Configuration=Release $(TOOL_PATH))
+		dotnet restore;\
+		dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)")
 	touch $@
 
 
@@ -332,7 +332,6 @@ endor-check: $(ENDOR_IPK)
 # This builds the endor service test binaries
 #
 endor-service-tests:
-	(cd $(ENDOR_BUILD_DIR)/Tests/ServiceTests; msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endor.DataStorage/Calnex.Common/Libraries)
 	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile service-tests $(BUILD_DIR) $(ENDOR_PRODUCT)
 
 endor-service-tests-clean:
