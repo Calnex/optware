@@ -117,7 +117,7 @@ ENDOR_BUILD_CMD=$(BUILD_TOOL) Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CONSTA
 ifeq "${BUILD_TOOL}" "dotnet"
 ENDOR_RESTORE_CMD=dotnet restore
 ENDOR_TESTS_RESTORE_CMD=
-ENDOR_BUILD_CMD=dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)")
+ENDOR_BUILD_CMD=dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)"
 endif
 
 .PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
