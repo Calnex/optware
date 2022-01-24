@@ -115,9 +115,9 @@ ENDOR_RESTORE_CMD=msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endo
 ENDOR_TESTS_RESTORE_CMD=(cd $(ENDOR_BUILD_DIR)/Tests/ServiceTests; msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endor.DataStorage/Calnex.Common/Libraries)
 ENDOR_BUILD_CMD=$(BUILD_TOOL) Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)" /p:Configuration=Release $(TOOL_PATH)
 ifeq "${BUILD_TOOL}" "dotnet"
-ENDOR_RESTORE_CMD=dotnet restore
-ENDOR_TESTS_RESTORE_CMD=
-ENDOR_BUILD_CMD=dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)"
+	ENDOR_RESTORE_CMD=dotnet restore
+	ENDOR_TESTS_RESTORE_CMD=
+	ENDOR_BUILD_CMD=dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)"
 endif
 
 .PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
