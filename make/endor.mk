@@ -30,9 +30,11 @@ BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
 BUILD_DATE?=dd-mm-yyyy
 
+MONO_STAGING_DIR?=$(STAGING_DIR)
+BUILD_TOOL?=$(MONO_STAGING_DIR)/opt/bin/xbuild
+TOOL_PATH?=/p:CscToolPath=$(MONO_STAGING_DIR)/opt/lib/mono/4.5;
+
 ENDOR_BRANCH_PARAM?=master
-
-
 ENDOR_REPOSITORY?=https://github.com/Calnex/Springbank
 ENDOR_PRODUCT=$(TARGET_PRODUCT_LOWER)
 ENDOR_DOCUMENTATION_REPOSITORY?=https://github.com/Calnex/EndorDocumentation
@@ -44,7 +46,11 @@ ENDOR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ENDOR_DESCRIPTION=Describe endor-$(ENDOR_PRODUCT) here.
 ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
-ENDOR_DEPENDS=postgresql, dotnet-runtimes, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
+ENDOR_DEPENDS=postgresql, mono, xsp, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
+ifeq "${BUILD_TOOL}" "dotnet"
+	ENDOR_DEPENDS=postgresql, dotnet-runtimes, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
+endif
+
 ENDOR_SUGGESTS=
 ENDOR_CONFLICTS=endor-paragon, endor-paragon-doc, endor-paragon-neo, endor-paragon-neo-doc
 ifeq "${ENDOR_PRODUCT}" "paragon"
@@ -103,13 +109,16 @@ ENDOR_IPK=$(BUILD_DIR)/endor-$(ENDOR_PRODUCT)_$(ENDOR_IPK_VERSION)-$(ENDOR_VERSI
 ENDOR_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 
 ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
-
-MONO_STAGING_DIR?=$(STAGING_DIR)
-BUILD_TOOL?=$(MONO_STAGING_DIR)/opt/bin/xbuild
-TOOL_PATH?=/p:CscToolPath=$(MONO_STAGING_DIR)/opt/lib/mono/4.5;
-
 ENDOR_BUILD_CONSTANTS?=
 
+ENDOR_RESTORE_CMD=msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endor.DataStorage/Calnex.Common/Libraries
+ENDOR_TESTS_RESTORE_CMD=(cd $(ENDOR_BUILD_DIR)/Tests/ServiceTests; msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endor.DataStorage/Calnex.Common/Libraries)
+ENDOR_BUILD_CMD=$(BUILD_TOOL) Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)" /p:Configuration=Release $(TOOL_PATH)
+ifeq "${BUILD_TOOL}" "dotnet"
+	ENDOR_RESTORE_CMD=dotnet restore
+	ENDOR_TESTS_RESTORE_CMD=
+	ENDOR_BUILD_CMD=dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)"
+endif
 
 .PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
 
@@ -136,8 +145,8 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		git submodule update --init $(ENDOR_CAT_GIT_REFERENCE) && \
 		cd Calnex.Endor.DataStorage && \
 		git submodule update --init $(ENDOR_DATASTORAGE_GIT_REFERENCE) && \
-        cd Calnex.Common && \
-        git submodule update --init $(ENDOR_CALNEXCOMMON_GIT_REFERENCE) && \
+		cd Calnex.Common && \
+		git submodule update --init $(ENDOR_CALNEXCOMMON_GIT_REFERENCE) && \
 		cd .. && \
 		if [ ! -z "${CAT_TAG}" ] ; \
 			then \
@@ -215,8 +224,8 @@ $(ENDOR_BUILD_DIR)/.built: $(ENDOR_BUILD_DIR)/.configured
 	rm -f $@
 	#ABSOLUTE_PATH=$(@D);
 	(cd $(@D);\
-		dotnet restore;\
-		dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)")
+		$(ENDOR_RESTORE_CMD);\
+		$(ENDOR_BUILD_CMD))
 	touch $@
 
 
@@ -332,6 +341,7 @@ endor-check: $(ENDOR_IPK)
 # This builds the endor service test binaries
 #
 endor-service-tests:
+	$(ENDOR_TESTS_RESTORE_CMD)
 	$(ENDOR_BUILD_DIR)/OptWare/Make/endor-makefile service-tests $(BUILD_DIR) $(ENDOR_PRODUCT)
 
 endor-service-tests-clean:
