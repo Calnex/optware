@@ -2,5 +2,6 @@ enp0s3 businfo 0000:00:19.0
 enp0s3 businfo 0000:00:1f.6
 enp6s0 businfo 0000:07:00.0
 enp6s0 businfo 0000:01:00.0
+enp6s0 businfo 0000:02:00.0
 enp0s3 driver virtio_net
 enp0s3 driver e1000
