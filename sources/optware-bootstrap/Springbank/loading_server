@@ -25,4 +25,6 @@ done
 iptables -t nat -R PREROUTING 1 -p tcp --dport 80 -j DNAT --to 127.0.0.1:8000
 iptables -t nat -I OUTPUT -p tcp -o lo --dport 80 -j REDIRECT --to-ports 8000
 
+iptables -t nat -I PREROUTING -p tcp --dport 443 -j DNAT --to 127.0.0.1:8443
+iptables -t nat -I OUTPUT -p tcp -o lo --dport 443 -j REDIRECT --to-ports 8443
 pkill -f 'python3 /sbin/loading_server.py'
