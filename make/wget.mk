@@ -20,7 +20,7 @@ WGET_CALNEX_SITE=$(PACKAGES_SERVER)
 
 
 WGET_SITE=http://ftp.gnu.org/pub/gnu/wget
-WGET_VERSION=1.15
+WGET_VERSION=1.18
 WGET_SOURCE=wget-$(WGET_VERSION).tar.gz
 WGET_DIR=wget-$(WGET_VERSION)
 WGET_UNZIP=zcat
@@ -36,7 +36,7 @@ WGET-SSL_CONFLICTS=wget
 #
 # WGET_IPK_VERSION should be incremented when the ipk changes.
 #
-WGET_IPK_VERSION=2
+WGET_IPK_VERSION=3
 
 #
 # WGET_CONFFILES should be a list of user-editable files
