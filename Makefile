@@ -56,6 +56,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			libgpg-error \
 			libidn \
 			libpcap \
+			libssl-dev \
 			libstdc++ \
 			libtasn1 \
 			libtool \
