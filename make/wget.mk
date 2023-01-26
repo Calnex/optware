@@ -117,7 +117,7 @@ wget-ssl-source: $(DL_DIR)/$(WGET_SOURCE) $(WGET_PATCHES)
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(WGET_BUILD_DIR)/.configured: $(DL_DIR)/$(WGET_SOURCE) $(WGET_PATCHES) make/wget.mk
-	$(MAKE) libidn-stage openssl-stage gnutls-stage
+	$(MAKE) gnutls-stage
 	rm -rf $(BUILD_DIR)/$(WGET_DIR) $(@D)
 	$(WGET_UNZIP) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) -xf -
 #	cat $(WGET_PATCHES) | patch -d $(BUILD_DIR)/$(WGET_DIR) -p1
@@ -135,7 +135,6 @@ endif
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
-		--with-ssl=openssl \
 		--prefix=/opt \
 		--disable-nls \
 	)
