@@ -135,6 +135,7 @@ endif
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--with-ssl \
+		--with-ssl/gnutls \
 		--prefix=/opt \
 		--disable-nls \
 	)
