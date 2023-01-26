@@ -136,8 +136,6 @@ endif
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--with-ssl \
-		--with-libssl-prefix=$(STAGING_PREFIX) \
-		--with-libidn-prefix=$(STAGING_PREFIX) \
 		--prefix=/opt \
 		--disable-nls \
 	)
