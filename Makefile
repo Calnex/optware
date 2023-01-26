@@ -78,6 +78,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			wget-ssl \
 			xsp \
 			zlib \
+			libz-dev \
 
 CALNEX_PACKAGES =	cat \
 			debian-live \
