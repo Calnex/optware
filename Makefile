@@ -50,6 +50,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			ipkg-utils \
 			ipkg-web \
 			libdb \
+			libz-dev \
 			libffi \
 			libgcrypt \
 			libgmp \
