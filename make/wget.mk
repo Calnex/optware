@@ -134,8 +134,7 @@ endif
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
-		--with-ssl \
-		--with-gnutls \
+		--with-ssl=openssl \
 		--prefix=/opt \
 		--disable-nls \
 	)
