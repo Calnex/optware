@@ -135,7 +135,6 @@ endif
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
-		--with-ssl \		
 	)
 	touch $@
 
@@ -161,6 +160,7 @@ endif
 		--with-libssl-prefix=$(STAGING_PREFIX) \
 		--with-libidn-prefix=$(STAGING_PREFIX) \
 		--prefix=/opt \
+		--disable-nls \
 	)
 	touch $@
 
