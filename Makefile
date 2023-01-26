@@ -57,7 +57,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			libidn \
 			libpcap \
 			libstdc++ \
-			libssl-dev \
+		    libssl-dev \
 			libtasn1 \
 			libtool \
 			lua \
@@ -79,6 +79,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			wget-ssl \
 			xsp \
 			zlib \
+			zlib1g \
 			zlib1g-dev \
 
 CALNEX_PACKAGES =	cat \
