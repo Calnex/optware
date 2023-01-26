@@ -50,7 +50,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			ipkg-utils \
 			ipkg-web \
 			libdb \
-			libz-dev \
 			libffi \
 			libgcrypt \
 			libgmp \
@@ -58,7 +57,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			libidn \
 			libpcap \
 			libstdc++ \
-		    libssl-dev \
 			libtasn1 \
 			libtool \
 			lua \
@@ -80,8 +78,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			wget-ssl \
 			xsp \
 			zlib \
-			zlib1g \
-			zlib1g-dev \
 
 CALNEX_PACKAGES =	cat \
 			debian-live \
