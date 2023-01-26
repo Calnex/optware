@@ -36,7 +36,7 @@ WGET-SSL_CONFLICTS=wget
 #
 # WGET_IPK_VERSION should be incremented when the ipk changes.
 #
-WGET_IPK_VERSION=3
+WGET_IPK_VERSION=4
 
 #
 # WGET_CONFFILES should be a list of user-editable files
@@ -135,6 +135,7 @@ endif
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
+		--disable-nls \
 	)
 	touch $@
 
