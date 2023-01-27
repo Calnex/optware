@@ -78,8 +78,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			wget-ssl \
 			xsp \
 			zlib \
-			zlib1g \
-			zlib1g-dev \
 
 CALNEX_PACKAGES =	cat \
 			debian-live \
@@ -416,3 +414,4 @@ make/%.mk:
 	PKG_UP=$$(echo $* | tr [a-z\-] [A-Z_]);			\
 	sed -e "s/<foo>/$*/g" -e "s/<FOO>/$${PKG_UP}/g"		\
 		 -e '6,11d' make/template.mk > $@
+		 

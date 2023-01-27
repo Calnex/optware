@@ -20,7 +20,7 @@ WGET_CALNEX_SITE=$(PACKAGES_SERVER)
 
 
 WGET_SITE=http://ftp.gnu.org/pub/gnu/wget
-WGET_VERSION=1.18
+WGET_VERSION=1.15
 WGET_SOURCE=wget-$(WGET_VERSION).tar.gz
 WGET_DIR=wget-$(WGET_VERSION)
 WGET_UNZIP=zcat
@@ -36,7 +36,7 @@ WGET-SSL_CONFLICTS=wget
 #
 # WGET_IPK_VERSION should be incremented when the ipk changes.
 #
-WGET_IPK_VERSION=3
+WGET_IPK_VERSION=2
 
 #
 # WGET_CONFFILES should be a list of user-editable files
@@ -117,7 +117,6 @@ wget-ssl-source: $(DL_DIR)/$(WGET_SOURCE) $(WGET_PATCHES)
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(WGET_BUILD_DIR)/.configured: $(DL_DIR)/$(WGET_SOURCE) $(WGET_PATCHES) make/wget.mk
-	$(MAKE) libidn-stage openssl-stage gnutls-stage
 	rm -rf $(BUILD_DIR)/$(WGET_DIR) $(@D)
 	$(WGET_UNZIP) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) -xf -
 #	cat $(WGET_PATCHES) | patch -d $(BUILD_DIR)/$(WGET_DIR) -p1
@@ -135,6 +134,7 @@ endif
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
+		--without-ssl \
 		--prefix=/opt \
 		--disable-nls \
 	)
@@ -294,3 +294,4 @@ wget-dirclean:
 #
 wget-check: $(WGET_IPK) $(WGET-SSL_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
+	
