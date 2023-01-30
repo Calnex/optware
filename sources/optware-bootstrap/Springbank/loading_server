@@ -15,7 +15,7 @@ do
 	LOADED=$?
     if [[ $LOADED -ne "0" ]]
     then
-    wget -qO- --no-check-certificate https://localhost:8443 > /dev/null
+    curl -k https://localhost:8443
     LOADED=$?
     fi	
 	sleep 0.2
