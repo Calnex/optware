@@ -209,8 +209,8 @@ HOST_TOOL_AUTOMAKE14 = \
 
 # The hostname or IP number of our local dl.sf.net mirror
 SOURCEFORGE_MIRROR=downloads.sourceforge.net
-#SOURCES_NLO_SITE=http://sources.nslu2-linux.org/sources
-SOURCES_NLO_SITE=http://ftp.osuosl.org/pub/nslu2/sources
+SOURCES_NLO_SITE=http://sources.nslu2-linux.org/sources
+#SOURCES_NLO_SITE=http://ftp.osuosl.org/pub/nslu2/sources
 
 TARGET_CXX=$(TARGET_CROSS)g++
 TARGET_CC=$(TARGET_CROSS)gcc
