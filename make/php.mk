@@ -246,7 +246,6 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--enable-sysvmsg=shared \
 		--enable-sysvshm=shared \
 		--enable-sysvsem=shared \
-		--enable-openssl=shared \
 		--with-bz2=shared,$(STAGING_PREFIX) \
 		--with-gdbm=$(STAGING_PREFIX) \
 		--with-zlib=shared,$(STAGING_PREFIX) \
