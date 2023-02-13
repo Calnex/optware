@@ -49,7 +49,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			ipkg-opt \
 			ipkg-utils \
 			ipkg-web \
-			libcurl4-openssl-dev \
 			libdb \
 			libffi \
 			libgcrypt \
