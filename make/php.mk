@@ -13,7 +13,7 @@
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
 PHP_SITE=http://www.php.net/distributions/
-PHP_VERSION=5.6.27
+PHP_VERSION=8.1.15
 PHP_SOURCE=php-$(PHP_VERSION).tar.bz2
 PHP_DIR=php-$(PHP_VERSION)
 PHP_UNZIP=bzcat
@@ -27,12 +27,12 @@ PHP_CONFLICTS=debian (<= 9.0)
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=11
+PHP_IPK_VERSION=12
 
 #
 # PHP_CONFFILES should be a list of user-editable files
 #
-PHP_CONFFILES=/opt/etc/php.ini
+#PHP_CONFFILES=/opt/etc/php.ini
 
 #
 # PHP_LOCALES defines which locales get installed
@@ -254,6 +254,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--with-pcre-regex=$(STAGING_PREFIX) \
 		$(PHP_CONFIGURE_ARGS) \
 		--without-pear \
+		--with-curl=shared \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
