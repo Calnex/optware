@@ -247,7 +247,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--enable-sysvshm=shared \
 		--enable-sysvsem=shared \
 		--with-openssl=shared,$(STAGING_PREFIX) \
-		--with-openssl-dir=/home/jenkins/workspace \
+		--with-openssl-dir=/usr \
 		--with-bz2=shared,$(STAGING_PREFIX) \
 		--with-gdbm=$(STAGING_PREFIX) \
 		--with-zlib=shared,$(STAGING_PREFIX) \
