@@ -254,7 +254,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--with-pcre-regex=$(STAGING_PREFIX) \
 		$(PHP_CONFIGURE_ARGS) \
 		--without-pear \
-		--with-curl=/usr/include/x86_64-linux-gnu \
+		--with-curl=shared,$(STAGING_PREFIX)\
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
@@ -317,8 +317,6 @@ $(PHP_TARGET_IPKS): $(PHP_BUILD_DIR)/.built
 	install -m 644 $(PHP_SOURCE_DIR)/php-fpm.conf $(PHP_IPK_DIR)/opt/etc/php-fpm.conf
 	install -d $(PHP_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(PHP_SOURCE_DIR)/rc.php-fpm $(PHP_IPK_DIR)/opt/etc/init.d/S98php-fpm
-	mv /usr/include/x86_64-linux-gnu/curl $(PHP_IPK_DIR)/opt/include
-	mv /usr/lib/x86_64-linux-gnu/libcurl.a $(PHP_IPK_DIR)/opt/lib
 	
 	### now make php-dev
 	rm -rf $(PHP_DEV_IPK_DIR) $(BUILD_DIR)/php-dev_*_$(TARGET_ARCH).ipk
