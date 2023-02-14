@@ -313,10 +313,15 @@ $(PHP_TARGET_IPKS): $(PHP_BUILD_DIR)/.built
 	rm -f $(PHP_IPK_DIR)/opt/lib/php/extensions/*.a
 	install -d $(PHP_IPK_DIR)/opt/etc
 	install -d $(PHP_IPK_DIR)/opt/etc/php.d
+	install -d $(PHP_IPK_DIR)/opt/include/curl
+	install -m 755 $(PHP_IPK_DIR)/opt/include/curl/easy.h 
+	install -m 755 $(PHP_IPK_DIR)/opt/include/curl/curl.h
+	install -m 755 $(PHP_IPK_DIR)/opt/lib/libcurl.a
 	install -m 644 $(PHP_SOURCE_DIR)/php.ini $(PHP_IPK_DIR)/opt/etc/php.ini
 	install -m 644 $(PHP_SOURCE_DIR)/php-fpm.conf $(PHP_IPK_DIR)/opt/etc/php-fpm.conf
 	install -d $(PHP_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(PHP_SOURCE_DIR)/rc.php-fpm $(PHP_IPK_DIR)/opt/etc/init.d/S98php-fpm
+	
 	### now make php-dev
 	rm -rf $(PHP_DEV_IPK_DIR) $(BUILD_DIR)/php-dev_*_$(TARGET_ARCH).ipk
 	$(MAKE) $(PHP_DEV_IPK_DIR)/CONTROL/control
