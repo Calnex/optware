@@ -254,7 +254,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--with-pcre-regex=$(STAGING_PREFIX) \
 		$(PHP_CONFIGURE_ARGS) \
 		--without-pear \
-		--with-curl=shared,$(STAGING_PREFIX) \
+		--with-curl=/usr/include \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
