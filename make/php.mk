@@ -21,18 +21,18 @@ PHP_MAINTAINER=Josh Parsons <jbparsons@ucdavis.edu>
 PHP_DESCRIPTION=The php scripting language
 PHP_SECTION=net
 PHP_PRIORITY=optional
-PHP_DEPENDS=bzip2, zlib, gdbm, pcre, openssl
+PHP_DEPENDS=bzip2, zlib, gdbm, pcre
 PHP_CONFLICTS=debian (<= 9.0)
 
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=13
+PHP_IPK_VERSION=14
 
 #
 # PHP_CONFFILES should be a list of user-editable files
 #
-PHP_CONFFILES=/opt/etc/php.ini
+#PHP_CONFFILES=/opt/etc/php.ini
 
 #
 # PHP_LOCALES defines which locales get installed
@@ -205,7 +205,6 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 	$(MAKE) zlib-stage 
 	$(MAKE) gdbm-stage 
 	$(MAKE) pcre-stage
-	$(MAKE) openssl-stage
 	rm -rf $(BUILD_DIR)/$(PHP_DIR) $(@D)
 	$(PHP_UNZIP) $(DL_DIR)/$(PHP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	mv $(BUILD_DIR)/$(PHP_DIR) $(@D)
@@ -255,7 +254,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--with-pcre-regex=$(STAGING_PREFIX) \
 		$(PHP_CONFIGURE_ARGS) \
 		--without-pear \
-		--with-openssl=shared,$(STAGING_PREFIX) \
+		--with-curl=/opt \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
