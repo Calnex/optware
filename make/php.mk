@@ -27,12 +27,12 @@ PHP_CONFLICTS=debian (<= 9.0)
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=14
+PHP_IPK_VERSION=15
 
 #
 # PHP_CONFFILES should be a list of user-editable files
 #
-#PHP_CONFFILES=/opt/etc/php.ini
+PHP_CONFFILES=/opt/etc/php.ini
 
 #
 # PHP_LOCALES defines which locales get installed
