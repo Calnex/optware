@@ -331,6 +331,7 @@ $(PHP_TARGET_IPKS): $(PHP_BUILD_DIR)/.built
 	rm -rf $(PHP_EMBED_IPK_DIR) $(BUILD_DIR)/php-embed_*_$(TARGET_ARCH).ipk
 	$(MAKE) $(PHP_EMBED_IPK_DIR)/CONTROL/control
 	install -d $(PHP_EMBED_IPK_DIR)/opt/lib/
+	mv $(PHP_IPK_DIR)/opt/lib/libphp7.so $(PHP_EMBED_IPK_DIR)/opt/lib
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(PHP_EMBED_IPK_DIR)
 
 	### now make php-mbstring
