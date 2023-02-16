@@ -13,7 +13,7 @@
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
 PHP_SITE=http://www.php.net/distributions/
-PHP_VERSION=5.6.27
+PHP_VERSION=7.1.0
 PHP_SOURCE=php-$(PHP_VERSION).tar.bz2
 PHP_DIR=php-$(PHP_VERSION)
 PHP_UNZIP=bzcat
@@ -21,7 +21,7 @@ PHP_MAINTAINER=Josh Parsons <jbparsons@ucdavis.edu>
 PHP_DESCRIPTION=The php scripting language
 PHP_SECTION=net
 PHP_PRIORITY=optional
-PHP_DEPENDS=bzip2, zlib, gdbm, pcre
+PHP_DEPENDS=bzip2, zlib, gdbm, pcre, openssl
 PHP_CONFLICTS=debian (<= 9.0)
 
 #
@@ -47,7 +47,7 @@ PHP_LOCALES=
 # PHP_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-PHP_PATCHES=
+#PHP_PATCHES=
 #PHP_PATCHES=\
 #	$(PHP_SOURCE_DIR)/aclocal.m4.patch \
 #	$(PHP_SOURCE_DIR)/configure.in.patch \
@@ -205,6 +205,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 	$(MAKE) zlib-stage 
 	$(MAKE) gdbm-stage 
 	$(MAKE) pcre-stage
+	$(MAKE) openssl-stage
 	rm -rf $(BUILD_DIR)/$(PHP_DIR) $(@D)
 	$(PHP_UNZIP) $(DL_DIR)/$(PHP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	mv $(BUILD_DIR)/$(PHP_DIR) $(@D)
@@ -254,7 +255,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--with-pcre-regex=$(STAGING_PREFIX) \
 		$(PHP_CONFIGURE_ARGS) \
 		--without-pear \
-		--with-curl=shared,$(STAGING_PREFIX) \
+		--with-openssl=shared,$(STAGING_PREFIX) \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
