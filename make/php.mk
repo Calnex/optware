@@ -13,7 +13,7 @@
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
 PHP_SITE=http://www.php.net/distributions/
-PHP_VERSION=5.6.27
+PHP_VERSION=7.1.0
 PHP_SOURCE=php-$(PHP_VERSION).tar.bz2
 PHP_DIR=php-$(PHP_VERSION)
 PHP_UNZIP=bzcat
@@ -21,13 +21,13 @@ PHP_MAINTAINER=Josh Parsons <jbparsons@ucdavis.edu>
 PHP_DESCRIPTION=The php scripting language
 PHP_SECTION=net
 PHP_PRIORITY=optional
-PHP_DEPENDS=bzip2, zlib, gdbm, pcre
+PHP_DEPENDS=bzip2, zlib, gdbm, pcre, openssl
 PHP_CONFLICTS=debian (<= 9.0)
 
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=9
+PHP_IPK_VERSION=1
 
 #
 # PHP_CONFFILES should be a list of user-editable files
@@ -205,6 +205,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 	$(MAKE) zlib-stage 
 	$(MAKE) gdbm-stage 
 	$(MAKE) pcre-stage
+	$(MAKE) openssl-stage
 	rm -rf $(BUILD_DIR)/$(PHP_DIR) $(@D)
 	$(PHP_UNZIP) $(DL_DIR)/$(PHP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	mv $(BUILD_DIR)/$(PHP_DIR) $(@D)
@@ -254,6 +255,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--with-pcre-regex=$(STAGING_PREFIX) \
 		$(PHP_CONFIGURE_ARGS) \
 		--without-pear \
+		--with-openssl=shared,$(STAGING_PREFIX) \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
@@ -316,6 +318,7 @@ $(PHP_TARGET_IPKS): $(PHP_BUILD_DIR)/.built
 	install -m 644 $(PHP_SOURCE_DIR)/php-fpm.conf $(PHP_IPK_DIR)/opt/etc/php-fpm.conf
 	install -d $(PHP_IPK_DIR)/opt/etc/init.d
 	install -m 755 $(PHP_SOURCE_DIR)/rc.php-fpm $(PHP_IPK_DIR)/opt/etc/init.d/S98php-fpm
+	
 	### now make php-dev
 	rm -rf $(PHP_DEV_IPK_DIR) $(BUILD_DIR)/php-dev_*_$(TARGET_ARCH).ipk
 	$(MAKE) $(PHP_DEV_IPK_DIR)/CONTROL/control
@@ -327,7 +330,7 @@ $(PHP_TARGET_IPKS): $(PHP_BUILD_DIR)/.built
 	rm -rf $(PHP_EMBED_IPK_DIR) $(BUILD_DIR)/php-embed_*_$(TARGET_ARCH).ipk
 	$(MAKE) $(PHP_EMBED_IPK_DIR)/CONTROL/control
 	install -d $(PHP_EMBED_IPK_DIR)/opt/lib/
-	mv $(PHP_IPK_DIR)/opt/lib/libphp5.so $(PHP_EMBED_IPK_DIR)/opt/lib
+	mv $(PHP_IPK_DIR)/opt/lib/libphp7.so $(PHP_EMBED_IPK_DIR)/opt/lib
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(PHP_EMBED_IPK_DIR)
 
 	### now make php-mbstring

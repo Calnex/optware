@@ -13,6 +13,11 @@ while [ $LOADED -ne "0" ]
 do
 	wget -qO- localhost:8000 > /dev/null
 	LOADED=$?
+    if [[ $LOADED -ne "0" ]]
+    then
+    curl -k https://localhost:8443
+    LOADED=$?
+    fi	
 	sleep 0.2
 	((i++))
 	if [[ $i -gt 2000 ]]
@@ -22,7 +27,9 @@ do
 done
 
 /sbin/sysctl -w net.ipv4.conf.all.route_localnet=1
-iptables -t nat -R PREROUTING 1 -p tcp --dport 80 -j DNAT --to 127.0.0.1:8000
+iptables -t nat -I PREROUTING -p tcp --dport 80 -j DNAT --to 127.0.0.1:8000
 iptables -t nat -I OUTPUT -p tcp -o lo --dport 80 -j REDIRECT --to-ports 8000
 
+iptables -t nat -I PREROUTING -p tcp --dport 443 -j DNAT --to 127.0.0.1:8443
+iptables -t nat -I OUTPUT -p tcp -o lo --dport 443 -j REDIRECT --to-ports 8443
 pkill -f 'python3 /sbin/loading_server.py'

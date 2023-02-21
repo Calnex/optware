@@ -36,7 +36,7 @@ NGINX_CONFLICTS=
 #
 # NGINX_IPK_VERSION should be incremented when the ipk changes.
 #
-NGINX_IPK_VERSION?=1
+NGINX_IPK_VERSION?=2
 
 #
 # NGINX_CONFFILES should be a list of user-editable files
@@ -160,6 +160,8 @@ $(NGINX_BUILD_DIR)/.configured: $(DL_DIR)/$(NGINX_SOURCE) $(NGINX_PATCHES) make/
 		--http-fastcgi-temp-path=/opt/var/nginx/tmp/fastcgi_temp \
 		--with-http_auth_request_module \
 		--with-debug \
+		--with-http_ssl_module \
+		--with-http_v2_module \
 		--with-http_stub_status_module \
                 --with-cc=$(TARGET_CC) \
                 --with-cpp=$(TARGET_CPP) \
