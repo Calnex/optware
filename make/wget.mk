@@ -294,4 +294,3 @@ wget-dirclean:
 #
 wget-check: $(WGET_IPK) $(WGET-SSL_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
-	
