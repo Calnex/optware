@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DEBIAN_VERSION?=09.xx
+DEBIAN_VERSION?=11.00
 DEBIAN_SOURCE=debian-$(DEBIAN_VERSION).tar.gz
 DEBIAN_DIR=debian-$(DEBIAN_VERSION)
 DEBIAN_UNZIP=zcat
@@ -37,6 +37,8 @@ DEBIAN_PRIORITY=optional
 DEBIAN_DEPENDS=
 DEBIAN_SUGGESTS=
 DEBIAN_CONFLICTS=
+
+TARGET_DISTRO?=bullseye
 
 #
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
@@ -131,10 +133,10 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--backports					true				\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/security	\
+		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-binary-security	$(TARGET_REPO_MIRROR)/security	\
-		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"		\
+		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security	\
+		#--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"		\
 		--hdd-label					"$(DEBIAN_PARTITION_LABEL)"	\
 		--hdd-size					320				\
 		--bootloader				syslinux			\
@@ -144,9 +146,9 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		#sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
 		sudo mkdir -p $(@D)/config/packages.chroot;\
-		cd $(@D)/config/packages.chroot; \
+		cd $(@D)/config/packages.chroot;	\
 		sudo wget -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
-                sudo dpkg-name SysMgmtDaemon_*.deb;                                 \
+		sudo dpkg-name SysMgmtDaemon_*.deb;	\
 	)
 	touch $@
 
@@ -168,8 +170,8 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 			if=live-image-amd64.img \
 			of=boot.img \
 			bs=512 count=1; \
-		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
-		md5sum root.img > root.img.md5; \
+#		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
+#		md5sum root.img > root.img.md5; \
 	)
 	touch $@
 

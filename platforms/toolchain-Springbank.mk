@@ -13,16 +13,17 @@ TARGET_CC_PROBE := $(shell test -x "/opt/bin/ipkg" \
 STAGING_CPPFLAGS+= -DPATH_MAX=4096 -DLINE_MAX=2048 -DMB_LEN_MAX=16
 
 BINUTILS_VERSION := 2.22
-BINUTILS_IPK_VERSION := 1
+BINUTILS_IPK_VERSION := 2
 
 HOSTCC = gcc
 #GNU_HOST_NAME = $(HOST_MACHINE)-pc-linux-gnu
 GNU_HOST_NAME = $(GNU_TARGET_NAME)
 SNAPSHOT_VERSION ?= devel
-TARGET_DISTRO ?= stretch
+TARGET_DISTRO ?= bullseye
 TARGET_PRODUCT ?= Paragon
 TARGET_PRODUCT_LOWER = $(shell echo $(TARGET_PRODUCT) | tr A-Z a-z)
-TARGET_REPO_MIRROR ?= http://debian.calnexsolutions.local
+#TARGET_REPO_MIRROR ?= http://debian.calnexsolutions.local
+TARGET_REPO_MIRROR ?= http://deb.debian.org
 TARGET_CROSS_TOP = $(BASE_DIR)/toolchain
 TARGET_CROSS = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/bin/$(GNU_TARGET_NAME)-
 TARGET_LIBDIR = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/$(GNU_TARGET_NAME)/lib
@@ -39,6 +40,9 @@ TOOLCHAIN_BINARY_SITE=http://packages.calnexsol.com/optware/toolchains
 ifeq (wheezy, $(TARGET_DISTRO))
 LIBC_STYLE=eglibc
 TOOLCHAIN_BINARY=gcc491-eglibc213_x86_64.tar.gz
+else ifeq (stretch, $(TARGET_DISTRO))
+LIBC_STYLE=glibc
+TOOLCHAIN_BINARY=gcc491-glibc219_x86_64.tar.gz
 else
 LIBC_STYLE=glibc
 TOOLCHAIN_BINARY=gcc491-glibc219_x86_64.tar.gz
