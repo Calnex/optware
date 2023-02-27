@@ -858,7 +858,7 @@ diff -u $dest/$conffile $IPKG_TMP/$pkg/data/$conffile"
 	fi
 
 	local owd=`pwd`
-	(cd $IPKG_TMP/$pkg/data/; tar cf - . | (cd $owd; cd $dest; tar xf -))
+	(cd $IPKG_TMP/$pkg/data/; tar cf - . | (cd $owd; cd $dest; tar -h -xf -))
 	rm -rf $IPKG_TMP/$pkg/data
 	rmdir $IPKG_TMP/$pkg
 	$pkg_extract_stdout $filename ./data.tar.gz | tar tzf - | sed -e 's/^\.//' > $info_dir/$pkg.list
