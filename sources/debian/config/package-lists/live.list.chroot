@@ -1,2 +1,2 @@
-live-boot live-boot-doc live-boot-initramfs-tools live-tools rsync uuid-runtime iproute2 iproute keyboard-configuration locales sudo passwd adduser efibootmgr
+live-boot live-boot-doc live-boot-initramfs-tools live-tools rsync uuid-runtime iproute2 keyboard-configuration locales sudo passwd adduser efibootmgr gpg
 
