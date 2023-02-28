@@ -14,7 +14,7 @@ class StoreHandler(BaseHTTPRequestHandler):
 http_server = HTTPServer(('', 8080), StoreHandler)
 http_server.serve_forever()
 
-# Create an HTTPS server on port 8443
-https_server = HTTPServer(('', 8443), StoreHandler)
+# Create an HTTPS server on port 44301
+https_server = HTTPServer(('', 44301), StoreHandler)
 https_server.socket = ssl.wrap_socket(https_server.socket, certfile='/home/calnex/Certificates/hold.pem', keyfile='/home/calnex/Certificates/hold.pem', server_side=True)
 https_server.serve_forever()
