@@ -1,4 +1,6 @@
 import ssl
+from os import curdir, sep
+from os.path import join as pjoin
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 class StoreHandler(BaseHTTPRequestHandler):
