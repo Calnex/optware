@@ -2,7 +2,8 @@
 
 echo "Starting loading server"
 
-screen -dmS LOADING python3 /sbin/loading_server.py >/var/log/initserver.log & screen -dmS LOADING python3 /sbin/loading_https_server.py >/var/log/initserver.log
+screen -dmS LOADING python3 /sbin/loading_server.py >/var/log/initserver.log
+screen -dmS LOADING python3 /sbin/loading_https_server.py >/var/log/initserver.log
 
 LOADED=1
 i=0
@@ -32,5 +33,6 @@ iptables -t nat -I OUTPUT -p tcp -o lo --dport 80 -j REDIRECT --to-ports 8000
 
 iptables -t nat -I PREROUTING -p tcp --dport 443 -j DNAT --to 127.0.0.1:8443
 iptables -t nat -I OUTPUT -p tcp -o lo --dport 443 -j REDIRECT --to-ports 8443
-pkill -f 'python3 /sbin/loading_server.py' | pkill -f 'python3 /sbin/loading_https_server.py'
+pkill -f 'python3 /sbin/loading_server.py'
+pkill -f 'python3 /sbin/loading_https_server.py'
 

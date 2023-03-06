@@ -1,3 +1,6 @@
+from os import curdir, sep
+from os.path import join as pjoin
+
 import ssl
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -11,7 +14,7 @@ class StoreHandler(BaseHTTPRequestHandler):
             self.wfile.write(fh.read().encode())
 
 
-# Create an HTTPS server on port 44301
-https_server = HTTPServer(('', 44301), StoreHandler)
+# Create an HTTPS server on port 9443
+https_server = HTTPServer(('', 9443), StoreHandler)
 https_server.socket = ssl.wrap_socket(https_server.socket, certfile='/home/calnex/Certificates/hold.pem', keyfile='/home/calnex/Certificates/hold.pem', server_side=True)
 https_server.serve_forever()
