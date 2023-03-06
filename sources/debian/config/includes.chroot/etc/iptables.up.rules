@@ -8,6 +8,7 @@
 # optware/sources/optware-bootstrap/Springbank/loading_server
 -A PREROUTING -i enp0s3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8080
 -A PREROUTING -i enp0s3 -p tcp -m tcp --dport 81 -j REDIRECT --to-ports 4596
+-A PREROUTING -i enp0s3 -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 9443
 COMMIT
 
 # Completed on Wed Aug  6 12:28:36 2014
