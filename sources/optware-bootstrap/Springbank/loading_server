@@ -3,7 +3,6 @@
 echo "Starting loading server"
 
 screen -dmS LOADING_HTTPS_SERVER python3 /sbin/loading_https_server.py >/var/log/initserver.log
-screen -dmS LOADING_HTTP_SERVER python3 /sbin/loading_server.py >/var/log/initserver.log
 
 LOADED=1
 i=0
