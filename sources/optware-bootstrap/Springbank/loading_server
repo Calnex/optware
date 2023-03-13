@@ -12,14 +12,18 @@ echo "Waiting for main server to be ready"
 
 while [ $LOADED -ne "0" ]
 do
-	wget -qO- localhost:8000 > /dev/null
+	# Try HTTP connection
+	curl -s localhost:8000 >/dev/null
 	LOADED=$?
+	
+	# Try HTTPS connection if HTTP failed
     if [[ $LOADED -ne "0" ]]
     then
-    curl -k https://localhost:8443
+    curl -k -s https://localhost:8443 >/dev/null
     LOADED=$?
     fi	
-	sleep 0.2
+	
+	sleep 1
 	((i++))
 	if [[ $i -gt 2000 ]]
 	then
@@ -33,12 +37,9 @@ sleep 15
 iptables -t nat -R PREROUTING 1 -p tcp --dport 80 -j DNAT --to 127.0.0.1:8000
 iptables -t nat -I OUTPUT -p tcp -o lo --dport 80 -j REDIRECT --to-ports 8000
 
-sleep 15
-
 iptables -t nat -R PREROUTING 3 -p tcp --dport 443 -j DNAT --to 127.0.0.1:8443
 iptables -t nat -I OUTPUT -p tcp -o lo --dport 443 -j REDIRECT --to-ports 8443
 
-sleep 15
 
 pkill -f 'python3 /sbin/loading_server.py'
 pkill -f 'python3 /sbin/loading_https_server.py'
