@@ -26,3 +26,19 @@ do
 		LOADED=0
 	fi
 done
+
+sleep 25
+
+/sbin/sysctl -w net.ipv4.conf.all.route_localnet=1
+iptables -t nat -R PREROUTING 1 -p tcp --dport 80 -j DNAT --to 127.0.0.1:8000
+iptables -t nat -I OUTPUT -p tcp -o lo --dport 80 -j REDIRECT --to-ports 8000
+
+sleep 15
+
+iptables -t nat -R PREROUTING 3 -p tcp --dport 443 -j DNAT --to 127.0.0.1:8443
+iptables -t nat -I OUTPUT -p tcp -o lo --dport 443 -j REDIRECT --to-ports 8443
+
+sleep 15
+
+pkill -f 'python3 /sbin/loading_server.py'
+pkill -f 'python3 /sbin/loading_https_server.py'
