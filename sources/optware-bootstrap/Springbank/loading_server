@@ -21,7 +21,7 @@ do
     fi	
 	sleep 2
 	((i++))
-	if [[ $i -gt 2000 ]]
+	if [[ $i -gt 200 ]]
 	then
 		LOADED=0
 	fi
