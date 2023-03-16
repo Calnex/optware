@@ -2,7 +2,8 @@
 
 echo "Starting loading server"
 
-screen -dmS LOADING python3 /sbin/loading_server.py >/var/log/initserver.log
+screen -dmS LOADING_HTTP_SERVER python3 /sbin/loading_server.py >/var/log/initserver.log
+screen -dmS LOADING_HTTPS_SERVER python3 /sbin/loading_https_server.py >/var/log/initserver.log
 
 LOADED=1
 i=0
@@ -15,21 +16,24 @@ do
 	LOADED=$?
     if [[ $LOADED -ne "0" ]]
     then
-    curl -k https://localhost:8443
+    curl -k https://localhost:8443 > /dev/null
     LOADED=$?
     fi	
-	sleep 0.2
+	sleep 2
 	((i++))
-	if [[ $i -gt 2000 ]]
+	if [[ $i -gt 200 ]]
 	then
 		LOADED=0
 	fi
 done
 
+sleep 20
+
 /sbin/sysctl -w net.ipv4.conf.all.route_localnet=1
-iptables -t nat -I PREROUTING -p tcp --dport 80 -j DNAT --to 127.0.0.1:8000
+iptables -t nat -R PREROUTING 1 -p tcp --dport 80 -j DNAT --to 127.0.0.1:8000
 iptables -t nat -I OUTPUT -p tcp -o lo --dport 80 -j REDIRECT --to-ports 8000
 
-iptables -t nat -I PREROUTING -p tcp --dport 443 -j DNAT --to 127.0.0.1:8443
+iptables -t nat -R PREROUTING 3 -p tcp --dport 443 -j DNAT --to 127.0.0.1:8443
 iptables -t nat -I OUTPUT -p tcp -o lo --dport 443 -j REDIRECT --to-ports 8443
 pkill -f 'python3 /sbin/loading_server.py'
+pkill -f 'python3 /sbin/loading_https_server.py'

@@ -12,6 +12,6 @@ class StoreHandler(BaseHTTPRequestHandler):
                                                 self.end_headers()
                                                 self.wfile.write(fh.read().encode())
 
-
+# Create an HTTP server on port 8080
 server = HTTPServer(('', 8080), StoreHandler)
 server.serve_forever()
