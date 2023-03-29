@@ -25,11 +25,7 @@ fi
 
 case "$1" in
   start)
-		if [ -x /opt/sbin/loading_server ]; then
-			/opt/sbin/loading_server &
-		else
-			/sbin/loading_server &
-		fi
+        /sbin/loading_server &
 		    INIT_SERVER_MESSAGE="init_server called"
         ;;
   stop)
