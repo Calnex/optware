@@ -5,29 +5,17 @@ echo "Starting loading server"
 screen -dmS LOADING_HTTP_SERVER python3 /sbin/loading_server.py >/var/log/initserver.log
 screen -dmS LOADING_HTTPS_SERVER python3 /sbin/loading_https_server.py >/var/log/initserver.log
 
-LOADED=1
-i=0
-
 echo "Waiting for main server to be ready"
 
-while [ $LOADED -ne "0" ]
-do
-	wget -qO- localhost:8000 > /dev/null
-	LOADED=$?
-    if [[ $LOADED -ne "0" ]]
-    then
-    curl -k https://localhost:8443 > /dev/null
-    LOADED=$?
-    fi	
-	sleep 2
-	((i++))
-	if [[ $i -gt 200 ]]
-	then
-		LOADED=0
-	fi
+i=0
+while [ "$i" -le 200 ]; do
+    if curl -sSf -k https://localhost:8443 >/dev/null 2>&1 || \
+       wget -qO- http://localhost:8000 >/dev/null 2>&1; then
+        break
+    fi
+    sleep 2
+    ((i++))
 done
-
-sleep 20
 
 /sbin/sysctl -w net.ipv4.conf.all.route_localnet=1
 iptables -t nat -R PREROUTING 1 -p tcp --dport 80 -j DNAT --to 127.0.0.1:8000
