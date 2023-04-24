@@ -8,7 +8,10 @@ screen -dmS LOADING_HTTPS_SERVER python3 /sbin/loading_https_server.py >/var/log
 echo "Waiting for main server to be ready"
 
 i=0
-while [ "$i" -le 200 ]; do
+#Max iterations correspond to the timeout mechanism used in Endor for IC to connect to embedded - roughly nine minute timeout
+max_iterations=300
+
+while [ "$i" -le $max_iterations ]; do
     if curl -sSf -k https://localhost:8443 >/dev/null 2>&1 || \
        wget -qO- http://localhost:8000 >/dev/null 2>&1; then
         break
