@@ -7,10 +7,10 @@ class StoreHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         with open('/var/www/loading.html') as fh:
-                                                self.send_response(200)
-                                                self.send_header('Content-type', 'text/html')
-                                                self.end_headers()
-                                                self.wfile.write(fh.read().encode())
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            self.wfile.write(fh.read().encode())
 
 
 server = HTTPServer(('', 8080), StoreHandler)
