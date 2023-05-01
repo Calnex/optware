@@ -126,19 +126,18 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--apt-indices				false				\
 		--apt-recommends			false				\
 		--ignore-system-defaults	true				\
-		--memtest					memtest86+			\
 		--checksums					sha1				\
 		--win32-loader				false				\
 		--loadlin					false				\
 		--backports					true				\
-		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security	\
-		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security	\
-		#--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"		\
+		--mirror-bootstrap			"$(TARGET_REPO_MIRROR)/debian"	\
+		--mirror-chroot				"$(TARGET_REPO_MIRROR)/debian"	\
+		--mirror-chroot-security	"$(TARGET_REPO_MIRROR)/debian-security"	\
+		--mirror-binary				"$(TARGET_REPO_MIRROR)/debian"	\
+		--mirror-binary-security	"$(TARGET_REPO_MIRROR)/debian-security"	\
+		--debootstrap-options		"--keyring=/home/jenkins/.gnupg/pubring.kbx"		\
 		--hdd-label					"$(DEBIAN_PARTITION_LABEL)"	\
-		--hdd-size					320				\
+		--hdd-size					420				\
 		--bootloader				syslinux			\
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
@@ -170,8 +169,8 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 			if=live-image-amd64.img \
 			of=boot.img \
 			bs=512 count=1; \
-#		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
-#		md5sum root.img > root.img.md5; \
+		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
+		md5sum root.img > root.img.md5; \
 	)
 	touch $@
 

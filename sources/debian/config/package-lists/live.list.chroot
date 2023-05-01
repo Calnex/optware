@@ -1,2 +1,1 @@
-live-boot live-boot-doc live-boot-initramfs-tools live-tools rsync uuid-runtime iproute2 iproute keyboard-configuration locales sudo passwd adduser efibootmgr curl libcurl4-openssl-dev
-
+live-boot live-boot-doc live-boot-initramfs-tools live-tools rsync uuid-runtime iproute2 keyboard-configuration locales sudo passwd adduser efibootmgr gpg squashfs-tools
