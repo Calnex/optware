@@ -119,12 +119,14 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 	# Live config recipe (no not modify unless you know what you're doing!)		\
 	# /usr/lib/live/build/config --help						\
 	sudo lb config noauto								\
+		--verbose										\
 		--architecture				amd64				\
-		--binary-image				hdd				\
+		--binary-image				hdd					\
 		--binary-filesystem			ext4				\
-		--distribution				$(TARGET_DISTRO)		\
+		--distribution				$(TARGET_DISTRO)	\
 		--apt-indices				false				\
 		--apt-recommends			false				\
+		--apt-source-archives		false \
 		--ignore-system-defaults	true				\
 		--checksums					sha1				\
 		--win32-loader				false				\
@@ -135,10 +137,12 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--mirror-chroot-security	"$(TARGET_REPO_MIRROR)/debian-security"	\
 		--mirror-binary				"$(TARGET_REPO_MIRROR)/debian"	\
 		--mirror-binary-security	"$(TARGET_REPO_MIRROR)/debian-security"	\
-		--debootstrap-options		"--keyring=/home/jenkins/.gnupg/pubring.kbx"		\
+		--debootstrap-options		"--keyring=/home/jenkins/.gnupg/pubring.kbx"	\
 		--hdd-label					"$(DEBIAN_PARTITION_LABEL)"	\
-		--hdd-size					420				\
+		--memtest					none				\
+		--hdd-size					320					\
 		--bootloader				syslinux			\
+		--linux-packages			"linux-image-5.10.0-20" \
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
