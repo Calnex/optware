@@ -1,1 +1,33 @@
-nfs-kernel-server nfs-common openssh-server sudo samba wget tftpd parted python3 file screen libgdiplus ethtool ifrename libicu67 avahi-autoipd acpi-support-base dhcpcd5 hdparm install-info ntp gpg gpg-agent
+# Essentials for general operation
+acpi-support-base 
+sudo 
+wget 
+parted 
+file 
+screen 
+python3 
+
+# Network utilities
+ethtool 
+ifrename 
+avahi-autoipd 
+dhcpcd5 
+
+# Logging and file sharing
+nfs-kernel-server nfs-common 
+samba 
+tftpd 
+
+# Shell access
+openssh-server 
+gpg 
+gpg-agent 
+
+# Extra utilities
+libicu67 
+hdparm 
+ntp 
+install-info 
+
+# Backwards compatability (Mono)
+libgdiplus 

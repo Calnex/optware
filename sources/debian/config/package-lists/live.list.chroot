@@ -1,1 +1,19 @@
-live-boot live-boot-doc live-boot-initramfs-tools live-tools rsync uuid-runtime iproute2 keyboard-configuration locales sudo passwd adduser efibootmgr gpg squashfs-tools
+# Essentials
+uuid-runtime 
+iproute2 
+keyboard-configuration 
+sudo 
+passwd 
+adduser 
+gpg 
+rsync 
+binutils
+
+# Debian Live Build tools
+live-boot 
+live-boot-doc 
+live-boot-initramfs-tools 
+live-tools 
+locales 
+efibootmgr 
+squashfs-tools 
