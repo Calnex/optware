@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DEBIAN_VERSION?=09.xx
+DEBIAN_VERSION?=11.xx
 DEBIAN-EFI_SOURCE=debian-$(DEBIAN_VERSION).tar.gz
 DEBIAN-EFI_DIR=debian-efi-$(DEBIAN_VERSION)
 DEBIAN-EFI_UNZIP=zcat
@@ -118,11 +118,12 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 	# /usr/lib/live/build/config --help						\
 	sudo lb config noauto								\
 		--architecture				amd64				\
-		--binary-image				iso-hybrid				\
+		--binary-image				iso-hybrid			\
 		--binary-filesystem			ext4				\
-		--distribution				$(TARGET_DISTRO)		\
+		--distribution				$(TARGET_DISTRO)	\
 		--apt-indices				false				\
 		--apt-recommends			false				\
+		--apt-source-archives		false 				\
 		--ignore-system-defaults	true				\
 		--memtest					memtest86+			\
 		--checksums					sha1				\
@@ -131,13 +132,14 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		--backports					true				\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/security	\
+		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-binary-security	$(TARGET_REPO_MIRROR)/security	\
+		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security	\
 		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"		\
 		--hdd-label					"$(DEBIAN-EFI_PARTITION_LABEL)"	\
-		--hdd-size					320				\
-		--bootloader				grub-efi			\
+		--hdd-size					320						\
+		--bootloader				grub-efi				\
+		--linux-packages			"linux-image-5.10.0-20" \
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \

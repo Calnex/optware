@@ -126,7 +126,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--distribution				$(TARGET_DISTRO)	\
 		--apt-indices				false				\
 		--apt-recommends			false				\
-		--apt-source-archives		false \
+		--apt-source-archives		false 				\
 		--ignore-system-defaults	true				\
 		--checksums					sha1				\
 		--win32-loader				false				\
