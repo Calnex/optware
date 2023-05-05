@@ -1,5 +1,6 @@
 # Essentials
 uuid-runtime 
+iptables
 iproute2 
 keyboard-configuration 
 sudo 
