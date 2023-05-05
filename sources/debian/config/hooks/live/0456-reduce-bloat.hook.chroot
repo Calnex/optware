@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Reduce size of kernel modules and delete obviously uneeded modules
+MODULE_DIRECTORY=$(find /usr/lib/modules -mindepth 1 -type d -print -quit)
+echo "Cleaning kernel modules in $MODULE_DIRECTORY"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/bluetooth"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/thunderbolt"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/android"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/video"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/platform/surface"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/platform/chrome"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/net/wireless"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/net/hamradio"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/net/appletalk"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/media/firewire"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/gpu/drm/amd"
+rm -r "$MODULE_DIRECTORY/kernel/drivers/input/touchscreen"
+find "$MODULE_DIRECTORY" -iname "*.ko" -exec strip --strip-unneeded {} \;
+
+# remove uneeded locale information
+echo "Cleaning locale data"
+find /usr/share/locale/* -maxdepth 0 -type d -not \( -name 'en*' -or -name 'uk' \) -exec rm -r {} \;
+
+# remove package documentation
+echo "Cleaning uneeded docs"
+rm -r /usr/share/doc/*
