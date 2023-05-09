@@ -139,7 +139,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--mirror-binary-security	"$(TARGET_REPO_MIRROR)/debian-security"	\
 		--debootstrap-options		"--keyring=/home/jenkins/.gnupg/pubring.kbx"	\
 		--hdd-label					"$(DEBIAN_PARTITION_LABEL)"	\
-		--memtest					none				\
+		--memtest					none			\
 		--hdd-size					320					\
 		--bootloader				syslinux			\
 		--linux-packages			"linux-image-5.10.0-20" \

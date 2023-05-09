@@ -125,7 +125,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		--apt-recommends			false				\
 		--apt-source-archives		false 				\
 		--ignore-system-defaults	true				\
-		--memtest					memtest86+			\
+		--memtest					none				\
 		--checksums					sha1				\
 		--win32-loader				false				\
 		--loadlin					false				\
