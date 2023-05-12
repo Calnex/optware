@@ -6,7 +6,7 @@ echo "Cleaning kernel modules in $MODULE_DIRECTORY"
 rm -r "$MODULE_DIRECTORY/kernel/drivers/bluetooth"
 rm -r "$MODULE_DIRECTORY/kernel/drivers/thunderbolt"
 rm -r "$MODULE_DIRECTORY/kernel/drivers/android"
-rm -r "$MODULE_DIRECTORY/kernel/drivers/video"
+#rm -r "$MODULE_DIRECTORY/kernel/drivers/video"
 #rm -r "$MODULE_DIRECTORY/kernel/drivers/platform/surface"
 rm -r "$MODULE_DIRECTORY/kernel/drivers/platform/chrome"
 rm -r "$MODULE_DIRECTORY/kernel/drivers/net/wireless"
@@ -22,5 +22,8 @@ echo "Cleaning locale data"
 find /usr/share/locale/* -maxdepth 0 -type d -not \( -name 'en*' -or -name 'uk' \) -exec rm -r {} \;
 
 # remove package documentation
-echo "Cleaning uneeded docs"
-rm -r /usr/share/doc/*
+#echo "Cleaning uneeded docs"
+#rm -r /usr/share/doc/*
+
+# Clear apt cache
+rm -vr /var/cache/apt/
