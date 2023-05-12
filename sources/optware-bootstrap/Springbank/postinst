@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ `uname -m` = i686 ]; then
+if [ $(uname -m) = i686 ]; then
 echo "Setting up ipkg arch-file"
 mkdir -p /opt/etc/ipkg
 cat >> /opt/etc/ipkg/arch.conf << EOF
@@ -15,7 +15,6 @@ touch /etc/profile
 if ! grep '^PATH=.*/opt/bin' /etc/profile >/dev/null 2>&1 ; then
   echo "PATH=/opt/bin:/opt/sbin:\$PATH" >> /etc/profile
 fi
-
 
 if ! grep '^# Optware setup' /etc/rc.local >/dev/null 2>&1
 then

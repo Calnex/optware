@@ -14,7 +14,7 @@
 
 #########
 if [ -z "$1" ] ; then
-    case `echo "$0" | /bin/sed 's:^.*/\(.*\):\1:g'` in
+    case $(echo "$0" | /bin/sed 's:^.*/\(.*\):\1:g') in
         S??*) rc="start" ;;
         K??*) rc="stop" ;;
         *) rc="usage" ;;
@@ -26,7 +26,7 @@ fi
 case "$1" in
   start)
         /sbin/loading_server &
-		    INIT_SERVER_MESSAGE="init_server called"
+        export INIT_SERVER_MESSAGE="init_server called"
         ;;
   stop)
         pkill -f '/sbin/loading_server'

@@ -7,7 +7,7 @@ fi
 
 case "$1" in
     start)
-        echo "Starting Optware."
+        echo "Starting Optware." | tee -a /var/log/SystemConfig
         if test -n "${REAL_OPT_DIR}"; then
             if ! grep ' /opt ' /proc/mounts >/dev/null 2>&1 ; then
                 mkdir -p /opt
@@ -16,12 +16,12 @@ case "$1" in
         fi
 	
         # Default repo location to network
-        echo "src/gz local file://home/.optware/srv/tftp/optware"       > /opt/etc/ipkg/cross-feed.conf
+        echo "src/gz local file://home/.optware/srv/tftp/optware" > /opt/etc/ipkg/cross-feed.conf
         
         # Call USB script, it should make no change
         # if no USB is present
         /bin/optwareUSB add
-        
+
         if [ -x /etc/init.d/S00SystemConfiguration ]; then
             /etc/init.d/S00SystemConfiguration
         fi        
@@ -35,8 +35,17 @@ case "$1" in
         # Fix the network interfaces config which is prone to being incorrect on VM's
         [ -x /etc/init.d/S90fix-interfaces ] && /etc/init.d/S90fix-interfaces
 
+        # Some pre optware dev script hooks
+        [ -x /opt/etc/hooks/root.preopt ] && /opt/etc/hooks/root.preopt
+        [ -x /opt/etc/hooks/user.preopt ] && su - calnex -c '/opt/etc/hooks/user.preopt'
+
         # Start all optware packages
         [ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
+
+        # Some post optware dev script hooks
+        [ -x /opt/etc/hooks/root.postopt ] && /opt/etc/hooks/root.postopt
+        [ -x /opt/etc/hooks/user.postopt ] && su - calnex -c '/opt/etc/hooks/user.postopt'
+
         ;;
     reconfig)
         true
