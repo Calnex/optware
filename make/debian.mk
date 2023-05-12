@@ -30,7 +30,7 @@ DEBIAN_VERSION?=11.00
 DEBIAN_SOURCE=debian-$(DEBIAN_VERSION).tar.gz
 DEBIAN_DIR=debian-$(DEBIAN_VERSION)
 DEBIAN_UNZIP=zcat
-DEBIAN_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
+DEBIAN_MAINTAINER=calnexsol <info@calnexsol.com>
 DEBIAN_DESCRIPTION=Minimal install of the Debian GNU/Linux Operating System
 DEBIAN_SECTION=kernel
 DEBIAN_PRIORITY=optional
@@ -137,7 +137,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--mirror-chroot-security	"$(TARGET_REPO_MIRROR)/debian-security"	\
 		--mirror-binary				"$(TARGET_REPO_MIRROR)/debian"	\
 		--mirror-binary-security	"$(TARGET_REPO_MIRROR)/debian-security"	\
-		--debootstrap-options		"--keyring=/home/jenkins/.gnupg/pubring.kbx"	\
+		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"	\
 		--hdd-label					"$(DEBIAN_PARTITION_LABEL)"	\
 		--memtest					none			\
 		--hdd-size					320					\
@@ -148,7 +148,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
 		#sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
-		sudo mkdir -p $(@D)/config/packages.chroot;\
+		sudo mkdir -p $(@D)/config/packages.chroot; \
 		cd $(@D)/config/packages.chroot;	\
 		sudo wget -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
 		sudo dpkg-name SysMgmtDaemon_*.deb;	\
