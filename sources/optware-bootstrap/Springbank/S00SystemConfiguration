@@ -1,5 +1,5 @@
-#! /bin/bash
-echo 'Starting SystemConfig' | tee -a /var/log/SystemConfig
+#!/bin/bash
+echo 'Starting S00SystemConfig' | tee -a /var/log/SystemConfig
 echo "Current PATH is $PATH" | tee -a /var/log/SystemConfig
 
 if [ -e /sys/firmware/efi ]
@@ -224,14 +224,12 @@ else
   
   echo 'BIOS system' | tee -a /var/log/SystemConfig
   
-  
   #################
   # Partition disk
   #################
   
-  if [ ! -b /dev/sda3  ]
-  then
-    echo 'dev/sda3 not present' >> /var/log/SystemConfig
+  if [ ! -b /dev/sda3  ]; then
+    echo 'dev/sda3 not present' | tee -a /var/log/SystemConfig
 fdisk /dev/sda <<EOF1
 n
 p
@@ -246,14 +244,14 @@ EOF1
     partprobe
     mkswap /dev/sda3
   else
-    echo 'dev/sda3 present' >> /var/log/SystemConfig
-    echo 'current PATH is $PATH ' >> /var/log/SystemConfig
+    echo '/dev/sda3 present' | tee -a /var/log/SystemConfig
+    echo "current PATH is $PATH " | tee -a /var/log/SystemConfig
     swapon /dev/sda3
   fi
   
   if [ ! -b /dev/sda4  ]
   then
-    echo 'dev/sda4 not present' >> /var/log/SystemConfig
+    echo '/dev/sda4 not present' | tee -a /var/log/SystemConfig
 fdisk /dev/sda <<EOF2
 n
 p
@@ -266,7 +264,7 @@ EOF2
     file -s /dev/sda4 | grep ext4
       if [[ $? != 0 ]]
       then
-    	  echo 'On persistence detected' >> /var/log/SystemConfig
+    	  echo 'On persistence detected' | tee -a /var/log/SystemConfig
         mkfs.ext4 -L persistence /dev/sda4
         mkdir -p /mnt/home
         mount /dev/sda4 /mnt/home
@@ -281,6 +279,7 @@ EOF2
   
   ## Check for previous Wheezy Install
   if [ -d /run/live/persistence/sda4/home/calnex ]; then
+    echo 'Migrating home directory from Wheezy' | tee -a /var/log/SystemConfig
     rm -rf /run/live/persistence/sda4/home/rw/calnex
     rm -rf /run/live/persistence/sda4/home/rw/.optware
     mv /run/live/persistence/sda4/home/calnex /run/live/persistence/sda4/home/rw
@@ -293,14 +292,12 @@ EOF2
   # Update Debian
   ################
   
-  if [[ -e /opt/var/lib/debian/root.img ]]
-  then
-    echo 'Updating Debian' >> /var/log/SystemConfig
+  if [[ -e /opt/var/lib/debian/root.img ]]; then
+    echo 'Updating Debian' | tee -a /var/log/SystemConfig
     cd /opt/var/lib/debian/
     OLD_PARTITION=$(fdisk -l /dev/sda | awk '$2 == "*" {print $1}')
     OLD_PARTITION="${OLD_PARTITION: -1}"
-    if [ "$OLD_PARTITION" = "1" ]
-    then
+    if [ "$OLD_PARTITION" = "1" ]; then
       NEW_PARTITION=2
       NEW_PARTITION_START=2099200
     else
@@ -311,20 +308,18 @@ EOF2
     LABEL_ROOT=${LABEL_ROOT##*\=}
     LABEL_IMG=$(blkid -s LABEL root.img)
     LABEL_IMG=${LABEL_IMG##*\=}
-    if [ ${LABEL_ROOT} != ${LABEL_IMG} ]
-    then
+    if [ "${LABEL_ROOT}" != "${LABEL_IMG}" ]; then
       gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.img.asc root.img 2>/dev/null 1>&2
-      if [ $? = 0 ]
-      then
+      if [ $? = 0 ]; then
         IMG_SIZE=$(ls -l root.img | awk '{print $5}')
   
-        echo "Old OS ${LABEL_ROOT}"
-        echo "New OS ${LABEL_IMG}"
-        echo "New OS Size ${IMG_SIZE}"
+        echo "Old OS ${LABEL_ROOT}" | tee -a /var/log/SystemConfig
+        echo "New OS ${LABEL_IMG}" | tee -a /var/log/SystemConfig
+        echo "New OS Size ${IMG_SIZE}" | tee -a /var/log/SystemConfig
         
         # Delete partition, just to be sure
         parted /dev/sda --script rm ${NEW_PARTITION} -- 2>/dev/null 1>&2
-        echo "Partition ${NEW_PARTITION} deleted"
+        echo "Partition ${NEW_PARTITION} deleted" | tee -a /var/log/SystemConfig
         
         partprobe
         parted /dev/sda --script mkpart primary ${NEW_PARTITION_START}s $((${NEW_PARTITION_START} + ($IMG_SIZE/512)))s  -- 2>/dev/null 1>&2
@@ -335,21 +330,25 @@ ${NEW_PARTITION}
 83
 w
 EOF4
-        echo "Partition ${NEW_PARTITION} created"
+        echo "Partition ${NEW_PARTITION} created" | tee -a /var/log/SystemConfig
         
         partprobe
         dd if=root.img of=/dev/sda${NEW_PARTITION} 2>/dev/null 1>&2
-        echo "root.img installed"
+        echo "root.img installed" | tee -a /var/log/SystemConfig
         
         sync
         parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2
-        echo "Partition ${NEW_PARTITION} marked as boot"
+        echo "Partition ${NEW_PARTITION} marked as boot" | tee -a /var/log/SystemConfig
         
         sync
         reboot
       else
-        echo "Debian update image keysign check failed!"
+        echo "Debian update image keysign check failed!" | tee -a /var/log/SystemConfig
       fi
+    else
+      echo "Debian Image is already installed. Starting normally" | tee -a /var/log/SystemConfig
     fi
+  else
+    echo "No new debian image found. Starting normally" | tee -a /var/log/SystemConfig
   fi
 fi
