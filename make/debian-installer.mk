@@ -117,18 +117,19 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 	cp -ar $(DEBIAN-INSTALLER_CONFIG) $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)
 	mkdir -p $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware
 	cd $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)/config/includes.binary/optware ; \
-		wget -r --no-parent --no-host-directories --cut-dirs=3 --reject "index.html*" \
+		wget -c -r --no-parent --no-host-directories --cut-dirs=3 --reject "index.html*" \
 		$(TARGET_PACKAGES_MIRROR) | true; # Don't error out.
 	if test "$(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR) $(@D) ; \
 	fi
 	(cd $(@D); \
-	# Live config recipe (no not modify unless you know  what you're doing!)	\
+	# Live config recipe (no not modify unless you know  what you're doing!) \
 	# # /usr/lib/live/build/config --help					\
 	sudo lb config											\
+		--verbose	\
 		--architectures				amd64					\
 		--binary-images				iso-hybrid				\
-		--distribution				stretch					\
+		--distribution				$(TARGET_DISTRO)		\
 		--memtest					none					\
 		--checksums					sha1					\
 		--bootloaders				$(INSTALLER_BOOTLOADER)	\
@@ -138,17 +139,16 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--loadlin					false					\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian		\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian		\
-		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/security		\
+		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security \
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian		\
-		--mirror-binary-security	$(TARGET_REPO_MIRROR)/security		\
-		--debootstrap-options		"--no-check-gpg" 					\
+		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security \
 		--bootappend-live			"boot=live config username=calnex"	\
 		--iso-application			"Springbank installer"		\
 		--iso-publisher				"Calnex Solutions"			\
 		--iso-volume				"Calnex Installer"			\
-		--linux-packages			"linux-image-5.10.0-20" 	\
-		;										\
-		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 				\
+		--linux-packages			"linux-image-5.10.0-22" 	\
+		;														\
+		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 		\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
 	)
 	touch $@
