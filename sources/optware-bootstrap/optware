@@ -14,6 +14,11 @@ case "$1" in
                 mount -o bind "${REAL_OPT_DIR}" /opt
             fi
         fi
+
+        if grep "clnx-no-setup" /proc/cmdline 2>/dev/null; then
+            echo "Boot paramater clnx-no-setup set. Not starting optware or configuring system" | tee -a /var/log/SystemConfig
+            exit 0
+        fi
 	
         # Default repo location to network
         echo "src/gz local file://home/.optware/srv/tftp/optware" > /opt/etc/ipkg/cross-feed.conf
@@ -34,6 +39,11 @@ case "$1" in
 
         # Fix the network interfaces config which is prone to being incorrect on VM's
         [ -x /etc/init.d/S90fix-interfaces ] && /etc/init.d/S90fix-interfaces
+
+        if grep "clnx-no-optware" /proc/cmdline 2>/dev/null; then
+            echo "Boot paramater clnx-no-optware set. Not starting optware" | tee -a /var/log/SystemConfig
+            exit 0
+        fi
 
         # Some pre optware dev script hooks
         [ -x /opt/etc/hooks/root.preopt ] && /opt/etc/hooks/root.preopt
