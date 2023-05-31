@@ -15,11 +15,13 @@ then
     ################################################################################
     # First ever boot - partition disk
     ################################################################################
+    echo 'First ever boot after fresh install, setting up partitions for first time' | tee -a /var/log/SystemConfig
+
   
     # Initial EFI partition still present - tells us that the code in this block, to partition disk, has not yet run
   
     # Fix the GPT to use all of the available space (after initial install the GPT will be sized for the installation iso)
-    parted /dev/sda ---pretend-input-tty print Fix
+    echo -e "print\nFix" | parted /dev/sda ---pretend-input-tty
     partprobe
   
     if [ ! -b /dev/sda3 ]
@@ -53,7 +55,7 @@ then
       mkswap /dev/sda7
       swapon /dev/sda7
     fi
-  
+
     echo 'Resizing sda4 to use all remaining space' | tee -a /var/log/SystemConfig
     parted /dev/sda resizepart 4 100%
   
@@ -80,7 +82,8 @@ then
     ################################################################################
     # Any boot apart from first boot
     ################################################################################
-    
+    echo 'Standard boot' | tee -a /var/log/SystemConfig
+
     if [ -b /dev/sda1 ]
     then
       echo 'Removing initial install rootfs partition' | tee -a /var/log/SystemConfig
@@ -93,6 +96,7 @@ then
       ################################################################################
       # Post factory reset - recreate persistence partition of sda4
       ################################################################################
+      echo 'Post-Factory reset recovery' | tee -a /var/log/SystemConfig
     
       if [ -b /dev/sda1 ]
       then
