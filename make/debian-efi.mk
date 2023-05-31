@@ -182,7 +182,8 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 		rm -rf tmp; \
 		\
 		# Ensure that the rule that is used by the installed EFI image to find the installed rootfs partition, defined in its embedded grub.cfg, is distinct from that which will be used by the initial installer's EFI image, preventing any boot conflicts between the two (e.g. after installation when USB stick is still connected) \
-		sed -e 's|root /.disk/info|root /.disk/1234|' bootable_temp.iso > bootable.iso; \
+		sed -e 's|root /.disk/info|root /.disk/1234|' bootable_temp.iso > bootable_temp2.iso; \
+		sed -e 's|file /.disk/info|file /.disk/1234|' bootable_temp2.iso > bootable.iso; \
 		\
 		# Extract EFI (boot) and rootfs (root) partitions into individual images \
 		dd \
