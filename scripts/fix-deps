@@ -1,3 +1,19 @@
 #!/bin/bash
 
-apt-get install -y build-essential zlib1g-dev pkg-config autoconf automake autogen autopoint libtool flex bison monodevelop live-build live-boot live-config libmono-system-data-datasetextensions4.0-cil libffi-dev gettext libtool-bin ruby libicu-dev gperf bison libjpeg-dev default-jre
+# Build dependencies for live-build and kernel building
+apt-get install -y wget build-essential libtool live-build libtool-bin gettext squashfs-tools
+apt-get install -y linux-source bc kmod cpio flex libncurses5-dev libelf-dev libssl-dev dwarves bison flex gnupg libncurses-dev 
+
+# Additional dependencies for building various IPKs
+apt-get install -y git gpg npm libffi7 libffi-dev automake openjdk-11-jre  
+apt-get install -y postgresql postgresql-client
+apt-get install -y fuseiso genisoimage xorriso
+
+# Install dotnet 5
+wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+chmod +x dotnet-install.sh
+./dotnet-install.sh --channel 5.0 --install-dir /usr/share/dotnet --skip-non-versioned-files
+ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet 
+rm dotnet-install.sh
+
+
