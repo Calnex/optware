@@ -3,6 +3,7 @@
 set -e
 
 # unpack OS files
+echo "Unpacking OS files..."
 mkdir /os-install
 cd /os-install
 tar zxvf /cdrom/optware/debian*
@@ -19,9 +20,9 @@ else
   
   # write bootloader
   dd if=boot.img of=/dev/sda
-  sleep 0.2
+  sleep 1
   sync
-  sleep 0.2
+  sleep 1
 
   # write root partition
   blockdev --rereadpt /dev/sda
@@ -30,4 +31,5 @@ else
   sync
 fi
 
+echo "Rebooting to setup partitions"
 reboot

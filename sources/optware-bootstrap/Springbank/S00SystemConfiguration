@@ -2,16 +2,14 @@
 echo 'Starting S00SystemConfig' | tee -a /var/log/SystemConfig
 echo "Current PATH is $PATH" | tee -a /var/log/SystemConfig
 
-if [ -e /sys/firmware/efi ]
-then
+if [ -e /sys/firmware/efi ]; then
   ################################################################################
   # EFI
   ################################################################################
 
   echo 'EFI system' | tee -a /var/log/SystemConfig
     
-  if [ -b /dev/sda2 ]
-  then
+  if [ -b /dev/sda2 ]; then
     ################################################################################
     # First ever boot - partition disk
     ################################################################################
@@ -24,32 +22,27 @@ then
     echo -e "print\nFix" | parted /dev/sda ---pretend-input-tty
     partprobe
   
-    if [ ! -b /dev/sda3 ]
-    then
+    if [ ! -b /dev/sda3 ]; then
       echo 'Creating partition 3 - EFI - 512Mb' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart EFI 4194304s 5242879s
     fi
   
-    if [ ! -b /dev/sda4 ]
-    then
+    if [ ! -b /dev/sda4 ]; then
       echo 'Creating partition 4 - persistence - 1Gb (initially)' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart persistence 30408704s 32505855s
     fi
   
-    if [ ! -b /dev/sda5 ]
-    then
+    if [ ! -b /dev/sda5 ]; then
       echo 'Creating partition 5 - rootfs(1) - 2Gb' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart rootfs1 5242880s 9437183s
     fi
   
-    if [ ! -b /dev/sda6 ]
-    then
+    if [ ! -b /dev/sda6 ]; then
       echo 'Creating partition 6 - rootfs(2) - 2Gb' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart rootfs2 9437184s 13631487s
     fi
   
-    if [ ! -b /dev/sda7 ]
-    then
+    if [ ! -b /dev/sda7 ]; then
       echo 'Creating partition 7 - swap - 8Gb' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart swap 13631488s 30408703s
       mkswap /dev/sda7
@@ -84,34 +77,29 @@ then
     ################################################################################
     echo 'Standard boot' | tee -a /var/log/SystemConfig
 
-    if [ -b /dev/sda1 ]
-    then
+    if [ -b /dev/sda1 ]; then
       echo 'Removing initial install rootfs partition' | tee -a /var/log/SystemConfig
       parted /dev/sda rm 1
     fi  
   
     # Check for persistence partition and recreate if necessary (post factory reset)
-    if [ ! -b /dev/sda4 ]
-    then
+    if [ ! -b /dev/sda4 ]; then
       ################################################################################
       # Post factory reset - recreate persistence partition of sda4
       ################################################################################
       echo 'Post-Factory reset recovery' | tee -a /var/log/SystemConfig
     
-      if [ -b /dev/sda1 ]
-      then
+      if [ -b /dev/sda1 ]; then
         echo '*** Unexpected configuration when attempting to recreate persistence partition: sda1 already exists ***' | tee -a /var/log/SystemConfig              
         exit 1
       fi
     
-      if [ -b /dev/sda2 ]
-      then
+      if [ -b /dev/sda2 ]; then
         echo '*** Unexpected configuration when attempting to recreate persistence partition: sda2 already exists ***' | tee -a /var/log/SystemConfig              
         exit 1
       fi
     
-      if [ ! -b /dev/sda3 ]
-      then
+      if [ ! -b /dev/sda3 ]; then
         echo '*** Unexpected configuration when attempting to recreate persistence partition: sda3 not found ***' | tee -a /var/log/SystemConfig              
         exit 1
       fi      
@@ -142,9 +130,8 @@ then
   ################################################################################
     
   file -s /dev/sda4 | grep ext4
-  if [[ $? != 0 ]]
-  then
-	echo 'Making file system on sda4' | tee -a /var/log/SystemConfig
+  if [[ $? != 0 ]]; then
+	  echo 'Making file system on sda4' | tee -a /var/log/SystemConfig
     mkfs.ext4 -L persistence /dev/sda4
     mkdir -p /mnt/home
     mount /dev/sda4 /mnt/home
@@ -187,11 +174,9 @@ then
     echo "Old OS ${LABEL_ROOT}" | tee -a /var/log/SystemConfig
     echo "New OS ${LABEL_IMG}" | tee -a /var/log/SystemConfig
     
-    if [ ${LABEL_ROOT} != ${LABEL_IMG} ]
-    then
+    if [ "${LABEL_ROOT}" != "${LABEL_IMG}" ]; then
       gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.iso.asc root.iso 2>/dev/null 1>&2
-      if [ $? = 0 ]
-      then
+      if [ $? = 0 ]; then
         echo 'Installing new Debian image' | tee -a /var/log/SystemConfig
         dd if=root.iso of=/dev/sda${NEW_PARTITION} bs=8M 2>/dev/null 1>&2
         echo 'root.iso installed' | tee -a /var/log/SystemConfig
@@ -234,17 +219,17 @@ else
   
   if [ ! -b /dev/sda3  ]; then
     echo 'dev/sda3 not present' | tee -a /var/log/SystemConfig
-fdisk /dev/sda <<EOF1
-n
-p
-3
-4194368
-20971583
-t
-3
-82
-w
-EOF1
+    (
+      echo n        # Add a new partition
+      echo p        # Primary partition
+      echo 3        # Partition 3
+      echo 4194368  # First sector
+      echo 20971583 # Last sector
+      echo t        # Change partition type
+      echo 3        # Partition 3
+      echo 82       # Change to linux swap (type 82)
+      echo w        # Write changes
+    ) | fdisk /dev/sda
     partprobe
     mkswap /dev/sda3
   else
@@ -253,31 +238,30 @@ EOF1
     swapon /dev/sda3
   fi
   
-  if [ ! -b /dev/sda4  ]
-  then
+  if [ ! -b /dev/sda4  ]; then
     echo '/dev/sda4 not present' | tee -a /var/log/SystemConfig
-fdisk /dev/sda <<EOF2
-n
-p
-4
-20971584
+    (
+      echo n          # Add a new partition
+      echo p          # Primary partition
+      echo 4          # Partition 4
+      echo 20971584   # First sector
+      echo ""         # Default last sector (end of disk)
+      echo w          # Write changes
+    ) | fdisk /dev/sda
 
-w
-EOF2
     partprobe
     file -s /dev/sda4 | grep ext4
-      if [[ $? != 0 ]]
-      then
-    	  echo 'On persistence detected' | tee -a /var/log/SystemConfig
-        mkfs.ext4 -L persistence /dev/sda4
-        mkdir -p /mnt/home
-        mount /dev/sda4 /mnt/home
-        echo '/home union' >> /mnt/home/persistence.conf
-        echo '/var/log union' >> /mnt/home/persistence.conf
-        echo '/var/lib/dhcp union' >> /mnt/home/persistence.conf
-        umount /mnt/home
-        rm -rf /mnt/home
-      fi
+    if [[ $? != 0 ]]; then
+      echo 'On persistence detected' | tee -a /var/log/SystemConfig
+      mkfs.ext4 -L persistence /dev/sda4
+      mkdir -p /mnt/home
+      mount /dev/sda4 /mnt/home
+      echo '/home union' >> /mnt/home/persistence.conf
+      echo '/var/log union' >> /mnt/home/persistence.conf
+      echo '/var/lib/dhcp union' >> /mnt/home/persistence.conf
+      umount /mnt/home
+      rm -rf /mnt/home
+    fi
     reboot
   fi
   
@@ -328,12 +312,12 @@ EOF2
         partprobe
         parted /dev/sda --script mkpart primary ${NEW_PARTITION_START}s $((${NEW_PARTITION_START} + ($IMG_SIZE/512)))s  -- 2>/dev/null 1>&2
         
-fdisk /dev/sda << EOF4 2>/dev/null 1>&2
-t
-${NEW_PARTITION}
-83
-w
-EOF4
+        (
+          echo t                  # Change partition type
+          echo ${NEW_PARTITION}   # Select new partition
+          echo 83                 # Select data partition (type 83)
+          echo w                  # Write changes
+        ) | fdisk /dev/sda
         echo "Partition ${NEW_PARTITION} created" | tee -a /var/log/SystemConfig
         
         partprobe
