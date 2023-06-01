@@ -298,6 +298,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 		  install -d -m 775 $(ENDOR_IPK_DIR)/opt/var/lib/embedded; \
 		  install -m 755 $(BASE_DIR)/downloads/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz $(ENDOR_IPK_DIR)/opt/var/lib/embedded/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz; \
 		  install -m 755 $(BASE_DIR)/downloads/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz.md5 $(ENDOR_IPK_DIR)/opt/var/lib/embedded/fw-update-$(ENDOR_FIRMWARE_VERSION).tar.gz.md5; \
+		  cat $(ENDOR_SOURCE_DIR)/preinst.firmware >> $(ENDOR_IPK_DIR)/CONTROL/preinst || true;\
 		  cat $(ENDOR_SOURCE_DIR)/postinst.firmware >> $(ENDOR_IPK_DIR)/CONTROL/postinst; \
 		  sed -i -e 's/__FIRMWARE_VERSION__/${ENDOR_FIRMWARE_VERSION}/g' $(ENDOR_IPK_DIR)/CONTROL/postinst; \
 	   fi; \
