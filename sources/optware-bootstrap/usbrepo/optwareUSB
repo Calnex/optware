@@ -1,8 +1,18 @@
 #! /bin/sh
 
+update_cross_feed() {
+    repo=${1:-'home/.optware/srv/tftp/optware'}
+    if [ "$(id -u)" -eq 0 ]; then
+        su calnex -c "echo 'src/gz local file://${repo}' > /opt/etc/ipkg/cross-feed.conf"
+    else
+        echo "src/gz local file://${repo}" > /opt/etc/ipkg/cross-feed.conf
+    fi
+    return $?
+}
+
 #########
 if [ -z "$1" ] ; then
-    case `echo "$0" | /bin/sed 's:^.*/\(.*\):\1:g'` in
+    case $(echo "$0" | /bin/sed 's:^.*/\(.*\):\1:g') in
         S??*) rc="add" ;;
         K??*) rc="remove" ;;
         *) rc="usage" ;;
@@ -14,15 +24,11 @@ fi
 case "$rc" in
     add)
         voodoo mount /dev/sdb /media/usb
-        REPO=`find /media -type f -name Packages -exec grep -l "\bendor\b" {} \; | sed 's/Packages//g' | sed s'/^\///'`
-	if [ "$REPO" != "" ]
-	then
-	        su calnex -c "echo 'src/gz local file://'$REPO	> /opt/etc/ipkg/cross-feed.conf"
-	fi
+        update_cross_feed $(find /media -type f -name Packages -exec grep -l "\bendor\b" {} \; | sed 's/Packages//g' | sed s'/^\///')
         ;;
     remove)
         voodoo umount /media/usb
-	su calnex -c "echo 'src/gz local file://home/.optware/srv/tftp/optware'	> /opt/etc/ipkg/cross-feed.conf"
+        update_cross_feed
         ;;
     *)
         echo "Usage: $0 (add|remove)"
