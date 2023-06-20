@@ -142,6 +142,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security \
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian		\
 		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security \
+		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"	\
 		--bootappend-live			"boot=live config username=calnex"	\
 		--iso-application			"Springbank installer"		\
 		--iso-publisher				"Calnex Solutions"			\
