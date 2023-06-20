@@ -1,0 +1,25 @@
+From 53e90a16adf830ae35a475ce92f6f81ab68685ba Mon Sep 17 00:00:00 2001
+From: Jamie Barnes <jamie.barnes@calnexsol.com>
+Date: Tue, 20 Jun 2023 14:49:19 +0100
+Subject: [PATCH 1/1] Fixed segfault when run in newer kernel versions
+
+---
+ pkg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pkg.c b/pkg.c
+index 9214106..d60009e 100644
+--- a/pkg.c
++++ b/pkg.c
+@@ -1460,7 +1460,7 @@ int pkg_run_script(ipkg_conf_t *conf, pkg_t *pkg,
+ 	  return err;
+      }
+ 
+-     xsystem('sync');
++     xsystem("sync");
+ 
+      return 0;
+ }
+-- 
+2.17.1
+
