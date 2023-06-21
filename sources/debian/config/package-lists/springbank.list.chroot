@@ -15,7 +15,7 @@ dhcpcd5
 
 # Logging and file sharing
 nfs-kernel-server nfs-common 
-samba 
+samba samba-vfs-modules 
 tftpd 
 
 # Shell access
