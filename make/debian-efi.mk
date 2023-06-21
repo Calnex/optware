@@ -169,7 +169,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 		cp tmp/boot/grub/efi.img ./efi.img; \
 		xorriso -as genisoimage \
 			-r -V '$(DEBIAN-EFI_PARTITION_LABEL)' \
-			-o bootable_temp.iso \
+			-o bootable.iso \
 			-J -joliet-long -cache-inodes \
 			-append_partition 2 0xef ./efi.img \
 			-appended_part_as_gpt \
@@ -180,10 +180,6 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 			tmp; \
 		fusermount -u tmp; \
 		rm -rf tmp; \
-		\
-		# Ensure that the rule that is used by the installed EFI image to find the installed rootfs partition, defined in its embedded grub.cfg, is distinct from that which will be used by the initial installer's EFI image, preventing any boot conflicts between the two (e.g. after installation when USB stick is still connected) \
-		sed -e 's|root /.disk/info|root /.disk/1234|' bootable_temp.iso > bootable_temp2.iso; \
-		sed -e 's|file /.disk/info|file /.disk/1234|' bootable_temp2.iso > bootable.iso; \
 		\
 		# Extract EFI (boot) and rootfs (root) partitions into individual images \
 		dd \
