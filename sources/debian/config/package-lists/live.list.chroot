@@ -16,5 +16,8 @@ live-boot-doc
 live-boot-initramfs-tools 
 live-tools 
 locales 
-efibootmgr 
 squashfs-tools 
+
+# Boot utilities
+efibootmgr 
+memtest86+ 

@@ -21,6 +21,11 @@ find "$MODULE_DIRECTORY" -iname "*.ko" -exec strip --strip-unneeded {} \;
 echo "Cleaning locale data"
 find /usr/share/locale/* -maxdepth 0 -type d -not \( -name 'en*' -or -name 'uk' \) -exec rm -r {} \;
 
+# if memtest is installed we don't need the ISO images it produces
+if [ -d /usr/lib/memtest86+ ]; then
+    rm /usr/lib/memtest86+/*.iso
+fi
+
 # remove package documentation
 #echo "Cleaning uneeded docs"
 #rm -r /usr/share/doc/*

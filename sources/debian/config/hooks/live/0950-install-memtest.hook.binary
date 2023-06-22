@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# copy over memtest86 if it exists to the live directory
+if [ -f ../chroot/boot/memtest86+x64.bin ]; then
+    echo "Installing memtest to binary/live"
+    cp -v ../chroot/boot/memtest86+x64.bin live/memtest
+fi
+
