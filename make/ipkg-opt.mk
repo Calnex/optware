@@ -75,11 +75,7 @@ IPKG-OPT_PATCHES=$(IPKG-OPT_SOURCE_DIR)/args.h.patch \
 	$(IPKG-OPT_SOURCE_DIR)/ipkg-va_start_segfault.diff \
 	$(IPKG-OPT_SOURCE_DIR)/list_installed.patch \
 	$(IPKG-OPT_SOURCE_DIR)/ipkg_install.c.patch \
-<<<<<<< HEAD
-	$(IPKG-OPT_SOURCE_DIR)/pkg_run_script_segfault.patch.patch
-=======
 	$(IPKG-OPT_SOURCE_DIR)/pkg_run_script_segfault.patch
->>>>>>> e8c5a3f76... Fixed incorrect name of newly added patch file
 
 ifeq ($(LIBC_STYLE), uclibc)
 IPKG-OPT_PATCHES += $(IPKG-OPT_SOURCE_DIR)/ipkg_download.c.patch
