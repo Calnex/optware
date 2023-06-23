@@ -147,7 +147,7 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian			\
 		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security	\
-		--debootstrap-options		"--no-check-gpg" 						\
+		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"	\
 		--iso-application			"Springbank demo"						\
 		--iso-publisher				"Calnex Solutions"						\
 		--iso-volume				"Springbank demo"						\
