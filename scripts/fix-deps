@@ -9,7 +9,7 @@ sudo apt-get install -y linux-source bc kmod cpio flex libncurses5-dev libelf-de
 
 # Additional dependencies for building various IPKs
 echo "Installing Endor essentials.."
-sudo apt-get install -y git gpg npm libffi7 libffi-dev automake openjdk-11-jre nunit
+sudo apt-get install -y git gpg libffi7 libffi-dev automake openjdk-11-jre nunit
 
 # Setup nodejs
 if ! command -v node; then
@@ -35,7 +35,7 @@ EOF
 fi
 
 # For ipkg-opt ipkg-utils
-if ! command reindent; then
+if ! test -x /usr/bin/python2.7; then
     echo "  Installing legacy python"
     sudo apt-get install -y python2.7
 fi
@@ -49,16 +49,16 @@ if [ ! -d /usr/share/dotnet/sdk/5.0.408 ]; then
 fi
 
 # Install dotnet 6
-if [ ! -d /usr/share/dotnet/sdk/6.0.411 ]; then
-    echo "  Installing dotnet 6"
-    [ ! -f dotnet-install.sh ] && wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
-    chmod +x dotnet-install.sh
-#    ./dotnet-install.sh --channel 6.0.4xx --install-dir /usr/share/dotnet --skip-non-versioned-files
-fi
+#if [ ! -d /usr/share/dotnet/sdk/6.0.411 ]; then
+#    echo "  Installing dotnet 6"
+#    [ ! -f dotnet-install.sh ] && wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+#    chmod +x dotnet-install.sh
+#    sudo ./dotnet-install.sh --channel 6.0.4xx --install-dir /usr/share/dotnet --skip-non-versioned-files
+#fi
 
 # Link dotnet if installed
 if [ -x /usr/share/dotnet/dotnet ] && [ ! -L /usr/bin/dotnet ]; then
-    ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet 
+    sudo ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet 
 fi
 
 # Cleanup
