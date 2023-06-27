@@ -16,7 +16,7 @@ index 9214106..d60009e 100644
       }
  
 -     xsystem('sync');
-+     xsystem("sync");
++     //xsystem("sync");
  
       return 0;
  }
