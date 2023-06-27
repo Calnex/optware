@@ -1,19 +1,67 @@
 #!/bin/bash
 
+sudo apt-get update
+
 # Build dependencies for live-build and kernel building
-apt-get install -y wget build-essential libtool live-build libtool-bin gettext squashfs-tools
-apt-get install -y linux-source bc kmod cpio flex libncurses5-dev libelf-dev libssl-dev dwarves bison flex gnupg libncurses-dev 
+echo "Installing LiveBuild and Kernel essentials.."
+sudo apt-get install -y wget build-essential libtool live-build libtool-bin gettext squashfs-tools
+sudo apt-get install -y linux-source bc kmod cpio flex libncurses5-dev libelf-dev libssl-dev dwarves bison flex gnupg libncurses-dev 
 
 # Additional dependencies for building various IPKs
-apt-get install -y git gpg npm libffi7 libffi-dev automake openjdk-11-jre  
-apt-get install -y postgresql postgresql-client
-apt-get install -y fuseiso genisoimage xorriso
+echo "Installing Endor essentials.."
+sudo apt-get install -y git gpg npm libffi7 libffi-dev automake openjdk-11-jre nunit
+
+# Setup nodejs
+if ! command -v node; then
+    sudo apt-get install -y curl
+    curl -sL https://deb.nodesource.com/setup_18.x | sudo bash -
+    sudo apt-get install -y nodejs npm
+fi
+
+# For generating images
+sudo apt-get install -y fuseiso genisoimage xorriso
+
+# Setup postgres
+if ! command -v psql &> /dev/null; then
+    echo "  Installing postgresql"
+    sudo apt-get install -y postgresql postgresql-client
+
+    sudo -i -u postgres bash << EOF
+psql template1 -c "ALTER USER postgress PASSWORD 'postgres'";
+#sed -i 's|trust|md5|' /etc/postgresl/13/main/pg_hba.conf
+EOF
+    echo "*** Some additional setup for postgresql is required. Access in /etc/postgresql/13/main/pg_hba.conf needs to be changed to md5"
+    
+fi
+
+# For ipkg-opt ipkg-utils
+if ! command reindent; then
+    echo "  Installing legacy python"
+    sudo apt-get install -y python2.7
+fi
 
 # Install dotnet 5
-wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
-chmod +x dotnet-install.sh
-./dotnet-install.sh --channel 5.0 --install-dir /usr/share/dotnet --skip-non-versioned-files
-ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet 
-rm dotnet-install.sh
+if [ ! -d /usr/share/dotnet/sdk/5.0.408 ]; then
+    echo "  Installing dotnet 5"
+    wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+    chmod +x dotnet-install.sh
+    ./dotnet-install.sh --channel 5.0.4xx --install-dir /usr/share/dotnet --skip-non-versioned-files
+fi
 
+# Install dotnet 6
+if [ ! -d /usr/share/dotnet/sdk/6.0.411 ]; then
+    echo "  Installing dotnet 6"
+    [ ! -f dotnet-install.sh ] && wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+    chmod +x dotnet-install.sh
+#    ./dotnet-install.sh --channel 6.0.4xx --install-dir /usr/share/dotnet --skip-non-versioned-files
+fi
 
+# Link dotnet if installed
+if [ -x /usr/share/dotnet/dotnet ] && [ ! -L /usr/bin/dotnet ]; then
+    ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet 
+fi
+
+# Cleanup
+[ -f dotnet-install.sh ] && rm dotnet-install.sh
+
+exit 0
