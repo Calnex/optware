@@ -105,10 +105,14 @@ $(IPKG-UTILS_DIR)/.unpacked: $(DL_DIR)/$(IPKG-UTILS_SOURCE) make/ipkg-utils.mk
 ipkg-utils-unpack: $(IPKG-UTILS_BUILD_DIR)/.unpacked
 
 #
-# This builds the actual binary.
+# This builds the actual binary. 
+#  python2.7 support was dropped in debian, so it's not linked as default python version
+# so we replace path location from /usr/bin/python to /usr/bin/python2.7
 #
 $(STAGING_DIR)/bin/ipkg-build: $(IPKG-UTILS_DIR)/.unpacked
 	mkdir -p $(STAGING_DIR)/bin
+	sed -i 's|#!/usr/bin/python|#!/usr/bin/python2.7|' $(IPKG-UTILS_DIR)/ipkg-make-index
+	sed -i 's|#!/usr/bin/env python|#!/usr/bin/env python2.7|' $(IPKG-UTILS_DIR)/ipkg.py
 	install -m0755 $(IPKG-UTILS_DIR)/ipkg-build* $(STAGING_DIR)/bin
 	install -m0755 $(IPKG-UTILS_DIR)/ipkg-make-index $(STAGING_DIR)/bin
 	install -m0755 $(IPKG-UTILS_DIR)/ipkg.py $(STAGING_DIR)/bin
