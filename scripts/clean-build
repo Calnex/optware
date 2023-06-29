@@ -1,14 +1,18 @@
 #!/bin/sh
-if [ -d "$PWD/builds" ]; then { sudo kill -9 `sudo lsof -t +D $PWD/builds`; } fi
-if [ -d "$PWD/staging" ]; then { sudo kill -9 `sudo lsof -t +D $PWD/staging`; } fi
-if [ -d "$PWD/packages" ]; then { sudo kill -9 `sudo lsof -t +D $PWD/packages`; } fi
-if [ -d "$PWD/toolchain" ]; then { sudo kill -9 `sudo lsof -t +D $PWD/toolchain`; } fi
-sudo umount `mount | grep $PWD | awk '{ print $3}'`
+if [ -d "$PWD/builds" ]; then { sudo kill -9 $(sudo lsof -t +D $PWD/builds); } fi
+if [ -d "$PWD/staging" ]; then { sudo kill -9 $(sudo lsof -t +D $PWD/staging); } fi
+if [ -d "$PWD/packages" ]; then { sudo kill -9 $(sudo lsof -t +D $PWD/packages); } fi
+if [ -d "$PWD/toolchain" ]; then { sudo kill -9 $(sudo lsof -t +D $PWD/toolchain); } fi
+
+UNMOUNTS=$(mount | grep $PWD | awk '{ print $3}')
+if [ -z "$UNMOUNTS" ]; then sudo umount $UNMOUNTS; fi
+
 sudo rm -rf builds/debian*
 rm -rf a.out packages lib builds tmp host toolchain
 rm -f downloads/endor*
 rm -f downloads/fw*
-USER=`whoami`
-sudo chown -R $USER ./*
+
+USER=$(whoami)
+sudo chown -R "$USER" ./*
 git clean -df
 exit 0
