@@ -1,8 +1,12 @@
 #!/bin/sh
 sudo pkill -f opt
-sudo umount `mount | grep $PWD | awk '{ print $3}'`
+
+UNMOUNTS=$(mount | grep $PWD | awk '{ print $3}')
+if [ -z "$UNMOUNTS" ]; then sudo umount $UNMOUNTS; fi
+
 sudo rm -rf builds/debian builds/debian-live builds/debian-installer builds/debian-efi
 rm -rf a.out packages staging lib builds tmp host toolchain
 rm -f downloads/endor*
-USER=`whoami`
-sudo chown -R $USER ./*
+
+USER=$(whoami)
+sudo chown -R "$USER" ./*

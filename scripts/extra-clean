@@ -4,3 +4,4 @@ scripts/clean-all
 find . -name '*~' -print0 | xargs -0 /bin/rm -f
 shopt -s extglob
 rm  -f downloads/!(ipkg-opt-0.99.163.tar.gz)
+shopt -u extglob
