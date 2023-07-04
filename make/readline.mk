@@ -30,7 +30,7 @@
 READLINE_CALNEX_SITE=$(PACKAGES_SERVER)
 
 READLINE_SITE=http://ftp.gnu.org/pub/gnu/readline
-READLINE_VERSION=6.3
+READLINE_VERSION=8.1
 READLINE_SOURCE=readline-$(READLINE_VERSION).tar.gz
 READLINE_DIR=readline-$(READLINE_VERSION)
 READLINE_UNZIP=zcat
@@ -43,7 +43,7 @@ READLINE_DEPENDS= ncurses
 #
 # READLINE_IPK_VERSION should be incremented when the ipk changes.
 #
-READLINE_IPK_VERSION=1
+READLINE_IPK_VERSION=0
 
 #
 # READLINE_CONFFILES should be a list of user-editable files
