@@ -138,6 +138,7 @@ endif
 		--disable-nls \
 		--disable-static \
 		--with-curses \
+		--host=x86_64-calnex-linux-gnu \
 	)
 	touch $@
 
