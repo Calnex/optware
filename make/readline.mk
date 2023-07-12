@@ -62,6 +62,7 @@ READLINE_IPK_VERSION=0
 READLINE_CPPFLAGS=
 READLINE_LDFLAGS=-lncurses
 $(info Current path: $(READLINE_LDFLAGS))
+@echo "Current path: $(READLINE_LDFLAGS)" >&2
 
 #
 # READLINE_BUILD_DIR is the directory in which the build is done.
