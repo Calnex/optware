@@ -151,9 +151,9 @@ $(NCURSES_IPK) $(NCURSES-DEV_IPK): $(NCURSES_DIR)/.built
 	rm -f $(NCURSES_IPK_DIR)/opt/lib/*.a
 	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/bin/clear \
 		$(NCURSES_IPK_DIR)/opt/bin/infocmp $(NCURSES_IPK_DIR)/opt/bin/t*
-	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/lib/*$(SO).6$(DYLIB)
+	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/lib/*$(SO).5$(DYLIB)
 ifeq (darwin, $(TARGET_OS))
-	for dylib in $(NCURSES_IPK_DIR)/opt/lib/*$(SO).6$(DYLIB); do \
+	for dylib in $(NCURSES_IPK_DIR)/opt/lib/*$(SO).5$(DYLIB); do \
 	$(TARGET_CROSS)install_name_tool -change $$dylib /opt/lib/`basename $$dylib` $$dylib; \
 	done
 endif
