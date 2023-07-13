@@ -153,7 +153,7 @@ $(POSTGRESQL_BUILD_DIR)/.built: $(POSTGRESQL_BUILD_DIR)/.configured
 	cp /home/jenkins/workspace/ManagementTools/Optware_Package/builds/postgresql/src/backend/utils/errcodes.h /home/jenkins/workspace/ManagementTools/Optware_Package/builds/postgresql/src/include/utils/
 	cp /home/jenkins/workspace/ManagementTools/Optware_Package/builds/postgresql/src/backend/catalog/pg_tablespace_d.h /home/jenkins/workspace/ManagementTools/Optware_Package/builds/postgresql/src/include/catalog/
 
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) \
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) MAKELEVEL=0 -C $(@D) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(POSTGRESQL_CPPFLAGS)" \
 		;
 	touch $@
