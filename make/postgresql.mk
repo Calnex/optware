@@ -155,7 +155,8 @@ $(POSTGRESQL_BUILD_DIR)/.built: $(POSTGRESQL_BUILD_DIR)/.configured
 	echo $${MFLAGS}
 	echo "About to unset make flags"
 	#unset MAKELEVEL && unset MAKEFLAGS && unset MFLAGS
-	MAKELEVEL=
+	unset -v MAKELEVEL
+
 	echo $${MAKELEVEL}
 	echo $${MAKEFLAGS}
 	echo $${MFLAGS}
