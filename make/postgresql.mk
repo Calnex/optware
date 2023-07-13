@@ -149,7 +149,7 @@ postgresql-unpack: $(POSTGRESQL_BUILD_DIR)/.configured
 
 $(POSTGRESQL_BUILD_DIR)/.built: $(POSTGRESQL_BUILD_DIR)/.configured
 	rm -f $@
-	unset MAKELEVEL
+	unset MAKELEVEL && unset MAKEFLAGS && unset MFLAGS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(POSTGRESQL_CPPFLAGS)" \
 		;
