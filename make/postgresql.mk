@@ -146,6 +146,8 @@ postgresql-unpack: $(POSTGRESQL_BUILD_DIR)/.configured
 #
 # This builds the actual binary.
 #
+
+MAKELEVEL=0
 $(POSTGRESQL_BUILD_DIR)/.built: $(POSTGRESQL_BUILD_DIR)/.configured
 	rm -f $@
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) \
