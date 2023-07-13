@@ -55,7 +55,7 @@ POSTGRESQL_IPK_VERSION=0
 #
 ifneq ($(HOSTCC), $(TARGET_CC))
 #POSTGRESQL_PATCHES+=$(POSTGRESQL_SOURCE_DIR)/src-timezone-Makefile.patch 
-POSTGRESQL_PATCHES+=$(POSTGRESQL_SOURCE_DIR)/disable-buildtime-test.patch
+#POSTGRESQL_PATCHES+=$(POSTGRESQL_SOURCE_DIR)/disable-buildtime-test.patch
 POSTGRESQL_CONFIG_ENV=pgac_cv_snprintf_long_long_int_format='%lld'
 endif
 
