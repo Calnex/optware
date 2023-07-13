@@ -147,9 +147,9 @@ postgresql-unpack: $(POSTGRESQL_BUILD_DIR)/.configured
 # This builds the actual binary.
 #
 
-MAKELEVEL=0
 $(POSTGRESQL_BUILD_DIR)/.built: $(POSTGRESQL_BUILD_DIR)/.configured
 	rm -f $@
+	unset MAKELEVEL
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(POSTGRESQL_CPPFLAGS)" \
 		;
