@@ -223,11 +223,11 @@ $(POSTGRESQL_IPK): $(POSTGRESQL_BUILD_DIR)/.built
 		$(POSTGRESQL_IPK_DIR)/opt/share/postgresql/postgresql.conf.sample > \
 		$(POSTGRESQL_IPK_DIR)/opt/share/postgresql/postgresql.conf.small
 	$(MAKE) $(POSTGRESQL_IPK_DIR)/CONTROL/control
-	install -m 755 $(POSTGRESQL_SOURCE_DIR)/preinst $(POSTGRESQL_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(POSTGRESQL_SOURCE_DIR)/postinst $(POSTGRESQL_IPK_DIR)/CONTROL/postinst
-	ifneq ($(OPTWARE_TARGET), nslu2)
-		sed -i -e '/cp.*\/share\/hdd/d' $(POSTGRESQL_IPK_DIR)/CONTROL/postinst
-	endif
+ifneq ($(OPTWARE_TARGET), nslu2)
+	sed -i -e '/cp.*\/share\/hdd/d' $(POSTGRESQL_IPK_DIR)/CONTROL/postinst
+endif
+	install -m 755 $(POSTGRESQL_SOURCE_DIR)/preinst $(POSTGRESQL_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(POSTGRESQL_SOURCE_DIR)/prerm $(POSTGRESQL_IPK_DIR)/CONTROL/prerm
 	echo $(POSTGRESQL_CONFFILES) | sed -e 's/ /\n/g' > $(POSTGRESQL_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(POSTGRESQL_IPK_DIR)
