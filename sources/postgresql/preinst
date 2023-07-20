@@ -4,5 +4,6 @@ if [ -f /opt/etc/init.d/S95postgresql ]; then
 	/opt/etc/init.d/S95postgresql stop
 else
 	/opt/etc/init.d/S91postgresql stop
+	rm -rf /opt/var/pgsql/data
 fi
 sleep 1
