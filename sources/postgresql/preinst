@@ -4,6 +4,15 @@ if [ -f /opt/etc/init.d/S95postgresql ]; then
 	/opt/etc/init.d/S95postgresql stop
 else
 	/opt/etc/init.d/S91postgresql stop
-	rm -rf /opt/var/pgsql/data
+	if [ -d /opt/var/pgsql/data ]; then
+        # Remove the PostgreSQL data directory
+        if rm -rf /opt/var/pgsql/data; then
+            echo "PostgreSQL data directory successfully removed."
+        else
+            echo "Deletion failed: Unable to remove PostgreSQL data directory."
+        fi
+    else
+        echo "PostgreSQL data directory does not exist, nothing to remove."
+    fi
 fi
 sleep 1
