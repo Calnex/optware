@@ -7,7 +7,7 @@ else
 	if [ -d /opt/var/pgsql/data ]; then
         # Rename the PostgreSQL data directory
         if mv /opt/var/pgsql/data /opt/var/pgsql/data_postgres-9.3.12; then
-            echo "PostgreSQL data directory successfully removed."
+            echo "PostgreSQL data directory successfully renamed."
         else
             echo "Deletion failed: Unable to remove PostgreSQL data directory."
         fi
