@@ -30,7 +30,7 @@
 READLINE_CALNEX_SITE=$(PACKAGES_SERVER)
 
 READLINE_SITE=http://ftp.gnu.org/pub/gnu/readline
-READLINE_VERSION=6.3
+READLINE_VERSION=8.1
 READLINE_SOURCE=readline-$(READLINE_VERSION).tar.gz
 READLINE_DIR=readline-$(READLINE_VERSION)
 READLINE_UNZIP=zcat
@@ -43,7 +43,7 @@ READLINE_DEPENDS= ncurses
 #
 # READLINE_IPK_VERSION should be incremented when the ipk changes.
 #
-READLINE_IPK_VERSION=1
+READLINE_IPK_VERSION=0
 
 #
 # READLINE_CONFFILES should be a list of user-editable files
@@ -109,6 +109,10 @@ readline-source: $(DL_DIR)/$(READLINE_SOURCE) $(READLINE_PATCHES)
 # If the compilation of the package requires other packages to be staged
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
+
+#export LD_LIBRARY_PATH=/home/jenkins/workspace/ManagementTools/Optware_Package/staging/opt/lib
+export LD_LIBRARY_PATH=$(STAGING_DIR)/opt/lib
+
 $(READLINE_BUILD_DIR)/.configured: $(DL_DIR)/$(READLINE_SOURCE) $(READLINE_PATCHES) make/readline.mk
 #	$(MAKE) <bar>-stage <baz>-stage
 	$(MAKE) ncurses-stage
@@ -138,6 +142,7 @@ endif
 		--disable-nls \
 		--disable-static \
 		--with-curses \
+		--host=x86_64-calnex-linux-gnu \
 	)
 	touch $@
 

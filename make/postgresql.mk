@@ -29,7 +29,7 @@
 
 POSTGRESQL_CALNEX_SITE=$(PACKAGES_SERVER)
 
-POSTGRESQL_VERSION=9.3.12
+POSTGRESQL_VERSION=13.1
 POSTGRESQL_SITE=http://ftp.postgresql.org/pub/source/v$(POSTGRESQL_VERSION)
 POSTGRESQL_SOURCE=postgresql-$(POSTGRESQL_VERSION).tar.bz2
 POSTGRESQL_DIR=postgresql-$(POSTGRESQL_VERSION)
@@ -43,7 +43,7 @@ POSTGRESQL_DEPENDS=readline
 #
 # POSTGRESQL_IPK_VERSION should be incremented when the ipk changes.
 #
-POSTGRESQL_IPK_VERSION=7
+POSTGRESQL_IPK_VERSION=0
 
 #
 # POSTGRESQL_CONFFILES should be a list of user-editable files
@@ -55,7 +55,7 @@ POSTGRESQL_IPK_VERSION=7
 #
 ifneq ($(HOSTCC), $(TARGET_CC))
 #POSTGRESQL_PATCHES+=$(POSTGRESQL_SOURCE_DIR)/src-timezone-Makefile.patch 
-POSTGRESQL_PATCHES+=$(POSTGRESQL_SOURCE_DIR)/disable-buildtime-test.patch
+#POSTGRESQL_PATCHES+=$(POSTGRESQL_SOURCE_DIR)/disable-buildtime-test.patch
 POSTGRESQL_CONFIG_ENV=pgac_cv_snprintf_long_long_int_format='%lld'
 endif
 
@@ -146,9 +146,10 @@ postgresql-unpack: $(POSTGRESQL_BUILD_DIR)/.configured
 #
 # This builds the actual binary.
 #
+
 $(POSTGRESQL_BUILD_DIR)/.built: $(POSTGRESQL_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) \
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) MAKELEVEL=0 -C $(@D) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(POSTGRESQL_CPPFLAGS)" \
 		;
 	touch $@
@@ -226,6 +227,7 @@ $(POSTGRESQL_IPK): $(POSTGRESQL_BUILD_DIR)/.built
 ifneq ($(OPTWARE_TARGET), nslu2)
 	sed -i -e '/cp.*\/share\/hdd/d' $(POSTGRESQL_IPK_DIR)/CONTROL/postinst
 endif
+	install -m 755 $(POSTGRESQL_SOURCE_DIR)/preinst $(POSTGRESQL_IPK_DIR)/CONTROL/preinst
 	install -m 755 $(POSTGRESQL_SOURCE_DIR)/prerm $(POSTGRESQL_IPK_DIR)/CONTROL/prerm
 	echo $(POSTGRESQL_CONFFILES) | sed -e 's/ /\n/g' > $(POSTGRESQL_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(POSTGRESQL_IPK_DIR)

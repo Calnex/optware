@@ -8,7 +8,7 @@ NCURSES_CALNEX_SITE=$(PACKAGES_SERVER)
 
 NCURSES_DIR=$(BUILD_DIR)/ncurses
 
-NCURSES_VERSION=5.9
+NCURSES_VERSION=6.0
 NCURSES=ncurses-$(NCURSES_VERSION)
 NCURSES_SITE=ftp://ftp.invisible-island.net/ncurses
 NCURSES_SOURCE=$(NCURSES).tar.gz
@@ -22,7 +22,7 @@ NCURSES_CONFLICTS=
 
 NCURSES_FOR_OPTWARE_TARGET=ncurses
 
-NCURSES_IPK_VERSION=3
+NCURSES_IPK_VERSION=0
 
 NCURSES_IPK=$(BUILD_DIR)/ncurses_$(NCURSES_VERSION)-$(NCURSES_IPK_VERSION)_$(TARGET_ARCH).ipk
 NCURSES-DEV_IPK=$(BUILD_DIR)/ncurses-dev_$(NCURSES_VERSION)-$(NCURSES_IPK_VERSION)_$(TARGET_ARCH).ipk
@@ -46,6 +46,7 @@ $(NCURSES_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(NCURSES_SOURCE) m
 	$(NCURSES_UNZIP) $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(HOST_BUILD_DIR) -xf -
 	mv $(HOST_BUILD_DIR)/$(NCURSES) $(@D)
 	(cd $(@D); \
+		export CPPFLAGS="-P"; \
 		./configure \
 		--prefix=/opt	\
 		--without-shared	\
@@ -150,9 +151,9 @@ $(NCURSES_IPK) $(NCURSES-DEV_IPK): $(NCURSES_DIR)/.built
 	rm -f $(NCURSES_IPK_DIR)/opt/lib/*.a
 	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/bin/clear \
 		$(NCURSES_IPK_DIR)/opt/bin/infocmp $(NCURSES_IPK_DIR)/opt/bin/t*
-	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/lib/*$(SO).5$(DYLIB)
+	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/lib/*$(SO).6.0$(DYLIB)
 ifeq (darwin, $(TARGET_OS))
-	for dylib in $(NCURSES_IPK_DIR)/opt/lib/*$(SO).5$(DYLIB); do \
+	for dylib in $(NCURSES_IPK_DIR)/opt/lib/*$(SO).6.0$(DYLIB); do \
 	$(TARGET_CROSS)install_name_tool -change $$dylib /opt/lib/`basename $$dylib` $$dylib; \
 	done
 endif
