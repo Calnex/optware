@@ -27,6 +27,7 @@ libicu67
 hdparm 
 ntp 
 install-info 
+curl libcurl4-openssl-dev
 
 # Backwards compatability (Mono)
 libgdiplus 
