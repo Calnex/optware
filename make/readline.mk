@@ -111,6 +111,8 @@ readline-source: $(DL_DIR)/$(READLINE_SOURCE) $(READLINE_PATCHES)
 #
 
 #export LD_LIBRARY_PATH=/home/jenkins/workspace/ManagementTools/Optware_Package/staging/opt/lib
+@echo "Current working directory: $(shell pwd)"
+export LD_LIBRARY_PATH=$(pwd)/staging/opt/lib
 
 $(READLINE_BUILD_DIR)/.configured: $(DL_DIR)/$(READLINE_SOURCE) $(READLINE_PATCHES) make/readline.mk
 #	$(MAKE) <bar>-stage <baz>-stage
