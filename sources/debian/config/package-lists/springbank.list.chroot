@@ -8,8 +8,7 @@ screen
 python3 
 
 # Network utilities
-ethtool 
-ifrename 
+ethtool  
 avahi-autoipd 
 dhcpcd5 
 
