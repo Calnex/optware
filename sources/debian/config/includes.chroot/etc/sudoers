@@ -19,11 +19,9 @@ Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/
 
 # User privilege specification
 root    ALL=(ALL:ALL) ALL
-calnex  ALL=(root) NOPASSWD:/sbin/poweroff, /sbin/reboot, /sbin/ifconfig, /sbin/route, /usr/bin/pkill, /bin/kill, /sbin/dhclient, /bin/ss, /bin/hostname, /bin/date, /sbin/hwclock, /bin/mount, /bin/umount
 
 # Allow members of group sudo to execute any command
 %sudo   ALL=(ALL:ALL) ALL
 
 # See sudoers(5) for more information on "#include" directives:
-
-#includedir /etc/sudoers.d
+includedir /etc/sudoers.d

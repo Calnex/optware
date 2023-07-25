@@ -1,0 +1,5 @@
+[Match]
+Driver=vmxnet3 virtio_net e1000 e1000e
+
+[Link]
+Name=enp0s3

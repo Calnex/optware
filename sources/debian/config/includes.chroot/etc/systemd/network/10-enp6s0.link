@@ -1,0 +1,6 @@
+[Match]
+MACAddress=80:86:CA:FE:BA:BE
+Driver=igb
+
+[Link]
+Name=enp6s0
