@@ -39,12 +39,12 @@ NUNIT_DEPENDS=
 NUNIT_SUGGESTS=
 NUNIT_CONFLICTS=
 
-NUNIT_MSBUILD=msbuild#$(MONO_STAGING_DIR)/opt/bin/xbuild
+NUNIT_MSBUILD=dotnet msbuild#$(MONO_STAGING_DIR)/opt/bin/xbuild
 
 #
 # NUNIT_IPK_VERSION should be incremented when the ipk changes.
 #
-NUNIT_IPK_VERSION=1
+NUNIT_IPK_VERSION=2
 
 #
 # NUNIT_CONFFILES should be a list of user-editable files
