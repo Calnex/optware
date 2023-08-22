@@ -191,7 +191,7 @@ testing:
 # Common tools which may need overriding
 CVS=cvs
 SUDO=sudo
-WGET=wget --passive-ftp
+WGET=wget -nv --passive-ftp
 PERL=perl
 GIT=git
 
