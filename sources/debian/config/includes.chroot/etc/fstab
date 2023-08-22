@@ -1,2 +1,2 @@
-overlay / overlay rw,nfs_export=on,index=all,verify_dir 0 0
+overlay / overlay rw,index=all,verify_dir 0 0
 tmpfs /tmp tmpfs nosuid,nodev 0 0
