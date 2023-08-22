@@ -13,14 +13,11 @@ avahi-autoipd
 dhcpcd5 
 
 # Logging and file sharing
-nfs-kernel-server nfs-common 
 samba samba-vfs-modules 
 tftpd 
 
 # Shell access
 openssh-server 
-gpg 
-gpg-agent 
 
 # Extra utilities
 libicu67 
@@ -29,5 +26,8 @@ ntp
 install-info 
 curl libcurl4-openssl-dev
 
-# Backwards compatability (Mono)
+# Backwards compatability
 libgdiplus 
+rename
+nfs-kernel-server 
+nfs-common 
