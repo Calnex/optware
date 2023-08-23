@@ -158,7 +158,7 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		if [ ! -z "$(TARGET_SMD)" ]; then 											\
 			sudo mkdir -p $(@D)/config/packages;									\
 			cd $(@D)/config/packages;												\
-			sudo wget -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
+			sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
 			sudo dpkg-name SysMgmtDaemon_*.deb;										\
 		fi																			\
 	)

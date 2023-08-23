@@ -150,7 +150,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
 		sudo mkdir -p $(@D)/config/packages.chroot; \
 		cd $(@D)/config/packages.chroot;	\
-		sudo wget -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
+		sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
 		sudo dpkg-name SysMgmtDaemon_*.deb;	\
 	)
 	touch $@
