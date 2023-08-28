@@ -29,5 +29,5 @@ curl libcurl4-openssl-dev
 # Backwards compatability
 libgdiplus 
 rename
-nfs-kernel-server 
+#nfs-kernel-server 
 nfs-common 
