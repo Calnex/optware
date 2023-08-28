@@ -163,6 +163,8 @@ debian-unpack: $(DEBIAN_BUILD_DIR)/.configured
 $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
+		# Add a custom MKSQUASHFS_OPTION to prevent exports, resolves an issue with overlayFS during downgrades \
+		export MKSQUASHFS_OPTIONS="-no-exports"; \
 		sudo lb build; \
 		dd \
 			if=live-image-amd64.img \

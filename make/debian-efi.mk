@@ -161,6 +161,8 @@ debian-efi-unpack: $(DEBIAN-EFI_BUILD_DIR)/.configured
 $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
+		# Add a custom MKSQUASHFS_OPTION to prevent exports, resolves an issue with overlayFS during downgrades \
+		export MKSQUASHFS_OPTIONS="-no-exports"; \
 		sudo lb build; \
 		\
 		# Extract EFI partition that is 'embedded' into rootfs partition and place at the end where it can easily be extracted \
