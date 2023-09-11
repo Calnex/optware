@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -d /opt/var/pgsql/data ]; then
+    # Rename the PostgreSQL data directory
+    if mv /opt/var/pgsql/data /opt/var/pgsql/data_postgres-13; then
+        echo "PostgreSQL 13 data directory successfully renamed."
+    else
+        echo "Deletion failed: Unable to remove PostgreSQL data directory."
+    fi
+else
+    echo "PostgreSQL data directory does not exist, nothing to remove."
+fi
