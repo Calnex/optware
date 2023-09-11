@@ -23,7 +23,10 @@ fi
 
 case "$rc" in
     add)
-        voodoo mount /dev/sdb /media/usb
+        if ! voodoo mount /dev/disk/by-path/pci-0000\:00\:14.0-usb-0\:1\:1.0-scsi-0\:0\:0\:0 /media/usb; then
+            echo "Mounting USB by path failed, falling back to mounting /dev/sdb"
+            voodoo mount /dev/sdb /media/usb
+        fi
         update_cross_feed $(find /media -type f -name Packages -exec grep -l "\bendor\b" {} \; | sed 's/Packages//g' | sed s'/^\///')
         ;;
     remove)
