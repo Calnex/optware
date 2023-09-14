@@ -1,12 +1,25 @@
 KERNEL!="sd[b-z][0-9]", GOTO="media_by_label_auto_mount_end"
+ACTION=="add", PROGRAM!="/sbin/blkid %N", GOTO="media_by_label_auto_mount_end"
+
 ENV{dir_name}="usb"
+
 # Global mount options
 ACTION=="add", ENV{mount_options}="relatime"
 # Filesystem-specific mount options
 ACTION=="add", ENV{ID_FS_TYPE}=="auto", ENV{mount_options}="$env{mount_options},utf8,gid=100,umask=002"
-# Mount the device
-ACTION=="add", RUN+="/bin/mkdir -p /media/%E{dir_name}", RUN+="/bin/mount -o $env{mount_options} /dev/%k /media/%E{dir_name}", RUN+="/bin/optwareUSB add"
-# Clean up after removal
-ACTION=="remove", ENV{dir_name}!="", RUN+="/bin/umount -l /media/%E{dir_name}", RUN+="/bin/rmdir /media/%E{dir_name}", RUN+="/bin/optwareUSB remove"
+
+# Create the dir in /media
+ACTION=="add", SUBSYSTEMS=="usb", MODE="0660", TAG+="uaccess"
+ACTION=="add", SUBSYSTEMS=="usb", RUN+="/bin/mkdir -p '/media/%E{dir_name}'"
+
+ACTION=="add", SUBSYSTEMS=="usb", RUN+="/usr/bin/systemd-mount --options=$env{mount_options} --no-block --automount=yes --collect /dev/%k '/media/%E{dir_name}'"
+ACTION=="add", SUBSYSTEMS=="usb", RUN+="/bin/optwareUSB add"
+
+ACTION=="remove", SUBSYSTEMS=="usb", ENV{ID_FS_USAGE}=="filesystem", RUN+="/bin/optwareUSB remove"
+ACTION=="remove", SUBSYSTEMS=="usb", ENV{ID_FS_USAGE}=="filesystem", RUN+="/usr/bin/systemd-umount /media/%E{dir_name}"
+
+# Cleanup the dir in /media
+ACTION=="remove", ENV{dir_name}!="", SUBSYSTEMS=="usb", RUN+="/bin/rmdir '/media/%E{dir_name}'"
+
 # Exit
 LABEL="media_by_label_auto_mount_end"
