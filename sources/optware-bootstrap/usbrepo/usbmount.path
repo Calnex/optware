@@ -1,0 +1,8 @@
+[Unit]
+Description=Watch /sys/bus/usb for USB presence
+
+[Path]
+DirectoryNotEmpty=/dev/bus/usb/001
+
+[Install]
+WantedBy=default.target
