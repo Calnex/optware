@@ -8,6 +8,9 @@ fi
 case "$1" in
     start)
         echo "Starting Optware." | tee -a /var/log/SystemConfig
+
+        [ -x /opt/etc/hooks/root.preopt ] && /opt/etc/hooks/root.premount
+
         if test -n "${REAL_OPT_DIR}"; then
             if ! grep ' /opt ' /proc/mounts >/dev/null 2>&1 ; then
                 mkdir -p /opt
@@ -19,7 +22,9 @@ case "$1" in
             echo "Boot paramater clnx-no-setup set. Not starting optware or configuring system" | tee -a /var/log/SystemConfig
             exit 0
         fi
-	
+
+        [ -x /opt/etc/hooks/root.preopt ] && /opt/etc/hooks/root.preconfig
+
         # Default repo location to network
         echo "src/gz local file://home/.optware/srv/tftp/optware" > /opt/etc/ipkg/cross-feed.conf
         
