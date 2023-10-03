@@ -2,11 +2,8 @@
 
 update_cross_feed() {
     repo=${1:-'home/.optware/srv/tftp/optware'}
-    if [ "$(id -u)" -eq 0 ]; then
-        su calnex -c "echo 'src/gz local file://${repo}' > /opt/etc/ipkg/cross-feed.conf"
-    else
-        echo "src/gz local file://${repo}" > /opt/etc/ipkg/cross-feed.conf
-    fi
+    echo "src/gz local file://${repo}" > /opt/etc/ipkg/cross-feed.conf
+    chown calnex:calnex /opt/etc/ipkg/cross-feed.conf
     return $?
 }
 
@@ -23,14 +20,18 @@ fi
 
 case "$rc" in
     add)
-        if ! voodoo mount /dev/disk/by-path/pci-0000\:00\:14.0-usb-0\:1\:1.0-scsi-0\:0\:0\:0 /media/usb; then
-            echo "Mounting USB by path failed, falling back to mounting /dev/sdb"
-            voodoo mount /dev/sdb /media/usb
+        if [ ! -d /media/usb ]; then
+            if ! voodoo mount /dev/disk/by-path/pci-0000\:00\:14.0-usb-0\:1\:1.0-scsi-0\:0\:0\:0 /media/usb; then
+                echo "Mounting USB by path failed, falling back to mounting /dev/sdb"
+                voodoo mount /dev/sdb /media/usb
+            fi
         fi
         update_cross_feed $(find /media -type f -name Packages -exec grep -l "\bendor\b" {} \; | sed 's/Packages//g' | sed s'/^\///')
         ;;
     remove)
-        voodoo umount /media/usb
+        if [ -d /media/usb ]; then
+            voodoo umount /media/usb
+        fi
         update_cross_feed
         ;;
     *)
