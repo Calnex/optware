@@ -52,12 +52,15 @@ echo "Installing debian..."
 echo "Installing wget..."
 /opt/bin/ipkg install wget.ipk || exit 1
 
+echo "Setting up ipkg cross-feed..."
 [ ! -d /opt/etc/ipkg ] && mkdir -p /opt/etc/ipkg
 if [ ! -e /opt/etc/ipkg/cross-feed.conf ]
 then
 	echo "Creating /opt/etc/ipkg/cross-feed.conf..."
 	echo "src/gz local file://home/.optware/srv/tftp/optware"	> /opt/etc/ipkg/cross-feed.conf
 fi
+systemctl enable usbmount.service
+systemctl enable usbmount.path
 
 chmod -R 0777 /opt
 

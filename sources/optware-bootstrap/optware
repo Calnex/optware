@@ -67,7 +67,7 @@ case "$1" in
     ;;
     stop)
         echo "Shutting down Optware."
-	    true
+        true
     ;;
     *)
         echo "Usage: $0 {start|stop|reconfig}"
