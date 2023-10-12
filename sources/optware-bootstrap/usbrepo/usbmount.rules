@@ -15,13 +15,13 @@ ACTION=="add", SUBSYSTEMS=="usb", \
     RUN+="/bin/mkdir -p '/media/%E{dir_name}'", \
     RUN+="/usr/bin/systemd-mount --options=$env{mount_options} --no-block --automount=yes --collect /dev/%k '/media/%E{dir_name}'", \
     ENV{SYSTEMD_WANTS}="usbmount.service"
-    #RUN+="/opt/etc/hooks/optwareUSB add"
+    #RUN+="/usr/bin/optwareUSB add"
 
 ## Removing USB
 ACTION=="remove", SUBSYSTEMS=="usb", ENV{ID_FS_USAGE}=="filesystem", \
     RUN+="/usr/bin/systemd-umount /media/%E{dir_name}", \
     RUN+="/bin/rmdir '/media/%E{dir_name}'", \
-    RUN+="/opt/etc/hooks/optwareUSB remove"
+    RUN+="/usr/bin/optwareUSB remove"
 
 # Exit
 LABEL="media_by_label_auto_mount_end"

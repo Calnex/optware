@@ -3,7 +3,7 @@ Description=Service called when the USB is plugged in
 
 [Service]
 Type=notify
-ExecStart=/opt/etc/hooks/optwareUSB add
+ExecStart=/usr/bin/optwareUSB add
 
 [Install]
 WantedBy=default.target
