@@ -1,5 +1,6 @@
 KERNEL!="sd[b-z][0-9]", GOTO="media_by_label_auto_mount_end"
 ACTION=="add", PROGRAM!="/sbin/blkid %N", GOTO="media_by_label_auto_mount_end"
+ACTION=="add", ENV{ID_PART_ENTRY_TYPE}=="0xef", GOTO="media_by_label_auto_mount_end"
 
 ENV{dir_name}="usb"
 
@@ -15,7 +16,6 @@ ACTION=="add", SUBSYSTEMS=="usb", \
     RUN+="/bin/mkdir -p '/media/%E{dir_name}'", \
     RUN+="/usr/bin/systemd-mount --options=$env{mount_options} --no-block --automount=yes --collect /dev/%k '/media/%E{dir_name}'", \
     ENV{SYSTEMD_WANTS}="usbmount.service"
-    #RUN+="/usr/bin/optwareUSB add"
 
 ## Removing USB
 ACTION=="remove", SUBSYSTEMS=="usb", ENV{ID_FS_USAGE}=="filesystem", \
