@@ -9,5 +9,3 @@ if [ "$MODE" != start ]; then
 fi
 
 cp /etc/issue.standard /etc/issue
-/sbin/get-ip-address >> /etc/issue
-echo "" >> /etc/issue
