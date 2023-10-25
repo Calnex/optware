@@ -31,3 +31,6 @@ libgdiplus
 rename
 #nfs-kernel-server 
 nfs-common 
+
+# CAT uses headless-browser for rendering html to png
+chromium 
