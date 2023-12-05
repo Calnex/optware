@@ -36,7 +36,7 @@ NGINX_CONFLICTS=
 #
 # NGINX_IPK_VERSION should be incremented when the ipk changes.
 #
-NGINX_IPK_VERSION?=3
+NGINX_IPK_VERSION?=4
 
 #
 # NGINX_CONFFILES should be a list of user-editable files
@@ -52,7 +52,7 @@ NGINX_IPK_VERSION?=3
 # NGINX_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-NGINX_PATCHES=
+NGINX_PATCHES=$(NGINX_SOURCE_DIR)/discard-request-body-error-redirect.patch
 
 #
 # If the compilation of the package requires additional
