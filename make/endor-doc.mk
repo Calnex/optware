@@ -211,6 +211,7 @@ $(ENDOR_DOC_IPK): $(ENDOR_DOC_BUILD_DIR)/.built-doc
 
 	cd $(ENDOR_DOC_BUILD_DIR)/EndorDocumentation/DocumentationShippedWith${TARGET_PRODUCT} && \
 	find . -name *.xml | cpio -pdm --verbose $(ENDOR_DOC_IPK_DIR)/opt/share/endor/ && \
+	find . -name *.zip | cpio -pdm --verbose $(ENDOR_DOC_IPK_DIR)/opt/share/endor/ && \
 	find . -name *.pdf | cpio -pdm --verbose $(ENDOR_DOC_IPK_DIR)/opt/share/endor/
 	# Provide the control information
 	#
