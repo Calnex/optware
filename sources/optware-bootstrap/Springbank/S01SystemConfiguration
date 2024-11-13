@@ -11,7 +11,7 @@ chown calnex /home/.optware/srv/tftp
 
 # Clean out old journals
 find /var/log/journal -type f -mtime +0 -exec rm {} \;
-find /var/log/journal -mindepth=1 -empty -type d -delete
+find /var/log/journal -mindepth 1 -empty -type d -delete
 
 # Create embedded log folder and ensure it is owned by the calnex user
 if ! [ -d /home/.optware/var/lib/embedded/embedded_logs ]
