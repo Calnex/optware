@@ -64,4 +64,7 @@ systemctl enable usbmount.path
 
 chmod -R 0777 /opt
 
+systemctl unmask systemd-logind
+systemctl start systemd-logind
+
 echo "Setup complete."
