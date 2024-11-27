@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Modify the apt sources to recognise debian security mirror
+sed -i 's|bullseye-security main|bullseye-security updates/main|g' /etc/apt/sources.list 
+
+# Upgrade apt packages
+apt update
+apt upgrade -y
