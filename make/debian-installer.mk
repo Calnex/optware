@@ -137,6 +137,9 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--debian-installer-preseedfile	debconf				\
 		--win32-loader				false					\
 		--loadlin					false					\
+		--backports					true					\
+		--updates					false								\
+		--security					true					\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian		\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian		\
 		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security \
