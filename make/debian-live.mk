@@ -142,8 +142,9 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--win32-loader				false								\
 		--loadlin					false								\
 		--backports					true								\
-		--updates					false								\
+		--updates					true								\
 		--security					true								\
+		--archive-areas 			"main,updates/main"					\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian			\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian			\
 		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security	\
