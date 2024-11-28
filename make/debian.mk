@@ -132,7 +132,6 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--win32-loader				false				\
 		--loadlin					false				\
 		--backports					true				\
-		--updates					true				\
 		--security					true				\
 		--mirror-bootstrap			"$(TARGET_REPO_MIRROR)/debian"	\
 		--mirror-chroot				"$(TARGET_REPO_MIRROR)/debian"	\
