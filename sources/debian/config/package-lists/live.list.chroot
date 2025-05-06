@@ -10,6 +10,7 @@ gpg
 gpg-agent 
 rsync 
 binutils
+dbus
 
 # Debian Live Build tools
 live-boot 
