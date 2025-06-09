@@ -145,7 +145,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--memtest					none			\
 		--hdd-size					320					\
 		--bootloader				syslinux			\
-		--linux-packages			"linux-image-5.10.0-32" \
+		--linux-packages			"linux-image-5.10.0-34" \
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \

@@ -142,7 +142,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		--hdd-label					"$(DEBIAN-EFI_PARTITION_LABEL)"	\
 		--hdd-size					320						\
 		--bootloader				grub-efi				\
-		--linux-packages			"linux-image-5.10.0-32" \
+		--linux-packages			"linux-image-5.10.0-34" \
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
