@@ -2,6 +2,8 @@ To install this system, Use Debian (jessie), and run this script
 
 scripts/fix-deps
 
+or use ./docker-agent.sh to spin up a docker instance
+
 To build mono, cd into the top level and execute:
 'make mono-ipk'
 
