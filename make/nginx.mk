@@ -20,7 +20,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-NGINX_SITE=https://nginx.org/en/download
+NGINX_SITE=https://nginx.org/download
 NGINX_VERSION?=1.29.3
 NGINX_SOURCE=nginx-$(NGINX_VERSION).tar.gz
 NGINX_DIR=nginx-$(NGINX_VERSION)
