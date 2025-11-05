@@ -26,13 +26,26 @@ RUN apt-get install -y nodejs
 
 RUN apt-get install -y fuseiso genisoimage xorriso
 
-
-
 ## postgres -todo-
 
 RUN apt-get install -y python2.7
 
 RUN curl -sL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel 5.0.4xx --install-dir /usr/share/dotnet --skip-non-versioned-files
 
-
 RUN ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+
+
+RUN apt-get install -y sudo procps
+
+## dev tools
+RUN apt-get install -y vim
+
+# downgrade user and allow sudo
+ARG USER=calnex-user
+RUN useradd -M -s /bin/bash $USER
+RUN usermod -aG sudo $USER
+RUN echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+
+USER $USER
+
+
