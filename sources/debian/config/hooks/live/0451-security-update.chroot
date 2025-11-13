@@ -5,5 +5,5 @@
 #### sed -i 's|bullseye-security main|bullseye-security updates/main|g' /etc/apt/sources.list 
 
 # Upgrade apt packages
-#### apt update
-#### apt upgrade -y
+apt update
+apt upgrade -y
