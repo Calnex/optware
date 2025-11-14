@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# Upgrade apt packages
-apt update
-apt upgrade -y

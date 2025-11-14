@@ -4,6 +4,10 @@
 #### TEMP commented out to check if this reverts the security updates
 #### sed -i 's|bullseye-security main|bullseye-security updates/main|g' /etc/apt/sources.list 
 
+printf "domain CALNEXSOLUTIONS.local\nsearch CALNEXSOLUTIONS.local\nnameserver 192.168.201.22\nnameserver 192.168.212.4\n" > /etc/resolv.conf
+
 # Upgrade apt packages
 apt update
 apt upgrade -y
+
+echo > /etc/resolv.conf
