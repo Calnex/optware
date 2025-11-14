@@ -1,7 +1,0 @@
-Package: *
-Pin: release o=Debian,a=stable-security
-Pin-Priority: 990
-
-Package: *
-Pin: release o=Debian,a=stable
-Pin-Priority: 500
