@@ -144,6 +144,7 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--backports					true								\
 		--updates					true								\
 		--security					true								\
+		--cache						false								\
 		--archive-areas 			"main,updates/main"					\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian			\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian			\
