@@ -1,1 +1,1 @@
-calnex  ALL=(root) NOPASSWD:/sbin/poweroff, /sbin/reboot, /sbin/ifconfig, /sbin/route, /usr/bin/pkill, /bin/kill, /sbin/dhclient, /bin/ss, /bin/hostname, /bin/date, /sbin/hwclock, /bin/mount, /bin/umount
+calnex  ALL=(root) NOPASSWD:/sbin/poweroff, /sbin/reboot, /sbin/ifconfig, /sbin/route, /usr/bin/pkill, /bin/kill, /sbin/dhclient, /bin/ss, /bin/hostname, /bin/date, /sbin/hwclock, /bin/mount, /bin/umount, /usr/bin/dpkg
