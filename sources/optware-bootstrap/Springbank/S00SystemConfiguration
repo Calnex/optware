@@ -8,40 +8,40 @@ if [ -e /sys/firmware/efi ]; then
   ################################################################################
 
   echo 'EFI system' | tee -a /var/log/SystemConfig
-    
+
   if [ -b /dev/sda2 ]; then
     ################################################################################
     # First ever boot - partition disk
     ################################################################################
     echo 'First ever boot after fresh install, setting up partitions for first time' | tee -a /var/log/SystemConfig
 
-  
+
     # Initial EFI partition still present - tells us that the code in this block, to partition disk, has not yet run
-  
+
     # Fix the GPT to use all of the available space (after initial install the GPT will be sized for the installation iso)
     echo -e "print\nFix" | parted /dev/sda ---pretend-input-tty
     partprobe
-  
+
     if [ ! -b /dev/sda3 ]; then
       echo 'Creating partition 3 - EFI - 512Mb' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart EFI 4194304s 5242879s
     fi
-  
+
     if [ ! -b /dev/sda4 ]; then
       echo 'Creating partition 4 - persistence - 1Gb (initially)' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart persistence 30408704s 32505855s
     fi
-  
+
     if [ ! -b /dev/sda5 ]; then
       echo 'Creating partition 5 - rootfs(1) - 2Gb' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart rootfs1 5242880s 9437183s
     fi
-  
+
     if [ ! -b /dev/sda6 ]; then
       echo 'Creating partition 6 - rootfs(2) - 2Gb' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart rootfs2 9437184s 13631487s
     fi
-  
+
     if [ ! -b /dev/sda7 ]; then
       echo 'Creating partition 7 - swap - 8Gb' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart swap 13631488s 30408703s
@@ -51,26 +51,26 @@ if [ -e /sys/firmware/efi ]; then
 
     echo 'Resizing sda4 to use all remaining space' | tee -a /var/log/SystemConfig
     parted /dev/sda resizepart 4 100%
-  
+
     echo 'Copying initial install EFI to new partition' | tee -a /var/log/SystemConfig
     dd if=/dev/sda2 of=/dev/sda3
     sync
-    
+
     echo 'Removing initial install EFI partition' | tee -a /var/log/SystemConfig
     parted /dev/sda rm 2
-  
+
     echo 'Copying initial install rootfs to new partition' | tee -a /var/log/SystemConfig
     dd if=/dev/sda1 of=/dev/sda5 bs=8M
     sync
     parted /dev/sda set 5 boot on
-    
+
     echo 'Zero-ing content of initial install rootfs partition' | tee -a /var/log/SystemConfig
     dd if=/dev/zero of=/dev/sda1 bs=8M
     sync
-    
+
     # Reboot the system - during the step above, we destroyed the running file system and 'reboot' may depend on it, so use this method instead (that does not rely on the filesystem)
     echo b > /proc/sysrq-trigger
-  
+
   else
     ################################################################################
     # Any boot apart from first boot
@@ -80,55 +80,60 @@ if [ -e /sys/firmware/efi ]; then
     if [ -b /dev/sda1 ]; then
       echo 'Removing initial install rootfs partition' | tee -a /var/log/SystemConfig
       parted /dev/sda rm 1
-    fi  
-  
+    fi
+
     # Check for persistence partition and recreate if necessary (post factory reset)
     if [ ! -b /dev/sda4 ]; then
       ################################################################################
       # Post factory reset - recreate persistence partition of sda4
       ################################################################################
       echo 'Post-Factory reset recovery' | tee -a /var/log/SystemConfig
-    
+
       if [ -b /dev/sda1 ]; then
-        echo '*** Unexpected configuration when attempting to recreate persistence partition: sda1 already exists ***' | tee -a /var/log/SystemConfig              
+        echo '*** Unexpected configuration when attempting to recreate persistence partition: sda1 already exists ***' | tee -a /var/log/SystemConfig
         exit 1
       fi
-    
+
       if [ -b /dev/sda2 ]; then
-        echo '*** Unexpected configuration when attempting to recreate persistence partition: sda2 already exists ***' | tee -a /var/log/SystemConfig              
+        echo '*** Unexpected configuration when attempting to recreate persistence partition: sda2 already exists ***' | tee -a /var/log/SystemConfig
         exit 1
       fi
-    
+
       if [ ! -b /dev/sda3 ]; then
-        echo '*** Unexpected configuration when attempting to recreate persistence partition: sda3 not found ***' | tee -a /var/log/SystemConfig              
+        echo '*** Unexpected configuration when attempting to recreate persistence partition: sda3 not found ***' | tee -a /var/log/SystemConfig
         exit 1
-      fi      
+      fi
 
       echo 'Creating dummy partition 1, to force persistence to partition #4' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart dummy1 2048s 4095s
 
       echo 'Creating dummy partition 2, to force persistence to partition #4' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart dummy1 4096s 6143s
-      
+
       echo 'Creating partition 4 - persistence - 1Gb (initially)' | tee -a /var/log/SystemConfig
       parted /dev/sda mkpart persistence 30408704s 32505855s
-      
+
       echo 'Removing dummy partition 1' | tee -a /var/log/SystemConfig
       parted /dev/sda rm 1
-      
+
       echo 'Removing dummy partition 2' | tee -a /var/log/SystemConfig
       parted /dev/sda rm 2
-      
+
       echo 'Resizing sda4 to use all remaining space' | tee -a /var/log/SystemConfig
       parted /dev/sda resizepart 4 100%
     fi
+
+    if [ -b /dev/sda7 ]; then
+        echo 'Updating partition 7. Enabling the swap.' | tee -a /var/log/SystemConfig
+        swapon /dev/sda7 2>>/var/log/SystemConfig || true
+    fi
   fi
 
-  
+
   ################################################################################
   # Any boot
   ################################################################################
-    
+
   file -s /dev/sda4 | grep ext4
   if [[ $? != 0 ]]; then
 	  echo 'Making file system on sda4' | tee -a /var/log/SystemConfig
@@ -144,18 +149,18 @@ if [ -e /sys/firmware/efi ]; then
     reboot
   else
     echo 'sda4 file system OK' | tee -a /var/log/SystemConfig
-  fi  
-  
+  fi
+
   ################
   # Update Debian
   ################
-  
+
   if [[ -e /opt/var/lib/debian/root.iso ]]
   then
     echo 'Updating Debian' | tee -a /var/log/SystemConfig
-    
+
     cd /opt/var/lib/debian/
-    
+
     OLD_PARTITION=$(parted /dev/sda print | grep boot | awk '{print $1}')
     OLD_PARTITION="${OLD_PARTITION: -1}"
     if [ "$OLD_PARTITION" = "5" ]
@@ -164,39 +169,39 @@ if [ -e /sys/firmware/efi ]; then
     else
       NEW_PARTITION=5
     fi
-    
+
     LABEL_ROOT=$(blkid -s LABEL /dev/sda${OLD_PARTITION})
     LABEL_ROOT=${LABEL_ROOT##*\=}
-    
+
     LABEL_IMG=$(blkid -s LABEL root.iso)
     LABEL_IMG=${LABEL_IMG##*\=}
-    
+
     echo "Old OS ${LABEL_ROOT}" | tee -a /var/log/SystemConfig
     echo "New OS ${LABEL_IMG}" | tee -a /var/log/SystemConfig
-    
+
     if [ "${LABEL_ROOT}" != "${LABEL_IMG}" ]; then
       gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.iso.asc root.iso 2>/dev/null 1>&2
       if [ $? = 0 ]; then
         echo 'Installing new Debian image' | tee -a /var/log/SystemConfig
         dd if=root.iso of=/dev/sda${NEW_PARTITION} bs=8M 2>/dev/null 1>&2
         echo 'root.iso installed' | tee -a /var/log/SystemConfig
-        
+
         sync
         echo 'Installing new EFI image' | tee -a /var/log/SystemConfig
         dd if=boot.iso of=/dev/sda3 2>/dev/null 1>&2
         echo 'boot.iso installed' | tee -a /var/log/SystemConfig
-        
+
         sync
-        
+
         parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2
-        parted /dev/sda --script toggle ${OLD_PARTITION} boot -- 2>/dev/null 1>&2        
+        parted /dev/sda --script toggle ${OLD_PARTITION} boot -- 2>/dev/null 1>&2
         echo "Partition ${NEW_PARTITION} marked as boot" | tee -a /var/log/SystemConfig
-        
+
         sync
-        
+
         echo 'Overwriting old partition with zeros' | tee -a /var/log/SystemConfig
         dd if=/dev/zero of=/dev/sda${OLD_PARTITION} bs=8M 2>/dev/null 1>&2
-        
+
         sync
 
         # Reboot the system - during the step above, we destroyed the running file system and 'reboot' may depend on it, so use this method instead (that does not rely on the filesystem)
@@ -210,13 +215,13 @@ else
   ################################################################################
   # BIOS
   ################################################################################
-  
+
   echo 'BIOS system' | tee -a /var/log/SystemConfig
-  
+
   #################
   # Partition disk
   #################
-  
+
   if [ ! -b /dev/sda3  ]; then
     echo 'dev/sda3 not present' | tee -a /var/log/SystemConfig
     (
@@ -237,7 +242,7 @@ else
     echo "current PATH is $PATH " | tee -a /var/log/SystemConfig
     swapon /dev/sda3
   fi
-  
+
   if [ ! -b /dev/sda4  ]; then
     echo '/dev/sda4 not present' | tee -a /var/log/SystemConfig
     (
@@ -264,7 +269,7 @@ else
     fi
     reboot
   fi
-  
+
   ## Check for previous Wheezy Install
   if [ -d /run/live/persistence/sda4/home/calnex ]; then
     echo 'Migrating home directory from Wheezy' | tee -a /var/log/SystemConfig
@@ -274,12 +279,12 @@ else
     mv /run/live/persistence/sda4/home/.optware /run/live/persistence/sda4/home/rw
     reboot
   fi
-  
-  
+
+
   ################
   # Update Debian
   ################
-  
+
   if [[ -e /opt/var/lib/debian/root.img ]]; then
     echo 'Updating Debian' | tee -a /var/log/SystemConfig
     cd /opt/var/lib/debian/
@@ -300,18 +305,18 @@ else
       gpg --ignore-time-conflict --no-default-keyring --keyring=/root/.gnupg/pubring.gpg --verify root.img.asc root.img 2>/dev/null 1>&2
       if [ $? = 0 ]; then
         IMG_SIZE=$(ls -l root.img | awk '{print $5}')
-  
+
         echo "Old OS ${LABEL_ROOT}" | tee -a /var/log/SystemConfig
         echo "New OS ${LABEL_IMG}" | tee -a /var/log/SystemConfig
         echo "New OS Size ${IMG_SIZE}" | tee -a /var/log/SystemConfig
-        
+
         # Delete partition, just to be sure
         parted /dev/sda --script rm ${NEW_PARTITION} -- 2>/dev/null 1>&2
         echo "Partition ${NEW_PARTITION} deleted" | tee -a /var/log/SystemConfig
-        
+
         partprobe
         parted /dev/sda --script mkpart primary ${NEW_PARTITION_START}s $((${NEW_PARTITION_START} + ($IMG_SIZE/512)))s  -- 2>/dev/null 1>&2
-        
+
         (
           echo t                  # Change partition type
           echo ${NEW_PARTITION}   # Select new partition
@@ -319,15 +324,15 @@ else
           echo w                  # Write changes
         ) | fdisk /dev/sda
         echo "Partition ${NEW_PARTITION} created" | tee -a /var/log/SystemConfig
-        
+
         partprobe
         dd if=root.img of=/dev/sda${NEW_PARTITION} 2>/dev/null 1>&2
         echo "root.img installed" | tee -a /var/log/SystemConfig
-        
+
         sync
         parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2
         echo "Partition ${NEW_PARTITION} marked as boot" | tee -a /var/log/SystemConfig
-        
+
         sync
         reboot
       else
