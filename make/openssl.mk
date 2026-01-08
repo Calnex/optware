@@ -42,6 +42,7 @@ $(OPENSSL_BUILD_DIR)/.configured: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCHES)
 	$(OPENSSL_UNZIP) $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) -xf - 
 	mv $(BUILD_DIR)/$(OPENSSL_DIR) $(@D)
 	(cd $(@D) && \
+	    CC=$(TARGET_CC) \
 		./Configure \
 			shared zlib-dynamic \
 			$(STAGING_CPPFLAGS) \
