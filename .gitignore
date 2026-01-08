@@ -2,3 +2,5 @@ builds/*
 staging/*
 toolchain/*
 tmp/*
+downloads/*
+
