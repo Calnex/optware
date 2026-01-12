@@ -23,9 +23,8 @@
 
 C_ARES_CALNEX_SITE=$(PACKAGES_SERVER)
 
-
-C_ARES_SITE=http://daniel.haxx.se/projects/c-ares
-C_ARES_VERSION=1.7.4
+C_ARES_VERSION=1.17.1
+C_ARES_SITE=https://github.com/c-ares/c-ares/releases/download/cares-1_17_1
 C_ARES_SOURCE=c-ares-$(C_ARES_VERSION).tar.gz
 C_ARES_DIR=c-ares-$(C_ARES_VERSION)
 C_ARES_UNZIP=zcat
