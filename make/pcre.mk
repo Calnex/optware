@@ -44,7 +44,7 @@ endif
 #
 # PCRE_IPK_VERSION should be incremented when the ipk changes.
 #
-PCRE_IPK_VERSION=1
+PCRE_IPK_VERSION=2
 
 #
 # PCRE_PATCHES should list any patches, in the the order in

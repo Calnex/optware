@@ -13,7 +13,7 @@
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
 PHP_SITE=http://www.php.net/distributions/
-PHP_VERSION=7.1.0
+PHP_VERSION=7.4.33
 PHP_SOURCE=php-$(PHP_VERSION).tar.bz2
 PHP_DIR=php-$(PHP_VERSION)
 PHP_UNZIP=bzcat
@@ -203,7 +203,7 @@ php-source: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES)
 $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 	$(MAKE) bzip2-stage 
 	$(MAKE) zlib-stage 
-	$(MAKE) gdbm-stage 
+	$(MAKE) gdbm-stage
 	$(MAKE) pcre-stage
 	$(MAKE) openssl-stage
 	rm -rf $(BUILD_DIR)/$(PHP_DIR) $(@D)

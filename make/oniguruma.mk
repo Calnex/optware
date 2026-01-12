@@ -113,6 +113,7 @@ $(ONIGURUMA_IPK): $(ONIGURUMA_BUILD_DIR)/.built
 	install -d $(ONIGURUMA_IPK_DIR)/opt/lib
 	install -m 644 $(ONIGURUMA_SOURCE_DIR)/.libs/libonig.so.5.1.0 $(ONIGURUMA_IPK_DIR)/opt/lib
 	cd $(ONIGURUMA_IPK_DIR)/opt/lib && ln -fs libonig.so.5.1.0 libonig.so.5
+	cd $(ONIGURUMA_IPK_DIR)/opt/lib && ln -fs libonig.so.5.1.0 libonig.so
 	$(STRIP_COMMAND) $(ONIGURUMA_IPK_DIR)/opt/lib/libonig.so.5.1.0
 	echo $(STRIP_COMMAND)
 	
