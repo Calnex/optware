@@ -8,11 +8,11 @@ ZLIB_CALNEX_SITE=$(PACKAGES_SERVER)
 
 ZLIB_SITE2=http://$(SOURCEFORGE_MIRROR)/sourceforge/libpng
 ZLIB_SITE3=http://zlib.net
-ZLIB_VERSION:=1.2.5
-ZLIB_LIB_VERSION:=1.2.5
-ZLIB_SOURCE=zlib-$(ZLIB_VERSION).tar.bz2
+ZLIB_VERSION:=1.3.1
+ZLIB_LIB_VERSION:=1.3.1
+ZLIB_SOURCE=zlib-$(ZLIB_VERSION).tar.gz
 ZLIB_DIR=zlib-$(ZLIB_VERSION)
-ZLIB_UNZIP=bzcat
+ZLIB_UNZIP=zcat
 ZLIB_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 ZLIB_DESCRIPTION=zlib is a library implementing the 'deflate' compression system.
 ZLIB_SECTION=libs
@@ -90,7 +90,7 @@ zlib-unpack: $(ZLIB_BUILD_DIR)/.configured
 
 $(ZLIB_BUILD_DIR)/.built: $(ZLIB_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) RANLIB="$(TARGET_RANLIB)" AR="$(TARGET_AR) rc" \
+	$(MAKE) RANLIB="$(TARGET_RANLIB)" AR="$(TARGET_AR) " \
 		SHAREDLIB="libz.$(SHLIB_EXT)" \
 		SHAREDLIBV="libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB)" \
 		SHAREDLIBM="libz$(SO).1$(DYLIB)" \
