@@ -8,9 +8,9 @@ NCURSES_CALNEX_SITE=$(PACKAGES_SERVER)
 
 NCURSES_DIR=$(BUILD_DIR)/ncurses
 
-NCURSES_VERSION=6.0
+NCURSES_VERSION=6.2
 NCURSES=ncurses-$(NCURSES_VERSION)
-NCURSES_SITE=ftp://ftp.invisible-island.net/ncurses
+NCURSES_SITE=https://invisible-island.net/archives/ncurses
 NCURSES_SOURCE=$(NCURSES).tar.gz
 NCURSES_UNZIP=zcat
 NCURSES_MAINTAINER=Christopher Blunck <christopher.blunck@gmail.com>
@@ -151,9 +151,9 @@ $(NCURSES_IPK) $(NCURSES-DEV_IPK): $(NCURSES_DIR)/.built
 	rm -f $(NCURSES_IPK_DIR)/opt/lib/*.a
 	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/bin/clear \
 		$(NCURSES_IPK_DIR)/opt/bin/infocmp $(NCURSES_IPK_DIR)/opt/bin/t*
-	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/lib/*$(SO).6.0$(DYLIB)
+	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/lib/*$(SO).$(NCURSES_VERSION)$(DYLIB)
 ifeq (darwin, $(TARGET_OS))
-	for dylib in $(NCURSES_IPK_DIR)/opt/lib/*$(SO).6.0$(DYLIB); do \
+	for dylib in $(NCURSES_IPK_DIR)/opt/lib/*$(SO).$(NCURSES_VERSION)$(DYLIB); do \
 	$(TARGET_CROSS)install_name_tool -change $$dylib /opt/lib/`basename $$dylib` $$dylib; \
 	done
 endif

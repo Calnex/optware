@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 NGINX_SITE=http://nginx.org/download
-NGINX_VERSION?=1.16.1
+NGINX_VERSION?=1.18.0
 NGINX_SOURCE=nginx-$(NGINX_VERSION).tar.gz
 NGINX_DIR=nginx-$(NGINX_VERSION)
 NGINX_UNZIP=zcat
@@ -134,7 +134,6 @@ $(NGINX_BUILD_DIR)/.configured: $(DL_DIR)/$(NGINX_SOURCE) $(NGINX_PATCHES) make/
 	if test "$(BUILD_DIR)/$(NGINX_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(NGINX_DIR) $(@D) ; \
 	fi
-#		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--crossbuild=linux \
