@@ -23,12 +23,12 @@
 
 GEOIP_CALNEX_SITE=$(PACKAGES_SERVER)
 
-#GEOIP_SITE=http://www.maxmind.com/download/geoip/api/c
-GEOIP_VERSION=1.4.8
+
+GEOIP_VERSION=1.6.12
+
 GEOIP_SOURCE=GeoIP-$(GEOIP_VERSION).tar.gz
-GEOIP_SITE=http://debian/debian/pool/main/g/geoip
-#GEOIP_VERSION=1.6.9
-#GEOIP_SOURCE=geoip_$(GEOIP_VERSION)-4.debian.tar.gz
+GEOIP_SITE=https://github.com/maxmind/geoip-api-c/releases/download/v$(GEOIP_VERSION)
+
 GEOIP_DIR=GeoIP-$(GEOIP_VERSION)
 GEOIP_UNZIP=zcat
 GEOIP_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
@@ -82,9 +82,12 @@ GEOIP_IPK=$(BUILD_DIR)/geoip_$(GEOIP_VERSION)-$(GEOIP_IPK_VERSION)_$(TARGET_ARCH
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GEOIP_SOURCE):
-#	$(WGET) -P $(@D) $(GEOIP_CALNEX_SITE)/$(@F) || \
+
+	echo "Trying to get GeoIP"
+
+	$(WGET) -P $(@D) $(GEOIP_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(GEOIP_SITE)/$(@F) || \
-#	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 
 #
 # The source code depends on it existing within the download directory.
@@ -122,7 +125,7 @@ $(GEOIP_BUILD_DIR)/.configured: $(DL_DIR)/$(GEOIP_SOURCE) $(GEOIP_PATCHES) make/
 	if test "$(BUILD_DIR)/$(GEOIP_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(GEOIP_DIR) $(@D) ; \
 	fi
-	autoreconf -vif $(@D); \
+
 	(cd $(@D); \
 		libtoolize -f && \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -133,10 +136,11 @@ $(GEOIP_BUILD_DIR)/.configured: $(DL_DIR)/$(GEOIP_SOURCE) $(GEOIP_PATCHES) make/
 		--host=$(GNU_TARGET_NAME) \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
-		--disable-nls \
-		--disable-static \
 	)
 	$(PATCH_LIBTOOL) $(@D)/libtool
+	
+	cd $(@D) ; autoreconf -vfi
+	
 	touch $@
 
 geoip-unpack: $(GEOIP_BUILD_DIR)/.configured
