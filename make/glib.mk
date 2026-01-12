@@ -107,9 +107,14 @@ $(GLIB_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(GLIB_SOURCE) make/gl
 	rm -rf $(HOST_BUILD_DIR)/$(GLIB_DIR) $(@D)
 	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(HOST_BUILD_DIR) -xf -
 	mv $(HOST_BUILD_DIR)/$(GLIB_DIR) $(@D)
+	
 	(cd $(@D); \
+		CC_FOR_BUILD=$(HOSTCC) \
+		CPPFLAGS="$(STAGING_CPPFLAGS)" \
+		LDFLAGS="$(STAGING_LDFLAGS)" \
 		./configure \
 		--prefix=/opt	\
+		--with-pcre \
 	)
 	$(MAKE) -C $(@D)
 	touch $@

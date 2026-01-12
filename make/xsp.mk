@@ -78,6 +78,7 @@ XSP_IPK=$(BUILD_DIR)/xsp_$(XSP_VERSION)-$(XSP_IPK_VERSION)_$(TARGET_ARCH).ipk
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(XSP_SOURCE):
+	echo $(XSP_PATCHES)
 	$(WGET) -P $(@D) $(XSP_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 
