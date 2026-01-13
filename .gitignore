@@ -3,4 +3,5 @@ staging/*
 toolchain/*
 tmp/*
 downloads/*
+host/*
 

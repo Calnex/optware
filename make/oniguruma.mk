@@ -80,6 +80,14 @@ $(ONIGURUMA_BUILD_DIR)/.staged: $(ONIGURUMA_BUILD_DIR)/.built
 	install -d $(STAGING_LIB_DIR)
 	install -m 644 $(ONIGURUMA_SOURCE_DIR)/.libs/libonig.so.5.1.0 $(STAGING_LIB_DIR)
 	cd $(STAGING_LIB_DIR) && ln -fs libonig.so.5.1.0 libonig.so.5
+	cd $(STAGING_LIB_DIR) && ln -fs libonig.so.5.1.0 libonig.so
+
+	# Log the package as being installed
+	install -d $(STAGING_LIB_DIR)/pkgconfig
+	install -m 644 $(@D)/oniguruma.pc $(STAGING_LIB_DIR)/pkgconfig
+	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/oniguruma.pc
+
+	
 	touch $@
 
 oniguruma-stage: $(ONIGURUMA_BUILD_DIR)/.staged
