@@ -30,7 +30,7 @@
 NETTLE_CALNEX_SITE=$(PACKAGES_SERVER)
 
 NETTLE_SITE=http://www.lysator.liu.se/~nisse/archive
-NETTLE_VERSION=2.7.1
+NETTLE_VERSION=3.7.3
 NETTLE_SOURCE=nettle-$(NETTLE_VERSION).tar.gz
 NETTLE_DIR=nettle-$(NETTLE_VERSION)
 NETTLE_UNZIP=zcat
@@ -133,6 +133,7 @@ $(NETTLE_BUILD_DIR)/.configured: $(DL_DIR)/$(NETTLE_SOURCE) $(NETTLE_PATCHES) ma
 		--exec_prefix=/opt \
 		--includedir=/opt/include \
 		--disable-nls \
+		--disable-assembler \
 	)
 	touch $@
 
