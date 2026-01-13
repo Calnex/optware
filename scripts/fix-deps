@@ -35,7 +35,7 @@ EOF
 fi
 
 # For ginstall-info (req'd by glib)
-if ! command -v psql &> /dev/null; then
+if ! command -v ginstall-info &> /dev/null; then
     echo "  Installing (g)install-ingo"
 	sudo apt-get install -y install-info
 fi

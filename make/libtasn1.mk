@@ -29,8 +29,8 @@
 
 LIBTASN1_CALNEX_SITE=$(PACKAGES_SERVER)
 
-LIBTASN1_SITE=http://ftp.gnu.org/gnu/libtasn1
-LIBTASN1_VERSION=2.13
+LIBTASN1_SITE=https://ftp.gnu.org/gnu/libtasn1
+LIBTASN1_VERSION=4.16.0
 LIBTASN1_SOURCE=libtasn1-$(LIBTASN1_VERSION).tar.gz
 LIBTASN1_DIR=libtasn1-$(LIBTASN1_VERSION)
 LIBTASN1_UNZIP=zcat
@@ -61,7 +61,7 @@ LIBTASN1_PATCHES=#$(LIBTASN1_SOURCE_DIR)/configure.patch
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
-LIBTASN1_CPPFLAGS=
+LIBTASN1_CPPFLAGS=-std=c99
 LIBTASN1_LDFLAGS=
 
 #
