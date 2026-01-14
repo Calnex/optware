@@ -164,6 +164,15 @@ $(NETTLE_BUILD_DIR)/.staged: $(NETTLE_BUILD_DIR)/.built
 		for f in *.info ; do ginstall-info $$f dir ; done \
 	)
 	touch $@
+	
+	# Log the package as being installed
+	install -d $(STAGING_LIB_DIR)/pkgconfig
+	install -m 644 $(@D)/nettle.pc $(STAGING_LIB_DIR)/pkgconfig
+	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/nettle.pc
+
+	install -m 644 $(@D)/hogweed.pc $(STAGING_LIB_DIR)/pkgconfig
+	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/hogweed.pc
+
 
 nettle-stage: $(NETTLE_BUILD_DIR)/.staged
 

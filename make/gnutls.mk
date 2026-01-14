@@ -29,8 +29,8 @@
 
 GNUTLS_CALNEX_SITE=$(PACKAGES_SERVER)
 
-GNUTLS_SITE=http://ftp.gnu.org/pub/gnu/gnutls
-GNUTLS_VERSION=3.1.5
+GNUTLS_SITE=https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7
+GNUTLS_VERSION=3.7.1
 GNUTLS_SOURCE=gnutls-$(GNUTLS_VERSION).tar.xz
 GNUTLS_DIR=gnutls-$(GNUTLS_VERSION)
 GNUTLS_UNZIP=xzcat
@@ -134,6 +134,7 @@ $(GNUTLS_BUILD_DIR)/.configured: $(DL_DIR)/$(GNUTLS_SOURCE) $(GNUTLS_PATCHES) ma
 		--with-libgcrypt-prefix=$(STAGING_DIR)/opt \
 		--with-libtasn1-prefix=$(STAGING_DIR)/opt \
 		--without-p11-kit \
+		--with-included-unistring \
 		--disable-nls \
 		--disable-static \
 	)

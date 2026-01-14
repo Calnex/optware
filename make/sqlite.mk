@@ -23,9 +23,9 @@
 
 SQLITE_CALNEX_SITE=$(PACKAGES_SERVER)
 
-SQLITE_SITE=http://www.sqlite.org/2014
-SQLITE_VERSION=3.8.5
-SQLITE_DIR=sqlite-autoconf-3080500
+SQLITE_SITE=https://www.sqlite.org/2021
+SQLITE_VERSION=3.34.1
+SQLITE_DIR=sqlite-autoconf-3340100
 SQLITE_SOURCE=$(SQLITE_DIR).tar.gz
 SQLITE_UNZIP=zcat
 SQLITE_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>

@@ -21,7 +21,7 @@ PHP_MAINTAINER=Josh Parsons <jbparsons@ucdavis.edu>
 PHP_DESCRIPTION=The php scripting language
 PHP_SECTION=net
 PHP_PRIORITY=optional
-PHP_DEPENDS=bzip2, zlib, gdbm, pcre, openssl
+PHP_DEPENDS=bzip2, zlib, gdbm, pcre, openssl, oniguruma
 PHP_CONFLICTS=debian (<= 9.0)
 
 #
@@ -206,6 +206,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 	$(MAKE) gdbm-stage
 	$(MAKE) pcre-stage
 	$(MAKE) openssl-stage
+	$(MAKE) oniguruma-stage
 	rm -rf $(BUILD_DIR)/$(PHP_DIR) $(@D)
 	$(PHP_UNZIP) $(DL_DIR)/$(PHP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	mv $(BUILD_DIR)/$(PHP_DIR) $(@D)
