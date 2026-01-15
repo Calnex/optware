@@ -8,8 +8,8 @@ ZLIB_CALNEX_SITE=$(PACKAGES_SERVER)
 
 ZLIB_SITE2=http://$(SOURCEFORGE_MIRROR)/sourceforge/libpng
 ZLIB_SITE3=http://zlib.net
-ZLIB_VERSION:=1.3.1
-ZLIB_LIB_VERSION:=1.3.1
+ZLIB_VERSION:=1.2.11
+ZLIB_LIB_VERSION:=1.2.11
 ZLIB_SOURCE=zlib-$(ZLIB_VERSION).tar.gz
 ZLIB_DIR=zlib-$(ZLIB_VERSION)
 ZLIB_UNZIP=zcat
@@ -22,14 +22,14 @@ ZLIB_CONFLICTS=
 
 ZLIB_IPK_VERSION=1
 
-ZLIB_CFLAGS= $(TARGET_CFLAGS) -fPIC
+ZLIB_CFLAGS= $(TARGET_CFLAGS) -fPIC -Wl,--version-script=zlib.map
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
 ZLIB_CFLAGS+= -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif
 
 ifneq (darwin,$(TARGET_OS))
 ZLIB_LDFLAGS=-Wl,-soname,libz.so.1
-ZLIB_MAKE_FLAGS=LDSHARED="$(TARGET_CC) -shared $(STAGING_LDFLAGS) $(ZLIB_LDFLAGS)"
+ZLIB_MAKE_FLAGS=LDSHARED="$(TARGET_CC) -shared $(STAGING_LDFLAGS) $(ZLIB_LDFLAGS)  -Wl,--version-script=$(ZLIB_BUILD_DIR)/zlib.map"
 endif
 
 ZLIB_BUILD_DIR=$(BUILD_DIR)/zlib
@@ -79,6 +79,7 @@ ifeq (darwin,$(TARGET_OS))
 	sed -i -e 's/`.*uname -s.*`/Darwin/' $(ZLIB_BUILD_DIR)/configure
 endif
 	(cd $(ZLIB_BUILD_DIR); \
+		LDFLAGS=$(ZLIB_LDFLAGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		prefix=/opt \
 		./configure \
@@ -112,6 +113,12 @@ $(ZLIB_BUILD_DIR)/.staged: $(ZLIB_BUILD_DIR)/.built
 	install -m 644 $(ZLIB_BUILD_DIR)/libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB) $(STAGING_LIB_DIR)
 	cd $(STAGING_DIR)/opt/lib && ln -fs libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB) libz$(SO).1$(DYLIB)
 	cd $(STAGING_DIR)/opt/lib && ln -fs libz$(SO).$(ZLIB_LIB_VERSION)$(DYLIB) libz.$(SHLIB_EXT)
+	
+	# record the library in pkgconfig
+	install -d $(STAGING_LIB_DIR)/pkgconfig
+	install -m 644 $(@D)/zlib.pc $(STAGING_LIB_DIR)/pkgconfig
+	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/zlib.pc
+
 	touch $@
 
 zlib-stage: $(ZLIB_BUILD_DIR)/.staged

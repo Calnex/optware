@@ -124,6 +124,17 @@ $(POSTGRESQL_BUILD_DIR)/.configured: $(DL_DIR)/$(POSTGRESQL_SOURCE) $(POSTGRESQL
 		cat $(POSTGRESQL_PATCHES) | patch -d $(BUILD_DIR)/$(POSTGRESQL_DIR) -p1 ; \
 	fi
 	mv $(BUILD_DIR)/$(POSTGRESQL_DIR) $(@D)
+	
+	
+		echo ''
+	echo ''
+	echo 'Target configure options $(TARGET_CONFIGURE_OPTS)'
+	echo ''
+	echo ''
+
+	
+	
+	
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(POSTGRESQL_CPPFLAGS)" \
@@ -149,6 +160,7 @@ postgresql-unpack: $(POSTGRESQL_BUILD_DIR)/.configured
 
 $(POSTGRESQL_BUILD_DIR)/.built: $(POSTGRESQL_BUILD_DIR)/.configured
 	rm -f $@
+	
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) MAKELEVEL=0 -C $(@D) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(POSTGRESQL_CPPFLAGS)" \
 		;

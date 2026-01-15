@@ -14,8 +14,8 @@
 #
 GLIB_CALNEX_SITE=$(PACKAGES_SERVER)
 
-GLIB_MAJOR_VERSION=2.48
-GLIB_MINOR_VERSION=2
+GLIB_MAJOR_VERSION=2.66
+GLIB_MINOR_VERSION=8
 GLIB_VERSION=$(GLIB_MAJOR_VERSION).$(GLIB_MINOR_VERSION)
 GLIB_SITE=http://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB_MAJOR_VERSION)
 GLIB_SOURCE=glib-$(GLIB_VERSION).tar.xz
@@ -26,9 +26,9 @@ GLIB_DESCRIPTION=The GLib library of C routines.
 GLIB_SECTION=lib
 GLIB_PRIORITY=optional
 ifeq (libiconv, $(filter libiconv, $(PACKAGES)))
-GLIB_DEPENDS=libiconv
+GLIB_DEPENDS=libiconv, libffi, libelf
 else
-GLIB_DEPENDS=
+GLIB_DEPENDS=libffi, libelf
 endif
 ifeq ($(GETTEXT_NLS), enable)
 # assume standalone libiconv
@@ -46,6 +46,11 @@ GLIB_IPK_VERSION=1
 # GLIB_LOCALES defines which locales get installed
 #
 GLIB_LOCALES=
+
+#
+# GLIB_MESON_WORKING_DIR is the temporary folder where glib builds into
+#
+GLIB_MESON_WORKING_DIR=_build
 
 #
 # GLIB_CONFFILES should be a list of user-editable files
@@ -103,31 +108,30 @@ $(DL_DIR)/$(GLIB_SOURCE):
 glib-source: $(DL_DIR)/$(GLIB_SOURCE) $(GLIB_PATCHES)
 
 
-$(GLIB_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(GLIB_SOURCE) make/glib.mk
-	rm -rf $(HOST_BUILD_DIR)/$(GLIB_DIR) $(@D)
-	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(HOST_BUILD_DIR) -xf -
-	mv $(HOST_BUILD_DIR)/$(GLIB_DIR) $(@D)
-	
-	(cd $(@D); \
-		CC_FOR_BUILD=$(HOSTCC) \
-		CPPFLAGS="$(STAGING_CPPFLAGS)" \
-		LDFLAGS="$(STAGING_LDFLAGS)" \
-		./configure \
-		--prefix=/opt	\
-		--with-pcre \
-	)
-	$(MAKE) -C $(@D)
-	touch $@
+#$(GLIB_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(GLIB_SOURCE) make/glib.mk
+#	rm -rf $(HOST_BUILD_DIR)/$(GLIB_DIR) $(@D)
+#	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(HOST_BUILD_DIR) -xf -
+#	mv $(HOST_BUILD_DIR)/$(GLIB_DIR) $(@D)
+#	
+#	(cd $(@D); \
+#		CC=$(TARGET_CC) \
+#		CPPFLAGS="$(STAGING_CPPFLAGS)" \
+#		LDFLAGS="$(STAGING_LDFLAGS)" \
+#		meson setup _build \
+#		--prefix=/opt	\
+#	)
+#	$(MAKE) -C $(@D)
+#	touch $@
+#
+#glib-host: $(GLIB_HOST_BUILD_DIR)/.built
 
-glib-host: $(GLIB_HOST_BUILD_DIR)/.built
 
-
-$(GLIB_HOST_BUILD_DIR)/.staged: $(GLIB_HOST_BUILD_DIR)/.built host/.configured make/glib.mk
-	rm -f $@
-	$(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
-	touch $@
-
-glib-host-stage: $(GLIB_HOST_BUILD_DIR)/.staged
+#$(GLIB_HOST_BUILD_DIR)/.staged: $(GLIB_HOST_BUILD_DIR)/.built host/.configured make/glib.mk
+#	rm -f $@
+#	$(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
+#	touch $@
+#
+#glib-host-stage: $(GLIB_HOST_BUILD_DIR)/.staged
 
 
 #
@@ -146,37 +150,67 @@ glib-host-stage: $(GLIB_HOST_BUILD_DIR)/.staged
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(GLIB_BUILD_DIR)/.configured: $(DL_DIR)/$(GLIB_SOURCE) $(GLIB_PATCHES) make/glib.mk
-	$(MAKE) zlib-stage libffi-stage
+#	$(MAKE) zlib-stage libffi-stage
 ifeq (libiconv, $(filter libiconv, $(PACKAGES)))
-	$(MAKE) libiconv-stage
+#	$(MAKE) libiconv-stage
 endif
 ifeq ($(GETTEXT_NLS), enable)
-	$(MAKE) gettext-stage
+#	$(MAKE) gettext-stage
 endif
-ifneq ($(HOSTCC), $(TARGET_CC))
-	$(MAKE) glib-host-stage
-endif
+#ifneq ($(HOSTCC), $(TARGET_CC))
+#	$(MAKE) glib-host-stage
+#endif
+#	$(MAKE) libffi-stage
+	#$(MAKE) libelf-stage
+
+
 	rm -rf $(BUILD_DIR)/$(GLIB_DIR) $(@D)
 	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	mv $(BUILD_DIR)/$(GLIB_DIR) $(@D)
 	cp $(SOURCE_DIR)/glib/glib.cache $(@D)/config.cache
-	sed -i -e 's/^ *$$as_echo_n /echo -n /' $(@D)/configure
+	
+	# was:
+	#(cd $(@D); \
+	#	$(TARGET_CONFIGURE_OPTS) \
+	#	CPPFLAGS="$(STAGING_CPPFLAGS) $(GLIB_CPPFLAGS)" \
+	#	LDFLAGS="$(STAGING_LDFLAGS) $(GLIB_LDFLAGS)" \
+	#	./configure \
+	#	--build=$(GNU_HOST_NAME) \
+	#	--host=$(GNU_TARGET_NAME) \
+	#	--target=$(GNU_TARGET_NAME) \
+	#	--cache-file=config.cache \
+	#	--prefix=/opt \
+	#	$(GLIB_CONFIG_OPT) \
+	#)
+	#sed -i -e '/#define _POSIX_SOURCE/a#include <bits/posix1_lim.h>' $(@D)/glib/giounix.c
+	#$(PATCH_LIBTOOL) $(@D)/libtool
+	
+	
+	echo 'Staging LDFLAGS: $(STAGING_LDFLAGS)'
+	
+	
+	
 	(cd $(@D); \
-		$(TARGET_CONFIGURE_OPTS) \
+		CC=$(TARGET_CC) \
+		AR=$(TARGET_AR) \
+		AS=$(TAREGT_AS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GLIB_CPPFLAGS)" \
-		LDFLAGS="$(STAGING_LDFLAGS) $(GLIB_LDFLAGS)" \
-		./configure \
-		--build=$(GNU_HOST_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--target=$(GNU_TARGET_NAME) \
-		--cache-file=config.cache \
-		--with-pcre \
-		--prefix=/opt \
-		$(GLIB_CONFIG_OPT) \
+		LDFLAGS="$(STAGING_LDFLAGS) $(GLIB_LDFLAGS) -Wl,-rpath-link,/home/alan/optware/staging/opt/lib64" \
+		meson setup \
+		$(GLIB_MESON_WORKING_DIR) \
 	)
-	sed -i -e '/#define _POSIX_SOURCE/a#include <bits/posix1_lim.h>' $(@D)/glib/giounix.c
-	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
+
+
+	# remnoved from meson setup
+			#$(TARGET_CONFIGURE_OPTS) \
+		#CPPFLAGS="$(STAGING_CPPFLAGS) $(GLIB_CPPFLAGS)" \
+		#LDFLAGS="$(STAGING_LDFLAGS) $(GLIB_LDFLAGS)" \
+
+	#\
+	#	--prefix=/opt \
+
+
 
 glib-unpack: $(GLIB_BUILD_DIR)/.configured
 
@@ -186,7 +220,17 @@ glib-unpack: $(GLIB_BUILD_DIR)/.configured
 #
 $(GLIB_BUILD_DIR)/.built: $(GLIB_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	
+	
+	env
+	
+	
+	
+	( cd $(@D); \
+		LDFLAGS='$(STAGING_LDFLAGS)' \
+		meson compile \
+		-C $(GLIB_MESON_WORKING_DIR) \
+		)
 	touch $@
 
 #
