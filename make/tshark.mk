@@ -27,10 +27,10 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 TSHARK_SITE=http://www.wireshark.org/download/src/all-versions
-TSHARK_VERSION ?= 2.2.0
-TSHARK_SOURCE=wireshark-$(TSHARK_VERSION).tar.bz2
+TSHARK_VERSION ?= 3.4.16
+TSHARK_SOURCE=wireshark-$(TSHARK_VERSION).tar.xz
 TSHARK_DIR=wireshark-$(TSHARK_VERSION)
-TSHARK_UNZIP=bzcat
+TSHARK_UNZIP=xzcat
 TSHARK_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 TSHARK_DESCRIPTION=Terminal based wireshark to dump and analyze network traffic
 TSHARK_SECTION=net
@@ -52,7 +52,7 @@ TSHARK_IPK_VERSION ?= 3
 # TSHARK_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-TSHARK_PATCHES = 
+TSHARK_PATCHES=
 
 #
 # If the compilation of the package requires additional
@@ -122,7 +122,7 @@ $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) ma
 	if test "$(BUILD_DIR)/$(TSHARK_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(TSHARK_DIR) $(@D) ; \
 	fi
-	sed -i -e '/^INCLUDES/s|-I$$(includedir)|-I$(STAGING_INCLUDE_DIR)|' $(@D)/plugins/*/Makefile.am
+	#sed -i -e '/^INCLUDES/s|-I$$(includedir)|-I$(STAGING_INCLUDE_DIR)|' $(@D)/plugins/*/Makefile.am
 	autoreconf -vif $(@D)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \

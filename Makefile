@@ -41,6 +41,7 @@ PACKAGES_THAT_NEED_TO_BE_FIXED =
 COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
 			debian \
+			elfutils \
 			gdbm \
 			geoip \
 			gettext \
@@ -50,7 +51,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			ipkg-utils \
 			ipkg-web \
 			libdb \
-			libelf \
 			libffi \
 			libgcrypt \
 			libgmp \

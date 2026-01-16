@@ -9,7 +9,7 @@ sudo apt-get install -y linux-source bc kmod cpio flex libncurses5-dev libelf-de
 
 # Additional dependencies for building various IPKs
 echo "Installing Endor essentials.."
-sudo apt-get install -y git gpg libffi7 libffi-dev automake openjdk-11-jre nunit
+sudo apt-get install -y git gpg libffi7 libffi-dev automake openjdk-11-jre nunit libxml2-utils
 
 # Setup nodejs
 if ! command -v node; then
