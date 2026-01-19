@@ -38,9 +38,12 @@ PACKAGES_READY_FOR_TESTING =
 PACKAGES_THAT_NEED_TO_BE_FIXED =
 
 
+# Packages removed from build
+# Jan-2026
+# debian mono optware-bootstrap wgt wget-ssl xsp
+
 COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
-			debian \
 			elfutils \
 			gdbm \
 			geoip \
@@ -61,13 +64,11 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			libtasn1 \
 			libtool \
 			lua \
-			mono \
 			ncurses \
 			nettle \
 			nginx \
 			oniguruma \
 			openssl \
-			optware-bootstrap \
 			pcre \
 			php \
 			postgresql \
@@ -76,9 +77,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			sqlite \
 			template \
 			tshark \
-			wget \
-			wget-ssl \
-			xsp \
 			zlib \
 
 CALNEX_PACKAGES =	cat \

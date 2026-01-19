@@ -4,4 +4,6 @@ toolchain/*
 tmp/*
 downloads/*
 host/*
+packages/*
+
 

@@ -74,8 +74,8 @@ IPKG-OPT_PATCHES=$(IPKG-OPT_SOURCE_DIR)/args.h.patch \
 	$(IPKG-OPT_SOURCE_DIR)/update-alternatives.patch \
 	$(IPKG-OPT_SOURCE_DIR)/ipkg-va_start_segfault.diff \
 	$(IPKG-OPT_SOURCE_DIR)/list_installed.patch \
-	$(IPKG-OPT_SOURCE_DIR)/ipkg_install.c.patch \
-	$(IPKG-OPT_SOURCE_DIR)/pkg_run_script_segfault.patch
+	$(IPKG-OPT_SOURCE_DIR)/ipkg_install.c.patch # atp \
+	# atp $(IPKG-OPT_SOURCE_DIR)/pkg_run_script_segfault.patch
 
 ifeq ($(LIBC_STYLE), uclibc)
 IPKG-OPT_PATCHES += $(IPKG-OPT_SOURCE_DIR)/ipkg_download.c.patch
@@ -150,7 +150,7 @@ ipkg-opt-unpack: $(IPKG-OPT_BUILD_DIR)/.configured
 $(IPKG-OPT_BUILD_DIR)/.built: $(IPKG-OPT_BUILD_DIR)/.configured
 	rm -f $@
 	\
-	$(MAKE) -C $(@D)
+	$(MAKE) -j -C $(@D)
 	touch $@
 
 #
