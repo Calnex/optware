@@ -145,7 +145,7 @@ elfutils-unstage: $(ELFUTILS_BUILD_DIR)/.unstaged
 $(ELFUTILS_IPK_DIR)/CONTROL/control:
 	@install -d $(@D)
 	@rm -f $@
-	@echo "Package: elfutils" >>$@
+	@echo "Package: libelf" >>$@
 	@echo "Architecture: $(TARGET_ARCH)" >>$@
 	@echo "Priority: $(ELFUTILS_PRIORITY)" >>$@
 	@echo "Section: $(ELFUTILS_SECTION)" >>$@
