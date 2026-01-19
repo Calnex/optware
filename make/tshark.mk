@@ -27,10 +27,10 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 TSHARK_SITE=http://www.wireshark.org/download/src/all-versions
-TSHARK_VERSION ?= 3.4.16
-TSHARK_SOURCE=wireshark-$(TSHARK_VERSION).tar.xz
+TSHARK_VERSION ?= 2.2.0
+TSHARK_SOURCE=wireshark-$(TSHARK_VERSION).tar.bz2
 TSHARK_DIR=wireshark-$(TSHARK_VERSION)
-TSHARK_UNZIP=xzcat
+TSHARK_UNZIP=bzcat
 TSHARK_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 TSHARK_DESCRIPTION=Terminal based wireshark to dump and analyze network traffic
 TSHARK_SECTION=net
@@ -112,7 +112,7 @@ tshark-source: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES)
 # shown below to make various patches to it.
 #
 $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) make/tshark.mk
-	$(MAKE) c-ares-stage geoip-stage glib-stage gnutls-stage libpcap-stage pcre-stage zlib-stage lua-stage
+	$(MAKE) c-ares-stage geoip-stage glib-stage gnutls-stage libpcap-stage pcre-stage zlib-stage lua-stage nettle-stage
 	rm -rf $(BUILD_DIR)/$(TSHARK_DIR) $(@D)
 	$(TSHARK_UNZIP) $(DL_DIR)/$(TSHARK_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(TSHARK_PATCHES)" ; \
@@ -155,8 +155,8 @@ tshark-unpack: $(TSHARK_BUILD_DIR)/.configured
 #
 $(TSHARK_BUILD_DIR)/.built: $(TSHARK_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) CC_FOR_BUILD=$(HOSTCC) CC=$(HOSTCC) -C $(@D)/tools/lemon lemon
-	$(MAKE) -C $(@D)
+	$(MAKE) -j CC_FOR_BUILD=$(HOSTCC) CC=$(HOSTCC) -C $(@D)/tools/lemon lemon
+	$(MAKE) -j -C $(@D)
 	touch $@
 
 #
