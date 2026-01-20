@@ -64,6 +64,11 @@ NGINX_CPPFLAGS+=-DIOV_MAX=1024
 endif
 NGINX_LDFLAGS=-ldl
 
+# Options to pass to the make that is performed when building the code
+NGINX_MAKE_OPTIONS=-j
+
+
+
 #
 # NGINX_BUILD_DIR is the directory in which the build is done.
 # NGINX_SOURCE_DIR is the directory which holds all the
@@ -189,7 +194,7 @@ nginx: $(NGINX_BUILD_DIR)/.built
 #
 $(NGINX_BUILD_DIR)/.staged: $(NGINX_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) $(NGINX_MAKE_OPTIONS) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 nginx-stage: $(NGINX_BUILD_DIR)/.staged

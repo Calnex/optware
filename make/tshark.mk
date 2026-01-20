@@ -64,6 +64,10 @@ ifeq ($(LIBC_STYLE), uclibc)
 TSHARK_LDFLAGS+=-lm
 endif
 
+# Options to pass to the make that is performed when building the code
+TSHARK_MAKE_OPTIONS=-j
+
+
 #
 # TSHARK_BUILD_DIR is the directory in which the build is done.
 # TSHARK_SOURCE_DIR is the directory which holds all the
@@ -155,8 +159,8 @@ tshark-unpack: $(TSHARK_BUILD_DIR)/.configured
 #
 $(TSHARK_BUILD_DIR)/.built: $(TSHARK_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -j CC_FOR_BUILD=$(HOSTCC) CC=$(HOSTCC) -C $(@D)/tools/lemon lemon
-	$(MAKE) -j -C $(@D)
+	$(MAKE) $(TSHARK_MAKE_OPTIONS) CC_FOR_BUILD=$(HOSTCC) CC=$(HOSTCC) -C $(@D)/tools/lemon lemon
+	$(MAKE) $(TSHARK_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

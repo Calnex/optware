@@ -61,6 +61,11 @@ GEOIP_IPK_VERSION=1
 GEOIP_CPPFLAGS=
 GEOIP_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+GEOIP_MAKE_OPTIONS=-j
+
+
+
 #
 # GEOIP_BUILD_DIR is the directory in which the build is done.
 # GEOIP_SOURCE_DIR is the directory which holds all the
@@ -147,7 +152,7 @@ geoip-unpack: $(GEOIP_BUILD_DIR)/.configured
 #
 $(GEOIP_BUILD_DIR)/.built: $(GEOIP_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(GEOIP_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

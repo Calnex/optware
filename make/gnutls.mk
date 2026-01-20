@@ -64,6 +64,11 @@ GNUTLS_CONFFILES=#/opt/etc/gnutls.conf /opt/etc/init.d/SXXgnutls
 GNUTLS_CPPFLAGS=
 GNUTLS_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+GNUTLS_MAKE_OPTIONS=-j
+
+
+
 #
 # GNUTLS_BUILD_DIR is the directory in which the build is done.
 # GNUTLS_SOURCE_DIR is the directory which holds all the
@@ -80,6 +85,8 @@ GNUTLS_IPK_DIR=$(BUILD_DIR)/gnutls-$(GNUTLS_VERSION)-ipk
 GNUTLS_IPK=$(BUILD_DIR)/gnutls_$(GNUTLS_VERSION)-$(GNUTLS_IPK_VERSION)_$(TARGET_ARCH).ipk
 GNUTLS-DEV_IPK_DIR=$(BUILD_DIR)/gnutls-dev-$(GNUTLS_VERSION)-ipk
 GNUTLS-DEV_IPK=$(BUILD_DIR)/gnutls-dev_$(GNUTLS_VERSION)-$(GNUTLS_IPK_VERSION)_$(TARGET_ARCH).ipk
+
+
 
 .PHONY: gnutls-source gnutls-unpack gnutls gnutls-stage gnutls-ipk gnutls-clean gnutls-dirclean gnutls-check
 
@@ -148,7 +155,7 @@ gnutls-unpack: $(GNUTLS_BUILD_DIR)/.configured
 #
 $(GNUTLS_BUILD_DIR)/.built: $(GNUTLS_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(GNUTLS_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

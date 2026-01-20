@@ -60,6 +60,11 @@ endif
 LIBGCRYPT_CPPFLAGS=
 LIBGCRYPT_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+LIBGCRYPT_MAKE_OPTIONS=-j
+
+
+
 #
 # LIBGCRYPT_BUILD_DIR is the directory in which the build is done.
 # LIBGCRYPT_SOURCE_DIR is the directory which holds all the
@@ -143,7 +148,7 @@ libgcrypt-unpack: $(LIBGCRYPT_BUILD_DIR)/.configured
 #
 $(LIBGCRYPT_BUILD_DIR)/.built: $(LIBGCRYPT_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(LIBGCRYPT_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

@@ -65,6 +65,11 @@ ifneq (no, $(IPV6))
 LIBPCAP_CONFIGURE_OPTS=--enable-ipv6
 endif
 
+# Options to pass to the make that is performed when building the code
+LIBPCAP_MAKE_OPTIONS=-j
+
+
+
 #
 # LIBPCAP_BUILD_DIR is the directory in which the build is done.
 # LIBPCAP_SOURCE_DIR is the directory which holds all the
@@ -161,7 +166,7 @@ libpcap: $(LIBPCAP_BUILD_DIR)/.built
 $(LIBPCAP_BUILD_DIR)/.staged: $(LIBPCAP_BUILD_DIR)/.built
 	rm -f $@
 	rm -f $(STAGING_DIR)/opt/share/man/man3/pcap_*.3pcap
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) $(LIBPCAP_MAKE_OPTIONS) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	rm -f $(STAGING_LIB_DIR)/opt/lib/libpcap.a
 	touch $@
 

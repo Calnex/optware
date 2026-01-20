@@ -31,6 +31,11 @@ GDBM_SOURCE_DIR=$(SOURCE_DIR)/gdbm
 GDBM_IPK=$(BUILD_DIR)/gdbm_$(GDBM_VERSION)-$(GDBM_IPK_VERSION)_$(TARGET_ARCH).ipk
 GDBM_IPK_DIR=$(BUILD_DIR)/gdbm-$(GDBM_VERSION)-ipk
 
+# Options to pass to the make that is performed when building the code
+GDBM_MAKE_OPTIONS=-j
+
+
+
 .PHONY: gdbm-source gdbm-unpack gdbm gdbm-stage gdbm-ipk gdbm-clean gdbm-dirclean gdbm-check
 
 $(DL_DIR)/$(GDBM_SOURCE):
@@ -64,7 +69,7 @@ gdbm-unpack: $(GDBM_BUILD_DIR)/.configured
 
 $(GDBM_BUILD_DIR)/.built: $(GDBM_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(GDBM_BUILD_DIR)
+	$(MAKE) $(GDBM_MAKE_OPTIONS) -C $(GDBM_BUILD_DIR)
 	touch $@
 
 gdbm: $(GDBM_BUILD_DIR)/.built

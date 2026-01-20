@@ -67,6 +67,11 @@ LIBFFI_PATCHES=
 LIBFFI_CPPFLAGS=
 LIBFFI_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+LIBFFI_MAKE_OPTIONS=-j
+
+
+
 #
 # LIBFFI_BUILD_DIR is the directory in which the build is done.
 # LIBFFI_SOURCE_DIR is the directory which holds all the
@@ -149,7 +154,7 @@ libffi-unpack: $(LIBFFI_BUILD_DIR)/.configured
 #
 $(LIBFFI_BUILD_DIR)/.built: $(LIBFFI_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(LIBFFI_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

@@ -64,6 +64,10 @@ LIBIDN_IPK_VERSION=1
 LIBIDN_CPPFLAGS=
 LIBIDN_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+LIBIDN_MAKE_OPTIONS=-j
+
+
 #
 # LIBIDN_BUILD_DIR is the directory in which the build is done.
 # LIBIDN_SOURCE_DIR is the directory which holds all the
@@ -140,7 +144,7 @@ libidn-unpack: $(LIBIDN_BUILD_DIR)/.configured
 #
 $(LIBIDN_BUILD_DIR)/.built: $(LIBIDN_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(LIBIDN_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

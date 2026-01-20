@@ -24,6 +24,11 @@ NCURSES_FOR_OPTWARE_TARGET=ncurses
 
 NCURSES_IPK_VERSION=0
 
+# Options to pass to the make that is performed when building the code
+NCURSES_MAKE_OPTIONS=-j
+
+
+
 NCURSES_IPK=$(BUILD_DIR)/ncurses_$(NCURSES_VERSION)-$(NCURSES_IPK_VERSION)_$(TARGET_ARCH).ipk
 NCURSES-DEV_IPK=$(BUILD_DIR)/ncurses-dev_$(NCURSES_VERSION)-$(NCURSES_IPK_VERSION)_$(TARGET_ARCH).ipk
 NCURSES_IPK_DIR=$(BUILD_DIR)/ncurses-$(NCURSES_VERSION)-ipk
@@ -105,7 +110,7 @@ ncurses: $(NCURSES_DIR)/.built
 
 $(NCURSES_DIR)/.staged: $(NCURSES_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(NCURSES_DIR) DESTDIR=$(STAGING_DIR) install.includes install.libs
+	$(MAKE) $(NCURSES_MAKE_OPTIONS) -C $(NCURSES_DIR) DESTDIR=$(STAGING_DIR) install.includes install.libs
 	sed -i -e '/^prefix=/s|=.*|=$(STAGING_PREFIX)|' $(STAGING_PREFIX)/bin/ncurses[0-9]*-config
 	ln -sf ncurses/ncurses.h $(STAGING_INCLUDE_DIR)
 	ln -sf ncurses/curses.h $(STAGING_INCLUDE_DIR)

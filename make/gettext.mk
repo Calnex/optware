@@ -69,6 +69,11 @@ GETTEXT_HOST_BUILD_DIR=$(HOST_BUILD_DIR)/gettext
 
 GETTEXT_NLS ?= disable
 
+# Options to pass to the make that is performed when building the code
+GETTEXT_MAKE_OPTIONS=-j
+
+
+
 .PHONY: gettext-source gettext-host gettext-host-stage gettext-unpack gettext
 .PHONY: gettext-stage gettext-ipk gettext-clean gettext-dirclean gettext-check
 
@@ -104,7 +109,7 @@ gettext-host: $(GETTEXT_HOST_BUILD_DIR)/.built
 
 $(GETTEXT_HOST_BUILD_DIR)/.staged: $(GETTEXT_HOST_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
+	$(MAKE) $(GETTEXT_MAKE_OPTIONS) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
 	(\
 		cd $(STAGING_DIR)/opt/share/info && \
 		rm -f dir && \

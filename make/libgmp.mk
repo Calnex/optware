@@ -60,6 +60,11 @@ LIBGMP_IPK_VERSION=1
 LIBGMP_CPPFLAGS=
 LIBGMP_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+LIBGMP_MAKE_OPTIONS=-j
+
+
+
 #
 # LIBGMP_BUILD_DIR is the directory in which the build is done.
 # LIBGMP_SOURCE_DIR is the directory which holds all the
@@ -152,7 +157,7 @@ libgmp-unpack: $(LIBGMP_BUILD_DIR)/.configured
 #
 $(LIBGMP_BUILD_DIR)/.built: $(LIBGMP_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(LIBGMP_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

@@ -64,6 +64,11 @@ NETTLE_IPK_VERSION=1
 NETTLE_CPPFLAGS=
 NETTLE_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+NETTLE_MAKE_OPTIONS=-j
+
+
+
 #
 # NETTLE_BUILD_DIR is the directory in which the build is done.
 # NETTLE_SOURCE_DIR is the directory which holds all the
@@ -144,7 +149,7 @@ nettle-unpack: $(NETTLE_BUILD_DIR)/.configured
 #
 $(NETTLE_BUILD_DIR)/.built: $(NETTLE_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(NETTLE_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

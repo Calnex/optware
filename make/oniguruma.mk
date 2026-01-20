@@ -29,6 +29,11 @@ ONIGURUMA_IPK=$(BUILD_DIR)/oniguruma_$(ONIGURUMA_VERSION)-$(ONIGURUMA_IPK_VERSIO
 ONIGURUMA_IPK_DIR=$(BUILD_DIR)/oniguruma-$(ONIGURUMA_VERSION)-ipk
 ONIGURUMA_AUTORECONF=/usr/bin/autoreconf
 
+# Options to pass to the make that is performed when building the code
+ONIGURUMA_MAKE_OPTIONS=-j
+
+
+
 .PHONY: oniguruma-source oniguruma-unpack oniguruma oniguruma-stage oniguruma-ipk oniguruma-clean oniguruma-dirclean oniguruma-check
 
 $(DL_DIR)/$(ONIGURUMA_SOURCE):
@@ -60,7 +65,7 @@ oniguruma-unpack: $(ONIGURUMA_BUILD_DIR)/.configured
 
 $(ONIGURUMA_BUILD_DIR)/.built: $(ONIGURUMA_BUILD_DIR)/.configured
 	rm -f $@
-	@$(MAKE) -C $(@D) \
+	@$(MAKE) $(ONIGURUMA_MAKE_OPTIONS) -C $(@D) \
 		PREFIX=/opt \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(ONIGURUMA_CPPFLAGS)" \

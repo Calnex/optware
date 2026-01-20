@@ -58,6 +58,9 @@ C_ARES_IPK_VERSION=1
 C_ARES_CPPFLAGS=
 C_ARES_LDFLAGS=
 
+# Flags to pass to the make that is performed when building the code
+C_ARES_MAKE_OPTIONS=-j
+
 #
 # C_ARES_BUILD_DIR is the directory in which the build is done.
 # C_ARES_SOURCE_DIR is the directory which holds all the
@@ -143,7 +146,7 @@ c-ares-unpack: $(C_ARES_BUILD_DIR)/.configured
 $(C_ARES_BUILD_DIR)/.built: $(C_ARES_BUILD_DIR)/.configured
 	rm -f $@
 	\
-	$(MAKE) -C $(@D)
+	$(MAKE) $(C_ARES_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

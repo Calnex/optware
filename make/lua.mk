@@ -63,6 +63,10 @@ LUA_PATCHES=$(LUA_SOURCE_DIR)/makefiles.patch
 LUA_CPPFLAGS=-DLUA_USE_LINUX -fPIC -DPIC
 LUA_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+LUA_MAKE_OPTIONS=-j
+
+
 #
 # LUA_BUILD_DIR is the directory in which the build is done.
 # LUA_SOURCE_DIR is the directory which holds all the
@@ -172,7 +176,7 @@ lua: $(LUA_BUILD_DIR)/.built
 #
 $(LUA_BUILD_DIR)/.staged: $(LUA_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) INSTALL_TOP=$(STAGING_PREFIX) install
+	$(MAKE) $(LUA_MAKE_OPTIONS) -C $(@D) INSTALL_TOP=$(STAGING_PREFIX) install
 	mkdir -p $(STAGING_LIB_DIR)/pkgconfig
 	sed -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(@D)/etc/lua.pc > $(STAGING_LIB_DIR)/pkgconfig/lua.pc
 	touch $@

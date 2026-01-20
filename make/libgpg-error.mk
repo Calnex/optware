@@ -64,6 +64,11 @@ LIBGPG-ERROR_PATCHES=#$(LIBGPG-ERROR_SOURCE_DIR)/configure.patch
 LIBGPG-ERROR_CPPFLAGS=
 LIBGPG-ERROR_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+LIBGPG-ERROR_MAKE_OPTIONS=-j
+
+
+
 #
 # LIBGPG-ERROR_BUILD_DIR is the directory in which the build is done.
 # LIBGPG-ERROR_SOURCE_DIR is the directory which holds all the
@@ -139,7 +144,7 @@ libgpg-error-unpack: $(LIBGPG-ERROR_BUILD_DIR)/.configured
 #
 $(LIBGPG-ERROR_BUILD_DIR)/.built: $(LIBGPG-ERROR_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(LIBGPG-ERROR_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

@@ -34,7 +34,7 @@ endif
 
 ifneq (darwin,$(TARGET_OS))
 ZLIB_LDFLAGS=-Wl,-soname,libz.so.1
-ZLIB_MAKE_FLAGS=LDSHARED="$(TARGET_CC) -shared $(STAGING_LDFLAGS) $(ZLIB_LDFLAGS)  -Wl,--version-script=$(ZLIB_BUILD_DIR)/zlib.map"
+ZLIB_MAKE_FLAGS=-j LDSHARED="$(TARGET_CC) -shared $(STAGING_LDFLAGS) $(ZLIB_LDFLAGS)  -Wl,--version-script=$(ZLIB_BUILD_DIR)/zlib.map"
 endif
 
 ZLIB_BUILD_DIR=$(BUILD_DIR)/zlib

@@ -61,6 +61,11 @@ LIBEVENT_IPK_VERSION=1
 LIBEVENT_CPPFLAGS=
 LIBEVENT_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+LIBEVENT_MAKE_OPTIONS=-j
+
+
+
 #
 # LIBEVENT_BUILD_DIR is the directory in which the build is done.
 # LIBEVENT_SOURCE_DIR is the directory which holds all the
@@ -142,7 +147,7 @@ libevent-unpack: $(LIBEVENT_BUILD_DIR)/.configured
 #
 $(LIBEVENT_BUILD_DIR)/.built: $(LIBEVENT_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(LIBEVENT_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

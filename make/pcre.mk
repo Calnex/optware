@@ -58,6 +58,10 @@ PCRE_PATCHES=$(PCRE_SOURCE_DIR)/Makefile.in.patch
 #
 PCRE_CPPFLAGS=
 PCRE_LDFLAGS=
+
+# Options to pass to the make that is performed when building the code
+PCRE_MAKE_OPTIONS=-j
+
 PCRE_CONFIG_ARGS=
 ifeq (glibc, $(LIBC_STYLE))
 ifeq (, $(filter libstdc++, $(PACKAGES)))
@@ -153,7 +157,7 @@ pcre-unpack: $(PCRE_BUILD_DIR)/.configured
 #
 $(PCRE_BUILD_DIR)/.built: $(PCRE_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D) LIBTOOL_TAG=$(PCRE_LIBTOOL_TAG)
+	$(MAKE) $(PCRE_MAKE_OPTIONS) -C $(@D) LIBTOOL_TAG=$(PCRE_LIBTOOL_TAG)
 	touch $@
 #
 # This is the build convenience target.

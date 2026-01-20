@@ -52,6 +52,11 @@ LIBTOOL_PATCHES=
 LIBTOOL_CPPFLAGS=
 LIBTOOL_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+LIBTOOL_MAKE_OPTIONS=-j
+
+
+
 #
 # LIBTOOL_BUILD_DIR is the directory in which the build is done.
 # LIBTOOL_SOURCE_DIR is the directory which holds all the
@@ -104,7 +109,7 @@ libtool-host: $(LIBTOOL_HOST_BUILD_DIR)/.built
 
 $(LIBTOOL_HOST_BUILD_DIR)/.staged: $(LIBTOOL_HOST_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
+	$(MAKE) $(LIBTOOL_MAKE_OPTIONS) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
 	(\
 		cd $(STAGING_DIR)/opt/share/info && \
 		rm -f dir && \

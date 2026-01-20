@@ -63,6 +63,9 @@ PHP_PATCHES=
 PHP_CPPFLAGS=
 PHP_LDFLAGS=-ldl
 
+# Options to pass to the make that is performed when building the code
+PHP_MAKE_OPTIONS=-j
+
 #
 # PHP_BUILD_DIR is the directory in which the build is done.
 # PHP_SOURCE_DIR is the directory which holds all the
@@ -269,7 +272,7 @@ php-unpack: $(PHP_BUILD_DIR)/.configured
 #
 $(PHP_BUILD_DIR)/.built: $(PHP_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(PHP_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

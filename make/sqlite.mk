@@ -60,6 +60,9 @@ ifeq ($(LIBC_STYLE), uclibc)
 SQLITE_LDFLAGS+=-lm
 endif
 
+# Options to pass to the make that is performed when building the code
+SQLITE_MAKE_OPTIONS=-j
+
 #
 # SQLITE_BUILD_DIR is the directory in which the build is done.
 # SQLITE_SOURCE_DIR is the directory which holds all the
@@ -142,7 +145,7 @@ sqlite-unpack: $(SQLITE_BUILD_DIR)/.configured
 #
 $(SQLITE_BUILD_DIR)/.built: $(SQLITE_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(SQLITE_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

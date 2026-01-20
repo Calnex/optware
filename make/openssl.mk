@@ -28,6 +28,10 @@ OPENSSL_IPK=$(BUILD_DIR)/openssl_$(OPENSSL_VERSION)-$(OPENSSL_IPK_VERSION)_$(TAR
 OPENSSL_DEV_IPK_DIR=$(BUILD_DIR)/openssl-dev-$(OPENSSL_VERSION)-ipk
 OPENSSL_DEV_IPK=$(BUILD_DIR)/openssl-dev_$(OPENSSL_VERSION)-$(OPENSSL_IPK_VERSION)_$(TARGET_ARCH).ipk
 
+# Options to pass to the make that is performed when building the code
+OPENSSL_MAKE_OPTIONS=-j
+
+
 
 .PHONY: openssl-source openssl-unpack openssl openssl-stage openssl-ipk openssl-clean openssl-dirclean openssl-check
 
@@ -58,7 +62,7 @@ openssl-unpack: $(OPENSSL_BUILD_DIR)/.configured
 $(OPENSSL_BUILD_DIR)/.built: $(OPENSSL_BUILD_DIR)/.configured
 	rm -f $@
 	$(MAKE) zlib-stage
-	$(MAKE) -C $(@D) \
+	$(MAKE) $(OPENSSL_MAKE_OPTIONS) -C $(@D) \
 		MANDIR=/opt/man \
 		EX_LIBS="$(STAGING_LDFLAGS) -ldl" \
 		DIRS="crypto ssl apps"
