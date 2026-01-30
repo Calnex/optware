@@ -20,8 +20,8 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-NGINX_SITE=http://nginx.org/download
-NGINX_VERSION?=1.16.1
+NGINX_SITE=https://nginx.org/download
+NGINX_VERSION?=1.29.3
 NGINX_SOURCE=nginx-$(NGINX_VERSION).tar.gz
 NGINX_DIR=nginx-$(NGINX_VERSION)
 NGINX_UNZIP=zcat
@@ -36,7 +36,7 @@ NGINX_CONFLICTS=
 #
 # NGINX_IPK_VERSION should be incremented when the ipk changes.
 #
-NGINX_IPK_VERSION?=3
+NGINX_IPK_VERSION?=1
 
 #
 # NGINX_CONFFILES should be a list of user-editable files
