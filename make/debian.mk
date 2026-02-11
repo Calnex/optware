@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DEBIAN_VERSION?=11.00
+DEBIAN_VERSION?=13.03
 DEBIAN_SOURCE=debian-$(DEBIAN_VERSION).tar.gz
 DEBIAN_DIR=debian-$(DEBIAN_VERSION)
 DEBIAN_UNZIP=zcat
@@ -38,7 +38,7 @@ DEBIAN_DEPENDS=
 DEBIAN_SUGGESTS=
 DEBIAN_CONFLICTS=
 
-TARGET_DISTRO?=bullseye
+TARGET_DISTRO?=trixie
 
 #
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
@@ -178,7 +178,7 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 			if=live-image-amd64.img \
 			of=boot.img \
 			bs=512 count=1; \
-		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
+		gpg --local-user 2C1B8440 --armour --detach-sign root.img; \
 		md5sum root.img > root.img.md5; \
 	)
 	touch $@

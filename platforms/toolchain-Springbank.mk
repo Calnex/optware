@@ -19,10 +19,10 @@ HOSTCC = gcc
 #GNU_HOST_NAME = $(HOST_MACHINE)-pc-linux-gnu
 GNU_HOST_NAME = $(GNU_TARGET_NAME)
 SNAPSHOT_VERSION ?= devel
-TARGET_DISTRO ?= bullseye
+TARGET_DISTRO ?= trixie
 TARGET_PRODUCT ?= Paragon
 TARGET_PRODUCT_LOWER = $(shell echo $(TARGET_PRODUCT) | tr A-Z a-z)
-TARGET_REPO_MIRROR ?= http://debian.calnexsolutions.local
+TARGET_REPO_MIRROR ?= http://debian2.calnexsolutions.local
 TARGET_CROSS_TOP = $(BASE_DIR)/toolchain
 TARGET_CROSS = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/bin/$(GNU_TARGET_NAME)-
 TARGET_LIBDIR = $(TARGET_CROSS_TOP)/$(GNU_TARGET_NAME)/$(GNU_TARGET_NAME)/lib
@@ -37,6 +37,9 @@ NATIVE_GCC_VERSION=4.9.1
 
 TOOLCHAIN_BINARY_SITE=http://packages.calnexsol.com/optware/toolchains
 ifeq (bullseye, $(TARGET_DISTRO))
+LIBC_STYLE=eglibc
+TOOLCHAIN_BINARY=gcc491-eglibc213_x86_64.tar.gz
+else ifeq (trixie, $(TARGET_DISTRO))
 LIBC_STYLE=eglibc
 TOOLCHAIN_BINARY=gcc491-eglibc213_x86_64.tar.gz
 else ifeq (wheezy, $(TARGET_DISTRO))

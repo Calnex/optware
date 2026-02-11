@@ -1,9 +1,9 @@
 Package: *
-Pin: release a=bullseye-backports
+Pin: release a=trixie-backports
 Pin-Priority: 500
 
 Package: linux-image-amd64
-Pin: release a=bullseye-backports
+Pin: release a=trixie-backports
 Pin-Priority: 1000
 
 Package: isc-dhcp-client

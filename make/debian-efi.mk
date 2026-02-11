@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DEBIAN_VERSION?=11.xx
+DEBIAN_VERSION?=13.03
 DEBIAN-EFI_SOURCE=debian-$(DEBIAN_VERSION).tar.gz
 DEBIAN-EFI_DIR=debian-efi-$(DEBIAN_VERSION)
 DEBIAN-EFI_UNZIP=zcat
@@ -197,7 +197,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 			of=boot.iso \
 			skip=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$2}'` \
 			count=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$4}'`; \
-		gpg --local-user 64F48DD3 --armour --detach-sign root.iso; \
+		gpg --local-user 2C1B8440 --armour --detach-sign root.iso; \
 		\
 		md5sum root.iso > root.iso.md5; \
 	)
