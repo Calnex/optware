@@ -152,7 +152,11 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN-EFI_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/grub/grub.cfg; \
 		sudo mkdir -p $(@D)/config/packages.chroot;\
 		cd $(@D)/config/packages.chroot; \
-		sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
+		if echo "$(TARGET_SMD)" | grep -q "^http"; then \
+			sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD); \
+		else \
+			sudo cp $(TARGET_SMD)/SysMgmtDaemon_*.deb .; \
+		fi; \
 		sudo dpkg-name SysMgmtDaemon_*.deb;	\
 	)
 	touch $@
