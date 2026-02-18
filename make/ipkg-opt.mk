@@ -94,8 +94,8 @@ ipkg-opt-source: $(DL_DIR)/$(IPKG-OPT_SOURCE)
 $(IPKG-OPT_BUILD_DIR)/.configured: $(DL_DIR)/$(IPKG-OPT_SOURCE)
 	rm -rf $(BUILD_DIR)/$(IPKG-OPT_DIR) $(@D)
 	tar -C $(BUILD_DIR) -xzf $(DL_DIR)/$(IPKG-OPT_SOURCE)
-	if test -d $(BUILD_DIR)/ipkg-opt-$(IPKG-OPT_VERSION) ; \
-		mv $(BUILD_DIR)/ipkg-opt-$(IPKG-OPT_VERSION) $(BUILD_DIR)/$(IPKG-OPT_DIR) ; \
+	if test -d "$(BUILD_DIR)/ipkg-opt-$(IPKG-OPT_VERSION)" ; \
+		then mv $(BUILD_DIR)/ipkg-opt-$(IPKG-OPT_VERSION) $(BUILD_DIR)/$(IPKG-OPT_DIR) ; \
 	fi
 	if test -n "$(IPKG-OPT_PATCHES)" ; \
 		then cat $(IPKG-OPT_PATCHES) | \
