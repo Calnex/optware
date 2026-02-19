@@ -334,31 +334,31 @@ directories: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR) $(STAGING_PREFIX) \
 	$(PACKAGE_DIR) $(TMPDIR)
 
 $(DL_DIR):
-	mkdir $(DL_DIR)
+	mkdir -p $(DL_DIR)
 
 $(BUILD_DIR):
-	mkdir $(BUILD_DIR)
+	mkdir -p $(BUILD_DIR)
 
 $(STAGING_DIR):
-	mkdir $(STAGING_DIR)
+	mkdir -p $(STAGING_DIR)
 
 $(STAGING_PREFIX):
-	mkdir $(STAGING_PREFIX)
+	mkdir -p $(STAGING_PREFIX)
 
 $(STAGING_LIB_DIR):
-	mkdir $(STAGING_LIB_DIR)
+	mkdir -p $(STAGING_LIB_DIR)
 
 $(STAGING_INCLUDE_DIR):
-	mkdir $(STAGING_INCLUDE_DIR)
+	mkdir -p $(STAGING_INCLUDE_DIR)
 
 $(TOOL_BUILD_DIR):
-	mkdir $(TOOL_BUILD_DIR)
+	mkdir -p $(TOOL_BUILD_DIR)
 
 $(PACKAGE_DIR):
-	mkdir $(PACKAGE_DIR)
+	mkdir -p $(PACKAGE_DIR)
 
 $(TMPDIR):
-	mkdir $(TMPDIR)
+	mkdir -p $(TMPDIR)
 
 source: $(PACKAGES_SOURCE)
 
