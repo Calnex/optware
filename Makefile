@@ -85,8 +85,6 @@ CALNEX_PACKAGES =	cat \
 			debian-installer \
 			endor-paragon \
 			endor-paragon-vi \
-			endor-attero \
-			endor-attero-vi \
 			
 ##############
 
