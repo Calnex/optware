@@ -20,23 +20,23 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-WGET_SITE=http://$(SOURCEFORGE_MIRROR)/sourceforge/wget
-WGET_VERSION=3.2.1
+WGET_SITE=https://ftp.gnu.org/pub/gnu/wget/
+WGET_VERSION=1.25.0
 WGET_SOURCE=wget-$(WGET_VERSION).tar.gz
 WGET_DIR=wget-$(WGET_VERSION)
 WGET_UNZIP=zcat
 WGET_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
-WGET_DESCRIPTION=Describe wget here.
-WGET_SECTION=
+WGET_DESCRIPTION=A network utility to retrieve files from the Web
+WGET_SECTION=net
 WGET_PRIORITY=optional
 WGET_DEPENDS=
 WGET_SUGGESTS=
-WGET_CONFLICTS=
+WGET_CONFLICTS=wget-ssl
 
 #
 # WGET_IPK_VERSION should be incremented when the ipk changes.
 #
-WGET_IPK_VERSION=1
+WGET_IPK_VERSION=0
 
 #
 # WGET_CONFFILES should be a list of user-editable files
@@ -48,7 +48,7 @@ WGET_IPK_VERSION=1
 # WGET_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-WGET_PATCHES=$(WGET_SOURCE_DIR)/configure.patch
+WGET_PATCHES=
 
 #
 # If the compilation of the package requires additional
@@ -107,7 +107,7 @@ wget-source: $(DL_DIR)/$(WGET_SOURCE) $(WGET_PATCHES)
 # shown below to make various patches to it.
 #
 $(WGET_BUILD_DIR)/.configured: $(DL_DIR)/$(WGET_SOURCE) $(WGET_PATCHES) make/wget.mk
-	$(MAKE) wget-stage <bar>-stage
+	$(MAKE) libidn-stage openssl-stage gnutls-stage
 	rm -rf $(BUILD_DIR)/$(WGET_DIR) $(@D)
 	$(WGET_UNZIP) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(WGET_PATCHES)" ; \
