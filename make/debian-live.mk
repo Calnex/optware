@@ -155,10 +155,10 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--iso-application			"Springbank demo"						\
 		--iso-publisher				"Calnex Solutions"						\
 		--iso-volume				"Springbank demo"						\
-		--linux-packages			"linux-image-5.10.0-32" 				\
+		--linux-packages			"linux-image-6.18.5+deb13" 				\
 		;																	\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 					\
-		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; 	\
+		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.3-0_x86_64.xsh $(@D)/config/includes.chroot/bin/; 	\
 		if [ ! -z "$(TARGET_SMD)" ]; then 											\
 			sudo mkdir -p $(@D)/config/packages;									\
 			cd $(@D)/config/packages;												\
