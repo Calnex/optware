@@ -20,22 +20,19 @@ echo "configuring voodoo"
 mv /usr/bin/sudo /usr/bin/voodoo
 
 # Generate a set of ssh keys for the system
-#ssh-keygen -q -f /etc/ssh/ssh_host_key -N '' -t rsa1
 ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
-ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
+ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519
 ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa -b 521
 
 # Create a folder for the TFTP server and ensure that the
 # calnex user can write to it
-if [ -d /srv/tftp ] 
-then
+if [ -d /srv/tftp ]; then
     rm -rf /srv/tftp
 fi
 
-mkdir /srv/tftp
+mkdir -p /srv/tftp
 chown calnex /srv/tftp
-#if [ -d /home/.optware/srv/tftp ]
-#then
+#if [ -d /home/.optware/srv/tftp ]; then
 #    rm -rf /home/.optware/srv/tftp
 #fi
 
@@ -84,4 +81,4 @@ chmod -R 755 /var/log/samba/cores
 echo "kernel.dmesg_restrict = 0" > etc/sysctl.d/10-local.conf
 
 # Symlink python3 so that it can be accessed as python
-ln -s $(which python3) /usr/bin/python
+command -v python >/dev/null 2>&1 || ln -s "$(command -v python3)" /usr/bin/python
