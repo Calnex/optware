@@ -14,7 +14,7 @@ dhcpcd5
 
 # Logging and file sharing
 samba samba-vfs-modules 
-tftpd 
+tftpd-hpa 
 
 # Shell access
 openssh-server 
@@ -22,7 +22,7 @@ openssh-server
 # Extra utilities
 libicu67 
 hdparm 
-ntp 
+ntpsec
 install-info 
 curl libcurl4-openssl-dev
 
