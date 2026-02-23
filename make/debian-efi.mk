@@ -141,15 +141,14 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security	\
 		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--hdd-label					"$(DEBIAN-EFI_PARTITION_LABEL)"	\
-		--hdd-size					320						\
+		--hdd-size					800						\
 		--bootloader				grub-efi				\
-		--linux-packages			"linux-image-5.10.0-32" \
+		--linux-packages			"linux-image-6.18.5+deb13" \
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
 		sudo mkdir -p $(@D)/config/includes.chroot/usr/share/keyrings/; \
 		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.chroot/usr/share/keyrings/; \
-		#sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN-EFI_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN-EFI_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/grub/grub.cfg; \
 		sudo mkdir -p $(@D)/config/packages.chroot;\

@@ -144,15 +144,14 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--hdd-label					"$(DEBIAN_PARTITION_LABEL)"	\
 		--memtest					none			\
-		--hdd-size					320					\
+		--hdd-size					800					\
 		--bootloader				syslinux			\
-		--linux-packages			"linux-image-5.10.0-32" \
+		--linux-packages			"linux-image-6.18.5+deb13" \
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
 		sudo mkdir -p $(@D)/config/includes.chroot/usr/share/keyrings/; \
 		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.chroot/usr/share/keyrings/; \
-		#sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
 		sudo mkdir -p $(@D)/config/packages.chroot; \
 		cd $(@D)/config/packages.chroot;	\
