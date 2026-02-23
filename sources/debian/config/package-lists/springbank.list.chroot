@@ -20,7 +20,7 @@ tftpd-hpa
 openssh-server 
 
 # Extra utilities
-libicu67 
+libicu-dev
 hdparm 
 ntpsec
 install-info 
