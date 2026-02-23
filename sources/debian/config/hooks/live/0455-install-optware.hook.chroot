@@ -10,6 +10,4 @@ rm -f /bin/Springbank-bootstrap_1.3-0_x86_64.xsh
 mkdir -p /opt/srv/tftp
 
 # Install our public key
-wget http://debian2/meta/calnex_debian.pub
-gpg --import ./calnex_debian.pub
-rm -f ./calnex_debian.pub
+wget -qO - http://debian2.calnexsolutions.local/meta/calnex_debian.pub | gpg --import - 
