@@ -193,7 +193,7 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 			bs=512 count=1; \
 		echo "$(DEBIAN_SIGNING_KEY_PASSPHRASE)" | \
 			gpg --batch --no-tty --pinentry-mode loopback --passphrase-fd 0 --local-user $(DEBIAN_SIGNING_KEY_USER) \
-				--armour --detach-sign root.iso; \
+				--armour --detach-sign root.img; \
 		md5sum root.img > root.img.md5; \
 	)
 	touch $@
