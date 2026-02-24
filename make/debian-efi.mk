@@ -64,6 +64,13 @@ TARGET_SMD?=http://packages.calnexsol.com/SMD/
 DEBIAN-EFI_CONFIG=$(DEBIAN-EFI_SRC_DIR)/config
 
 #
+# DEBIAN_SIGNING_KEY_USER is the key ID of the GPG key used to sign the resulting ipk file.
+# DEBIAN_SIGNING_KEY_PASSPHRASE is the passphrase for the GPG key used to sign the resulting ipk file.
+#
+DEBIAN_SIGNING_KEY_USER?=2C1B8440
+DEBIAN_SIGNING_KEY_PASSPHRASE?=
+
+#
 # If the compilation of the package requires additional
 # compilation or linking flags, then list them here.
 #
@@ -203,7 +210,9 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 			of=boot.iso \
 			skip=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$2}'` \
 			count=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$4}'`; \
-		gpg --local-user 2C1B8440 --armour --detach-sign root.iso; \
+			echo "$(DEBIAN_SIGNING_KEY_PASSPHRASE)" | \
+				gpg --batch --no-tty --pinentry-mode loopback --passphrase-fd 0 --local-user $(DEBIAN_SIGNING_KEY_USER) \
+					--armour --detach-sign root.iso; \
 		\
 		md5sum root.iso > root.iso.md5; \
 	)

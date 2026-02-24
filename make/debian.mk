@@ -60,6 +60,13 @@ DEBIAN_PARTITION_LABEL=OS_$(DEBIAN_VERSION).$(DEBIAN_IPK_VERSION)
 TARGET_SMD?=http://packages.calnexsol.com/SMD/
 
 #
+# DEBIAN_SIGNING_KEY_USER is the key ID of the GPG key used to sign the resulting ipk file.
+# DEBIAN_SIGNING_KEY_PASSPHRASE is the passphrase for the GPG key used to sign the resulting ipk file.
+#
+DEBIAN_SIGNING_KEY_USER?=2C1B8440
+DEBIAN_SIGNING_KEY_PASSPHRASE?=
+
+#
 # DEBIAN_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
@@ -184,7 +191,9 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 			if=live-image-amd64.img \
 			of=boot.img \
 			bs=512 count=1; \
-		gpg --local-user 2C1B8440 --armour --detach-sign root.img; \
+		echo "$(DEBIAN_SIGNING_KEY_PASSPHRASE)" | \
+			gpg --batch --no-tty --pinentry-mode loopback --passphrase-fd 0 --local-user $(DEBIAN_SIGNING_KEY_USER) \
+				--armour --detach-sign root.iso; \
 		md5sum root.img > root.img.md5; \
 	)
 	touch $@
