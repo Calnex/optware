@@ -29,7 +29,7 @@
 
 IPKG-UTILS_CALNEX_SITE=$(PACKAGES_SERVER)
 
-IPKG-UTILS_VERSION:=1.7
+IPKG-UTILS_VERSION:=1.8
 IPKG-UTILS_SITE:=http://nslu.sf.net/downloads
 #IPKG-UTILS_SITE:=http://handhelds.org/packages/ipkg-utils/
 IPKG-UTILS_SOURCE:=ipkg-utils-$(IPKG-UTILS_VERSION).tar.gz
@@ -40,12 +40,9 @@ IPKG-UTILS_DIR:=$(TOOL_BUILD_DIR)/ipkg-utils-$(IPKG-UTILS_VERSION)
 # IPKG-UTILS_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-IPKG-UTILS_PATCHES=$(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7-ipkg_buildpackage.patch \
-		$(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7-ipkg_build_clean.patch \
-		$(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7-ipkg_make_index.patch \
-		$(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7-ipkg_tar_invocation.patch
+IPKG-UTILS_PATCHES=
 ifeq ($(HOSTCC), $(TARGET_CC))
-IPKG-UTILS_PATCHES += $(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.7-ipkg_native_shell.patch
+IPKG-UTILS_PATCHES += $(IPKG-UTILS_SOURCE_DIR)/ipkg-utils-1.8-ipkg_native_shell.patch
 endif
 
 
@@ -111,8 +108,6 @@ ipkg-utils-unpack: $(IPKG-UTILS_BUILD_DIR)/.unpacked
 #
 $(STAGING_DIR)/bin/ipkg-build: $(IPKG-UTILS_DIR)/.unpacked
 	mkdir -p $(STAGING_DIR)/bin
-	sed -i 's|#!/usr/bin/python|#!/usr/bin/python2.7|' $(IPKG-UTILS_DIR)/ipkg-make-index
-	sed -i 's|#!/usr/bin/env python|#!/usr/bin/env python2.7|' $(IPKG-UTILS_DIR)/ipkg.py
 	install -m0755 $(IPKG-UTILS_DIR)/ipkg-build* $(STAGING_DIR)/bin
 	install -m0755 $(IPKG-UTILS_DIR)/ipkg-make-index $(STAGING_DIR)/bin
 	install -m0755 $(IPKG-UTILS_DIR)/ipkg.py $(STAGING_DIR)/bin
