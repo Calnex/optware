@@ -40,7 +40,7 @@ PACKAGES_THAT_NEED_TO_BE_FIXED =
 
 # Packages removed from build
 # Jan-2026
-# debian mono optware-bootstrap wgt wget-ssl xsp
+# debian mono optware-bootstrap wgt wget-ssl xsp ipkg-web
 
 COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
@@ -52,7 +52,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			gnutls \
 			ipkg-opt \
 			ipkg-utils \
-			ipkg-web \
 			libdb \
 			libelf \
 			libffi \
