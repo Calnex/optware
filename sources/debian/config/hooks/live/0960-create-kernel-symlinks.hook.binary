@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Create symlinks for kernel and initrd in /live directory
+# This was done automatically in Debian 11 but needs to be explicit in Debian 13
+
+set -e
+
+echo "Creating kernel and initrd symlinks in live/"
+
+# Find the kernel file
+KERNEL=$(ls -1 live/vmlinuz-* 2>/dev/null | head -n1)
+if [ -n "$KERNEL" ]; then
+    # Create relative symlink
+    KERNEL_NAME=$(basename "$KERNEL")
+    echo "Creating symlink: live/vmlinuz -> $KERNEL_NAME"
+    ln -sf "$KERNEL_NAME" live/vmlinuz
+else
+    echo "WARNING: No kernel file found in live/"
+fi
+
+# Find the initrd file
+INITRD=$(ls -1 live/initrd.img-* 2>/dev/null | head -n1)
+if [ -n "$INITRD" ]; then
+    # Create relative symlink
+    INITRD_NAME=$(basename "$INITRD")
+    echo "Creating symlink: live/initrd.img -> $INITRD_NAME"
+    ln -sf "$INITRD_NAME" live/initrd.img
+else
+    echo "WARNING: No initrd file found in live/"
+fi
+
+echo "Kernel symlink creation complete"
