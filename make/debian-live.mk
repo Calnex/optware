@@ -43,7 +43,7 @@ TARGET_PRODUCT ?= Paragon
 #
 # DEBIAN-LIVE_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN-LIVE_IPK_VERSION=1
+DEBIAN-LIVE_IPK_VERSION=2
 
 #
 # DEBIAN-LIVE_CONFFILES should be a list of user-editable files
@@ -151,7 +151,7 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian			\
 		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security	\
-		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"	\
+		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--iso-application			"Springbank demo"						\
 		--iso-publisher				"Calnex Solutions"						\
 		--iso-volume				"Springbank demo"						\
@@ -162,7 +162,11 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		if [ ! -z "$(TARGET_SMD)" ]; then 											\
 			sudo mkdir -p $(@D)/config/packages;									\
 			cd $(@D)/config/packages;												\
-			sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
+			if echo "$(TARGET_SMD)" | grep -q "^http"; then \
+				sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD); \
+			else \
+				sudo cp $(TARGET_SMD)/SysMgmtDaemon_*.deb .; \
+			fi; \
 			sudo dpkg-name SysMgmtDaemon_*.deb;										\
 		fi																			\
 	)
