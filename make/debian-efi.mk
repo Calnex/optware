@@ -140,7 +140,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		--updates					true				\
 		--security					true				\
 		--cache						false				\
-		--archive-areas 			"main,updates/main"	\
+		--archive-areas 			"main"	\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security	\
