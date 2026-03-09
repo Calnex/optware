@@ -116,7 +116,6 @@ $(IPKG-OPT_BUILD_DIR)/.configured: $(DL_DIR)/$(IPKG-OPT_SOURCE)
 		--target=$(GNU_TARGET_NAME) \
 		--with-ipkglibdir=/opt/lib \
 		--prefix=/opt \
-		--disable-nls \
 	)
 	touch $@
 
