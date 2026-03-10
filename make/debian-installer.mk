@@ -141,7 +141,8 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--updates					true					\
 		--security					true					\
 		--cache						false					\
-		--archive-areas 			"main"		\
+		--archive-areas 			"main"					\
+		--apt-source-archives 		false					\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian		\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian		\
 		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security \
@@ -158,9 +159,8 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.3-0_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
 		sudo mkdir -p $(@D)/config/includes.chroot/usr/share/keyrings/; \
 		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.chroot/usr/share/keyrings/; \
-		# localArchive udeb apt sources are pinned to debian-archive-keyring.gpg \
-		# (symlink to debian-archive-keyring.pgp in trixie), so seed that exact keyring. \
-		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.chroot/usr/share/keyrings/debian-archive-keyring.pgp; \
+		sudo mkdir -p $(@D)/config/includes.installer/usr/share/keyrings/; \
+		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.installer/usr/share/keyrings/; \
 	)
 	touch $@
 
@@ -172,7 +172,22 @@ debian-installer-unpack: $(DEBIAN-INSTALLER_BUILD_DIR)/.configured
 $(DEBIAN-INSTALLER_BUILD_DIR)/.built: $(DEBIAN-INSTALLER_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
-		sudo lb build; \
+		sudo lb bootstrap; \
+		sudo lb chroot; \
+		sudo lb installer_chroot; \
+		# Ensure installer-stage apt verification can resolve the mirror signing key. \
+		for _root in chroot chroot/chroot; do \
+			if [ -d "$${_root}/usr/share/keyrings" ]; then \
+				sudo cp /usr/share/keyrings/calnex-keyring.gpg "$${_root}/usr/share/keyrings/calnex-keyring.gpg"; \
+				sudo cp /usr/share/keyrings/calnex-keyring.gpg "$${_root}/usr/share/keyrings/debian-archive-keyring.pgp"; \
+				sudo cp /usr/share/keyrings/calnex-keyring.gpg "$${_root}/usr/share/keyrings/debian-archive-keyring.gpg"; \
+			fi; \
+			if [ -d "$${_root}/etc/apt/trusted.gpg.d" ]; then \
+				sudo cp /usr/share/keyrings/calnex-keyring.gpg "$${_root}/etc/apt/trusted.gpg.d/calnex-keyring.gpg"; \
+			fi; \
+		done; \
+		sudo lb installer_debian-installer && \
+		sudo lb binary; \
 	)
 	touch $@
 
