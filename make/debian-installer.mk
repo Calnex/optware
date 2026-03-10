@@ -158,6 +158,9 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.3-0_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
 		sudo mkdir -p $(@D)/config/includes.chroot/usr/share/keyrings/; \
 		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.chroot/usr/share/keyrings/; \
+		# localArchive udeb apt sources are pinned to debian-archive-keyring.gpg
+		# (symlink to debian-archive-keyring.pgp in trixie), so seed that exact keyring.
+		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.chroot/usr/share/keyrings/debian-archive-keyring.pgp; \
 	)
 	touch $@
 

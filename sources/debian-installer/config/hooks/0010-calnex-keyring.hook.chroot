@@ -1,9 +1,0 @@
-#!/bin/sh
-set -e
-
-# installer_debian-installer generates udeb sources pinned to
-# /usr/share/keyrings/debian-archive-keyring.gpg. Mirror signing must be
-# present in that keyring for sqv verification to pass.
-if [ -f /usr/share/keyrings/calnex-keyring.gpg ]; then
-    install -m 0644 /usr/share/keyrings/calnex-keyring.gpg /usr/share/keyrings/debian-archive-keyring.pgp
-fi
