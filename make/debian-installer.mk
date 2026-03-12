@@ -174,7 +174,6 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.built: $(DEBIAN-INSTALLER_BUILD_DIR)/.configured
 	(cd $(@D); \
 		sudo lb bootstrap; \
 		sudo lb chroot; \
-		sudo lb installer_chroot; \
 		# Ensure installer-stage apt verification can resolve the mirror signing key. \
 		for _root in chroot chroot/chroot; do \
 			if [ -d "$${_root}/usr/share/keyrings" ]; then \
@@ -186,7 +185,8 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.built: $(DEBIAN-INSTALLER_BUILD_DIR)/.configured
 				sudo cp /usr/share/keyrings/calnex-keyring.gpg "$${_root}/etc/apt/trusted.gpg.d/calnex-keyring.gpg"; \
 			fi; \
 		done; \
-		sudo lb installer_debian-installer && \
+		sudo lb installer_debian-installer; \
+		sudo lb installer_preseed; \
 		sudo lb binary; \
 	)
 	touch $@
