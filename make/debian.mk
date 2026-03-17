@@ -151,7 +151,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--hdd-label					"$(DEBIAN_PARTITION_LABEL)"	\
 		--memtest					none			\
-		--hdd-size					800					\
+		--hdd-size					600					\
 		--bootloader				syslinux			\
 		--linux-packages			"linux-image-6.18.5+deb13" \
 		;									\
@@ -180,7 +180,7 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
 		# Add a custom MKSQUASHFS_OPTION to prevent exports, resolves an issue with overlayFS during downgrades \
-		export MKSQUASHFS_OPTIONS="-no-exports"; \
+		export MKSQUASHFS_OPTIONS="-no-exports -Xbcj x86"; \
 		sudo lb build; \
 		dd \
 			if=live-image-amd64.img \

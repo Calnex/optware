@@ -148,7 +148,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security	\
 		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--hdd-label					"$(DEBIAN-EFI_PARTITION_LABEL)"	\
-		--hdd-size					800						\
+		--hdd-size					600						\
 		--bootloader				grub-efi				\
 		--linux-packages			"linux-image-6.18.5+deb13" \
 		;									\
