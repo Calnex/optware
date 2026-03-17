@@ -1,21 +1,51 @@
 #!/bin/sh
 
 # Reduce size of kernel modules and delete obviously uneeded modules
-MODULE_DIRECTORY=$(find /usr/lib/modules -mindepth 1 -type d -print -quit)
-echo "Cleaning kernel modules in $MODULE_DIRECTORY"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/bluetooth"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/thunderbolt"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/android"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/video"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/platform/surface"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/platform/chrome"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/net/wireless"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/net/hamradio"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/net/appletalk"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/media/firewire"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/gpu/drm/amd"
-#rm -r "$MODULE_DIRECTORY/kernel/drivers/input/touchscreen"
-#find "$MODULE_DIRECTORY" -iname "*.ko" -exec strip --strip-unneeded {} \;
+set -e
+
+MODULES_BASE=
+if [ -d /lib/modules ]; then
+    MODULES_BASE=/lib/modules
+elif [ -d /usr/lib/modules ]; then
+    MODULES_BASE=/usr/lib/modules
+fi
+
+MODULE_DIRECTORY=
+if [ -n "$MODULES_BASE" ]; then
+    MODULE_DIRECTORY=$(find "$MODULES_BASE" -mindepth 1 -maxdepth 1 -type d -print -quit)
+fi
+if [ -z "$MODULE_DIRECTORY" ] || [ ! -d "$MODULE_DIRECTORY" ]; then
+    echo "No kernel module directory found under /lib/modules or /usr/lib/modules; skipping module pruning"
+else
+    echo "Cleaning kernel modules in $MODULE_DIRECTORY"
+    rm -rf "$MODULE_DIRECTORY/kernel/drivers/bluetooth" \
+           "$MODULE_DIRECTORY/kernel/drivers/thunderbolt" \
+           "$MODULE_DIRECTORY/kernel/drivers/android" \
+           "$MODULE_DIRECTORY/kernel/drivers/video" \
+           "$MODULE_DIRECTORY/kernel/drivers/platform/surface" \
+           "$MODULE_DIRECTORY/kernel/drivers/platform/chrome" \
+           "$MODULE_DIRECTORY/kernel/drivers/net/wireless" \
+           "$MODULE_DIRECTORY/kernel/drivers/net/thunderbolt" \
+           "$MODULE_DIRECTORY/kernel/drivers/media/firewire" \
+           "$MODULE_DIRECTORY/kernel/drivers/gpu/drm/amd" \
+           "$MODULE_DIRECTORY/kernel/drivers/input/touchscreen" || true
+
+    find "$MODULE_DIRECTORY" -iname "*.ko" -exec strip --strip-unneeded {} \; || true
+    #find "$MODULE_DIRECTORY" -iname "*.ko.xz" -exec sh -c 'xz -dc "$1" >"$1.uncompressed" && strip --strip-unneeded "$1.uncompressed" && xz -z -c "$1.uncompressed" >"$1" && rm -f "$1.uncompressed"' sh {} \; || true
+
+    # After deleting modules, regenerate dependency metadata (modules.dep*, etc).
+    # Otherwise update-initramfs/modprobe may warn about missing module paths.
+    if command -v depmod >/dev/null 2>&1; then
+        KVER=$(basename "$MODULE_DIRECTORY")
+        echo "Regenerating module dependency metadata for $KVER"
+        rm -f "$MODULE_DIRECTORY"/modules.dep* "$MODULE_DIRECTORY"/modules.alias* "$MODULE_DIRECTORY"/modules.symbols* "$MODULE_DIRECTORY"/modules.builtin.modinfo 2>/dev/null || true
+        if [ "$MODULES_BASE" = "/usr/lib/modules" ]; then
+            depmod -a -b /usr "$KVER" || true
+        else
+            depmod -a "$KVER" || true
+        fi
+    fi
+fi
 
 # remove uneeded locale information
 echo "Cleaning locale data"
@@ -27,8 +57,16 @@ if [ -d /usr/lib/memtest86+ ]; then
 fi
 
 # remove package documentation
-#echo "Cleaning uneeded docs"
-#rm -r /usr/share/doc/*
+echo "Cleaning unneeded docs/man/info"
+rm -rf /usr/share/doc/* /usr/share/man/* /usr/share/info/* || true
+
+# Remove static libraries and headers (not needed at runtime)
+#echo "Cleaning static libs and headers"
+#find /usr/lib /lib -type f \( -name '*.a' -o -name '*.la' \) -delete 2>/dev/null || true
+#rm -rf /usr/include || true
+
+# Remove detached debug symbols (if any)
+rm -rf /usr/lib/debug || true
 
 # Clear apt cache
-rm -vr /var/cache/apt/
+rm -rf /var/cache/apt/* /var/lib/apt/lists/* || true
