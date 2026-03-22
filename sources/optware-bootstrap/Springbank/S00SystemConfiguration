@@ -335,6 +335,8 @@ else
 
         sync
         reboot
+        sleep 5
+        exit 1
       else
         echo "Debian update image keysign check failed!" | tee -a /var/log/SystemConfig
       fi
