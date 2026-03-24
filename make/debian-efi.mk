@@ -271,7 +271,7 @@ $(DEBIAN-EFI_IPK): $(DEBIAN-EFI_BUILD_DIR)/.built
 	$(MAKE) $(DEBIAN-EFI_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN-EFI_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN-EFI_IPK_DIR)/CONTROL/conffiles
 	# IPKG hooks
-	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/control/* $(DEBIAN-EFI_IPK_DIR)/CONTROL/
+	install -m 755 $(DEBIAN-EFI_SRC_DIR)/control/* $(DEBIAN-EFI_IPK_DIR)/CONTROL/
 	# Newly created boot paritions
 	install -d $(DEBIAN-EFI_IPK_DIR)/opt/var/lib/debian
 	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/boot.iso	$(DEBIAN-EFI_IPK_DIR)/opt/var/lib/debian/
