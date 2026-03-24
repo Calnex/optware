@@ -249,6 +249,8 @@ $(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.built
 	$(MAKE) $(DEBIAN_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN_IPK_DIR)/CONTROL/conffiles
 	install -d $(DEBIAN_IPK_DIR)/opt/var/lib/debian
+	# IPKG hooks
+	install -m 755 $(DEBIAN_SRC_DIR)/control/* $(DEBIAN_IPK_DIR)/CONTROL/
 	# Newly created boot paritions
 	install -m 755 $(DEBIAN_BUILD_DIR)/boot.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/

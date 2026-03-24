@@ -1,0 +1,3 @@
+#/bin/sh
+
+sed '/mesg n/d' -i /home/*/.profile

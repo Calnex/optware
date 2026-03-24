@@ -10,8 +10,6 @@ if [ -f ~/.timezone ]; then
   export TZ=$(cat ~/.timezone)
 fi
 
-mesg n
-
 # Calnex additions
 #
 umask 002
