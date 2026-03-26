@@ -18,6 +18,8 @@ OPENSSL_DEPENDS=
 OPENSSL_ARCH=linux-x86_64
 OPENSSL_CONFLICTS=
 
+OPENSSL_IPK_VERSION=1
+
 OPENSSL_SOURCE_DIR=$(SOURCE_DIR)/openssl
 OPENSSL_BUILD_DIR=$(BUILD_DIR)/openssl
 OPENSSL_HOST_BUILD_DIR=$(HOST_BUILD_DIR)/openssl
@@ -53,6 +55,7 @@ $(OPENSSL_BUILD_DIR)/.configured: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCHES)
 			--openssldir=/opt/share/openssl \
 			--prefix=/opt \
 			$(OPENSSL_ARCH) \
+			-Wa,--noexecstack -Wl,-z,noexecstack \
 	)
 	#sed -i -e 's|$$(PERL) tools/c_rehash certs||' $(@D)/apps/Makefile
 	touch $@
