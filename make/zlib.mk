@@ -7,7 +7,7 @@
 ZLIB_CALNEX_SITE=$(PACKAGES_SERVER)
 
 ZLIB_SITE2=http://$(SOURCEFORGE_MIRROR)/sourceforge/libpng
-ZLIB_SITE3=http://zlib.net
+ZLIB_SITE3=https://github.com/madler/zlib/releases/download/v1.3.1/
 #ZLIB_VERSION:=1.2.11
 #ZLIB_LIB_VERSION:=1.2.11
 

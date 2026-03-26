@@ -4,7 +4,7 @@
 
 OPENSSL_CALNEX_SITE=$(PACKAGES_SERVER)
 
-OPENSSL_SITE=https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w
+OPENSSL_SITE=https://openssl-library.org/source/old/1.1.1/
 OPENSSL_VERSION=1.1.1w
 OPENSSL_LIB_VERSION=1.1
 OPENSSL_SOURCE=openssl-$(OPENSSL_VERSION).tar.gz
