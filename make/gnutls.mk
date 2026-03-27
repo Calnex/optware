@@ -38,14 +38,14 @@ GNUTLS_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 GNUTLS_DESCRIPTION=GNU Transport Layer Security Library.
 GNUTLS_SECTION=libs
 GNUTLS_PRIORITY=optional
-GNUTLS_DEPENDS=libtasn1, libgcrypt, libgpg-error, nettle, zlib
+GNUTLS_DEPENDS=libidn2, libtasn1, libgcrypt, libgpg-error, nettle, zlib
 GNUTLS_SUGGESTS=
 GNUTLS_CONFLICTS=
 
 #
 # GNUTLS_IPK_VERSION should be incremented when the ipk changes.
 #
-GNUTLS_IPK_VERSION=1
+GNUTLS_IPK_VERSION=2
 
 #
 # GNUTLS_CONFFILES should be a list of user-editable files
