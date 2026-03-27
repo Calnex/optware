@@ -21,13 +21,13 @@ PHP_MAINTAINER=Josh Parsons <jbparsons@ucdavis.edu>
 PHP_DESCRIPTION=The php scripting language
 PHP_SECTION=net
 PHP_PRIORITY=optional
-PHP_DEPENDS=bzip2, zlib, gdbm, pcre, openssl, oniguruma
+PHP_DEPENDS=bzip2, zlib, gdbm, pcre, openssl, oniguruma, libzip
 PHP_CONFLICTS=debian (<= 9.0)
 
 #
 # PHP_IPK_VERSION should be incremented when the ipk changes.
 #
-PHP_IPK_VERSION=2
+PHP_IPK_VERSION=3
 
 #
 # PHP_CONFFILES should be a list of user-editable files
@@ -210,6 +210,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 	$(MAKE) pcre-stage
 	$(MAKE) openssl-stage
 	$(MAKE) oniguruma-stage
+	$(MAKE) libzip-stage
 	rm -rf $(BUILD_DIR)/$(PHP_DIR) $(@D)
 	$(PHP_UNZIP) $(DL_DIR)/$(PHP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	mv $(BUILD_DIR)/$(PHP_DIR) $(@D)
@@ -239,7 +240,7 @@ $(PHP_BUILD_DIR)/.configured: $(DL_DIR)/$(PHP_SOURCE) $(PHP_PATCHES) make/php.mk
 		--disable-all \
 		--enable-fpm \
 		--enable-session=shared \
-                --enable-zip=shared \
+		--with-zip=shared,$(STAGING_PREFIX) \
 		--enable-bcmath=shared \
 		--enable-calendar=shared \
 		--enable-embed=shared \
