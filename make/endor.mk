@@ -28,13 +28,13 @@
 #
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
-BUILD_DATE?=dd-mm-yyyy
+BUILD_DATE?=01-01-2026
 
 MONO_STAGING_DIR?=$(STAGING_DIR)
-BUILD_TOOL?=$(MONO_STAGING_DIR)/opt/bin/xbuild
-TOOL_PATH?=/p:CscToolPath=$(MONO_STAGING_DIR)/opt/lib/mono/4.5;
+BUILD_TOOL?=dotnet
+TOOL_PATH?=$(TOOL_PATH)
 
-ENDOR_BRANCH_PARAM?=master
+ENDOR_BRANCH_PARAM?=main
 ENDOR_REPOSITORY?=https://github.com/Calnex/Springbank
 ENDOR_PRODUCT=$(TARGET_PRODUCT_LOWER)
 ENDOR_DOCUMENTATION_REPOSITORY?=https://github.com/Calnex/EndorDocumentation
@@ -42,21 +42,16 @@ ENDOR_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." --out
 ENDOR_SOURCE=endor-$(ENDOR_PRODUCT)-$(ENDOR_VERSION).tar.gz
 ENDOR_DIR=endor-$(ENDOR_PRODUCT)
 ENDOR_UNZIP=zcat
-ENDOR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
-ENDOR_DESCRIPTION=Describe endor-$(ENDOR_PRODUCT) here.
+ENDOR_MAINTAINER=Calnex <info@calnexsol.com>
+ENDOR_DESCRIPTION=endor-$(ENDOR_PRODUCT) application software.
 ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
-ENDOR_DEPENDS=postgresql, mono, xsp, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
-ifeq "${BUILD_TOOL}" "dotnet"
-	ENDOR_DEPENDS=postgresql, dotnet-runtimes, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
-endif
-
+ENDOR_DEPENDS=postgresql, dotnet-runtimes, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
 ENDOR_SUGGESTS=
-ENDOR_CONFLICTS=endor-paragon, endor-paragon-doc, endor-paragon-neo, endor-paragon-neo-doc
-ifeq "${ENDOR_PRODUCT}" "paragon"
-	ENDOR_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon-neo, endor-paragon-neo-doc
-else ifeq "${ENDOR_PRODUCT}" "paragon-neo"
-	ENDOR_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon, endor-paragon-doc
+ENDOR_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon, endor-paragon-doc
+
+ifeq "${BUILD_TOOL}" "msbuild"
+ENDOR_DEPENDS=postgresql, mono, xsp, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
 endif
 
 #
@@ -111,13 +106,14 @@ ENDOR_BUILD_UTILITIES_DIR=$(BUILD_DIR)/../BuildUtilities
 ENDOR_CAT_BUILD_DIR = $(BUILD_DIR)/cat
 ENDOR_BUILD_CONSTANTS?=
 
+
+ENDOR_RESTORE_CMD=dotnet restore
+ENDOR_TESTS_RESTORE_CMD=
+ENDOR_BUILD_CMD=dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)"
+ifeq "${BUILD_TOOL}" "msbuild"
 ENDOR_RESTORE_CMD=msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endor.DataStorage/Calnex.Common/Libraries
 ENDOR_TESTS_RESTORE_CMD=(cd $(ENDOR_BUILD_DIR)/Tests/ServiceTests; msbuild -t:restore -p:RestorePackagesPath=Libs/CAT/Calnex.Endor.DataStorage/Calnex.Common/Libraries)
 ENDOR_BUILD_CMD=$(BUILD_TOOL) Endor.sln /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)" /p:Configuration=Release $(TOOL_PATH)
-ifeq "${BUILD_TOOL}" "dotnet"
-	ENDOR_RESTORE_CMD=dotnet restore
-	ENDOR_TESTS_RESTORE_CMD=
-	ENDOR_BUILD_CMD=dotnet build --configuration Release /p:CustomConstants="$(ENDOR_BUILD_CONSTANTS)"
 endif
 
 .PHONY: endor-source endor-unpack endor endor-stage endor-ipk endor-clean endor-dirclean endor-check
