@@ -15,7 +15,7 @@ LIBZIP_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 LIBZIP_DESCRIPTION=A library for reading, creating, and modifying zip files
 LIBZIP_SECTION=libs
 LIBZIP_PRIORITY=optional
-LIBZIP_DEPENDS=zlib
+LIBZIP_DEPENDS=zlib, openssl
 LIBZIP_CONFLICTS=
 
 LIBZIP_IPK_VERSION=1
@@ -37,7 +37,7 @@ $(DL_DIR)/$(LIBZIP_SOURCE):
 libzip-source: $(DL_DIR)/$(LIBZIP_SOURCE)
 
 $(LIBZIP_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBZIP_SOURCE) make/libzip.mk
-	$(MAKE) zlib-stage
+	$(MAKE) zlib-stage openssl-stage
 	rm -rf $(BUILD_DIR)/$(LIBZIP_DIR) $(@D)
 	$(LIBZIP_UNZIP) $(DL_DIR)/$(LIBZIP_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	mv $(BUILD_DIR)/$(LIBZIP_DIR) $(@D)
