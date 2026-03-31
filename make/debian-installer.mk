@@ -153,7 +153,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--iso-application			"Springbank installer"		\
 		--iso-publisher				"Calnex Solutions"			\
 		--iso-volume				"Calnex Installer"			\
-		--linux-packages			"linux-image-6.18.5+deb13" 	\
+		--linux-packages			"linux-image-6.18.9+deb13" 	\
 		;														\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 		\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.3-0_x86_64.xsh $(@D)/config/includes.chroot/bin/; \

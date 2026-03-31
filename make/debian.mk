@@ -153,7 +153,7 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--memtest					none			\
 		--hdd-size					600					\
 		--bootloader				syslinux			\
-		--linux-packages			"linux-image-6.18.5+deb13" \
+		--linux-packages			"linux-image-6.18.9+deb13" \
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.3-0_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
