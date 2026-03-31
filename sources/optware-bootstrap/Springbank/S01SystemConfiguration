@@ -2,7 +2,9 @@
 echo 'Starting S01SystemConfig' | tee -a /var/log/SystemConfig
 echo "Current PATH is $PATH" | tee -a /var/log/SystemConfig
   
-cp /opt/etc/cron.d/* /etc/cron.daily/
+if ls /opt/etc/cron.d/* >/dev/null 2>&1; then
+  cp /opt/etc/cron.d/* /etc/cron.daily/
+fi
 
 # Setup tftp serve directory
 rm -rf /home/.optware/srv/tftp/optware

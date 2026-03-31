@@ -26,11 +26,12 @@ case "$1" in
         [ -x /home/.optware/etc/hooks/root.preconfig ] && /home/.optware/etc/hooks/root.preconfig
 
         # Default repo location to network
-        echo "src/gz local file://home/.optware/srv/tftp/optware" > /opt/etc/ipkg/cross-feed.conf
+        [ -d /opt/etc/ipkg ] || mkdir -p /opt/etc/ipkg
+        echo "src/gz local file:///home/.optware/srv/tftp/optware" > /opt/etc/ipkg/cross-feed.conf
         
         # Call USB script, it should make no change
         # if no USB is present
-        /bin/optwareUSB add
+        [ -x /bin/optwareUSB ] && /bin/optwareUSB add
 
         if [ -x /etc/init.d/S00SystemConfiguration ]; then
             /etc/init.d/S00SystemConfiguration

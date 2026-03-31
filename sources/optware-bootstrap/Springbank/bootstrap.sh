@@ -57,7 +57,7 @@ echo "Setting up ipkg cross-feed..."
 if [ ! -e /opt/etc/ipkg/cross-feed.conf ]
 then
 	echo "Creating /opt/etc/ipkg/cross-feed.conf..."
-	echo "src/gz local file://home/.optware/srv/tftp/optware"	> /opt/etc/ipkg/cross-feed.conf
+    echo "src/gz local file:///home/.optware/srv/tftp/optware"	> /opt/etc/ipkg/cross-feed.conf
 fi
 systemctl enable usbmount.service
 systemctl enable usbmount.path
