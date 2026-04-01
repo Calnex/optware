@@ -59,8 +59,6 @@ then
 	echo "Creating /opt/etc/ipkg/cross-feed.conf..."
     echo "src/gz local file:///home/.optware/srv/tftp/optware"	> /opt/etc/ipkg/cross-feed.conf
 fi
-systemctl enable usbmount.service
-systemctl enable usbmount.path
 
 chmod -R 0777 /opt
 
