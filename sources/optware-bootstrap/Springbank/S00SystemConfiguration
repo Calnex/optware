@@ -121,6 +121,9 @@ if [ -e /sys/firmware/efi ]; then
 
       echo 'Resizing sda4 to use all remaining space' | tee -a /var/log/SystemConfig
       parted /dev/sda resizepart 4 100%
+
+      echo 'Marking all blocks empty to avoid confusion with old data on the disk' | tee -a /var/log/SystemConfig
+      blkdiscard -f /dev/sda4 | tee -a /var/log/SystemConfig
     fi
 
     if [ -b /dev/sda7 ]; then
@@ -244,6 +247,7 @@ else
   fi
 
   if [ ! -b /dev/sda4  ]; then
+    # Create the persistence partition
     echo '/dev/sda4 not present' | tee -a /var/log/SystemConfig
     (
       echo n          # Add a new partition
@@ -253,8 +257,12 @@ else
       echo ""         # Default last sector (end of disk)
       echo w          # Write changes
     ) | fdisk /dev/sda
-
     partprobe
+
+    # Mark all blocks empty to avoid confusion with old data on the disk
+    echo 'Emptying persistence partition' | tee -a /var/log/SystemConfig
+    blkdiscard -f /dev/sda4 | tee -a /var/log/SystemConfig
+    
     file -s /dev/sda4 | grep ext4
     if [[ $? != 0 ]]; then
       echo 'On persistence detected' | tee -a /var/log/SystemConfig
