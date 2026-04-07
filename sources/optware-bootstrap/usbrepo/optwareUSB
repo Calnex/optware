@@ -1,5 +1,78 @@
 #! /bin/sh
 
+AUTOMOUNT_DISABLED_FLAG="/opt/var/lib/debian/optware-usb-automount.disabled"
+
+is_automount_enabled() {
+    if [ -f "$AUTOMOUNT_DISABLED_FLAG" ]; then
+        return 1
+    fi
+    return 0
+}
+
+set_automount_state() {
+    state="$1"
+
+    case "$state" in
+        on)
+            [ -f "$AUTOMOUNT_DISABLED_FLAG" ] && rm -f "$AUTOMOUNT_DISABLED_FLAG"
+            echo "optwareUSB automount enabled"
+            ;;
+        off)
+            mkdir -p "$(dirname "$AUTOMOUNT_DISABLED_FLAG")"
+            touch "$AUTOMOUNT_DISABLED_FLAG"
+            echo "optwareUSB automount disabled"
+            ;;
+        toggle)
+            if is_automount_enabled; then
+                set_automount_state off
+            else
+                set_automount_state on
+            fi
+            ;;
+        *)
+            echo "Usage: $0 automount (on|off|toggle)"
+            return 1
+            ;;
+    esac
+
+    return 0
+}
+
+is_usb_mounted() {
+    mountpoint -q /media/usb 2>/dev/null
+}
+
+ensure_usb_mounted() {
+    is_usb_mounted && return 0
+
+    local MOUNT_OPTS="ro,sync,noatime,nodiratime,nodev,nosuid"
+
+    for sysdev in /sys/class/block/*/; do
+        name=$(basename "$sysdev")
+        case "$name" in
+            sd[b-z][0-9])
+                devpath=$(readlink -f "$sysdev" 2>/dev/null) || continue
+                echo "$devpath" | grep -q '/usb' || continue
+                systemd-mount --options="$MOUNT_OPTS" \
+                    "/dev/$name" /media/usb >/dev/null 2>&1 && break || true
+                ;;
+        esac
+    done
+
+    if ! is_usb_mounted; then
+        echo "Error: Failed to mount USB at /media/usb"
+        return 1
+    fi
+}
+
+ensure_usb_not_mounted() {
+    systemd-umount /media/usb 2>/dev/null 
+    if is_usb_mounted; then
+        echo "Error: Failed to unmount USB from /media/usb"
+        return 1
+    fi
+}
+
 update_cross_feed() {
     repo=${1:-'home/.optware/srv/tftp/optware'}
     echo "src/gz local file://${repo}" > /opt/etc/ipkg/cross-feed.conf
@@ -20,21 +93,31 @@ fi
 
 case "$rc" in
     add)
-        if [ ! -d /media/usb ]; then
-            if ! voodoo mount /dev/disk/by-path/pci-0000\:00\:14.0-usb-0\:1\:1.0-scsi-0\:0\:0\:0 /media/usb; then
-                echo "Mounting USB by path failed, falling back to mounting /dev/sdb"
-                voodoo mount /dev/sdb /media/usb
-            fi
+        mkdir -p /media/usb
+        if ! ensure_usb_mounted; then
+            echo "Warning: using default cross-feed"
+            update_cross_feed
+            exit 0
+        fi
+        update_cross_feed $(find /media -type f -name Packages -exec grep -l "\bendor\b" {} \; | sed 's/Packages//g' | sed s'/^\///')
+        ;;
+    update)
+        if ! is_automount_enabled; then
+            update_cross_feed
+            exit 0
         fi
         update_cross_feed $(find /media -type f -name Packages -exec grep -l "\bendor\b" {} \; | sed 's/Packages//g' | sed s'/^\///')
         ;;
     remove)
-        if [ -d /media/usb ]; then
-            voodoo umount /media/usb
+        if is_usb_mounted; then
+            ensure_usb_not_mounted
         fi
         update_cross_feed
         ;;
+    automount)
+        set_automount_state "$2"
+        ;;
     *)
-        echo "Usage: $0 (add|remove)"
+        echo "Usage: $0 (add|remove|automount on|off|toggle)"
         ;;
 esac

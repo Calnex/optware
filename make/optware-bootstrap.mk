@@ -120,6 +120,7 @@ endif
 	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/usbmount.path $(OPTWARE-BOOTSTRAP_IPK_DIR)/lib/systemd/system/usbmount.path
 	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin
 	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/optwareUSB $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/
+	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/optware-mount-wrapper $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/
 	sed -i -e 's/__TARGET_DISTRO__/$(TARGET_DISTRO)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/optwareUSB
 	sed -i -e 's/__TARGET_PRODUCT__/$(TARGET_PRODUCT)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/optwareUSB
 	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/opt/etc

@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# Wrapper script for systemd-mount that respects optwareUSB automount state
+#
+
+AUTOMOUNT_DISABLED_FLAG="/opt/var/lib/debian/optware-usb-automount.disabled"
+
+is_automount_enabled() {
+    if [ -f "$AUTOMOUNT_DISABLED_FLAG" ]; then
+        return 1
+    fi
+    return 0
+}
+
+# Check if automount is disabled
+if ! is_automount_enabled; then
+    echo "USB automount is disabled"
+    exit 0
+fi
+
+# If no block, proceed with systemd-mount
+exec /usr/bin/systemd-mount "$@"

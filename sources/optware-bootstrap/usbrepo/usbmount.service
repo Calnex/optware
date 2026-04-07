@@ -3,4 +3,4 @@ Description=Service called when the USB is plugged in
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/optwareUSB add
+ExecStart=/bin/optwareUSB update
