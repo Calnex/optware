@@ -341,6 +341,12 @@ else
         parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2
         echo "Partition ${NEW_PARTITION} marked as boot" | tee -a /var/log/SystemConfig
 
+        if [ -d /sys/class/net/enp0s3 ]; then
+          ip addr flush dev enp0s3
+          ip link set enp0s3 down
+          echo "Flushed IP address and brought down enp0s3" | tee -a /var/log/SystemConfig
+        fi
+
         sync
         reboot
         sleep 5
