@@ -78,6 +78,7 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			template \
 			tshark \
 			zlib \
+			dotnet-runtimes \
 
 CALNEX_PACKAGES =	cat \
 			debian-live \
