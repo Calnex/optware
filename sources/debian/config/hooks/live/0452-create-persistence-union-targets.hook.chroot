@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+# Debian 13 live-boot will panic with:
+#   overlay needs at least one lower filesystem (read-only branch)
+# if a persistence.conf entry uses the "union" option for a destination
+# directory that does not exist in the base (read-only) live filesystem.
+#
+# Ensure commonly-persisted targets exist in the live rootfs.
+
+mkdir -p var/lib/dhcp
+
+# Keep permissions conventional.
+chmod 0755 var var/lib var/lib/dhcp

@@ -28,8 +28,8 @@
 #
 LIBGCRYPT_CALNEX_SITE=$(PACKAGES_SERVER)
 
-LIBGCRYPT_SITE=ftp://ftp.gnupg.org/gcrypt/libgcrypt
-LIBGCRYPT_VERSION?=1.5.0
+LIBGCRYPT_SITE=https://gnupg.org/ftp/gcrypt/libgcrypt
+LIBGCRYPT_VERSION?=1.8.7
 LIBGCRYPT_IPK_VERSION?=1
 LIBGCRYPT_SOURCE=libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2
 LIBGCRYPT_DIR=libgcrypt-$(LIBGCRYPT_VERSION)
@@ -59,6 +59,11 @@ endif
 #
 LIBGCRYPT_CPPFLAGS=
 LIBGCRYPT_LDFLAGS=
+
+# Options to pass to the make that is performed when building the code
+LIBGCRYPT_MAKE_OPTIONS=-j
+
+
 
 #
 # LIBGCRYPT_BUILD_DIR is the directory in which the build is done.
@@ -143,7 +148,7 @@ libgcrypt-unpack: $(LIBGCRYPT_BUILD_DIR)/.configured
 #
 $(LIBGCRYPT_BUILD_DIR)/.built: $(LIBGCRYPT_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(LIBGCRYPT_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

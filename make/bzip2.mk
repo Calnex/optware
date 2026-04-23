@@ -20,12 +20,15 @@ BZIP2_PRIORITY=optional
 BZIP2_DEPENDS=
 BZIP2_CONFLICTS=
 
+
 BZIP2_IPK_VERSION=1
 
 BZIP2_BUILD_DIR=$(BUILD_DIR)/bzip2
 BZIP2_SOURCE_DIR=$(SOURCE_DIR)/bzip2
 BZIP2_IPK=$(BUILD_DIR)/bzip2_$(BZIP2_VERSION)-$(BZIP2_IPK_VERSION)_$(TARGET_ARCH).ipk
 BZIP2_IPK_DIR=$(BUILD_DIR)/bzip2-$(BZIP2_VERSION)-ipk
+
+BZIP2_MAKE_OPTIONS=-j
 
 .PHONY: bzip2-source bzip2-unpack bzip2 bzip2-stage bzip2-ipk bzip2-clean bzip2-dirclean bzip2-check
 
@@ -51,12 +54,14 @@ $(BZIP2_BUILD_DIR)/.built: $(BZIP2_BUILD_DIR)/.configured
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(BZIP2_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(BZIP2_LDFLAGS)" \
+		$(BZIP2_MAKE_OPTIONS) \
 		-f Makefile-libbz2_so
 	@$(MAKE) -C $(@D) \
 		PREFIX=/opt \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(BZIP2_CPPFLAGS)" \
 		LDFLAGS="$(STAGING_LDFLAGS) $(BZIP2_LDFLAGS)" \
+		$(BZIP2_MAKE_OPTIONS) \
 		-f Makefile \
 		libbz2.a bzip2 bzip2recover
 	touch $@

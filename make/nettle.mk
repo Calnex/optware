@@ -30,7 +30,7 @@
 NETTLE_CALNEX_SITE=$(PACKAGES_SERVER)
 
 NETTLE_SITE=http://www.lysator.liu.se/~nisse/archive
-NETTLE_VERSION=2.7.1
+NETTLE_VERSION=3.7.3
 NETTLE_SOURCE=nettle-$(NETTLE_VERSION).tar.gz
 NETTLE_DIR=nettle-$(NETTLE_VERSION)
 NETTLE_UNZIP=zcat
@@ -63,6 +63,11 @@ NETTLE_IPK_VERSION=1
 #
 NETTLE_CPPFLAGS=
 NETTLE_LDFLAGS=
+
+# Options to pass to the make that is performed when building the code
+NETTLE_MAKE_OPTIONS=-j
+
+
 
 #
 # NETTLE_BUILD_DIR is the directory in which the build is done.
@@ -133,6 +138,7 @@ $(NETTLE_BUILD_DIR)/.configured: $(DL_DIR)/$(NETTLE_SOURCE) $(NETTLE_PATCHES) ma
 		--exec_prefix=/opt \
 		--includedir=/opt/include \
 		--disable-nls \
+		--disable-assembler \
 	)
 	touch $@
 
@@ -143,7 +149,7 @@ nettle-unpack: $(NETTLE_BUILD_DIR)/.configured
 #
 $(NETTLE_BUILD_DIR)/.built: $(NETTLE_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(NETTLE_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #
@@ -163,6 +169,15 @@ $(NETTLE_BUILD_DIR)/.staged: $(NETTLE_BUILD_DIR)/.built
 		for f in *.info ; do ginstall-info $$f dir ; done \
 	)
 	touch $@
+	
+	# Log the package as being installed
+	install -d $(STAGING_LIB_DIR)/pkgconfig
+	install -m 644 $(@D)/nettle.pc $(STAGING_LIB_DIR)/pkgconfig
+	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/nettle.pc
+
+	install -m 644 $(@D)/hogweed.pc $(STAGING_LIB_DIR)/pkgconfig
+	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/hogweed.pc
+
 
 nettle-stage: $(NETTLE_BUILD_DIR)/.staged
 

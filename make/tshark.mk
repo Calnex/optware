@@ -35,14 +35,14 @@ TSHARK_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 TSHARK_DESCRIPTION=Terminal based wireshark to dump and analyze network traffic
 TSHARK_SECTION=net
 TSHARK_PRIORITY=optional
-TSHARK_DEPENDS=c-ares, glib, libpcap, pcre, zlib, gnutls, geoip, lua
+TSHARK_DEPENDS=c-ares, glib, libpcap, pcre, zlib, gnutls, geoip, lua, libidn2
 TSHARK_SUGGESTS=
 TSHARK_CONFLICTS=
 
 #
 # TSHARK_IPK_VERSION should be incremented when the ipk changes.
 #
-TSHARK_IPK_VERSION ?= 3
+TSHARK_IPK_VERSION?=4
 
 #
 # TSHARK_CONFFILES should be a list of user-editable files
@@ -52,7 +52,7 @@ TSHARK_IPK_VERSION ?= 3
 # TSHARK_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-TSHARK_PATCHES = 
+TSHARK_PATCHES=
 
 #
 # If the compilation of the package requires additional
@@ -63,6 +63,10 @@ TSHARK_LDFLAGS=-lglib-2.0 -lgmodule-2.0
 ifeq ($(LIBC_STYLE), uclibc)
 TSHARK_LDFLAGS+=-lm
 endif
+
+# Options to pass to the make that is performed when building the code
+TSHARK_MAKE_OPTIONS=-j
+
 
 #
 # TSHARK_BUILD_DIR is the directory in which the build is done.
@@ -112,7 +116,7 @@ tshark-source: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES)
 # shown below to make various patches to it.
 #
 $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) make/tshark.mk
-	$(MAKE) c-ares-stage geoip-stage glib-stage gnutls-stage libpcap-stage pcre-stage zlib-stage lua-stage
+	$(MAKE) c-ares-stage geoip-stage glib-stage gnutls-stage libpcap-stage pcre-stage zlib-stage lua-stage nettle-stage
 	rm -rf $(BUILD_DIR)/$(TSHARK_DIR) $(@D)
 	$(TSHARK_UNZIP) $(DL_DIR)/$(TSHARK_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	if test -n "$(TSHARK_PATCHES)" ; \
@@ -122,7 +126,7 @@ $(TSHARK_BUILD_DIR)/.configured: $(DL_DIR)/$(TSHARK_SOURCE) $(TSHARK_PATCHES) ma
 	if test "$(BUILD_DIR)/$(TSHARK_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(TSHARK_DIR) $(@D) ; \
 	fi
-	sed -i -e '/^INCLUDES/s|-I$$(includedir)|-I$(STAGING_INCLUDE_DIR)|' $(@D)/plugins/*/Makefile.am
+	#sed -i -e '/^INCLUDES/s|-I$$(includedir)|-I$(STAGING_INCLUDE_DIR)|' $(@D)/plugins/*/Makefile.am
 	autoreconf -vif $(@D)
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -155,8 +159,8 @@ tshark-unpack: $(TSHARK_BUILD_DIR)/.configured
 #
 $(TSHARK_BUILD_DIR)/.built: $(TSHARK_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) CC_FOR_BUILD=$(HOSTCC) CC=$(HOSTCC) -C $(@D)/tools/lemon lemon
-	$(MAKE) -C $(@D)
+	$(MAKE) $(TSHARK_MAKE_OPTIONS) CC_FOR_BUILD=$(HOSTCC) CC=$(HOSTCC) -C $(@D)/tools/lemon lemon
+	$(MAKE) $(TSHARK_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

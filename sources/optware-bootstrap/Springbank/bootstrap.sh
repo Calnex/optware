@@ -49,18 +49,16 @@ rm /tmp/ipkg
 echo "Installing debian..."
 /opt/bin/ipkg install debian-dummy.ipk || exit 1
 
-echo "Installing wget..."
-/opt/bin/ipkg install wget.ipk || exit 1
+#echo "Installing wget..."
+#/opt/bin/ipkg install wget.ipk || exit 1
 
 echo "Setting up ipkg cross-feed..."
 [ ! -d /opt/etc/ipkg ] && mkdir -p /opt/etc/ipkg
 if [ ! -e /opt/etc/ipkg/cross-feed.conf ]
 then
 	echo "Creating /opt/etc/ipkg/cross-feed.conf..."
-	echo "src/gz local file://home/.optware/srv/tftp/optware"	> /opt/etc/ipkg/cross-feed.conf
+    echo "src/gz local file:///home/.optware/srv/tftp/optware"	> /opt/etc/ipkg/cross-feed.conf
 fi
-systemctl enable usbmount.service
-systemctl enable usbmount.path
 
 chmod -R 0777 /opt
 

@@ -22,10 +22,10 @@
 LIBTOOL_CALNEX_SITE=$(PACKAGES_SERVER)
 
 LIBTOOL_SITE=http://ftp.gnu.org/gnu/libtool
-LIBTOOL_VERSION=2.4
-LIBTOOL_SOURCE=libtool-$(LIBTOOL_VERSION).tar.xz
+LIBTOOL_VERSION=2.5.3
+LIBTOOL_SOURCE=libtool-$(LIBTOOL_VERSION).tar.gz
 LIBTOOL_DIR=libtool-$(LIBTOOL_VERSION)
-LIBTOOL_UNZIP=xzcat
+LIBTOOL_UNZIP=zcat
 LIBTOOL_MAINTAINER=Christopher <edmondsc@onid.orst.edu>
 LIBTOOL_DESCRIPTION=Library tools.
 LIBTOOL_SECTION=utilities
@@ -37,7 +37,7 @@ LIBTOOL_CONFLICTS=
 #
 # LIBTOOL_IPK_VERSION should be incremented when the ipk changes.
 #
-LIBTOOL_IPK_VERSION=1
+LIBTOOL_IPK_VERSION=0
 
 #
 # LIBTOOL_PATCHES should list any patches, in the the order in
@@ -51,6 +51,11 @@ LIBTOOL_PATCHES=
 #
 LIBTOOL_CPPFLAGS=
 LIBTOOL_LDFLAGS=
+
+# Options to pass to the make that is performed when building the code
+LIBTOOL_MAKE_OPTIONS=-j
+
+
 
 #
 # LIBTOOL_BUILD_DIR is the directory in which the build is done.
@@ -104,7 +109,7 @@ libtool-host: $(LIBTOOL_HOST_BUILD_DIR)/.built
 
 $(LIBTOOL_HOST_BUILD_DIR)/.staged: $(LIBTOOL_HOST_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
+	$(MAKE) $(LIBTOOL_MAKE_OPTIONS) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
 	(\
 		cd $(STAGING_DIR)/opt/share/info && \
 		rm -f dir && \

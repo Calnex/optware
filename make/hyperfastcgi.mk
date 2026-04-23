@@ -61,6 +61,11 @@ HYPERFASTCGI_PATCHES=$(HYPERFASTCGI_SOURCE_DIR)/Makefile.am.patch
 HYPERFASTCGI_CPPFLAGS=
 HYPERFASTCGI_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+HYPERFASTCGI_MAKE_OPTIONS=-j
+
+
+
 #
 # HYPERFASTCGI_BUILD_DIR is the directory in which the build is done.
 # HYPERFASTCGI_SOURCE_DIR is the directory which holds all the
@@ -158,7 +163,7 @@ hyperfastcgi-unpack: $(HYPERFASTCGI_BUILD_DIR)/.configured
 #
 $(HYPERFASTCGI_BUILD_DIR)/.built: $(HYPERFASTCGI_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(HYPERFASTCGI_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

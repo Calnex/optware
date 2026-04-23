@@ -6,7 +6,7 @@ ENV{dir_name}="usb"
 
 # Global mount options
 ACTION=="add", \
-    ENV{mount_options}="relatime"
+    ENV{mount_options}="ro,sync,noatime,nodiratime,nodev,nosuid"
 ACTION=="add", ENV{ID_FS_TYPE}=="auto", \
     ENV{mount_options}="$env{mount_options},utf8,gid=100,umask=002"
 
@@ -14,14 +14,14 @@ ACTION=="add", ENV{ID_FS_TYPE}=="auto", \
 ACTION=="add", SUBSYSTEMS=="usb", \
     TAG+="uaccess", \
     RUN+="/bin/mkdir -p '/media/%E{dir_name}'", \
-    RUN+="/usr/bin/systemd-mount --options=$env{mount_options} --no-block --automount=yes --collect /dev/%k '/media/%E{dir_name}'", \
+    RUN+="/bin/optware-mount-wrapper --options=$env{mount_options} --no-block --automount=yes --collect /dev/%k '/media/%E{dir_name}'", \
     ENV{SYSTEMD_WANTS}="usbmount.service"
 
 ## Removing USB
 ACTION=="remove", SUBSYSTEMS=="usb", ENV{ID_FS_USAGE}=="filesystem", \
     RUN+="/usr/bin/systemd-umount /media/%E{dir_name}", \
     RUN+="/bin/rmdir '/media/%E{dir_name}'", \
-    RUN+="/usr/bin/optwareUSB remove"
+    RUN+="/bin/optwareUSB update"
 
 # Exit
 LABEL="media_by_label_auto_mount_end"

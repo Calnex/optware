@@ -29,8 +29,8 @@
 
 GNUTLS_CALNEX_SITE=$(PACKAGES_SERVER)
 
-GNUTLS_SITE=http://ftp.gnu.org/pub/gnu/gnutls
-GNUTLS_VERSION=3.1.5
+GNUTLS_SITE=https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7
+GNUTLS_VERSION=3.7.1
 GNUTLS_SOURCE=gnutls-$(GNUTLS_VERSION).tar.xz
 GNUTLS_DIR=gnutls-$(GNUTLS_VERSION)
 GNUTLS_UNZIP=xzcat
@@ -38,14 +38,14 @@ GNUTLS_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 GNUTLS_DESCRIPTION=GNU Transport Layer Security Library.
 GNUTLS_SECTION=libs
 GNUTLS_PRIORITY=optional
-GNUTLS_DEPENDS=libtasn1, libgcrypt, libgpg-error, nettle, zlib
+GNUTLS_DEPENDS=libidn2, libtasn1, libgcrypt, libgpg-error, nettle, zlib
 GNUTLS_SUGGESTS=
 GNUTLS_CONFLICTS=
 
 #
 # GNUTLS_IPK_VERSION should be incremented when the ipk changes.
 #
-GNUTLS_IPK_VERSION=1
+GNUTLS_IPK_VERSION=2
 
 #
 # GNUTLS_CONFFILES should be a list of user-editable files
@@ -64,6 +64,11 @@ GNUTLS_CONFFILES=#/opt/etc/gnutls.conf /opt/etc/init.d/SXXgnutls
 GNUTLS_CPPFLAGS=
 GNUTLS_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+GNUTLS_MAKE_OPTIONS=-j
+
+
+
 #
 # GNUTLS_BUILD_DIR is the directory in which the build is done.
 # GNUTLS_SOURCE_DIR is the directory which holds all the
@@ -80,6 +85,8 @@ GNUTLS_IPK_DIR=$(BUILD_DIR)/gnutls-$(GNUTLS_VERSION)-ipk
 GNUTLS_IPK=$(BUILD_DIR)/gnutls_$(GNUTLS_VERSION)-$(GNUTLS_IPK_VERSION)_$(TARGET_ARCH).ipk
 GNUTLS-DEV_IPK_DIR=$(BUILD_DIR)/gnutls-dev-$(GNUTLS_VERSION)-ipk
 GNUTLS-DEV_IPK=$(BUILD_DIR)/gnutls-dev_$(GNUTLS_VERSION)-$(GNUTLS_IPK_VERSION)_$(TARGET_ARCH).ipk
+
+
 
 .PHONY: gnutls-source gnutls-unpack gnutls gnutls-stage gnutls-ipk gnutls-clean gnutls-dirclean gnutls-check
 
@@ -115,7 +122,7 @@ gnutls-source: $(DL_DIR)/$(GNUTLS_SOURCE) $(GNUTLS_PATCHES)
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(GNUTLS_BUILD_DIR)/.configured: $(DL_DIR)/$(GNUTLS_SOURCE) $(GNUTLS_PATCHES) make/gnutls.mk
-	$(MAKE) libgcrypt-stage libtasn1-stage nettle-stage
+	$(MAKE) libidn2-stage libgcrypt-stage libtasn1-stage nettle-stage
 	rm -rf $(BUILD_DIR)/$(GNUTLS_DIR) $(GNUTLS_BUILD_DIR)
 	$(GNUTLS_UNZIP) $(DL_DIR)/$(GNUTLS_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	if test -n "$(GNUTLS_PATCHES)"; \
@@ -134,6 +141,7 @@ $(GNUTLS_BUILD_DIR)/.configured: $(DL_DIR)/$(GNUTLS_SOURCE) $(GNUTLS_PATCHES) ma
 		--with-libgcrypt-prefix=$(STAGING_DIR)/opt \
 		--with-libtasn1-prefix=$(STAGING_DIR)/opt \
 		--without-p11-kit \
+		--with-included-unistring \
 		--disable-nls \
 		--disable-static \
 	)
@@ -147,7 +155,7 @@ gnutls-unpack: $(GNUTLS_BUILD_DIR)/.configured
 #
 $(GNUTLS_BUILD_DIR)/.built: $(GNUTLS_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(GNUTLS_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

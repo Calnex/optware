@@ -4,8 +4,8 @@
 
 OPENSSL_CALNEX_SITE=$(PACKAGES_SERVER)
 
-OPENSSL_SITE=http://www.openssl.org/source
-OPENSSL_VERSION=1.1.0e
+OPENSSL_SITE=https://openssl-library.org/source/old/1.1.1/
+OPENSSL_VERSION=1.1.1w
 OPENSSL_LIB_VERSION=1.1
 OPENSSL_SOURCE=openssl-$(OPENSSL_VERSION).tar.gz
 OPENSSL_DIR=openssl-$(OPENSSL_VERSION)
@@ -18,6 +18,8 @@ OPENSSL_DEPENDS=
 OPENSSL_ARCH=linux-x86_64
 OPENSSL_CONFLICTS=
 
+OPENSSL_IPK_VERSION=1
+
 OPENSSL_SOURCE_DIR=$(SOURCE_DIR)/openssl
 OPENSSL_BUILD_DIR=$(BUILD_DIR)/openssl
 OPENSSL_HOST_BUILD_DIR=$(HOST_BUILD_DIR)/openssl
@@ -27,6 +29,10 @@ OPENSSL_IPK=$(BUILD_DIR)/openssl_$(OPENSSL_VERSION)-$(OPENSSL_IPK_VERSION)_$(TAR
 
 OPENSSL_DEV_IPK_DIR=$(BUILD_DIR)/openssl-dev-$(OPENSSL_VERSION)-ipk
 OPENSSL_DEV_IPK=$(BUILD_DIR)/openssl-dev_$(OPENSSL_VERSION)-$(OPENSSL_IPK_VERSION)_$(TARGET_ARCH).ipk
+
+# Options to pass to the make that is performed when building the code
+OPENSSL_MAKE_OPTIONS=-j
+
 
 
 .PHONY: openssl-source openssl-unpack openssl openssl-stage openssl-ipk openssl-clean openssl-dirclean openssl-check
@@ -42,12 +48,14 @@ $(OPENSSL_BUILD_DIR)/.configured: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCHES)
 	$(OPENSSL_UNZIP) $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) -xf - 
 	mv $(BUILD_DIR)/$(OPENSSL_DIR) $(@D)
 	(cd $(@D) && \
+	    CC=$(TARGET_CC) \
 		./Configure \
 			shared zlib-dynamic \
 			$(STAGING_CPPFLAGS) \
 			--openssldir=/opt/share/openssl \
 			--prefix=/opt \
 			$(OPENSSL_ARCH) \
+			-Wa,--noexecstack -Wl,-z,noexecstack \
 	)
 	#sed -i -e 's|$$(PERL) tools/c_rehash certs||' $(@D)/apps/Makefile
 	touch $@
@@ -57,7 +65,7 @@ openssl-unpack: $(OPENSSL_BUILD_DIR)/.configured
 $(OPENSSL_BUILD_DIR)/.built: $(OPENSSL_BUILD_DIR)/.configured
 	rm -f $@
 	$(MAKE) zlib-stage
-	$(MAKE) -C $(@D) \
+	$(MAKE) $(OPENSSL_MAKE_OPTIONS) -C $(@D) \
 		MANDIR=/opt/man \
 		EX_LIBS="$(STAGING_LDFLAGS) -ldl" \
 		DIRS="crypto ssl apps"

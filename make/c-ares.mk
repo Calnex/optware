@@ -23,9 +23,8 @@
 
 C_ARES_CALNEX_SITE=$(PACKAGES_SERVER)
 
-
-C_ARES_SITE=http://daniel.haxx.se/projects/c-ares
-C_ARES_VERSION=1.7.4
+C_ARES_VERSION=1.17.1
+C_ARES_SITE=https://github.com/c-ares/c-ares/releases/download/cares-1_17_1
 C_ARES_SOURCE=c-ares-$(C_ARES_VERSION).tar.gz
 C_ARES_DIR=c-ares-$(C_ARES_VERSION)
 C_ARES_UNZIP=zcat
@@ -58,6 +57,9 @@ C_ARES_IPK_VERSION=1
 #
 C_ARES_CPPFLAGS=
 C_ARES_LDFLAGS=
+
+# Flags to pass to the make that is performed when building the code
+C_ARES_MAKE_OPTIONS=-j
 
 #
 # C_ARES_BUILD_DIR is the directory in which the build is done.
@@ -144,7 +146,7 @@ c-ares-unpack: $(C_ARES_BUILD_DIR)/.configured
 $(C_ARES_BUILD_DIR)/.built: $(C_ARES_BUILD_DIR)/.configured
 	rm -f $@
 	\
-	$(MAKE) -C $(@D)
+	$(MAKE) $(C_ARES_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #

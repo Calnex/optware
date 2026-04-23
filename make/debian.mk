@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DEBIAN_VERSION?=11.00
+DEBIAN_VERSION?=13.03
 DEBIAN_SOURCE=debian-$(DEBIAN_VERSION).tar.gz
 DEBIAN_DIR=debian-$(DEBIAN_VERSION)
 DEBIAN_UNZIP=zcat
@@ -38,7 +38,7 @@ DEBIAN_DEPENDS=
 DEBIAN_SUGGESTS=
 DEBIAN_CONFLICTS=
 
-TARGET_DISTRO?=bullseye
+TARGET_DISTRO?=trixie
 
 #
 # DEBIAN_IPK_VERSION should be incremented when the ipk changes.
@@ -58,6 +58,13 @@ DEBIAN_PARTITION_LABEL=OS_$(DEBIAN_VERSION).$(DEBIAN_IPK_VERSION)
 # If not defined, set the default SMD URL
 #
 TARGET_SMD?=http://packages.calnexsol.com/SMD/
+
+#
+# DEBIAN_SIGNING_KEY_USER is the key ID of the GPG key used to sign the resulting ipk file.
+# DEBIAN_SIGNING_KEY_PASSPHRASE is the passphrase for the GPG key used to sign the resulting ipk file.
+#
+DEBIAN_SIGNING_KEY_USER?=2C1B8440
+DEBIAN_SIGNING_KEY_PASSPHRASE?=
 
 #
 # DEBIAN_PATCHES should list any patches, in the the order in
@@ -135,29 +142,32 @@ $(DEBIAN_BUILD_DIR)/.configured: $(DEBIAN_PATCHES) make/debian.mk
 		--updates					true				\
 		--security					true				\
 		--cache						false				\
-		--archive-areas 			"main,updates/main"	\
+		--archive-areas 			"main"	\
 		--mirror-bootstrap			"$(TARGET_REPO_MIRROR)/debian"	\
 		--mirror-chroot				"$(TARGET_REPO_MIRROR)/debian"	\
 		--mirror-chroot-security	"$(TARGET_REPO_MIRROR)/debian-security"	\
 		--mirror-binary				"$(TARGET_REPO_MIRROR)/debian"	\
 		--mirror-binary-security	"$(TARGET_REPO_MIRROR)/debian-security"	\
-		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"	\
+		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--hdd-label					"$(DEBIAN_PARTITION_LABEL)"	\
 		--memtest					none			\
-		--hdd-size					320					\
+		--hdd-size					600					\
 		--bootloader				syslinux			\
-		--linux-packages			"linux-image-5.10.0-32" \
+		--linux-packages			"linux-image-6.18.9+deb13" \
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
-		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
-		#sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
+		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.3-0_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
+		sudo mkdir -p $(@D)/config/includes.chroot/usr/share/keyrings/; \
+		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.chroot/usr/share/keyrings/; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
 		sudo mkdir -p $(@D)/config/packages.chroot; \
 		cd $(@D)/config/packages.chroot;	\
-		if echo "$(TARGET_SMD)" | grep -q "^http"; then \
-			sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD); \
-		else \
+		if test -d $(TARGET_SMD); then \
 			sudo cp $(TARGET_SMD)/SysMgmtDaemon_*.deb .; \
+		elif test -f $(TARGET_SMD); then \
+			sudo cp $(TARGET_SMD) .; \
+		elif echo "$(TARGET_SMD)" | grep -q "^http"; then \
+			sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD); \
 		fi; \
 		sudo dpkg-name SysMgmtDaemon_*.deb;	\
 	)
@@ -172,7 +182,7 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 	rm -f $@
 	(cd $(@D); \
 		# Add a custom MKSQUASHFS_OPTION to prevent exports, resolves an issue with overlayFS during downgrades \
-		export MKSQUASHFS_OPTIONS="-no-exports"; \
+		export MKSQUASHFS_OPTIONS="-no-exports -Xbcj x86"; \
 		sudo lb build; \
 		dd \
 			if=live-image-amd64.img \
@@ -183,7 +193,9 @@ $(DEBIAN_BUILD_DIR)/.built: $(DEBIAN_BUILD_DIR)/.configured
 			if=live-image-amd64.img \
 			of=boot.img \
 			bs=512 count=1; \
-		gpg --local-user 64F48DD3 --armour --detach-sign root.img; \
+		echo "$(DEBIAN_SIGNING_KEY_PASSPHRASE)" | \
+			gpg --batch --no-tty --pinentry-mode loopback --passphrase-fd 0 --local-user $(DEBIAN_SIGNING_KEY_USER) \
+				--armour --detach-sign root.img; \
 		md5sum root.img > root.img.md5; \
 	)
 	touch $@
@@ -239,6 +251,8 @@ $(DEBIAN_IPK): $(DEBIAN_BUILD_DIR)/.built
 	$(MAKE) $(DEBIAN_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN_IPK_DIR)/CONTROL/conffiles
 	install -d $(DEBIAN_IPK_DIR)/opt/var/lib/debian
+	# IPKG hooks
+	install -m 755 $(DEBIAN_SRC_DIR)/control/* $(DEBIAN_IPK_DIR)/CONTROL/
 	# Newly created boot paritions
 	install -m 755 $(DEBIAN_BUILD_DIR)/boot.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN_BUILD_DIR)/root.img	$(DEBIAN_IPK_DIR)/opt/var/lib/debian/

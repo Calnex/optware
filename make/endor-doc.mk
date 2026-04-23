@@ -28,9 +28,9 @@
 #
 BUILD_VERSION_NUMBER?=0.1.0.0
 BUILD_NUMBER?=devel
-BUILD_DATE?=2020.11.11
+BUILD_DATE?=01-01-2026
 
-ENDOR_BRANCH_PARAM?=master
+ENDOR_BRANCH_PARAM?=main
 ENDOR_DOC_BRANCH_PARAM?=$(ENDOR_BRANCH_PARAM)
 
 ENDOR_DOCUMENTATION_REPOSITORY?=https://github.com/Calnex/EndorDocumentation
@@ -38,17 +38,17 @@ ENDOR_DOC_VERSION=$(shell echo "$(BUILD_VERSION_NUMBER)" | cut --delimiter "." -
 ENDOR_DOC_SOURCE=endor-$(TARGET_PRODUCT_LOWER)-doc-$(ENDOR_DOC_VERSION).tar.gz
 ENDOR_UNZIP=zcat
 ENDOR_DOC_MAINTAINER=Calnex <info@calnexsol.com>
-ENDOR_DOC_DESCRIPTION=Describe endor documentation here.
+ENDOR_DOC_DESCRIPTION=endor-$(ENDOR_PRODUCT) application software's documentation.
 ENDOR_DOC_SECTION=base
 ENDOR_DOC_PRIORITY=optional
 ENDOR_DOC_DEPENDS=
 ENDOR_DOC_PACKAGE=endor-$(TARGET_PRODUCT_LOWER)-doc
 ENDOR_DOC_SUGGESTS=
-ENDOR_DOC_CONFLICTS=endor-paragon, endor-paragon-doc, endor-paragon-neo, endor-paragon-neo-doc
+ENDOR_DOC_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon, endor-paragon-doc
 ifeq "${TARGET_PRODUCT_LOWER}" "paragon"
 	ENDOR_DOC_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon-neo, endor-paragon-neo-doc
-else ifeq "${TARGET_PRODUCT_LOWER}" "paragon-neo"
-	ENDOR_DOC_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon, endor-paragon-doc
+else ifeq "${TARGET_PRODUCT_LOWER}" "attero"
+	ENDOR_DOC_CONFLICTS=endor-paragon, endor-paragon-doc, endor-paragon-neo, endor-paragon-neo-doc
 endif
 
 #

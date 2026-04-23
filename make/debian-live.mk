@@ -43,7 +43,7 @@ TARGET_PRODUCT ?= Paragon
 #
 # DEBIAN-LIVE_IPK_VERSION should be incremented when the ipk changes.
 #
-DEBIAN-LIVE_IPK_VERSION=1
+DEBIAN-LIVE_IPK_VERSION=2
 
 #
 # DEBIAN-LIVE_CONFFILES should be a list of user-editable files
@@ -145,24 +145,30 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--updates					true								\
 		--security					true								\
 		--cache						false								\
-		--archive-areas 			"main,updates/main"					\
+		--archive-areas 			"main"					\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian			\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian			\
 		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian			\
 		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security	\
-		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"	\
+		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--iso-application			"Springbank demo"						\
 		--iso-publisher				"Calnex Solutions"						\
 		--iso-volume				"Springbank demo"						\
-		--linux-packages			"linux-image-5.10.0-32" 				\
+		--linux-packages			"linux-image-6.18.9+deb13" 				\
 		;																	\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 					\
-		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; 	\
+		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.3-0_x86_64.xsh $(@D)/config/includes.chroot/bin/; 	\
 		if [ ! -z "$(TARGET_SMD)" ]; then 											\
 			sudo mkdir -p $(@D)/config/packages;									\
 			cd $(@D)/config/packages;												\
-			sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD);\
+			if test -d $(TARGET_SMD); then \
+				sudo cp $(TARGET_SMD)/SysMgmtDaemon_*.deb .; \
+			elif test -f $(TARGET_SMD); then \
+				sudo cp $(TARGET_SMD) .; \
+			elif echo "$(TARGET_SMD)" | grep -q "^http"; then \
+				sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD); \
+			fi; \
 			sudo dpkg-name SysMgmtDaemon_*.deb;										\
 		fi																			\
 	)

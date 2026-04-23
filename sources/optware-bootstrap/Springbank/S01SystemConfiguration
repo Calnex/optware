@@ -2,7 +2,9 @@
 echo 'Starting S01SystemConfig' | tee -a /var/log/SystemConfig
 echo "Current PATH is $PATH" | tee -a /var/log/SystemConfig
   
-cp /opt/etc/cron.d/* /etc/cron.daily/
+if ls /opt/etc/cron.d/* >/dev/null 2>&1; then
+  cp /opt/etc/cron.d/* /etc/cron.daily/
+fi
 
 # Setup tftp serve directory
 rm -rf /home/.optware/srv/tftp/optware
@@ -21,7 +23,7 @@ fi
 chown calnex:calnex -R /home/.optware/var/lib/embedded
 
 mkdir -p /home/.optware/etc/hooks
-chown calnex:calnex /home/.optware/etc/hooks
+chown root:root /home/.optware/etc/hooks
 
 # Setup persistant disk for logging on VM using liveCD
 if test -b /dev/vda && ! test -d /home/calnex/Calnex100G/Persist; then 

@@ -26,6 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
+LUA_CALNEX_SITE=$(PACKAGES_SERVER)
 LUA_SITE=http://www.lua.org/ftp
 LUA_VERSION=5.1.5
 LUA_SOURCE=lua-$(LUA_VERSION).tar.gz
@@ -62,6 +63,10 @@ LUA_PATCHES=$(LUA_SOURCE_DIR)/makefiles.patch
 LUA_CPPFLAGS=-DLUA_USE_LINUX -fPIC -DPIC
 LUA_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+LUA_MAKE_OPTIONS=-j
+
+
 #
 # LUA_BUILD_DIR is the directory in which the build is done.
 # LUA_SOURCE_DIR is the directory which holds all the
@@ -84,6 +89,7 @@ LUA_HOST_BUILD_DIR=$(HOST_BUILD_DIR)/lua
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LUA_SOURCE):
+	$(WGET) -P $(@D) $(LUA_CALNEX_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(LUA_SITE)/$(@F) || \
 	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 
@@ -170,7 +176,7 @@ lua: $(LUA_BUILD_DIR)/.built
 #
 $(LUA_BUILD_DIR)/.staged: $(LUA_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) INSTALL_TOP=$(STAGING_PREFIX) install
+	$(MAKE) $(LUA_MAKE_OPTIONS) -C $(@D) INSTALL_TOP=$(STAGING_PREFIX) install
 	mkdir -p $(STAGING_LIB_DIR)/pkgconfig
 	sed -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(@D)/etc/lua.pc > $(STAGING_LIB_DIR)/pkgconfig/lua.pc
 	touch $@

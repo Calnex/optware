@@ -23,7 +23,7 @@ else
     rc="$1"
 fi
 
-case "$1" in
+case "$rc" in
   start)
         /sbin/loading_server &
         export INIT_SERVER_MESSAGE="init_server called"
@@ -32,7 +32,7 @@ case "$1" in
         pkill -f '/sbin/loading_server'
         ;;
   *)
-        echo "Usage: $SCRIPTNAME {start|stop}" >&2
+      echo "Usage: $0 {start|stop}" >&2
         exit 3
         ;;
 esac

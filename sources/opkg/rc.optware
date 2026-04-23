@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# Make sure root is not running this script
+if [ `id -u` = 0 ]
+then
+   echo "This script must not be run as root" 1>&2
+   exit 1
+fi
+
+# Export common mono command switches
+export MONO_ENV_OPTIONS="--gc=sgen"
+
+# Start all init scripts in /opt/etc/init.d
+# executing them in numerical order.
+#
+for i in /opt/etc/init.d/S??* ;do
+
+	# Ignore dangling symlinks (if any).
+	[ ! -f "$i" ] && continue
+
+	case "$i" in
+	   *.sh)
+		# Source shell script for speed.
+		(
+			trap - INT QUIT TSTP
+			set $@
+			. $i
+		)
+		;;
+	   *)
+		# No sh extension, so fork subprocess.
+		$i $@
+		;;
+	esac
+done

@@ -14,8 +14,8 @@
 #
 GLIB_CALNEX_SITE=$(PACKAGES_SERVER)
 
-GLIB_MAJOR_VERSION=2.48
-GLIB_MINOR_VERSION=2
+GLIB_MAJOR_VERSION=2.66
+GLIB_MINOR_VERSION=8
 GLIB_VERSION=$(GLIB_MAJOR_VERSION).$(GLIB_MINOR_VERSION)
 GLIB_SITE=http://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB_MAJOR_VERSION)
 GLIB_SOURCE=glib-$(GLIB_VERSION).tar.xz
@@ -25,10 +25,11 @@ GLIB_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 GLIB_DESCRIPTION=The GLib library of C routines.
 GLIB_SECTION=lib
 GLIB_PRIORITY=optional
+
 ifeq (libiconv, $(filter libiconv, $(PACKAGES)))
-GLIB_DEPENDS=libiconv
+GLIB_DEPENDS=libiconv, libffi, libelf
 else
-GLIB_DEPENDS=
+GLIB_DEPENDS=libffi, libelf
 endif
 ifeq ($(GETTEXT_NLS), enable)
 # assume standalone libiconv
@@ -46,6 +47,12 @@ GLIB_IPK_VERSION=1
 # GLIB_LOCALES defines which locales get installed
 #
 GLIB_LOCALES=
+
+#
+# GLIB_MESON_WORKING_DIR is the temporary folder where glib builds into
+#
+GLIB_MESON=meson
+GLIB_MESON_WORKING_DIR=_build
 
 #
 # GLIB_CONFFILES should be a list of user-editable files
@@ -103,28 +110,6 @@ $(DL_DIR)/$(GLIB_SOURCE):
 glib-source: $(DL_DIR)/$(GLIB_SOURCE) $(GLIB_PATCHES)
 
 
-$(GLIB_HOST_BUILD_DIR)/.built: host/.configured $(DL_DIR)/$(GLIB_SOURCE) make/glib.mk
-	rm -rf $(HOST_BUILD_DIR)/$(GLIB_DIR) $(@D)
-	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(HOST_BUILD_DIR) -xf -
-	mv $(HOST_BUILD_DIR)/$(GLIB_DIR) $(@D)
-	(cd $(@D); \
-		./configure \
-		--prefix=/opt	\
-	)
-	$(MAKE) -C $(@D)
-	touch $@
-
-glib-host: $(GLIB_HOST_BUILD_DIR)/.built
-
-
-$(GLIB_HOST_BUILD_DIR)/.staged: $(GLIB_HOST_BUILD_DIR)/.built host/.configured make/glib.mk
-	rm -f $@
-	$(MAKE) -C $(@D) install prefix=$(HOST_STAGING_PREFIX)
-	touch $@
-
-glib-host-stage: $(GLIB_HOST_BUILD_DIR)/.staged
-
-
 #
 # This target unpacks the source code in the build directory.
 # If the source archive is not .tar.gz or .tar.bz2, then you will need
@@ -141,38 +126,37 @@ glib-host-stage: $(GLIB_HOST_BUILD_DIR)/.staged
 # first, then do that first (e.g. "$(MAKE) <bar>-stage <baz>-stage").
 #
 $(GLIB_BUILD_DIR)/.configured: $(DL_DIR)/$(GLIB_SOURCE) $(GLIB_PATCHES) make/glib.mk
-	$(MAKE) zlib-stage libffi-stage
 ifeq (libiconv, $(filter libiconv, $(PACKAGES)))
-	$(MAKE) libiconv-stage
+#	$(MAKE) libiconv-stage
 endif
 ifeq ($(GETTEXT_NLS), enable)
-	$(MAKE) gettext-stage
+#	$(MAKE) gettext-stage
 endif
-ifneq ($(HOSTCC), $(TARGET_CC))
-	$(MAKE) glib-host-stage
-endif
+#ifneq ($(HOSTCC), $(TARGET_CC))
+#	$(MAKE) glib-host-stage
+#endif
+	$(MAKE) libffi-stage
+	$(MAKE) elfutils-stage
+	$(MAKE) zlib-stage
+	
+
 	rm -rf $(BUILD_DIR)/$(GLIB_DIR) $(@D)
 	$(GLIB_UNZIP) $(DL_DIR)/$(GLIB_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	mv $(BUILD_DIR)/$(GLIB_DIR) $(@D)
 	cp $(SOURCE_DIR)/glib/glib.cache $(@D)/config.cache
-	sed -i -e 's/^ *$$as_echo_n /echo -n /' $(@D)/configure
+	
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(GLIB_CPPFLAGS)" \
-		LDFLAGS="$(STAGING_LDFLAGS) $(GLIB_LDFLAGS)" \
-		./configure \
-		--build=$(GNU_HOST_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--target=$(GNU_TARGET_NAME) \
-		--cache-file=config.cache \
-		--with-pcre \
-		--prefix=/opt \
-		$(GLIB_CONFIG_OPT) \
+		LDFLAGS="$(STAGING_LDFLAGS) $(GLIB_LDFLAGS) -Wl,-rpath-link,/home/alan/optware/staging/opt/lib64" \
+		$(GLIB_MESON) setup \
+			$(GLIB_MESON_WORKING_DIR) \
+			--prefix=/opt \
+			--libdir=lib \
+			--strip \
 	)
-	sed -i -e '/#define _POSIX_SOURCE/a#include <bits/posix1_lim.h>' $(@D)/glib/giounix.c
-	$(PATCH_LIBTOOL) $(@D)/libtool
 	touch $@
-
+ \
 glib-unpack: $(GLIB_BUILD_DIR)/.configured
 
 #
@@ -181,7 +165,13 @@ glib-unpack: $(GLIB_BUILD_DIR)/.configured
 #
 $(GLIB_BUILD_DIR)/.built: $(GLIB_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+
+	$(MAKE) zlib-stage libffi-stage
+
+	( cd $(@D); \
+		$(GLIB_MESON) compile \
+		-C $(GLIB_MESON_WORKING_DIR) \
+		)
 	touch $@
 
 #
@@ -195,13 +185,26 @@ glib: $(GLIB_BUILD_DIR)/.built
 #
 $(GLIB_BUILD_DIR)/.staged: $(GLIB_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(@D) install-strip prefix=$(STAGING_DIR)/opt
-	install $(@D)/glib/glibconfig.h $(STAGING_INCLUDE_DIR)/glib-2.0/
-	rm -rf $(STAGING_DIR)/opt/lib/libgio-2.0.la
-	rm -rf $(STAGING_DIR)/opt/lib/libglib-2.0.la
-	rm -rf $(STAGING_DIR)/opt/lib/libgmodule-2.0.la
-	rm -rf $(STAGING_DIR)/opt/lib/libgobject-2.0.la
-	rm -rf $(STAGING_DIR)/opt/lib/libgthread-2.0.la
+	
+	( cd $(@D); \
+	    DESTDIR=$(STAGING_DIR) \
+		    $(GLIB_MESON) install \
+			-C $(GLIB_MESON_WORKING_DIR) )
+
+	
+	
+	#install -d 
+	#install $(@D)/$GLIB_MESON_WORKING_DIR)/glib/glibconfig.h $(STAGING_INCLUDE_DIR)/glib-2.0/
+	#rm -rf $(STAGING_DIR)/opt/lib/libgio-2.0.la
+	#rm -rf $(STAGING_DIR)/opt/lib/libglib-2.0.la
+	#rm -rf $(STAGING_DIR)/opt/lib/libgmodule-2.0.la
+	#rm -rf $(STAGING_DIR)/opt/lib/libgobject-2.0.la
+	#rm -rf $(STAGING_DIR)/opt/lib/libgthread-2.0.la
+
+	rm -rf $(STAGING_DIR)/opt/lib/libcares.la
+	rm -rf $(STAGING_DIR)/opt/lib/libgmp-2.0.la
+	rm -rf $(STAGING_DIR)/opt/lib/libpcrecpp-2.0.la
+
 	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' \
                -e 's|glib_mkenums=.*|glib_mkenums=$${prefix}/bin/glib-mkenums|' \
 		$(STAGING_LIB_DIR)/pkgconfig/gio*-2.0.pc \
@@ -246,9 +249,13 @@ $(GLIB_IPK_DIR)/CONTROL/control:
 #
 $(GLIB_IPK): $(GLIB_BUILD_DIR)/.built
 	rm -rf $(GLIB_IPK_DIR) $(BUILD_DIR)/glib_*_$(TARGET_ARCH).ipk
-	$(MAKE) -C $(GLIB_BUILD_DIR) install-strip prefix=$(GLIB_IPK_DIR)/opt
-	rm -rf $(GLIB_IPK_DIR)/opt/share/gtk-doc
-	rm -rf $(GLIB_IPK_DIR)/opt/man
+	#$(MAKE) -C $(GLIB_BUILD_DIR) install-strip prefix=$(GLIB_IPK_DIR)/opt
+
+	( cd $(GLIB_BUILD_DIR); \
+	    DESTDIR=$(GLIB_IPK_DIR) \
+		    $(GLIB_MESON) install \
+			-C $(GLIB_MESON_WORKING_DIR) )
+
 	$(MAKE) $(GLIB_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GLIB_IPK_DIR)
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(GLIB_IPK_DIR)

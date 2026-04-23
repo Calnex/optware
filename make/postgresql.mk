@@ -69,6 +69,9 @@ POSTGRESQL_CPPFLAGS+=-fno-builtin-rint
 endif
 POSTGRESQL_LDFLAGS=
 
+# Options to pass to the make that is performed when building the code
+POSTGRESQL_MAKE_OPTIONS=-j
+
 #
 # POSTGRESQL_BUILD_DIR is the directory in which the build is done.
 # POSTGRESQL_SOURCE_DIR is the directory which holds all the
@@ -124,6 +127,17 @@ $(POSTGRESQL_BUILD_DIR)/.configured: $(DL_DIR)/$(POSTGRESQL_SOURCE) $(POSTGRESQL
 		cat $(POSTGRESQL_PATCHES) | patch -d $(BUILD_DIR)/$(POSTGRESQL_DIR) -p1 ; \
 	fi
 	mv $(BUILD_DIR)/$(POSTGRESQL_DIR) $(@D)
+	
+	
+		echo ''
+	echo ''
+	echo 'Target configure options $(TARGET_CONFIGURE_OPTS)'
+	echo ''
+	echo ''
+
+	
+	
+	
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(POSTGRESQL_CPPFLAGS)" \
@@ -149,7 +163,8 @@ postgresql-unpack: $(POSTGRESQL_BUILD_DIR)/.configured
 
 $(POSTGRESQL_BUILD_DIR)/.built: $(POSTGRESQL_BUILD_DIR)/.configured
 	rm -f $@
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) MAKELEVEL=0 -C $(@D) \
+	
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) MAKELEVEL=0 $(POSTGRESQL_MAKE_OPTIONS) -C $(@D) \
 		CPPFLAGS="$(STAGING_CPPFLAGS) $(POSTGRESQL_CPPFLAGS)" \
 		;
 	touch $@

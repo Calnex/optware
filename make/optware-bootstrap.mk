@@ -6,8 +6,8 @@
 #
 ###########################################################
 
-OPTWARE-BOOTSTRAP_VERSION=1.2
-OPTWARE-BOOTSTRAP_IPK_VERSION=7
+OPTWARE-BOOTSTRAP_VERSION=1.3
+OPTWARE-BOOTSTRAP_IPK_VERSION=0
 
 OPTWARE-BOOTSTRAP_DIR=optware-bootstrap-$(OPTWARE-BOOTSTRAP_VERSION)
 OPTWARE-BOOTSTRAP_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
@@ -32,7 +32,7 @@ include $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/target-specific.mk
 
 ifneq (, $(filter $(OPTWARE-BOOTSTRAP_TARGET), $(OPTWARE-BOOTSTRAP_TARGETS)))
 
-OPTWARE-BOOTSTRAP_CONTAINS ?= ipkg-opt wget debian
+OPTWARE-BOOTSTRAP_CONTAINS ?= ipkg-opt debian
 OPTWARE-BOOTSTRAP_IPKS_DONE:=$(foreach p, $(OPTWARE-BOOTSTRAP_CONTAINS), $(BUILD_DIR)/$(p)/.ipk)
 
 OPTWARE-BOOTSTRAP_BUILD_DIR=$(BUILD_DIR)/$(OPTWARE-BOOTSTRAP_TARGET)-optware-bootstrap
@@ -120,6 +120,7 @@ endif
 	install -m 644 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/usbmount.path $(OPTWARE-BOOTSTRAP_IPK_DIR)/lib/systemd/system/usbmount.path
 	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin
 	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/optwareUSB $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/
+	install -m 755 $(OPTWARE-BOOTSTRAP_SOURCE_DIR)/usbrepo/optware-mount-wrapper $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/
 	sed -i -e 's/__TARGET_DISTRO__/$(TARGET_DISTRO)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/optwareUSB
 	sed -i -e 's/__TARGET_PRODUCT__/$(TARGET_PRODUCT)/g' $(OPTWARE-BOOTSTRAP_IPK_DIR)/bin/optwareUSB
 	install -d $(OPTWARE-BOOTSTRAP_IPK_DIR)/opt/etc

@@ -8,9 +8,9 @@ NCURSES_CALNEX_SITE=$(PACKAGES_SERVER)
 
 NCURSES_DIR=$(BUILD_DIR)/ncurses
 
-NCURSES_VERSION=6.0
+NCURSES_VERSION=6.2
 NCURSES=ncurses-$(NCURSES_VERSION)
-NCURSES_SITE=ftp://ftp.invisible-island.net/ncurses
+NCURSES_SITE=https://invisible-island.net/archives/ncurses
 NCURSES_SOURCE=$(NCURSES).tar.gz
 NCURSES_UNZIP=zcat
 NCURSES_MAINTAINER=Christopher Blunck <christopher.blunck@gmail.com>
@@ -23,6 +23,11 @@ NCURSES_CONFLICTS=
 NCURSES_FOR_OPTWARE_TARGET=ncurses
 
 NCURSES_IPK_VERSION=0
+
+# Options to pass to the make that is performed when building the code
+NCURSES_MAKE_OPTIONS=-j
+
+
 
 NCURSES_IPK=$(BUILD_DIR)/ncurses_$(NCURSES_VERSION)-$(NCURSES_IPK_VERSION)_$(TARGET_ARCH).ipk
 NCURSES-DEV_IPK=$(BUILD_DIR)/ncurses-dev_$(NCURSES_VERSION)-$(NCURSES_IPK_VERSION)_$(TARGET_ARCH).ipk
@@ -105,7 +110,7 @@ ncurses: $(NCURSES_DIR)/.built
 
 $(NCURSES_DIR)/.staged: $(NCURSES_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(NCURSES_DIR) DESTDIR=$(STAGING_DIR) install.includes install.libs
+	$(MAKE) $(NCURSES_MAKE_OPTIONS) -C $(NCURSES_DIR) DESTDIR=$(STAGING_DIR) install.includes install.libs
 	sed -i -e '/^prefix=/s|=.*|=$(STAGING_PREFIX)|' $(STAGING_PREFIX)/bin/ncurses[0-9]*-config
 	ln -sf ncurses/ncurses.h $(STAGING_INCLUDE_DIR)
 	ln -sf ncurses/curses.h $(STAGING_INCLUDE_DIR)
@@ -151,9 +156,9 @@ $(NCURSES_IPK) $(NCURSES-DEV_IPK): $(NCURSES_DIR)/.built
 	rm -f $(NCURSES_IPK_DIR)/opt/lib/*.a
 	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/bin/clear \
 		$(NCURSES_IPK_DIR)/opt/bin/infocmp $(NCURSES_IPK_DIR)/opt/bin/t*
-	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/lib/*$(SO).6.0$(DYLIB)
+	$(STRIP_COMMAND) $(NCURSES_IPK_DIR)/opt/lib/*$(SO).$(NCURSES_VERSION)$(DYLIB)
 ifeq (darwin, $(TARGET_OS))
-	for dylib in $(NCURSES_IPK_DIR)/opt/lib/*$(SO).6.0$(DYLIB); do \
+	for dylib in $(NCURSES_IPK_DIR)/opt/lib/*$(SO).$(NCURSES_VERSION)$(DYLIB); do \
 	$(TARGET_CROSS)install_name_tool -change $$dylib /opt/lib/`basename $$dylib` $$dylib; \
 	done
 endif

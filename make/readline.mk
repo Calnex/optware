@@ -29,8 +29,8 @@
 
 READLINE_CALNEX_SITE=$(PACKAGES_SERVER)
 
-READLINE_SITE=http://ftp.gnu.org/pub/gnu/readline
-READLINE_VERSION=8.1
+READLINE_SITE=https://ftp.gnu.org/pub/gnu/readline
+READLINE_VERSION=8.1.2
 READLINE_SOURCE=readline-$(READLINE_VERSION).tar.gz
 READLINE_DIR=readline-$(READLINE_VERSION)
 READLINE_UNZIP=zcat
@@ -61,6 +61,9 @@ READLINE_IPK_VERSION=0
 #
 READLINE_CPPFLAGS=
 READLINE_LDFLAGS=-lncurses
+
+# Options to pass to the make that is performed when building the code
+READLINE_MAKE_OPTIONS=-j
 
 #
 # READLINE_BUILD_DIR is the directory in which the build is done.
@@ -167,7 +170,7 @@ readline: $(READLINE_BUILD_DIR)/.built
 $(READLINE_BUILD_DIR)/.staged: $(READLINE_BUILD_DIR)/.built
 	rm -f $@
 	rm -f $(STAGING_LIB_DIR)/libreadline*
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) $(READLINE_MAKE_OPTIONS) -C $(@D) DESTDIR=$(STAGING_DIR) install
 	touch $@
 
 readline-stage: $(READLINE_BUILD_DIR)/.staged

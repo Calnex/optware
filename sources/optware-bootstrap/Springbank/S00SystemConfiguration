@@ -121,6 +121,9 @@ if [ -e /sys/firmware/efi ]; then
 
       echo 'Resizing sda4 to use all remaining space' | tee -a /var/log/SystemConfig
       parted /dev/sda resizepart 4 100%
+
+      echo 'Marking all blocks empty to avoid confusion with old data on the disk' | tee -a /var/log/SystemConfig
+      blkdiscard -f /dev/sda4 | tee -a /var/log/SystemConfig
     fi
 
     if [ -b /dev/sda7 ]; then
@@ -244,6 +247,7 @@ else
   fi
 
   if [ ! -b /dev/sda4  ]; then
+    # Create the persistence partition
     echo '/dev/sda4 not present' | tee -a /var/log/SystemConfig
     (
       echo n          # Add a new partition
@@ -253,8 +257,12 @@ else
       echo ""         # Default last sector (end of disk)
       echo w          # Write changes
     ) | fdisk /dev/sda
-
     partprobe
+
+    # Mark all blocks empty to avoid confusion with old data on the disk
+    echo 'Emptying persistence partition' | tee -a /var/log/SystemConfig
+    blkdiscard -f /dev/sda4 | tee -a /var/log/SystemConfig
+    
     file -s /dev/sda4 | grep ext4
     if [[ $? != 0 ]]; then
       echo 'On persistence detected' | tee -a /var/log/SystemConfig
@@ -333,8 +341,16 @@ else
         parted /dev/sda --script toggle ${NEW_PARTITION} boot -- 2>/dev/null 1>&2
         echo "Partition ${NEW_PARTITION} marked as boot" | tee -a /var/log/SystemConfig
 
+        if [ -d /sys/class/net/enp0s3 ]; then
+          ip addr flush dev enp0s3
+          ip link set enp0s3 down
+          echo "Flushed IP address and brought down enp0s3" | tee -a /var/log/SystemConfig
+        fi
+
         sync
         reboot
+        sleep 5
+        exit 1
       else
         echo "Debian update image keysign check failed!" | tee -a /var/log/SystemConfig
       fi

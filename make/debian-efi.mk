@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-DEBIAN_VERSION?=11.xx
+DEBIAN_VERSION?=13.03
 DEBIAN-EFI_SOURCE=debian-$(DEBIAN_VERSION).tar.gz
 DEBIAN-EFI_DIR=debian-efi-$(DEBIAN_VERSION)
 DEBIAN-EFI_UNZIP=zcat
@@ -62,6 +62,13 @@ TARGET_SMD?=http://packages.calnexsol.com/SMD/
 # which they should be applied to the source code.
 #
 DEBIAN-EFI_CONFIG=$(DEBIAN-EFI_SRC_DIR)/config
+
+#
+# DEBIAN_SIGNING_KEY_USER is the key ID of the GPG key used to sign the resulting ipk file.
+# DEBIAN_SIGNING_KEY_PASSPHRASE is the passphrase for the GPG key used to sign the resulting ipk file.
+#
+DEBIAN_SIGNING_KEY_USER?=2C1B8440
+DEBIAN_SIGNING_KEY_PASSPHRASE?=
 
 #
 # If the compilation of the package requires additional
@@ -133,29 +140,32 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		--updates					true				\
 		--security					true				\
 		--cache						false				\
-		--archive-areas 			"main,updates/main"	\
+		--archive-areas 			"main"	\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security	\
-		--debootstrap-options		"--keyring=/root/.gnupg/pubring.kbx"		\
+		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--hdd-label					"$(DEBIAN-EFI_PARTITION_LABEL)"	\
-		--hdd-size					320						\
+		--hdd-size					600						\
 		--bootloader				grub-efi				\
-		--linux-packages			"linux-image-5.10.0-32" \
+		--linux-packages			"linux-image-6.18.9+deb13" \
 		;									\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/;			\
-		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
-		#sudo cp -ar $(PACKAGE_DIR) $(@D)/config/includes.binary/optware; \
+		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.3-0_x86_64.xsh $(@D)/config/includes.chroot/bin/; \
+		sudo mkdir -p $(@D)/config/includes.chroot/usr/share/keyrings/; \
+		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.chroot/usr/share/keyrings/; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN-EFI_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/extlinux/live.cfg; \
 		sudo sed -i -e 's/__LIVE_MEDIA__/$(DEBIAN-EFI_PARTITION_LABEL)/g' $(@D)/config/includes.binary/boot/grub/grub.cfg; \
 		sudo mkdir -p $(@D)/config/packages.chroot;\
 		cd $(@D)/config/packages.chroot; \
-		if echo "$(TARGET_SMD)" | grep -q "^http"; then \
-			sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD); \
-		else \
+		if test -d $(TARGET_SMD); then \
 			sudo cp $(TARGET_SMD)/SysMgmtDaemon_*.deb .; \
+		elif test -f $(TARGET_SMD); then \
+			sudo cp $(TARGET_SMD) .; \
+		elif echo "$(TARGET_SMD)" | grep -q "^http"; then \
+			sudo wget -nv -r -l1 -nd --no-parent -A 'SysMgmtDaemon_*.deb' $(TARGET_SMD); \
 		fi; \
 		sudo dpkg-name SysMgmtDaemon_*.deb;	\
 	)
@@ -202,7 +212,9 @@ $(DEBIAN-EFI_BUILD_DIR)/.built: $(DEBIAN-EFI_BUILD_DIR)/.configured
 			of=boot.iso \
 			skip=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$2}'` \
 			count=`/sbin/fdisk -l bootable.iso | awk '/EFI/ {print $$4}'`; \
-		gpg --local-user 64F48DD3 --armour --detach-sign root.iso; \
+			echo "$(DEBIAN_SIGNING_KEY_PASSPHRASE)" | \
+				gpg --batch --no-tty --pinentry-mode loopback --passphrase-fd 0 --local-user $(DEBIAN_SIGNING_KEY_USER) \
+					--armour --detach-sign root.iso; \
 		\
 		md5sum root.iso > root.iso.md5; \
 	)
@@ -258,6 +270,9 @@ $(DEBIAN-EFI_IPK): $(DEBIAN-EFI_BUILD_DIR)/.built
 	rm -rf $(DEBIAN-EFI_IPK_DIR) $(BUILD_DIR)/debian_*_$(TARGET_ARCH).ipk
 	$(MAKE) $(DEBIAN-EFI_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN-EFI_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN-EFI_IPK_DIR)/CONTROL/conffiles
+	# IPKG hooks
+	install -m 755 $(DEBIAN-EFI_SRC_DIR)/control/* $(DEBIAN-EFI_IPK_DIR)/CONTROL/
+	# Newly created boot paritions
 	install -d $(DEBIAN-EFI_IPK_DIR)/opt/var/lib/debian
 	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/boot.iso	$(DEBIAN-EFI_IPK_DIR)/opt/var/lib/debian/
 	install -m 755 $(DEBIAN-EFI_BUILD_DIR)/root.iso	$(DEBIAN-EFI_IPK_DIR)/opt/var/lib/debian/

@@ -1,0 +1,5 @@
+Types: deb
+URIs: http://debian2.calnexsolutions.local/debian
+Suites: trixie
+Components: main/debian-installer main
+Signed-By: /usr/share/keyrings/calnex-keyring.gpg

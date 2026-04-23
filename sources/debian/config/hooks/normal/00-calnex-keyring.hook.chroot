@@ -1,0 +1,11 @@
+#!/bin/sh
+exit 0
+set -e
+if [ -f /usr/share/keyrings/calnex-keyring.gpg ]; then
+    if command -v apt-key >/dev/null 2>&1; then
+        apt-key add /usr/share/keyrings/calnex-keyring.gpg
+    else
+        mkdir -p /etc/apt/trusted.gpg.d
+        cp /usr/share/keyrings/calnex-keyring.gpg /etc/apt/trusted.gpg.d/calnex-archive.gpg
+    fi
+fi

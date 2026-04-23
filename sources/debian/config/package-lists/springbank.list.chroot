@@ -14,17 +14,18 @@ dhcpcd5
 
 # Logging and file sharing
 samba samba-vfs-modules 
-tftpd 
+tftpd-hpa 
 
 # Shell access
 openssh-server 
 
 # Extra utilities
-libicu67 
+libicu-dev
 hdparm 
-ntp 
+ntpsec
 install-info 
 curl libcurl4-openssl-dev
+libarchive13
 
 # Backwards compatability
 libgdiplus 

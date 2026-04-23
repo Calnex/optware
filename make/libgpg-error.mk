@@ -29,11 +29,11 @@
 
 LIBGPG-ERROR_CALNEX_SITE=$(PACKAGES_SERVER)
 
-LIBGPG-ERROR_SITE=ftp://ftp.gnupg.org/gcrypt/libgpg-error
-LIBGPG-ERROR_VERSION=1.10
-LIBGPG-ERROR_SOURCE=libgpg-error-$(LIBGPG-ERROR_VERSION).tar.gz
+LIBGPG-ERROR_SITE=https://gnupg.org/ftp/gcrypt/libgpg-error
+LIBGPG-ERROR_VERSION=1.38
+LIBGPG-ERROR_SOURCE=libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2
 LIBGPG-ERROR_DIR=libgpg-error-$(LIBGPG-ERROR_VERSION)
-LIBGPG-ERROR_UNZIP=zcat
+LIBGPG-ERROR_UNZIP=bzcat
 LIBGPG-ERROR_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 LIBGPG-ERROR_DESCRIPTION=Error handling library for libgcrypt
 LIBGPG-ERROR_SECTION=libs
@@ -63,6 +63,11 @@ LIBGPG-ERROR_PATCHES=#$(LIBGPG-ERROR_SOURCE_DIR)/configure.patch
 #
 LIBGPG-ERROR_CPPFLAGS=
 LIBGPG-ERROR_LDFLAGS=
+
+# Options to pass to the make that is performed when building the code
+LIBGPG-ERROR_MAKE_OPTIONS=-j
+
+
 
 #
 # LIBGPG-ERROR_BUILD_DIR is the directory in which the build is done.
@@ -139,7 +144,7 @@ libgpg-error-unpack: $(LIBGPG-ERROR_BUILD_DIR)/.configured
 #
 $(LIBGPG-ERROR_BUILD_DIR)/.built: $(LIBGPG-ERROR_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(LIBGPG-ERROR_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #
@@ -193,6 +198,7 @@ $(LIBGPG-ERROR_IPK_DIR)/CONTROL/control:
 $(LIBGPG-ERROR_IPK): $(LIBGPG-ERROR_BUILD_DIR)/.built
 	rm -rf $(LIBGPG-ERROR_IPK_DIR) $(BUILD_DIR)/libgpg-error_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(LIBGPG-ERROR_BUILD_DIR) DESTDIR=$(LIBGPG-ERROR_IPK_DIR) install-strip
+	rm -f $(LIBGPG-ERROR_IPK_DIR)/opt/share/info/dir
 	$(MAKE) $(LIBGPG-ERROR_IPK_DIR)/CONTROL/control
 	echo $(LIBGPG-ERROR_CONFFILES) | sed -e 's/ /\n/g' > $(LIBGPG-ERROR_IPK_DIR)/CONTROL/conffiles
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(LIBGPG-ERROR_IPK_DIR)

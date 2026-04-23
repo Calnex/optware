@@ -1,36 +1,74 @@
-#! /bin/sh
+#!/bin/sh
 
 if test -z "${REAL_OPT_DIR}"; then
 # next line to be replaced according to OPTWARE_TARGET
 REAL_OPT_DIR=
 fi
 
+# Execute a hook from user space with appropriate permissions and logging. Hooks must be owned by root and executable to be run.
+execute_hook() {
+    user="$1"
+    hook="$2"
+    shift 2
+
+    # verify hook ownership and permissions before executing
+    if [ ! -f "$hook" ]; then
+        return
+    fi
+
+    if [ ! -x "$hook" ]; then
+        echo "Hook $hook is not executable, skipping" | tee -a /var/log/SystemConfig
+        return
+    fi
+
+    if [ "$(stat -c '%U:%G' "$hook")" != "root:root" ]; then
+        echo "Hook $hook is not owned by root, skipping" | tee -a /var/log/SystemConfig
+        return
+    fi
+
+    # execute the hook as the specified user
+    if [ "$user" = "root" ]; then
+        echo "Executing hook $hook as root" | tee -a /var/log/SystemConfig
+        if [ $# -gt 0 ]; then
+            "$hook" "$@"
+        else
+            "$hook"
+        fi
+    else
+        echo "Executing hook $hook as user $user" | tee -a /var/log/SystemConfig
+        if [ $# -gt 0 ]; then
+            su - "$user" -c "$hook $*"
+        else
+            su - "$user" -c "$hook"
+        fi
+    fi
+}
+
 case "$1" in
     start)
         echo "Starting Optware." | tee -a /var/log/SystemConfig
-
-        [ -x /home/.optware/etc/hooks/root.premount ] && /home/.optware/etc/hooks/root.premount
-
-        if test -n "${REAL_OPT_DIR}"; then
-            if ! grep ' /opt ' /proc/mounts >/dev/null 2>&1 ; then
-                mkdir -p /opt
-                mount -o bind "${REAL_OPT_DIR}" /opt
-            fi
-        fi
 
         if grep "clnx-no-setup" /proc/cmdline 2>/dev/null; then
             echo "Boot paramater clnx-no-setup set. Not starting optware or configuring system" | tee -a /var/log/SystemConfig
             exit 0
         fi
 
-        [ -x /home/.optware/etc/hooks/root.preconfig ] && /home/.optware/etc/hooks/root.preconfig
+        execute_hook root /home/.optware/etc/hooks/root.premount
+        if test -n "${REAL_OPT_DIR}"; then
+            if ! grep ' /opt ' /proc/mounts >/dev/null 2>&1 ; then
+                mkdir -p /opt
+                mount -o bind "${REAL_OPT_DIR}" /opt
+            fi
+        fi
+        execute_hook root /home/.optware/etc/hooks/root.preconfig
 
         # Default repo location to network
+        [ -d /opt/etc/ipkg ] || mkdir -p /opt/etc/ipkg
         echo "src/gz local file://home/.optware/srv/tftp/optware" > /opt/etc/ipkg/cross-feed.conf
         
         # Call USB script, it should make no change
         # if no USB is present
-        /bin/optwareUSB add
+        [ -x /bin/optwareUSB ] && /bin/optwareUSB add
 
         if [ -x /etc/init.d/S00SystemConfiguration ]; then
             /etc/init.d/S00SystemConfiguration
@@ -51,15 +89,15 @@ case "$1" in
         fi
 
         # Some pre optware dev script hooks
-        [ -x /opt/etc/hooks/root.preopt ] && /opt/etc/hooks/root.preopt
-        [ -x /opt/etc/hooks/user.preopt ] && su - calnex -c '/opt/etc/hooks/user.preopt'
+        execute_hook root  /opt/etc/hooks/root.preopt
+        execute_hook calnex /opt/etc/hooks/user.preopt
 
         # Start all optware packages
-        [ -x /opt/etc/rc.optware ] && su - calnex -c '/opt/etc/rc.optware start'
+        execute_hook calnex /opt/etc/rc.optware start
 
         # Some post optware dev script hooks
-        [ -x /opt/etc/hooks/root.postopt ] && /opt/etc/hooks/root.postopt
-        [ -x /opt/etc/hooks/user.postopt ] && su - calnex -c '/opt/etc/hooks/user.postopt'
+        execute_hook root  /opt/etc/hooks/root.postopt
+        execute_hook calnex /opt/etc/hooks/user.postopt
 
         ;;
     reconfig)

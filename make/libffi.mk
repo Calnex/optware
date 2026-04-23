@@ -29,10 +29,12 @@
 
 LIBFFI_CALNEX_SITE=$(PACKAGES_SERVER)
 
-LIBFFI_SITE=ftp://sourceware.org/pub/libffi
-LIBFFI_VERSION=3.1
-LIBFFI_SOURCE=libffi-$(LIBFFI_VERSION).tar.gz
-LIBFFI_DIR=libffi-$(LIBFFI_VERSION)
+LIBFFI_MAJOR_VERSION=3.3
+LIBFFI_MINOR_VERSION=6
+LIBFFI_VERSION=$(LIBFFI_MAJOR_VERSION).$(LIBFFI_MINOR_VERSION)
+LIBFFI_SITE=https://github.com/libffi/libffi/releases/download/v$(LIBFFI_MAJOR_VERSION)
+LIBFFI_SOURCE=libffi-$(LIBFFI_MAJOR_VERSION).tar.gz
+LIBFFI_DIR=libffi-$(LIBFFI_MAJOR_VERSION)
 LIBFFI_UNZIP=zcat
 LIBFFI_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
 LIBFFI_DESCRIPTION=Describe libffi here.
@@ -55,7 +57,8 @@ LIBFFI_IPK_VERSION=1
 # LIBFFI_PATCHES should list any patches, in the the order in
 # which they should be applied to the source code.
 #
-LIBFFI_PATCHES=$(LIBFFI_SOURCE_DIR)/include_Makefile.in.patch
+#LIBFFI_PATCHES=$(LIBFFI_SOURCE_DIR)/include_Makefile.in.patch
+LIBFFI_PATCHES=
 
 #
 # If the compilation of the package requires additional
@@ -63,6 +66,11 @@ LIBFFI_PATCHES=$(LIBFFI_SOURCE_DIR)/include_Makefile.in.patch
 #
 LIBFFI_CPPFLAGS=
 LIBFFI_LDFLAGS=
+
+# Options to pass to the make that is performed when building the code
+LIBFFI_MAKE_OPTIONS=-j
+
+
 
 #
 # LIBFFI_BUILD_DIR is the directory in which the build is done.
@@ -134,8 +142,8 @@ $(LIBFFI_BUILD_DIR)/.configured: $(DL_DIR)/$(LIBFFI_SOURCE) $(LIBFFI_PATCHES) ma
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/opt \
 		--includedir=/opt/include \
-		--disable-nls \
-		--disable-static \
+		#--disable-nls \
+		#--disable-static \
 	)
 	touch $@
 
@@ -146,7 +154,7 @@ libffi-unpack: $(LIBFFI_BUILD_DIR)/.configured
 #
 $(LIBFFI_BUILD_DIR)/.built: $(LIBFFI_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(@D)
+	$(MAKE) $(LIBFFI_MAKE_OPTIONS) -C $(@D)
 	touch $@
 
 #
@@ -165,6 +173,12 @@ $(LIBFFI_BUILD_DIR)/.staged: $(LIBFFI_BUILD_DIR)/.built
 		rm -f dir && \
 		for f in *.info ; do ginstall-info $$f dir ; done \
 	)
+	
+	# Log the package as being installed
+	install -d $(STAGING_LIB_DIR)/pkgconfig
+	install -m 644 $(@D)/$(GNU_TARGET_NAME)/libffi.pc $(STAGING_LIB_DIR)/pkgconfig
+	sed -i -e 's|^prefix=.*|prefix=$(STAGING_PREFIX)|' $(STAGING_LIB_DIR)/pkgconfig/libffi.pc	
+	
 	touch $@
 
 libffi-stage: $(LIBFFI_BUILD_DIR)/.staged

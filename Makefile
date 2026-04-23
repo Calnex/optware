@@ -38,9 +38,13 @@ PACKAGES_READY_FOR_TESTING =
 PACKAGES_THAT_NEED_TO_BE_FIXED =
 
 
+# Packages removed from build
+# Jan-2026
+# debian mono optware-bootstrap wgt wget-ssl xsp ipkg-web
+
 COMMON_CROSS_PACKAGES = bzip2 \
 			c-ares \
-			debian \
+			elfutils \
 			gdbm \
 			geoip \
 			gettext \
@@ -48,24 +52,23 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			gnutls \
 			ipkg-opt \
 			ipkg-utils \
-			ipkg-web \
 			libdb \
+			libelf \
 			libffi \
 			libgcrypt \
 			libgmp \
 			libgpg-error \
-			libidn \
+			libidn2 \
 			libpcap \
 			libstdc++ \
 			libtasn1 \
 			libtool \
 			lua \
-			mono \
 			ncurses \
 			nettle \
 			nginx \
+			oniguruma \
 			openssl \
-			optware-bootstrap \
 			pcre \
 			php \
 			postgresql \
@@ -74,9 +77,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			sqlite \
 			template \
 			tshark \
-			wget \
-			wget-ssl \
-			xsp \
 			zlib \
 
 CALNEX_PACKAGES =	cat \
@@ -84,8 +84,6 @@ CALNEX_PACKAGES =	cat \
 			debian-installer \
 			endor-paragon \
 			endor-paragon-vi \
-			endor-attero \
-			endor-attero-vi \
 			
 ##############
 
@@ -114,7 +112,7 @@ STAGING_INCLUDE_DIR=$(STAGING_PREFIX)/include
 STAGING_LIB_DIR=$(STAGING_PREFIX)/lib
 STAGING_LIB64_DIR=$(STAGING_PREFIX)/lib64
 STAGING_CPPFLAGS=$(TARGET_CFLAGS) -I$(STAGING_INCLUDE_DIR)
-STAGING_LDFLAGS=$(TARGET_LDFLAGS) -L$(STAGING_LIB_DIR) -L$(STAGING_LIB64_DIR) -Wl,-rpath,/opt/lib -Wl,-rpath-link,$(STAGING_LIB_DIR)
+STAGING_LDFLAGS=$(TARGET_LDFLAGS) -L$(STAGING_LIB_DIR) -L$(STAGING_LIB64_DIR) -Wl,-rpath,/opt/lib -Wl,-rpath-link,$(STAGING_LIB_DIR),-rpath-link,$(STAGING_LIB64_DIR)
 
 HOST_BUILD_DIR=$(BASE_DIR)/host/builds
 HOST_STAGING_DIR=$(BASE_DIR)/host/staging
@@ -333,31 +331,31 @@ directories: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR) $(STAGING_PREFIX) \
 	$(PACKAGE_DIR) $(TMPDIR)
 
 $(DL_DIR):
-	mkdir $(DL_DIR)
+	mkdir -p $(DL_DIR)
 
 $(BUILD_DIR):
-	mkdir $(BUILD_DIR)
+	mkdir -p $(BUILD_DIR)
 
 $(STAGING_DIR):
-	mkdir $(STAGING_DIR)
+	mkdir -p $(STAGING_DIR)
 
 $(STAGING_PREFIX):
-	mkdir $(STAGING_PREFIX)
+	mkdir -p $(STAGING_PREFIX)
 
 $(STAGING_LIB_DIR):
-	mkdir $(STAGING_LIB_DIR)
+	mkdir -p $(STAGING_LIB_DIR)
 
 $(STAGING_INCLUDE_DIR):
-	mkdir $(STAGING_INCLUDE_DIR)
+	mkdir -p $(STAGING_INCLUDE_DIR)
 
 $(TOOL_BUILD_DIR):
-	mkdir $(TOOL_BUILD_DIR)
+	mkdir -p $(TOOL_BUILD_DIR)
 
 $(PACKAGE_DIR):
-	mkdir $(PACKAGE_DIR)
+	mkdir -p $(PACKAGE_DIR)
 
 $(TMPDIR):
-	mkdir $(TMPDIR)
+	mkdir -p $(TMPDIR)
 
 source: $(PACKAGES_SOURCE)
 

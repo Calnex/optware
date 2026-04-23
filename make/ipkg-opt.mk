@@ -9,27 +9,21 @@
 # for the package.  IPKG-OPT_DIR is the directory which is created when
 # this cvs module is checked out.
 #
-IPKG-OPT_REPOSITORY=:pserver:anoncvs@anoncvs.handhelds.org
+IPKG-OPT_REPOSITORY=https://github.com/Calnex/ipkg-opt
 IPKG-OPT_DIR=ipkg-opt
-IPKG-OPT_MAINTAINER=NSLU2 Linux <nslu2-linux@yahoogroups.com>
+IPKG-OPT_MAINTAINER=Calnex <debian@calnexsol.com>
 IPKG-OPT_DESCRIPTION=The Itsy Package Manager
 IPKG-OPT_SECTION=base
 IPKG-OPT_PRIORITY=optional
-ifeq ($(OPTWARE_TARGET), $(filter oleg ddwrt, $(OPTWARE_TARGET)))
-IPKG-OPT_DEPENDS=uclibc-opt
-else
 IPKG-OPT_DEPENDS=
-endif
 IPKG-OPT_SUGGESTS=
 IPKG-OPT_CONFLICTS=
 
-#
-# Software downloaded from CVS repositories must either use a tag or a
-# date to ensure that the same sources can be downloaded later.
-#
-IPKG-OPT_CVS_TAG=v0-99-163
 IPKG-OPT_VERSION=0.99.163
-IPKG-OPT_CVS_OPTS=-r $(IPKG-OPT_CVS_TAG)
+IPKG-OPT_CALNEX_SITE=$(PACKAGES_SERVER)/build_dependencies/1.0/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
+IPKG-OPT_SITE=https://github.com/Calnex/ipkg-opt/archive/refs/tags/v$(IPKG-OPT_VERSION).tar.gz
+IPKG-OPT_SOURCE=ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
+IPKG-OPT_UNZIP=zcat
 
 #
 # IPKG-OPT_IPK_VERSION should be incremented when the ipk changes.
@@ -60,7 +54,6 @@ IPKG-OPT_BUILD_DIR=$(BUILD_DIR)/ipkg-opt
 IPKG-OPT_SOURCE_DIR=$(SOURCE_DIR)/ipkg-opt
 IPKG-OPT_IPK_DIR=$(BUILD_DIR)/ipkg-opt-$(IPKG-OPT_VERSION)-ipk
 IPKG-OPT_IPK=$(BUILD_DIR)/ipkg-opt_$(IPKG-OPT_VERSION)-$(IPKG-OPT_IPK_VERSION)_$(TARGET_ARCH).ipk
-IPKG-OPT_FEEDS=http://ipkg.nslu2-linux.org/feeds/optware
 
 .PHONY: ipkg-opt-source ipkg-opt-unpack ipkg-opt ipkg-opt-stage ipkg-opt-ipk ipkg-opt-clean ipkg-opt-dirclean ipkg-opt-check
 
@@ -74,36 +67,19 @@ IPKG-OPT_PATCHES=$(IPKG-OPT_SOURCE_DIR)/args.h.patch \
 	$(IPKG-OPT_SOURCE_DIR)/update-alternatives.patch \
 	$(IPKG-OPT_SOURCE_DIR)/ipkg-va_start_segfault.diff \
 	$(IPKG-OPT_SOURCE_DIR)/list_installed.patch \
-	$(IPKG-OPT_SOURCE_DIR)/ipkg_install.c.patch \
-	$(IPKG-OPT_SOURCE_DIR)/pkg_run_script_segfault.patch
-
-ifeq ($(LIBC_STYLE), uclibc)
-IPKG-OPT_PATCHES += $(IPKG-OPT_SOURCE_DIR)/ipkg_download.c.patch
-endif
-ifeq ($(TARGET_OS), darwin)
-IPKG-OPT_PATCHES += $(IPKG-OPT_SOURCE_DIR)/darwin.patch
-endif
-ifeq ($(OPTWARE_TARGET), tsx09)
-IPKG-OPT_PATCHES += $(IPKG-OPT_SOURCE_DIR)/use-optware-wget.patch
-endif
+	$(IPKG-OPT_SOURCE_DIR)/ipkg_install.c.patch
+# atp $(IPKG-OPT_SOURCE_DIR)/pkg_run_script_segfault.patch
 
 #
-# In this case there is no tarball, instead we fetch the sources
-# directly to the builddir with CVS
+# This is the dependency on the source code.  If the source is missing,
+# then it will be fetched from the site using wget.
 #
-$(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz:
-	( cd $(BUILD_DIR) ; \
-		rm -rf $(IPKG-OPT_DIR) && \
-		echo  "/1 $(IPKG-OPT_REPOSITORY):2401/cvs Ay=0=h<Z" \
-			> ipkg.cvspass && \
-		CVS_PASSFILE=ipkg.cvspass \
-		cvs -d $(IPKG-OPT_REPOSITORY):/cvs -z3 co $(IPKG-OPT_CVS_OPTS) \
-			-d $(IPKG-OPT_DIR) familiar/dist/ipkg/C && \
-		tar -czf $@ $(IPKG-OPT_DIR) && \
-		rm -rf $(IPKG-OPT_DIR) \
-	)
+$(DL_DIR)/$(IPKG-OPT_SOURCE):
+	$(WGET) -P $(@D) $(IPKG-OPT_CALNEX_SITE) -O $@ || \
+	$(WGET) -P $(@D) $(IPKG-OPT_SITE) -O $@
 
-ipkg-opt-source: $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
+
+ipkg-opt-source: $(DL_DIR)/$(IPKG-OPT_SOURCE)
 
 #
 # This target also configures the build within the build directory.
@@ -115,9 +91,12 @@ ipkg-opt-source: $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
 # If the compilation of the package requires other packages to be staged
 # first, then do that first (e.g. "$(MAKE) ipkg-opt-stage <baz>-stage").
 #
-$(IPKG-OPT_BUILD_DIR)/.configured: $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
+$(IPKG-OPT_BUILD_DIR)/.configured: $(DL_DIR)/$(IPKG-OPT_SOURCE)
 	rm -rf $(BUILD_DIR)/$(IPKG-OPT_DIR) $(@D)
-	tar -C $(BUILD_DIR) -xzf $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
+	tar -C $(BUILD_DIR) -xzf $(DL_DIR)/$(IPKG-OPT_SOURCE)
+	if test -d "$(BUILD_DIR)/ipkg-opt-$(IPKG-OPT_VERSION)" ; \
+		then mv $(BUILD_DIR)/ipkg-opt-$(IPKG-OPT_VERSION) $(BUILD_DIR)/$(IPKG-OPT_DIR) ; \
+	fi
 	if test -n "$(IPKG-OPT_PATCHES)" ; \
 		then cat $(IPKG-OPT_PATCHES) | \
 		patch -d $(BUILD_DIR)/$(IPKG-OPT_DIR) -p1 ; \
@@ -137,7 +116,6 @@ $(IPKG-OPT_BUILD_DIR)/.configured: $(DL_DIR)/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
 		--target=$(GNU_TARGET_NAME) \
 		--with-ipkglibdir=/opt/lib \
 		--prefix=/opt \
-		--disable-nls \
 	)
 	touch $@
 
@@ -150,7 +128,7 @@ ipkg-opt-unpack: $(IPKG-OPT_BUILD_DIR)/.configured
 $(IPKG-OPT_BUILD_DIR)/.built: $(IPKG-OPT_BUILD_DIR)/.configured
 	rm -f $@
 	\
-	$(MAKE) -C $(@D)
+	$(MAKE) -j -C $(@D)
 	touch $@
 
 #
@@ -194,19 +172,8 @@ $(IPKG-OPT_IPK): $(IPKG-OPT_BUILD_DIR)/.built
 	rm -rf $(IPKG-OPT_IPK_DIR) $(BUILD_DIR)/ipkg-opt_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(IPKG-OPT_BUILD_DIR) DESTDIR=$(IPKG-OPT_IPK_DIR) install-strip
 	install -d $(IPKG-OPT_IPK_DIR)/opt/etc/
-ifneq (, $(filter ddwrt ds101 ds101g fsg3 gumstix1151 mss nas100d nslu2 oleg slugosbe slugosle ts72xx wl500g, $(OPTWARE_TARGET)))
-	echo "#Uncomment the following line for native packages feed (if any)" \
-		> $(IPKG-OPT_IPK_DIR)/opt/etc/ipkg.conf
-	echo "#src/gz native $(IPKG-OPT_FEEDS)/$(OPTWARE_TARGET)/native/stable"\
-			>> $(IPKG-OPT_IPK_DIR)/opt/etc/ipkg.conf
-	echo "src/gz optware $(IPKG-OPT_FEEDS)/$(OPTWARE_TARGET)/cross/stable" \
-			>> $(IPKG-OPT_IPK_DIR)/opt/etc/ipkg.conf
-	echo "dest /opt/ /" >> $(IPKG-OPT_IPK_DIR)/opt/etc/ipkg.conf
-	echo "#option verbose-wget" >> $(IPKG-OPT_IPK_DIR)/opt/etc/ipkg.conf
-else
 	install -m 644 $(IPKG-OPT_SOURCE_DIR)/ipkg.conf \
 		$(IPKG-OPT_IPK_DIR)/opt/etc/ipkg.conf
-endif
 	rm $(IPKG-OPT_IPK_DIR)/opt/lib/*.a
 	rm $(IPKG-OPT_IPK_DIR)/opt/lib/*.la
 	rm -rf $(IPKG-OPT_IPK_DIR)/opt/include

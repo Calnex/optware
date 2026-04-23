@@ -1,1 +1,6 @@
-calnex  ALL=(root) NOPASSWD:/sbin/poweroff, /sbin/reboot, /sbin/ifconfig, /sbin/route, /usr/bin/pkill, /bin/kill, /sbin/dhclient, /bin/ss, /bin/hostname, /bin/date, /sbin/hwclock, /bin/mount, /bin/umount
+Cmnd_Alias POWER_CMDS = /sbin/poweroff, /sbin/reboot
+Cmnd_Alias NETWORK_CMDS = /sbin/ifconfig, /sbin/route, /sbin/dhclient, /bin/ss, /bin/hostname
+Cmnd_Alias PKILL_CMDS = /usr/bin/pkill, /bin/kill
+Cmnd_Alias DATE_CMDS = /bin/date, /sbin/hwclock
+Cmnd_Alias OPTWARE_USB = /bin/optwareUSB add, /bin/optwareUSB remove, /bin/optwareUSB automount on, /bin/optwareUSB automount off, /bin/optwareUSB automount toggle
+calnex  ALL=(root) NOPASSWD: POWER_CMDS, NETWORK_CMDS, PKILL_CMDS, DATE_CMDS, OPTWARE_USB

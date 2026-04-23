@@ -5,7 +5,7 @@
 ###########################################################
 
 GDBM_SITE=ftp://ftp.gnu.org/gnu/gdbm
-GDBM_VERSION=1.8.3
+GDBM_VERSION=1.19
 GDBM_LIB_VERSION=3.0.0
 GDBM_SOURCE=gdbm-$(GDBM_VERSION).tar.gz
 GDBM_DIR=gdbm-$(GDBM_VERSION)
@@ -18,14 +18,23 @@ GDBM_DEPENDS=
 GDBM_SUGGESTS=
 GDBM_CONFLICTS=
 
+GDBM_CPPFLAGS=
+GDBM_LDFLAGS=
+
+
 GDBM_IPK_VERSION=4
 
-GDBM_PATCHES=$(GDBM_SOURCE_DIR)/Makefile.patch
+GDBM_PATCHES=
 
 GDBM_BUILD_DIR=$(BUILD_DIR)/gdbm
 GDBM_SOURCE_DIR=$(SOURCE_DIR)/gdbm
 GDBM_IPK=$(BUILD_DIR)/gdbm_$(GDBM_VERSION)-$(GDBM_IPK_VERSION)_$(TARGET_ARCH).ipk
 GDBM_IPK_DIR=$(BUILD_DIR)/gdbm-$(GDBM_VERSION)-ipk
+
+# Options to pass to the make that is performed when building the code
+GDBM_MAKE_OPTIONS=-j
+
+
 
 .PHONY: gdbm-source gdbm-unpack gdbm gdbm-stage gdbm-ipk gdbm-clean gdbm-dirclean gdbm-check
 
@@ -37,7 +46,12 @@ gdbm-source: $(DL_DIR)/$(GDBM_SOURCE) $(GDBM_PATCHES)
 $(GDBM_BUILD_DIR)/.configured: $(DL_DIR)/$(GDBM_SOURCE) $(GDBM_PATCHES) make/gdbm.mk
 	rm -rf $(BUILD_DIR)/$(GDBM_DIR) $(GDBM_BUILD_DIR)
 	$(GDBM_UNZIP) $(DL_DIR)/$(GDBM_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(GDBM_PATCHES) | patch -d $(BUILD_DIR)/$(GDBM_DIR) -p1
+	
+	if test -n "$(GDBM_PATCHES)" ; \
+		then cat $(GDBM_PATCHES) | \
+		patch -d $(BUILD_DIR)/$(GDBM_DIR) -p1; \
+	fi
+	
 	mv $(BUILD_DIR)/$(GDBM_DIR) $(GDBM_BUILD_DIR)
 	(cd $(GDBM_BUILD_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -55,14 +69,14 @@ gdbm-unpack: $(GDBM_BUILD_DIR)/.configured
 
 $(GDBM_BUILD_DIR)/.built: $(GDBM_BUILD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(GDBM_BUILD_DIR)
+	$(MAKE) $(GDBM_MAKE_OPTIONS) -C $(GDBM_BUILD_DIR)
 	touch $@
 
 gdbm: $(GDBM_BUILD_DIR)/.built
 
 $(GDBM_BUILD_DIR)/.staged: $(GDBM_BUILD_DIR)/.built
 	rm -f $@
-	$(MAKE) -C $(GDBM_BUILD_DIR) INSTALL_ROOT=$(STAGING_DIR) install install-compat
+	$(MAKE) -C $(GDBM_BUILD_DIR) DESTDIR=$(STAGING_DIR) install
 	rm -rf $(STAGING_LIB_DIR)/libgdbm.la
 	rm -rf $(STAGING_LIB_DIR)/libgdbm_compat.la
 	touch $@
@@ -86,9 +100,10 @@ $(GDBM_IPK_DIR)/CONTROL/control:
 
 $(GDBM_IPK): $(GDBM_BUILD_DIR)/.built
 	rm -rf $(GDBM_IPK_DIR) $(GDBM_IPK)
-	$(MAKE) -C $(GDBM_BUILD_DIR) INSTALL_ROOT=$(GDBM_IPK_DIR) install install-compat
+	$(MAKE) -C $(GDBM_BUILD_DIR) DESTDIR=$(GDBM_IPK_DIR) install
 	$(STRIP_COMMAND) $(GDBM_IPK_DIR)/opt/lib/*.so.*
 	rm -rf $(GDBM_IPK_DIR)/opt/{man,info}
+	rm -f $(GDBM_IPK_DIR)/opt/share/info/dir
 	rm -f $(GDBM_IPK_DIR)/opt/lib/*.{la,a}
 	$(MAKE) $(GDBM_IPK_DIR)/CONTROL/control
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(GDBM_IPK_DIR)
