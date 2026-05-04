@@ -6,3 +6,6 @@ sed -i 's|trixie-security main|trixie-security updates/main|g' /etc/apt/sources.
 # Upgrade apt packages
 apt update
 apt upgrade -y
+
+# remove algif_aead module to prevent CVE-2026-31431 vulnerability
+rmmod algif_aead || true
