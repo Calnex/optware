@@ -8,11 +8,6 @@ Package: *
 Pin: release a=bullseye-backports
 Pin-Priority: 500
 
-# Pull the kernel from backports specifically
-Package: linux-image-amd64
-Pin: release a=bullseye-backports
-Pin-Priority: 1000
-
 # Never install isc-dhcp-client
 Package: isc-dhcp-client
 Pin: version *
