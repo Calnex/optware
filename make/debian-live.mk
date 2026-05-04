@@ -155,7 +155,7 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--iso-application			"Springbank demo"						\
 		--iso-publisher				"Calnex Solutions"						\
 		--iso-volume				"Springbank demo"						\
-		--linux-packages			"linux-image-5.10.251-3" 				\
+		--linux-packages			"linux-image-5.10.0-41" 				\
 		;																	\
 		sudo mkdir -p $(@D)/config/includes.chroot/bin/; 					\
 		sudo cp $(BUILD_DIR)/Springbank-bootstrap_1.2-7_x86_64.xsh $(@D)/config/includes.chroot/bin/; 	\
