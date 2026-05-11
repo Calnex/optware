@@ -9,3 +9,5 @@ apt upgrade -y
 
 # remove algif_aead module to prevent CVE-2026-31431 vulnerability
 rmmod algif_aead || true
+# remove esp4 esp6 rxrpc modules to prevent CVE-2026-43284 and CVE-2026-43500 "Dirty Frag" vulnerability
+rmmod esp4 esp6 rxrpc || true
