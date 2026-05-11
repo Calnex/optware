@@ -20,7 +20,7 @@ WGET_CALNEX_SITE=$(PACKAGES_SERVER)
 
 
 WGET_SITE=http://ftp.gnu.org/pub/gnu/wget
-WGET_VERSION=1.15
+WGET_VERSION=1.16.1 ## 1.15 (no longer available on sources.nslu2-linux.org/sources/ mirror)
 WGET_SOURCE=wget-$(WGET_VERSION).tar.gz
 WGET_DIR=wget-$(WGET_VERSION)
 WGET_UNZIP=zcat
