@@ -173,8 +173,8 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 			fi; \
 			sudo dpkg-name SysMgmtDaemon_*.deb;										\
 		fi																			\
-		unlink ./cache;		\
 	)
+	unlink $(@D)/cache
 	touch $@
 
 debian-live-unpack: $(DEBIAN-LIVE_BUILD_DIR)/.configured

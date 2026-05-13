@@ -163,8 +163,8 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.chroot/usr/share/keyrings/; \
 		sudo mkdir -p $(@D)/config/includes.installer/usr/share/keyrings/; \
 		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.installer/usr/share/keyrings/; \
-		unlink $(@D)/cache;		\
 	)
+	unlink $(@D)/cache
 	touch $@
 
 debian-installer-unpack: $(DEBIAN-INSTALLER_BUILD_DIR)/.configured
