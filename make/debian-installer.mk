@@ -140,7 +140,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--backports					true					\
 		--updates					true					\
 		--security					true					\
-		--cache						false					\
+		--cache						true					\
 		--archive-areas 			"main"					\
 		--apt-source-archives 		false					\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian		\

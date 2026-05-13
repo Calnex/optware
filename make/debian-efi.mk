@@ -139,7 +139,7 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		--backports					true				\
 		--updates					true				\
 		--security					true				\
-		--cache						false				\
+		--cache						true				\
 		--archive-areas 			"main"	\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
