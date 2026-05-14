@@ -159,7 +159,7 @@ $(DL_DIR)/$(ENDOR_SOURCE):
 		git show-ref --heads > Server/Software/Endor/BuildInformation/GitCommitIds.txt; \
 		$(ENDOR_BUILD_DIR)/Server/Software/OptWare/Make/endor-makefile minify "$(BUILD_DIR)" "$(ENDOR_PRODUCT)" || exit 1 ; \
 		cd $(BUILD_DIR)/endor-$(ENDOR_PRODUCT)/Server/Software && \
-		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cz -f $@ --exclude=.git* * && \
+		tar --use-compress-program=pigz --transform  "s,^,endor-$(ENDOR_PRODUCT)/,S" -cf $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \
@@ -303,7 +303,7 @@ $(ENDOR_IPK): $(ENDOR_BUILD_DIR)/.built
 	# Build any such files into a tarball that can later be purged.
 	#
 	cd ${ENDOR_IPK_DIR}/opt/lib/endor && \
-	tar --remove-files -czf long-filepaths.tar.gz \
+	tar --use-compress-program=pigz --remove-files -cf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	# Now go and build the package
 	#

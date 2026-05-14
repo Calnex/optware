@@ -97,7 +97,7 @@ $(DL_DIR)/$(CAT_SOURCE):
 			--format=tar \
 			--prefix=$(CAT_DIR)/ \
 			$(CAT_TREEISH) | \
-		gzip > $@) && \
+		pigz > $@) && \
 		rm -rf cat ;\
 	)
 
@@ -232,7 +232,7 @@ $(CAT_IPK): $(CAT_BUILD_DIR)/.built
 	rm -rf $(CAT_IPK_DIR) $(BUILD_DIR)/cat_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(CAT_BUILD_DIR) DESTDIR=$(CAT_IPK_DIR) install-strip
 	cd $(CAT_IPK_DIR)/opt/lib/calnex-cat-build && \
-	tar --remove-files -cvzf long-filepaths.tar.gz \
+	tar --use-compress-program=pigz --remove-files -cvf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 #	install -d $(ENDOR_IPK_DIR)/opt/etc/init.d
 #	install -m 755 $(ENDOR_SOURCE_DIR)/instrumentcontroller-supervisor $(ENDOR_IPK_DIR)/opt/bin/instrumentcontroller-supervisor

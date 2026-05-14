@@ -171,7 +171,7 @@ endif
 	echo "cd bootstrap && sh bootstrap.sh && mv S00SystemConfiguration /etc/init.d && mv S01SystemConfiguration /etc/init.d && mv S00SystemLoading /etc/init.d && mv S90fix-interfaces /etc/init.d && mv loading_server /sbin &&  mv loading_server.py /sbin && mv loading_https_server.py /sbin && mv ip_fallback /sbin && cd .. && rm -r bootstrap && exit 0" >>$@
 #	echo 'exec /bin/sh -l' >>$@ # No logon shell after install
 	sed -i -e "s/NNN/`wc -c $@ | awk '{print $$1}'`/" $@
-	tar -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -czf - bootstrap >>$@
+	tar --use-compress-program=pigz -C $(OPTWARE-BOOTSTRAP_BUILD_DIR) -cf - bootstrap >>$@
 	chmod 755 $@
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(OPTWARE-BOOTSTRAP_IPK_DIR)
 

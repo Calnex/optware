@@ -106,7 +106,7 @@ $(DL_DIR)/$(ENDOR_DOC_SOURCE):
 			/usr/bin/git checkout -b br_doc_${TAG_NAME} ${TAG_NAME} ; \
 		fi; \
 		cd $(ENDOR_DOC_BUILD_DIR) && \
-		tar --transform  "s,^,endor-$(ENDOR_PRODUCT)-doc/,S" -cz -f $@ --exclude=.git* * && \
+		tar --use-compress-program=pigz --transform  "s,^,endor-$(ENDOR_PRODUCT)-doc/,S" -c -f $@ --exclude=.git* * && \
 		# Cleanup any branches we created \
 		if [ ! -z "${TAG_NAME}" ] ; \
 			then \

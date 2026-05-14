@@ -74,9 +74,9 @@ $(DOTNET-RUNTIMES_BUILD_DIR)/.built: $(DOTNET-RUNTIMES_BUILD_DIR)/.configured
 	(cd $(@D)/data/opt/usr/share/dotnet; \
 		LONG_PATH_FILES=`find . -type f | awk '{ if (length($$0) >= 70) { print $$0 }}'`; \
 		if test -n "$$LONG_PATH_FILES" ; then \
-			tar --remove-files -czf long-filepaths.tar.gz $$LONG_PATH_FILES; \
+			tar --use-compress-program=pigz --remove-files -cf long-filepaths.tar.gz $$LONG_PATH_FILES; \
 		else \
-			tar -czf long-filepaths.tar.gz --files-from /dev/null; \
+			tar --use-compress-program=pigz -cf long-filepaths.tar.gz --files-from /dev/null; \
 		fi)
 	ln -sf /opt/usr/share/dotnet/dotnet $(@D)/data/opt/bin/dotnet
 	touch $@
