@@ -122,8 +122,6 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 	if test "$(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-INSTALLER_DIR) $(@D) ; \
 	fi
-	# Link shared cache
-	ln -sf /var/cache/jenkins/debian-installer $(@D)/cache
 	(cd $(@D); \
 	# Live config recipe (no not modify unless you know  what you're doing!) \
 	# # /usr/lib/live/build/config --help					\
@@ -164,7 +162,6 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		sudo mkdir -p $(@D)/config/includes.installer/usr/share/keyrings/; \
 		sudo cp /usr/share/keyrings/calnex-keyring.gpg $(@D)/config/includes.installer/usr/share/keyrings/; \
 	)
-	unlink $(@D)/cache
 	touch $@
 
 debian-installer-unpack: $(DEBIAN-INSTALLER_BUILD_DIR)/.configured

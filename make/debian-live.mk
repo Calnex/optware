@@ -128,8 +128,6 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 	if test "$(BUILD_DIR)/$(DEBIAN-LIVE_DIR)" != "$(@D)" ; \
 		then mv $(BUILD_DIR)/$(DEBIAN-LIVE_DIR) $(@D) ; \
 	fi
-	# Link shared cache
-	ln -sf /var/cache/jenkins/debian-live $(@D)/cache
 	(cd $(@D); \
 	# Live config recipe (no not modify unless you know 				\
 	# what you're doing!) 												\
@@ -174,7 +172,6 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 			sudo dpkg-name SysMgmtDaemon_*.deb;										\
 		fi																			\
 	)
-	unlink $(@D)/cache
 	touch $@
 
 debian-live-unpack: $(DEBIAN-LIVE_BUILD_DIR)/.configured
