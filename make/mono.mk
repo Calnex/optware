@@ -211,10 +211,10 @@ $(MONO_IPK): $(MONO_BUILD_DIR)/.built
 	rm -rf $(MONO_IPK_DIR) $(BUILD_DIR)/mono_*_$(TARGET_ARCH).ipk
 	$(MAKE) -C $(MONO_BUILD_DIR) DESTDIR=$(MONO_IPK_DIR) install-strip
 	cd $(MONO_IPK_DIR)/opt && \
-	tar --remove-files -cvzf long-symlinks.tar.gz \
+	tar --use-compress-program=pigz --remove-files -cvf long-symlinks.tar.gz \
 		`find . -type l -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	cd $(MONO_IPK_DIR)/opt && \
-	tar --remove-files -cvzf long-filepaths.tar.gz \
+	tar --use-compress-program=pigz --remove-files -cvf long-filepaths.tar.gz \
 		`find . -type f -ls | awk '{ if (length($$$$13) > 80) { print $$11}}'`
 	$(MAKE) $(MONO_IPK_DIR)/CONTROL/control
 	install -m755 $(MONO_SOURCE_DIR)/postinst $(MONO_IPK_DIR)/CONTROL/postinst

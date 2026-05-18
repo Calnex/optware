@@ -93,7 +93,7 @@ $(DL_DIR)/$(HYPERFASTCGI_SOURCE):
 		rm -rf hyperfastcgi && \
 		git clone --bare $(HYPERFASTCGI_REPOSITORY) hyperfastcgi && \
 		cd hyperfastcgi && \
-		(git archive --format=tar --prefix=$(HYPERFASTCGI_DIR)/ $(HYPERFASTCGI_TREEISH) | gzip > $@) && \
+		(git archive --format=tar --prefix=$(HYPERFASTCGI_DIR)/ $(HYPERFASTCGI_TREEISH) | pigz > $@) && \
 		rm -rf hyperfastcgi ; \
 	)
 
