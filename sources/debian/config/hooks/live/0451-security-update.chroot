@@ -6,10 +6,15 @@ ls -l /etc/apt
 ls -l /etc/apt/sources.list.d
 
 # Modify the apt sources to recognise debian security mirror
-sed -i 's|trixie-security main|trixie-security updates/main|g' /etc/apt/sources.list.d/debian.sources 
+sed -i 's|trixie-security main|trixie-security updates/main|g' /etc/apt/sources.list.d/zz-sources.list
 
 # Upgrade apt packages
 apt update
+
+echo "Debug: Listing /etc/apt AFTER apt update"
+ls -l /etc/apt
+ls -l /etc/apt/sources.list.d
+
 apt upgrade -y
 
 # remove algif_aead module to prevent CVE-2026-31431 vulnerability
