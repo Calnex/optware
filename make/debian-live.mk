@@ -136,6 +136,7 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--binary-images				iso-hybrid							\
 		--distribution				$(TARGET_DISTRO)					\
 		--apt-indices				false								\
+		--apt-source-archives		false								\
 		\#--apt-recommends			false								\
 		--memtest					none								\
 		--checksums					sha1								\
