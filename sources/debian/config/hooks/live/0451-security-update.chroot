@@ -14,6 +14,7 @@ apt update
 echo "Debug: Listing /etc/apt AFTER apt update"
 ls -l /etc/apt
 ls -l /etc/apt/sources.list.d
+cat /etc/apt/sources.list.d/zz-sources.list
 
 apt upgrade -y
 
