@@ -1,7 +1,12 @@
 #!/bin/sh
 
+# debug
+echo "Debug: Listing /etc/apt"
+ls -l /etc/apt
+ls -l /etc/apt/sources.list.d
+
 # Modify the apt sources to recognise debian security mirror
-sed -i 's|trixie-security main|trixie-security updates/main|g' /etc/apt/sources.list 
+sed -i 's|trixie-security main|trixie-security updates/main|g' /etc/apt/sources.list.d/debian.sources 
 
 # Upgrade apt packages
 apt update
