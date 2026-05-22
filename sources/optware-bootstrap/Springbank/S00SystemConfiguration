@@ -140,7 +140,7 @@ if [ -e /sys/firmware/efi ]; then
   file -s /dev/sda4 | grep ext4
   if [[ $? != 0 ]]; then
 	  echo 'Making file system on sda4' | tee -a /var/log/SystemConfig
-    mkfs.ext4 -L persistence /dev/sda4
+    mkfs.ext4 -L persistence -O ^FEATURE_C12,^orphan_file,^metadata_csum_seed /dev/sda4
     mkdir -p /mnt/home
     mount /dev/sda4 /mnt/home
     echo '/home union' >> /mnt/home/persistence.conf
@@ -266,7 +266,7 @@ else
     file -s /dev/sda4 | grep ext4
     if [[ $? != 0 ]]; then
       echo 'On persistence detected' | tee -a /var/log/SystemConfig
-      mkfs.ext4 -L persistence /dev/sda4
+      mkfs.ext4 -L persistence -O ^FEATURE_C12,^orphan_file,^metadata_csum_seed /dev/sda4
       mkdir -p /mnt/home
       mount /dev/sda4 /mnt/home
       echo '/home union' >> /mnt/home/persistence.conf
