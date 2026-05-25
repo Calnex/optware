@@ -145,9 +145,9 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--apt-source-archives 		false					\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian		\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian		\
-		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security/updates \
+		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security \
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian		\
-		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security/updates \
+		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security \
 		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--bootappend-live			"boot=live config username=calnex"	\
 		--iso-application			"Springbank installer"		\
