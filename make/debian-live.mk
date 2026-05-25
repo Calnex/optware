@@ -149,9 +149,9 @@ $(DEBIAN-LIVE_BUILD_DIR)/.configured: $(DEBIAN-LIVE_PATCHES) make/debian-live.mk
 		--archive-areas 			"main"					\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian			\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian			\
-		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security/updates	\
+		--mirror-chroot-security	https://cdn-fastly.deb.debian.org/debian-security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian			\
-		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security/updates	\
+		--mirror-binary-security	https://cdn-fastly.deb.debian.org/debian-security	\
 		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--iso-application			"Springbank demo"						\
 		--iso-publisher				"Calnex Solutions"						\
