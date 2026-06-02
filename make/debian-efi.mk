@@ -143,9 +143,9 @@ $(DEBIAN-EFI_BUILD_DIR)/.configured: $(DEBIAN-EFI_PATCHES) make/debian-efi.mk
 		--archive-areas 			"main"	\
 		--mirror-bootstrap			$(TARGET_REPO_MIRROR)/debian	\
 		--mirror-chroot				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-chroot-security	$(TARGET_REPO_MIRROR)/debian-security	\
+		--mirror-chroot-security	http://cdn-fastly.deb.debian.org/debian-security	\
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian	\
-		--mirror-binary-security	$(TARGET_REPO_MIRROR)/debian-security	\
+		--mirror-binary-security	http://cdn-fastly.deb.debian.org/debian-security	\
 		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--hdd-label					"$(DEBIAN-EFI_PARTITION_LABEL)"	\
 		--hdd-size					600						\
