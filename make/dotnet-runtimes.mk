@@ -5,7 +5,7 @@
 ###########################################################
 
 
-DOTNET-RUNTIMES_VERSION=8.0.26
+DOTNET-RUNTIMES_VERSION=10.0.9
 DOTNET-RUNTIMES_MAINTAINER=dotnet-foundation <contact@dotnetfoundation.org>
 DOTNET-RUNTIMES_DESCRIPTION=.NET and ASP.NET Core runtimes bundled for Optware
 DOTNET-RUNTIMES_SECTION=extras
