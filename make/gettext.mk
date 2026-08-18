@@ -14,7 +14,7 @@
 #
 # You should change all these variables to suit your package.
 #
-GETTEXT_CALNEX_SITE=$(PACKAGES_SERVER)
+GETTEXT_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 GETTEXT_SITE=http://ftp.gnu.org/pub/gnu/gettext
 GETTEXT_VERSION=0.19
@@ -82,8 +82,7 @@ GETTEXT_MAKE_OPTIONS=-j
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GETTEXT_SOURCE):
-	$(WGET) -P $(DL_DIR) $(GETTEXT_CALNEX_SITE)/$(GETTEXT_SOURCE)  || \
-	$(WGET) -P $(DL_DIR) $(GETTEXT_SITE)/$(GETTEXT_SOURCE)
+	cp $(GETTEXT_CALNEX_SITE)/$(GETTEXT_SOURCE) $@
 
 #
 # The source code depends on it existing within the download directory.

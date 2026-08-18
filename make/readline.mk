@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-READLINE_CALNEX_SITE=$(PACKAGES_SERVER)
+READLINE_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 READLINE_SITE=https://ftp.gnu.org/pub/gnu/readline
 READLINE_VERSION=8.1.2
@@ -86,9 +86,7 @@ READLINE_IPK=$(BUILD_DIR)/readline_$(READLINE_VERSION)-$(READLINE_IPK_VERSION)_$
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(READLINE_SOURCE):
-	$(WGET) -P $(@D) $(READLINE_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(READLINE_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(READLINE_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

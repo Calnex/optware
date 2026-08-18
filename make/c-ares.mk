@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-C_ARES_CALNEX_SITE=$(PACKAGES_SERVER)
+C_ARES_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 C_ARES_VERSION=1.17.1
 C_ARES_SITE=https://github.com/c-ares/c-ares/releases/download/cares-1_17_1
@@ -82,9 +82,7 @@ C_ARES_IPK=$(BUILD_DIR)/c-ares_$(C_ARES_VERSION)-$(C_ARES_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(C_ARES_SOURCE):
-	$(WGET) -P $(@D) $(C_ARES_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(C_ARES_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(C_ARES_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

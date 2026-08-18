@@ -4,7 +4,7 @@
 #
 ###########################################################
 
-ONIGURUMA_CALNEX_SITE=$(PACKAGES_SERVER)
+ONIGURUMA_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 
 ONIGURUMA_VERSION=6.9.6
@@ -37,8 +37,7 @@ ONIGURUMA_MAKE_OPTIONS=-j
 .PHONY: oniguruma-source oniguruma-unpack oniguruma oniguruma-stage oniguruma-ipk oniguruma-clean oniguruma-dirclean oniguruma-check
 
 $(DL_DIR)/$(ONIGURUMA_SOURCE):
-	$(WGET) -P $(@D) $(ONIGURUMA_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(ONIGURUMA_SITE)/$(@F)
+	cp $(ONIGURUMA_CALNEX_SITE)/$(@F) $@
 
 oniguruma-source: $(DL_DIR)/$(ONIGURUMA_SOURCE)
 

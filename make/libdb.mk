@@ -37,7 +37,7 @@
 # You should change all these variables to suit your package.
 #
 
-LIBDB_CALNEX_SITE=$(PACKAGES_SERVER)
+LIBDB_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 LIBDB_VERSION=5.3.21
 LIBDB_LIB_VERSION=5.3

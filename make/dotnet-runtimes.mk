@@ -22,7 +22,7 @@ DOTNET-RUNTIMES_CONFFILES=
 # .NET runtime binary sources.  These are downloaded from the official Microsoft site, but a local mirror is also supported.
 #
 
-DOTNET-RUNTIMES_CALNEX_SITE=$(PACKAGES_SERVER)
+DOTNET-RUNTIMES_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 DOTNET-RUNTIMES_SITE=https://builds.dotnet.microsoft.com/dotnet
 
 DOTNET-RUNTIMES_RUNTIME_BINARIES=dotnet-runtime-$(DOTNET-RUNTIMES_VERSION)-linux-x64.tar.gz
@@ -41,12 +41,10 @@ DOTNET-RUNTIMES_IPK=$(BUILD_DIR)/dotnet-runtimes_$(DOTNET-RUNTIMES_VERSION)-$(DO
 .PHONY: dotnet-runtimes-source dotnet-runtimes-unpack dotnet-runtimes dotnet-runtimes-stage dotnet-runtimes-ipk dotnet-runtimes-clean dotnet-runtimes-dirclean dotnet-runtimes-check
 
 $(DL_DIR)/$(DOTNET-RUNTIMES_RUNTIME_BINARIES):
-	$(WGET) -P $(@D) $(DOTNET-RUNTIMES_RUNTIME_URL_CALNEX) -O $@ || \
-	$(WGET) -P $(@D) $(DOTNET-RUNTIMES_RUNTIME_URL_OFFICIAL) -O $@
+	cp $(DOTNET-RUNTIMES_RUNTIME_URL_CALNEX) $@
 
 $(DL_DIR)/$(DOTNET-RUNTIMES_ASPNETCORE_BINARIES):
-	$(WGET) -P $(@D) $(DOTNET-RUNTIMES_ASPNETCORE_URL_CALNEX) -O $@ || \
-	$(WGET) -P $(@D) $(DOTNET-RUNTIMES_ASPNETCORE_URL_OFFICIAL) -O $@
+	cp $(DOTNET-RUNTIMES_ASPNETCORE_URL_CALNEX) $@
 
 dotnet-runtimes-source: $(DL_DIR)/$(DOTNET-RUNTIMES_RUNTIME_BINARIES) $(DL_DIR)/$(DOTNET-RUNTIMES_ASPNETCORE_BINARIES) \
 	$(DOTNET-RUNTIMES_SOURCE_DIR)/postinst \

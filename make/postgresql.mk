@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-POSTGRESQL_CALNEX_SITE=$(PACKAGES_SERVER)
+POSTGRESQL_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 POSTGRESQL_VERSION=13.1
 POSTGRESQL_SITE=http://ftp.postgresql.org/pub/source/v$(POSTGRESQL_VERSION)
@@ -93,9 +93,7 @@ POSTGRESQL_IPK=$(BUILD_DIR)/postgresql_$(POSTGRESQL_VERSION)-$(POSTGRESQL_IPK_VE
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(POSTGRESQL_SOURCE):
-	$(WGET) -P $(@D) $(POSTGRESQL_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(POSTGRESQL_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(POSTGRESQL_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

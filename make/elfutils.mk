@@ -4,7 +4,7 @@
 #
 #############################################################
 
-ELFUTILS_CALNEX_SITE=$(PACKAGES_SERVER)
+ELFUTILS_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 ELFUTILS_VERSION=0.183
 ELFUTILS_LIB_VERSION=0.183
@@ -46,8 +46,7 @@ elfutils-dirclean elfutils-check elfutils-host elfutils-host-stage elfutils-unst
 
 
 $(DL_DIR)/$(ELFUTILS_SOURCE):
-	$(WGET) -P $(@D) $(ELFUTILS_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(ELFUTILS_SITE2)/$(@F)
+	cp $(ELFUTILS_CALNEX_SITE)/$(@F) $@
 
 elfutils-source: $(DL_DIR)/$(ELFUTILS_SOURCE)
 

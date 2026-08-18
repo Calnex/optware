@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-SQLITE_CALNEX_SITE=$(PACKAGES_SERVER)
+SQLITE_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 SQLITE_SITE=https://www.sqlite.org/2021
 SQLITE_VERSION=3.34.1
@@ -84,9 +84,7 @@ SQLITE_IPK=$(BUILD_DIR)/sqlite_$(SQLITE_VERSION)-$(SQLITE_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(SQLITE_SOURCE):
-	$(WGET) -P $(@D) $(SQLITE_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SQLITE_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(SQLITE_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

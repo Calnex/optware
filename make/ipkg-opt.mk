@@ -20,7 +20,7 @@ IPKG-OPT_SUGGESTS=
 IPKG-OPT_CONFLICTS=
 
 IPKG-OPT_VERSION=0.99.163
-IPKG-OPT_CALNEX_SITE=$(PACKAGES_SERVER)/build_dependencies/1.0/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
+IPKG-OPT_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)/1.0/ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
 IPKG-OPT_SITE=https://github.com/Calnex/ipkg-opt/archive/refs/tags/v$(IPKG-OPT_VERSION).tar.gz
 IPKG-OPT_SOURCE=ipkg-opt-$(IPKG-OPT_VERSION).tar.gz
 IPKG-OPT_UNZIP=zcat
@@ -75,8 +75,7 @@ IPKG-OPT_PATCHES=$(IPKG-OPT_SOURCE_DIR)/args.h.patch \
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(IPKG-OPT_SOURCE):
-	$(WGET) -P $(@D) $(IPKG-OPT_CALNEX_SITE) -O $@ || \
-	$(WGET) -P $(@D) $(IPKG-OPT_SITE) -O $@
+	cp $(IPKG-OPT_CALNEX_SITE) $@
 
 
 ipkg-opt-source: $(DL_DIR)/$(IPKG-OPT_SOURCE)

@@ -4,7 +4,7 @@
 #
 ###########################################################
 
-LIBZIP_CALNEX_SITE=$(PACKAGES_SERVER)
+LIBZIP_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 LIBZIP_SITE=https://libzip.org/download/
 LIBZIP_VERSION=1.11.4
@@ -31,8 +31,7 @@ LIBZIP_LDFLAGS=
 .PHONY: libzip-source libzip-unpack libzip libzip-stage libzip-ipk libzip-clean libzip-dirclean libzip-check
 
 $(DL_DIR)/$(LIBZIP_SOURCE):
-	$(WGET) -P $(@D) $(LIBZIP_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(LIBZIP_SITE)/$(@F)
+	cp $(LIBZIP_CALNEX_SITE)/$(@F) $@
 
 libzip-source: $(DL_DIR)/$(LIBZIP_SOURCE)
 

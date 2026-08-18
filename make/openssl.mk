@@ -2,7 +2,7 @@
 # Openssl build for Springbank
 #
 
-OPENSSL_CALNEX_SITE=$(PACKAGES_SERVER)
+OPENSSL_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 OPENSSL_SITE=https://openssl-library.org/source/old/1.1.1/
 OPENSSL_VERSION=1.1.1w
@@ -38,9 +38,7 @@ OPENSSL_MAKE_OPTIONS=-j
 .PHONY: openssl-source openssl-unpack openssl openssl-stage openssl-ipk openssl-clean openssl-dirclean openssl-check
 
 $(DL_DIR)/$(OPENSSL_SOURCE):
-	$(WGET) -P $(@D) $(OPENSSL_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(OPENSSL_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(OPENSSL_CALNEX_SITE)/$(@F) $@
 
 
 $(OPENSSL_BUILD_DIR)/.configured: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCHES) make/openssl.mk

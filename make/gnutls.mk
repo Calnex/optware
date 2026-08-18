@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-GNUTLS_CALNEX_SITE=$(PACKAGES_SERVER)
+GNUTLS_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 GNUTLS_SITE=https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7
 GNUTLS_VERSION=3.7.1
@@ -95,9 +95,7 @@ GNUTLS-DEV_IPK=$(BUILD_DIR)/gnutls-dev_$(GNUTLS_VERSION)-$(GNUTLS_IPK_VERSION)_$
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GNUTLS_SOURCE):
-	$(WGET) -P $(@D) $(GNUTLS_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(GNUTLS_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(GNUTLS_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

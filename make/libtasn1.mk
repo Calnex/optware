@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-LIBTASN1_CALNEX_SITE=$(PACKAGES_SERVER)
+LIBTASN1_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 LIBTASN1_SITE=https://ftp.gnu.org/gnu/libtasn1
 LIBTASN1_VERSION=4.21.0
@@ -89,9 +89,7 @@ LIBTASN1_IPK=$(BUILD_DIR)/libtasn1_$(LIBTASN1_VERSION)-$(LIBTASN1_IPK_VERSION)_$
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBTASN1_SOURCE):
-	$(WGET) -P $(@D) $(LIBTASN1_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(LIBTASN1_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(LIBTASN1_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

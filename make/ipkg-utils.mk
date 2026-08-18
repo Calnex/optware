@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-IPKG-UTILS_CALNEX_SITE=$(PACKAGES_SERVER)
+IPKG-UTILS_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 IPKG-UTILS_VERSION:=1.8
 IPKG-UTILS_SITE:=http://nslu.sf.net/downloads
@@ -74,9 +74,7 @@ IPKG-UTILS_IPK=$(BUILD_DIR)/ipkg-utils_$(IPKG-UTILS_VERSION)-$(IPKG-UTILS_IPK_VE
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(IPKG-UTILS_SOURCE):
-	$(WGET) -P $(@D) $(IPKG-UTILS_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(IPKG-UTILS_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(IPKG-UTILS_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

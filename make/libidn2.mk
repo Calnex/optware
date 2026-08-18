@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-LIBIDN2_CALNEX_SITE=$(PACKAGES_SERVER)
+LIBIDN2_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 LIBIDN2_SITE=http://ftp.gnu.org/gnu/libidn
 LIBIDN2_VERSION=2.3.8
@@ -89,9 +89,7 @@ LIBIDN2_IPK=$(BUILD_DIR)/libidn2_$(LIBIDN2_VERSION)-$(LIBIDN2_IPK_VERSION)_$(TAR
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBIDN2_SOURCE):
-	$(WGET) -P $(@D) $(LIBIDN2_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(LIBIDN2_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(LIBIDN2_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

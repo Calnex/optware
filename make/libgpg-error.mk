@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-LIBGPG-ERROR_CALNEX_SITE=$(PACKAGES_SERVER)
+LIBGPG-ERROR_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 LIBGPG-ERROR_SITE=https://gnupg.org/ftp/gcrypt/libgpg-error
 LIBGPG-ERROR_VERSION=1.38
@@ -90,9 +90,7 @@ LIBGPG-ERROR_IPK=$(BUILD_DIR)/libgpg-error_$(LIBGPG-ERROR_VERSION)-$(LIBGPG-ERRO
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBGPG-ERROR_SOURCE):
-	$(WGET) -P $(@D) $(LIBGPG-ERROR_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(LIBGPG-ERROR_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(LIBGPG-ERROR_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.
