@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-NETTLE_CALNEX_SITE=$(PACKAGES_SERVER)
+NETTLE_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 NETTLE_SITE=http://www.lysator.liu.se/~nisse/archive
 NETTLE_VERSION=3.7.3
@@ -90,9 +90,7 @@ NETTLE_IPK=$(BUILD_DIR)/nettle_$(NETTLE_VERSION)-$(NETTLE_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(NETTLE_SOURCE):
-	$(WGET) -P $(@D) $(NETTLE_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(NETTLE_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(NETTLE_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

@@ -4,7 +4,7 @@
 #
 ###########################################################
 
-BZIP2_CALNEX_SITE=$(PACKAGES_SERVER)
+BZIP2_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 
 BZIP2_VERSION=1.0.8
@@ -33,8 +33,7 @@ BZIP2_MAKE_OPTIONS=-j
 .PHONY: bzip2-source bzip2-unpack bzip2 bzip2-stage bzip2-ipk bzip2-clean bzip2-dirclean bzip2-check
 
 $(DL_DIR)/$(BZIP2_SOURCE):
-	$(WGET) -P $(@D) $(BZIP2_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(BZIP2_SITE)/$(@F)
+	cp $(BZIP2_CALNEX_SITE)/$(@F) $@
 
 bzip2-source: $(DL_DIR)/$(BZIP2_SOURCE)
 

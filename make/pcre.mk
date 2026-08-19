@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-PCRE_CALNEX_SITE=$(PACKAGES_SERVER)
+PCRE_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 PCRE_SITE=ftp://ftp.pcre.org/pub/pcre
 PCRE_VERSION=8.45
@@ -92,9 +92,7 @@ PCRE-DEV_IPK=$(BUILD_DIR)/pcre-dev_$(PCRE_VERSION)-$(PCRE_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(PCRE_SOURCE):
-	$(WGET) -P $(@D) $(PCRE_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(PCRE_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(PCRE_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

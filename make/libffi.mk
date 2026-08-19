@@ -27,7 +27,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-LIBFFI_CALNEX_SITE=$(PACKAGES_SERVER)
+LIBFFI_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 LIBFFI_MAJOR_VERSION=3.3
 LIBFFI_MINOR_VERSION=6
@@ -93,9 +93,7 @@ LIBFFI_IPK=$(BUILD_DIR)/libffi_$(LIBFFI_VERSION)-$(LIBFFI_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBFFI_SOURCE):
-	$(WGET) -P $(@D) $(LIBFFI_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(LIBFFI_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(LIBFFI_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

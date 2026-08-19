@@ -194,6 +194,8 @@ WGET=wget -nv --passive-ftp
 PERL=perl
 GIT=git
 
+LOCAL_BUILD_DEPENDENCIES ?= /mnt/optware/build_dependencies
+
 # Required host-tools, which will build if they missing
 HOST_TOOL_GCC33 = $(MAKE) gcc-host-stage GCC_VERSION=3.3.6
 HOST_TOOL_ACLOCAL19 = \

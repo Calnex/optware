@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-GEOIP_CALNEX_SITE=$(PACKAGES_SERVER)
+GEOIP_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 
 GEOIP_VERSION=1.6.12
@@ -87,9 +87,7 @@ GEOIP_IPK=$(BUILD_DIR)/geoip_$(GEOIP_VERSION)-$(GEOIP_IPK_VERSION)_$(TARGET_ARCH
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GEOIP_SOURCE):
-	$(WGET) -P $(@D) $(GEOIP_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(GEOIP_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(GEOIP_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

@@ -20,7 +20,7 @@ OPKG_SUGGESTS=
 OPKG_CONFLICTS=
 
 OPKG_VERSION=0.9.0
-OPKG_CALNEX_SITE=$(PACKAGES_SERVER)/build_dependencies/1.0/opkg-$(OPKG_VERSION).tar.gz
+OPKG_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)/1.0/opkg-$(OPKG_VERSION).tar.gz
 OPKG_SITE=https://git.yoctoproject.org/opkg/snapshot/
 OPKG_SOURCE=opkg-$(OPKG_VERSION).tar.gz
 OPKG_UNZIP=zcat
@@ -68,8 +68,7 @@ OPKG_PATCHES=
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(OPKG_SOURCE):
-	$(WGET) -P $(@D) $(OPKG_CALNEX_SITE) -O $@ || \
-	$(WGET) -P $(@D) $(OPKG_SITE) -O $@
+	cp $(OPKG_CALNEX_SITE) $@
 
 
 opkg-source: $(DL_DIR)/$(OPKG_SOURCE)

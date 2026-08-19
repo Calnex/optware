@@ -22,7 +22,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-LIBGMP_CALNEX_SITE=$(PACKAGES_SERVER)
+LIBGMP_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 LIBGMP_SITE=https://ftp.gnu.org/gnu/gmp
 LIBGMP_VERSION=6.2.1
@@ -95,9 +95,7 @@ endif
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBGMP_SOURCE):
-	$(WGET) -P $(@D) $(LIBGMP_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(LIBGMP_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(LIBGMP_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

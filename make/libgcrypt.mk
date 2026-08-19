@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-LIBGCRYPT_CALNEX_SITE=$(PACKAGES_SERVER)
+LIBGCRYPT_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 LIBGCRYPT_SITE=https://gnupg.org/ftp/gcrypt/libgcrypt
 LIBGCRYPT_VERSION?=1.8.7
@@ -86,9 +86,7 @@ LIBGCRYPT_IPK=$(BUILD_DIR)/libgcrypt_$(LIBGCRYPT_VERSION)-$(LIBGCRYPT_IPK_VERSIO
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBGCRYPT_SOURCE):
-	$(WGET) -P $(@D) $(LIBGCRYPT_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(LIBGCRYPT_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(LIBGCRYPT_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.

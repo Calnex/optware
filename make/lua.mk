@@ -26,7 +26,7 @@
 # from your name or email address.  If you leave MAINTAINER set to
 # "NSLU2 Linux" other developers will feel free to edit.
 #
-LUA_CALNEX_SITE=$(PACKAGES_SERVER)
+LUA_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 LUA_SITE=http://www.lua.org/ftp
 LUA_VERSION=5.1.5
 LUA_SOURCE=lua-$(LUA_VERSION).tar.gz
@@ -89,9 +89,7 @@ LUA_HOST_BUILD_DIR=$(HOST_BUILD_DIR)/lua
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LUA_SOURCE):
-	$(WGET) -P $(@D) $(LUA_CALNEX_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(LUA_SITE)/$(@F) || \
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
+	cp $(LUA_CALNEX_SITE)/$(@F) $@
 
 #
 # The source code depends on it existing within the download directory.
