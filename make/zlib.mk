@@ -51,7 +51,6 @@ zlib-dirclean zlib-check zlib-host zlib-host-stage zlib-unstage
 
 $(DL_DIR)/$(ZLIB_SOURCE):
 	cp $(ZLIB_CALNEX_SITE)/$(@F) $@
-	$(WGET) -P $(@D) $(SOURCES_NLO_SITE)/$(@F)
 
 zlib-source: $(DL_DIR)/$(ZLIB_SOURCE)
 
