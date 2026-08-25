@@ -21,7 +21,7 @@
 # "NSLU2 Linux" other developers will feel free to edit.
 #
 
-PCRE_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
+PCRE_CALNEX_SITE=$(LOCAL_BUILD_SOURCES)
 
 PCRE_SITE=ftp://ftp.pcre.org/pub/pcre
 PCRE_VERSION=8.45
