@@ -4,7 +4,7 @@
 #
 #############################################################
 
-ZLIB_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
+ZLIB_CALNEX_SITE=$(LOCAL_BUILD_SOURCES)
 
 ZLIB_SITE2=http://$(SOURCEFORGE_MIRROR)/sourceforge/libpng
 ZLIB_SITE3=https://github.com/madler/zlib/releases/download/v1.3.1/
