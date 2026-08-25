@@ -2,7 +2,7 @@
 # Openssl build for Springbank
 #
 
-OPENSSL_CALNEX_SITE=/optware/optware/sources/1.2
+OPENSSL_CALNEX_SITE=/mnt/optware/optware/sources/1.2
 
 OPENSSL_SITE=https://openssl-library.org/source/old/1.1.1/
 OPENSSL_VERSION=1.1.1w
