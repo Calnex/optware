@@ -97,13 +97,18 @@ $(DEBIAN-DUMMY_IPK_DIR)/CONTROL/control:
 #
 # You may need to patch your application to make it use these locations.
 #
+# ipkg-build creates its IPKG_BUILD.$$ temp dir in the destination dir, so the
+# destination must not be the package dir itself or tar races with its own
+# output tarball (intermittent "file changed as we read it" failures).
 $(DEBIAN-DUMMY_IPK):
-	rm -rf $(DEBIAN-DUMMY_IPK_DIR) $(BUILD_DIR)/debian_*-dummy_$(TARGET_ARCH).ipk
+	rm -rf $(DEBIAN-DUMMY_IPK_DIR) $(DEBIAN-DUMMY_IPK_DIR).out $(BUILD_DIR)/debian_*-dummy_$(TARGET_ARCH).ipk
 	$(MAKE) $(DEBIAN-DUMMY_IPK_DIR)/CONTROL/control
 	echo $(DEBIAN-DUMMY_CONFFILES) | sed -e 's/ /\n/g' > $(DEBIAN-DUMMY_IPK_DIR)/CONTROL/conffiles
 	install -d $(DEBIAN-DUMMY_IPK_DIR)/opt/var/lib/debian
-	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN-DUMMY_IPK_DIR) $(DEBIAN-DUMMY_IPK_DIR)
-	mv $(DEBIAN-DUMMY_IPK_DIR)/debian_*_$(TARGET_ARCH).ipk $(DEBIAN-DUMMY_IPK)
+	install -d $(DEBIAN-DUMMY_IPK_DIR).out
+	cd $(BUILD_DIR); $(IPKG_BUILD) $(DEBIAN-DUMMY_IPK_DIR) $(DEBIAN-DUMMY_IPK_DIR).out
+	mv $(DEBIAN-DUMMY_IPK_DIR).out/debian_*_$(TARGET_ARCH).ipk $(DEBIAN-DUMMY_IPK)
+	rm -rf $(DEBIAN-DUMMY_IPK_DIR).out
 	$(WHAT_TO_DO_WITH_IPK_DIR) $(DEBIAN-DUMMY_IPK_DIR)
 
 $(DEBIAN-DUMMY_BUILD_DIR)/.ipk: $(DEBIAN-DUMMY_IPK)
@@ -121,7 +126,7 @@ debian-dummy-clean:
 # directories.
 #
 debian-dummy-dirclean:
-	rm -rf $(BUILD_DIR)/$(DEBIAN-DUMMY_DIR) $(DEBIAN-DUMMY_BUILD_DIR) $(DEBIAN-DUMMY_IPK_DIR) $(DEBIAN-DUMMY_IPK)
+	rm -rf $(BUILD_DIR)/$(DEBIAN-DUMMY_DIR) $(DEBIAN-DUMMY_BUILD_DIR) $(DEBIAN-DUMMY_IPK_DIR) $(DEBIAN-DUMMY_IPK_DIR).out $(DEBIAN-DUMMY_IPK)
 #
 #
 # Some sanity check for the package.
