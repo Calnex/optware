@@ -46,3 +46,6 @@ libxfixes3
 libxkbcommon0 
 libxrandr2 
 libnss3 
+
+#BLE
+pciutils
