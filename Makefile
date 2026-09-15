@@ -196,6 +196,7 @@ GIT=git
 
 LOCAL_BUILD_DEPENDENCIES ?= /mnt/optware/build_dependencies
 LOCAL_BUILD_SOURCES ?= /mnt/optware/optware/sources/1.2
+LOCAL_TOOLCHAIN_DEPENDENCIES ?= /mnt/optware/optware/toolchains
 
 # Required host-tools, which will build if they missing
 HOST_TOOL_GCC33 = $(MAKE) gcc-host-stage GCC_VERSION=3.3.6
