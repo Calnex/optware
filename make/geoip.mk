@@ -87,7 +87,8 @@ GEOIP_IPK=$(BUILD_DIR)/geoip_$(GEOIP_VERSION)-$(GEOIP_IPK_VERSION)_$(TARGET_ARCH
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GEOIP_SOURCE):
-	cp $(GEOIP_CALNEX_SITE)/$(@F) $@
+	cp $(GEOIP_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

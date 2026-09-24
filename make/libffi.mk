@@ -93,7 +93,8 @@ LIBFFI_IPK=$(BUILD_DIR)/libffi_$(LIBFFI_VERSION)-$(LIBFFI_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBFFI_SOURCE):
-	cp $(LIBFFI_CALNEX_SITE)/$(@F) $@
+	cp $(LIBFFI_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

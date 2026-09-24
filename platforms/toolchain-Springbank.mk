@@ -61,7 +61,8 @@ endif
 toolchain: $(TARGET_CROSS_TOP)/.unpacked
 
 $(DL_DIR)/$(TOOLCHAIN_BINARY):
-	cp $(TOOLCHAIN_BINARY_SITE)/$(@F) $@
+	cp $(TOOLCHAIN_BINARY_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/toolchains/$(@F)
 
 $(TARGET_CROSS_TOP)/.unpacked: \
 $(DL_DIR)/$(TOOLCHAIN_BINARY) \

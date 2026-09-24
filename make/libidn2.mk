@@ -89,7 +89,8 @@ LIBIDN2_IPK=$(BUILD_DIR)/libidn2_$(LIBIDN2_VERSION)-$(LIBIDN2_IPK_VERSION)_$(TAR
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBIDN2_SOURCE):
-	cp $(LIBIDN2_CALNEX_SITE)/$(@F) $@
+	cp $(LIBIDN2_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

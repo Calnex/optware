@@ -75,7 +75,8 @@ IPKG-OPT_PATCHES=$(IPKG-OPT_SOURCE_DIR)/args.h.patch \
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(IPKG-OPT_SOURCE):
-	cp $(IPKG-OPT_CALNEX_SITE) $@
+	cp $(IPKG-OPT_CALNEX_SITE) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/1.0/$(@F)
 
 
 ipkg-opt-source: $(DL_DIR)/$(IPKG-OPT_SOURCE)

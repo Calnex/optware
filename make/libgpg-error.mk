@@ -90,7 +90,8 @@ LIBGPG-ERROR_IPK=$(BUILD_DIR)/libgpg-error_$(LIBGPG-ERROR_VERSION)-$(LIBGPG-ERRO
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBGPG-ERROR_SOURCE):
-	cp $(LIBGPG-ERROR_CALNEX_SITE)/$(@F) $@
+	cp $(LIBGPG-ERROR_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

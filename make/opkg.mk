@@ -68,7 +68,8 @@ OPKG_PATCHES=
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(OPKG_SOURCE):
-	cp $(OPKG_CALNEX_SITE) $@
+	cp $(OPKG_CALNEX_SITE) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/1.0/$(@F)
 
 
 opkg-source: $(DL_DIR)/$(OPKG_SOURCE)

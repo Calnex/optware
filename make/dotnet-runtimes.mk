@@ -41,10 +41,12 @@ DOTNET-RUNTIMES_IPK=$(BUILD_DIR)/dotnet-runtimes_$(DOTNET-RUNTIMES_VERSION)-$(DO
 .PHONY: dotnet-runtimes-source dotnet-runtimes-unpack dotnet-runtimes dotnet-runtimes-stage dotnet-runtimes-ipk dotnet-runtimes-clean dotnet-runtimes-dirclean dotnet-runtimes-check
 
 $(DL_DIR)/$(DOTNET-RUNTIMES_RUNTIME_BINARIES):
-	cp $(DOTNET-RUNTIMES_RUNTIME_URL_CALNEX) $@
+	cp $(DOTNET-RUNTIMES_RUNTIME_URL_CALNEX) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 $(DL_DIR)/$(DOTNET-RUNTIMES_ASPNETCORE_BINARIES):
-	cp $(DOTNET-RUNTIMES_ASPNETCORE_URL_CALNEX) $@
+	cp $(DOTNET-RUNTIMES_ASPNETCORE_URL_CALNEX) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 dotnet-runtimes-source: $(DL_DIR)/$(DOTNET-RUNTIMES_RUNTIME_BINARIES) $(DL_DIR)/$(DOTNET-RUNTIMES_ASPNETCORE_BINARIES) \
 	$(DOTNET-RUNTIMES_SOURCE_DIR)/postinst \

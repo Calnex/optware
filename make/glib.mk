@@ -98,7 +98,8 @@ glib-check glib-host glib-host-stage
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GLIB_SOURCE):
-	cp $(GLIB_CALNEX_SITE)/$(@F) $@
+	cp $(GLIB_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

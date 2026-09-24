@@ -86,7 +86,8 @@ LIBGCRYPT_IPK=$(BUILD_DIR)/libgcrypt_$(LIBGCRYPT_VERSION)-$(LIBGCRYPT_IPK_VERSIO
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBGCRYPT_SOURCE):
-	cp $(LIBGCRYPT_CALNEX_SITE)/$(@F) $@
+	cp $(LIBGCRYPT_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

@@ -92,7 +92,8 @@ PCRE-DEV_IPK=$(BUILD_DIR)/pcre-dev_$(PCRE_VERSION)-$(PCRE_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(PCRE_SOURCE):
-	cp $(PCRE_CALNEX_SITE)/$(@F) $@
+	cp $(PCRE_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/sources/1.2/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

@@ -82,7 +82,8 @@ GETTEXT_MAKE_OPTIONS=-j
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(GETTEXT_SOURCE):
-	cp $(GETTEXT_CALNEX_SITE)/$(GETTEXT_SOURCE) $@
+	cp $(GETTEXT_CALNEX_SITE)/$(GETTEXT_SOURCE) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

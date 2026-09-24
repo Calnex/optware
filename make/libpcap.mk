@@ -89,7 +89,8 @@ LIBPCAP_IPK=$(BUILD_DIR)/libpcap_$(LIBPCAP_VERSION)-$(LIBPCAP_IPK_VERSION)_$(TAR
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(LIBPCAP_SOURCE):
-	cp $(LIBPCAP_CALNEX_SITE)/$(@F) $@
+	cp $(LIBPCAP_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

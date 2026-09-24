@@ -31,7 +31,8 @@ LIBZIP_LDFLAGS=
 .PHONY: libzip-source libzip-unpack libzip libzip-stage libzip-ipk libzip-clean libzip-dirclean libzip-check
 
 $(DL_DIR)/$(LIBZIP_SOURCE):
-	cp $(LIBZIP_CALNEX_SITE)/$(@F) $@
+	cp $(LIBZIP_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 libzip-source: $(DL_DIR)/$(LIBZIP_SOURCE)
 

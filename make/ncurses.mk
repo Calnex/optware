@@ -40,7 +40,8 @@ NCURSES_HOST_BUILD_DIR=$(HOST_BUILD_DIR)/ncurses
 ncurses-dirclean ncurses-check ncurses-host
 
 $(DL_DIR)/$(NCURSES_SOURCE):
-	cp $(NCURSES_CALNEX_SITE)/$(@F) $@
+	cp $(NCURSES_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 ncurses-source: $(DL_DIR)/$(NCURSES_SOURCE)
 

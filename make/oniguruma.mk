@@ -37,7 +37,8 @@ ONIGURUMA_MAKE_OPTIONS=-j
 .PHONY: oniguruma-source oniguruma-unpack oniguruma oniguruma-stage oniguruma-ipk oniguruma-clean oniguruma-dirclean oniguruma-check
 
 $(DL_DIR)/$(ONIGURUMA_SOURCE):
-	cp $(ONIGURUMA_CALNEX_SITE)/$(@F) $@
+	cp $(ONIGURUMA_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 oniguruma-source: $(DL_DIR)/$(ONIGURUMA_SOURCE)
 

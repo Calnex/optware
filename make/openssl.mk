@@ -38,7 +38,8 @@ OPENSSL_MAKE_OPTIONS=-j
 .PHONY: openssl-source openssl-unpack openssl openssl-stage openssl-ipk openssl-clean openssl-dirclean openssl-check
 
 $(DL_DIR)/$(OPENSSL_SOURCE):
-	cp $(OPENSSL_CALNEX_SITE)/$(@F) $@
+	cp $(OPENSSL_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/sources/1.2/$(@F)
 
 
 $(OPENSSL_BUILD_DIR)/.configured: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCHES) make/openssl.mk

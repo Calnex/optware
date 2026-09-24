@@ -84,7 +84,8 @@ SQLITE_IPK=$(BUILD_DIR)/sqlite_$(SQLITE_VERSION)-$(SQLITE_IPK_VERSION)_$(TARGET_
 # then it will be fetched from the site using wget.
 #
 $(DL_DIR)/$(SQLITE_SOURCE):
-	cp $(SQLITE_CALNEX_SITE)/$(@F) $@
+	cp $(SQLITE_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 #
 # The source code depends on it existing within the download directory.

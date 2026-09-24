@@ -46,7 +46,8 @@ elfutils-dirclean elfutils-check elfutils-host elfutils-host-stage elfutils-unst
 
 
 $(DL_DIR)/$(ELFUTILS_SOURCE):
-	cp $(ELFUTILS_CALNEX_SITE)/$(@F) $@
+	cp $(ELFUTILS_CALNEX_SITE)/$(@F) $@ || \
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
 
 elfutils-source: $(DL_DIR)/$(ELFUTILS_SOURCE)
 
