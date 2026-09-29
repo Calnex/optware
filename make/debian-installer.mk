@@ -77,8 +77,8 @@ DEBIAN-INSTALLER_IPK=$(BUILD_DIR)/DEBIAN-INSTALLER_$(DEBIAN-INSTALLER_VERSION).$
 # Make sure product is always declared
 PRODUCT?=Paragon
 
-# Default bootloader to syslinux, can be overridden with grub-efi
-INSTALLER_BOOTLOADER?=syslinux
+# Build hybrid installer media that supports both legacy BIOS and UEFI boot.
+INSTALLER_BOOTLOADER?=syslinux,grub-efi
 
 # If not defined, point to the Default Packages server
 TARGET_PACKAGES_MIRROR?=http://packages.calnexsol.com/optware/$(TARGET_DISTRO)/
@@ -148,6 +148,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.configured: $(DEBIAN-INSTALLER_PATCHES) make/debi
 		--mirror-chroot-security	http://cdn-fastly.deb.debian.org/debian-security \
 		--mirror-binary				$(TARGET_REPO_MIRROR)/debian		\
 		--mirror-binary-security	http://cdn-fastly.deb.debian.org/debian-security \
+		--parent-mirror-bootstrap	$(TARGET_REPO_MIRROR)/debian	\
 		--debootstrap-options		"--keyring=/usr/share/keyrings/calnex-keyring.gpg"	\
 		--bootappend-live			"boot=live config username=calnex"	\
 		--iso-application			"Springbank installer"		\
@@ -175,7 +176,7 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.built: $(DEBIAN-INSTALLER_BUILD_DIR)/.configured
 		sudo lb bootstrap; \
 		sudo lb chroot; \
 		# Ensure installer-stage apt verification can resolve the mirror signing key. \
-		for _root in chroot chroot/chroot; do \
+		for _root in chroot cache/bootstrap; do \
 			if [ -d "$${_root}/usr/share/keyrings" ]; then \
 				sudo cp /usr/share/keyrings/calnex-keyring.gpg "$${_root}/usr/share/keyrings/calnex-keyring.gpg"; \
 				sudo cp /usr/share/keyrings/calnex-keyring.gpg "$${_root}/usr/share/keyrings/debian-archive-keyring.pgp"; \
@@ -185,8 +186,9 @@ $(DEBIAN-INSTALLER_BUILD_DIR)/.built: $(DEBIAN-INSTALLER_BUILD_DIR)/.configured
 				sudo cp /usr/share/keyrings/calnex-keyring.gpg "$${_root}/etc/apt/trusted.gpg.d/calnex-keyring.gpg"; \
 			fi; \
 		done; \
-		sudo lb installer_debian-installer; \
-		sudo lb installer_preseed; \
+		sudo lb installer && \
+		test -s binary/install/vmlinuz && \
+		test -s binary/install/initrd.gz && \
 		sudo lb binary; \
 	)
 	touch $@
