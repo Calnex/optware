@@ -70,7 +70,6 @@ COMMON_CROSS_PACKAGES = bzip2 \
 			oniguruma \
 			openssl \
 			pcre \
-			php \
 			postgresql \
 			readline \
 			springbank \

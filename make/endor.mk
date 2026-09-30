@@ -46,12 +46,12 @@ ENDOR_MAINTAINER=Calnex <info@calnexsol.com>
 ENDOR_DESCRIPTION=endor-$(ENDOR_PRODUCT) application software.
 ENDOR_SECTION=base
 ENDOR_PRIORITY=optional
-ENDOR_DEPENDS=postgresql, dotnet-runtimes, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
+ENDOR_DEPENDS=postgresql, dotnet-runtimes, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
 ENDOR_SUGGESTS=
 ENDOR_CONFLICTS=endor-attero, endor-attero-doc, endor-paragon, endor-paragon-doc
 
 ifeq "${BUILD_TOOL}" "msbuild"
-ENDOR_DEPENDS=postgresql, mono, xsp, php, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
+ENDOR_DEPENDS=postgresql, mono, xsp, nginx, tshark, endor-$(ENDOR_PRODUCT)-doc
 endif
 
 #
