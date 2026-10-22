@@ -13,7 +13,7 @@
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
 PHP_SITE=http://www.php.net/distributions/
-PHP_VERSION=7.4.33
+PHP_VERSION=8.5.12
 PHP_SOURCE=php-$(PHP_VERSION).tar.bz2
 PHP_DIR=php-$(PHP_VERSION)
 PHP_UNZIP=bzcat
