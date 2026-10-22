@@ -38,7 +38,7 @@ ONIGURUMA_MAKE_OPTIONS=-j
 
 $(DL_DIR)/$(ONIGURUMA_SOURCE):
 	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F) || \
-	$(WGET) -P $(@D) $(ONIGURUMA_SITE)
+	$(WGET) -O $@ $(ONIGURUMA_SITE)
 
 oniguruma-source: $(DL_DIR)/$(ONIGURUMA_SOURCE)
 
@@ -145,5 +145,3 @@ oniguruma-dirclean:
 
 oniguruma-check: $(ONIGURUMA_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
-
-
