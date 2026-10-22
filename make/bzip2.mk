@@ -34,7 +34,8 @@ BZIP2_MAKE_OPTIONS=-j
 
 $(DL_DIR)/$(BZIP2_SOURCE):
 	cp $(BZIP2_CALNEX_SITE)/$(@F) $@ || \
-	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/1.1_atp/$(@F)  || \
+	$(WGET) -P $(@D) $(BZIP2_SITE)/$(@F)
 
 bzip2-source: $(DL_DIR)/$(BZIP2_SOURCE)
 
