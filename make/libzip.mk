@@ -33,7 +33,7 @@ LIBZIP_LDFLAGS=
 $(DL_DIR)/$(LIBZIP_SOURCE):
 	cp $(LIBZIP_CALNEX_SITE)/$(@F) $@ || \
 	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F) || \
-	$(WGET) -P $(@D) $(LIBZIP_SITE)/$(@F)
+	$(WGET) -O $@ $(LIBZIP_SITE)/$(@F)
 
 libzip-source: $(DL_DIR)/$(LIBZIP_SOURCE)
 
