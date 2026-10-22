@@ -93,7 +93,8 @@ PHP_PEAR_IPK_DIR=$(BUILD_DIR)/php-pear-$(PHP_VERSION)-ipk
 PHP_PEAR_IPK=$(BUILD_DIR)/php-pear_$(PHP_VERSION)-$(PHP_IPK_VERSION)_$(TARGET_ARCH).ipk
 
 PHP_CONFIGURE_ARGS=
-PHP_CONFIGURE_ENV=
+# The cross-toolchain assembler cannot assemble SHA-NI instructions.
+PHP_CONFIGURE_ENV=ac_cv_header_immintrin_h=no
 PHP_TARGET_IPKS = \
 	$(PHP_IPK) \
 	$(PHP_DEV_IPK) \
