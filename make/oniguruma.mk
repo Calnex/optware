@@ -8,7 +8,7 @@ ONIGURUMA_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 
 ONIGURUMA_VERSION=6.9.6
-ONIGURUMA_SITE=https://github.com/kkos/oniguruma
+ONIGURUMA_SITE=https://github.com/kkos/oniguruma/releases/download/v6.9.6/onig-6.9.6.tar.gz
 ONIGURUMA_LIB_VERSION=$(ONIGURUMA_VERSION)
 ONIGURUMA_SOURCE=oniguruma-$(ONIGURUMA_VERSION).tar.gz
 ONIGURUMA_DIR=oniguruma-$(ONIGURUMA_VERSION)
@@ -38,7 +38,7 @@ ONIGURUMA_MAKE_OPTIONS=-j
 
 $(DL_DIR)/$(ONIGURUMA_SOURCE):
 	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F) || \
-	$(WGET) -P $(@D) $(ONIGURUMA_SITE)/$(@F)
+	$(WGET) -P $(@D) $(ONIGURUMA_SITE)
 
 oniguruma-source: $(DL_DIR)/$(ONIGURUMA_SOURCE)
 
