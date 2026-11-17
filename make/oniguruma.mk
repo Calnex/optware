@@ -8,10 +8,10 @@ ONIGURUMA_CALNEX_SITE=$(LOCAL_BUILD_DEPENDENCIES)
 
 
 ONIGURUMA_VERSION=6.9.6
-ONIGURUMA_SITE=https://github.com/kkos/oniguruma
+ONIGURUMA_SITE=https://github.com/kkos/oniguruma/releases/download/v6.9.6/onig-6.9.6.tar.gz
 ONIGURUMA_LIB_VERSION=$(ONIGURUMA_VERSION)
 ONIGURUMA_SOURCE=oniguruma-$(ONIGURUMA_VERSION).tar.gz
-ONIGURUMA_DIR=oniguruma-$(ONIGURUMA_VERSION)
+ONIGURUMA_DIR=onig-$(ONIGURUMA_VERSION)
 ONIGURUMA_UNZIP=zcat
 ONIGURUMA_MAINTAINER=K. Kosako
 ONIGURUMA_DESCRIPTION=Regular expression library
@@ -37,8 +37,8 @@ ONIGURUMA_MAKE_OPTIONS=-j
 .PHONY: oniguruma-source oniguruma-unpack oniguruma oniguruma-stage oniguruma-ipk oniguruma-clean oniguruma-dirclean oniguruma-check
 
 $(DL_DIR)/$(ONIGURUMA_SOURCE):
-	cp $(ONIGURUMA_CALNEX_SITE)/$(@F) $@ || \
-	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F)
+	$(WGET) -O $@ $(PACKAGES_OPTWARE_SITE)/build_dependencies/$(@F) || \
+	$(WGET) -O $@ $(ONIGURUMA_SITE)
 
 oniguruma-source: $(DL_DIR)/$(ONIGURUMA_SOURCE)
 
@@ -145,5 +145,3 @@ oniguruma-dirclean:
 
 oniguruma-check: $(ONIGURUMA_IPK)
 	perl scripts/optware-check-package.pl --target=$(OPTWARE_TARGET) $^
-
-

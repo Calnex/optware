@@ -13,7 +13,7 @@
 # It is usually "zcat" (for .gz) or "bzcat" (for .bz2)
 #
 PHP_SITE=http://www.php.net/distributions/
-PHP_VERSION=7.4.33
+PHP_VERSION=8.5.12
 PHP_SOURCE=php-$(PHP_VERSION).tar.bz2
 PHP_DIR=php-$(PHP_VERSION)
 PHP_UNZIP=bzcat
@@ -93,7 +93,8 @@ PHP_PEAR_IPK_DIR=$(BUILD_DIR)/php-pear-$(PHP_VERSION)-ipk
 PHP_PEAR_IPK=$(BUILD_DIR)/php-pear_$(PHP_VERSION)-$(PHP_IPK_VERSION)_$(TARGET_ARCH).ipk
 
 PHP_CONFIGURE_ARGS=
-PHP_CONFIGURE_ENV=
+# The cross-toolchain assembler cannot assemble SHA-NI instructions.
+PHP_CONFIGURE_ENV=ac_cv_header_immintrin_h=no
 PHP_TARGET_IPKS = \
 	$(PHP_IPK) \
 	$(PHP_DEV_IPK) \
@@ -335,7 +336,7 @@ $(PHP_TARGET_IPKS): $(PHP_BUILD_DIR)/.built
 	rm -rf $(PHP_EMBED_IPK_DIR) $(BUILD_DIR)/php-embed_*_$(TARGET_ARCH).ipk
 	$(MAKE) $(PHP_EMBED_IPK_DIR)/CONTROL/control
 	install -d $(PHP_EMBED_IPK_DIR)/opt/lib/
-	mv $(PHP_IPK_DIR)/opt/lib/libphp7.so $(PHP_EMBED_IPK_DIR)/opt/lib
+	mv $(PHP_IPK_DIR)/opt/lib/libphp.so $(PHP_EMBED_IPK_DIR)/opt/lib
 	cd $(BUILD_DIR); $(IPKG_BUILD) $(PHP_EMBED_IPK_DIR)
 
 	### now make php-mbstring
